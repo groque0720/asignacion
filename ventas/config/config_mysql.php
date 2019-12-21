@@ -6,5 +6,5 @@
 	//pass
 	define('PASS','');
 	//base de datos
-	define('DB','dyv');
+	define('DB','asignacion');
 ?>

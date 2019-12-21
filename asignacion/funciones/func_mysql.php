@@ -6,7 +6,7 @@
 	//pass
 	define('PASS','');
 	//base de datos
-	define('DB','dyv');
+	define('DB','asignacion');
 
 	date_default_timezone_set("America/Argentina/Buenos_Aires");
 

@@ -6,31 +6,31 @@
 	//pass
 	define('PASS','872');
 	//base de datos
-	define('DB','dyv');
+	define('DB','asignacion');
 
 	date_default_timezone_set("America/Argentina/Buenos_Aires");
-	
+
 	function conectar() {
 		global $con;
 		$con = mysql_connect(HOST,USER,PASS) or die("ERROR EN CONEXION:".mysql_error());
 		$base_datos=mysql_select_db(DB, $con) or die("ERROR AL SELECCIONAR LA BASE DE DATOS:".mysql_error());
 		mysql_query("SET NAMES 'utf8'");
-		return $con;	
+		return $con;
 	};
 
-	function cambiarFormatoFecha($fecha){ 
+	function cambiarFormatoFecha($fecha){
 		if (is_null($fecha)) {
-			return "";	
+			return "";
 		}else{
-		    list($anio,$mes,$dia)=explode("-",$fecha); 
-		    return $dia."-".$mes."-".$anio;			
+		    list($anio,$mes,$dia)=explode("-",$fecha);
+		    return $dia."-".$mes."-".$anio;
 		}
- 
+
 	};
 
-	function cambiarFormatohora($hora){ 
-    list($horas,$minutos,$segundos)=explode(":",$hora); 
-    return $horas.":".$minutos; 
+	function cambiarFormatohora($hora){
+    list($horas,$minutos,$segundos)=explode(":",$hora);
+    return $horas.":".$minutos;
 	};
 
 ?>
