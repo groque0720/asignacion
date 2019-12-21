@@ -1,0 +1,11 @@
+.pregunta_activa {
+	background: #BEF1EE;
+}
+
+.pregunta_proxima{	
+	background: #B9F9B0;
+}
+
+input[type="date"] {
+	font-family: sans-serif;
+}

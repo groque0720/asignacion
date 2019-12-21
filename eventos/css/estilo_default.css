@@ -1,0 +1,166 @@
+*{
+	font-size: 1em;
+}
+
+h1{
+	font-size: 1.2em !important;
+}
+
+
+.zona-tabla-50, .zona-tabla{
+	width: 50%;
+	margin:0 auto;
+	font-size: .8em;
+}
+.zona-tabla-80{
+	width: 80%;
+	margin:0 auto;
+	font-size: .8em;
+}
+.tabla-default {
+	border-collapse: collapse;
+	border: 1px solid #000;
+}
+.tabla-default thead {
+	background: #4682B4;
+	color: white;
+	text-align: center;
+}
+.tabla-default td, .tabla-default th {
+	border: 1px solid #D5D0D0;
+	padding-left: 5px;
+}
+
+.tabla-default tbody tr:hover {
+	background: #D8EBEF;
+}
+
+.tabla-default .no-activo{
+	color: red;
+}
+
+.zona-nav {
+	margin-bottom: 15px;
+	font-size: .8em;
+}
+
+
+.zona-form-dos, .zona-form {
+	width: 50%;
+	margin: 0 auto;
+	padding: 10px;
+/*	border: 1px solid #D6D6D7;
+	border-radius: 5px;*/
+	box-shadow: 2px 2px 2px #EFE8E8;	
+}
+.zona-form-dos {
+	width: 100%;
+}
+.zona-form .linea {
+	margin-bottom: 3px;
+}
+
+.zona-form .lbl {
+	font-size: .7em;
+	font-weight: bold;
+	font-style: italic;
+	color: #6E6E6F;
+}
+
+.zona-form .cdr_input {
+	padding-left: 20px;
+	font-size: .8em;
+}
+
+.zona-form .cdr_input input{
+	width: 100%;
+	padding-left: 10px;
+}
+.zona-form .cdr_input textarea{
+	width: 100%;
+	padding-left: 10px;
+}
+
+.zona-form a .btn-enviar {
+	background: royalblue;
+	border: none;
+	cursor: pointer;
+	padding: 5px;
+	color: white;
+	border-radius: 5px;
+	box-shadow: 2px 2px 2px #000;
+
+}
+
+.input-tabla {
+	border: none;
+	text-align: center;
+}
+
+.primera_fila_option {
+	background: #DBD3D3;
+}
+
+.form_app{
+	margin: 0 auto;
+	width: 75%;
+	border: 1px solid #D6D6D7;
+	border-radius: 5px;
+	box-shadow: 2px 2px 2px #EFE8E8;
+}
+
+.imagen_pro {
+	font-size: 1em;
+	font-weight: bolder;
+	color: red;
+}
+.div_img {
+	text-align: center;
+	border: 1px solid #E1DEDE;
+}
+.div_img a {
+	float: right;
+}
+
+.div_img img {
+	border: 1px solid #BEBABA;
+	padding: 2px;
+	max-height: 120px;
+}
+
+.carga_gif {
+	width: 80px;
+	float: right;
+}
+ .carga_up {
+	width: 40%;
+	margin:0 auto;
+}
+.ca {
+	text-align: center;
+	margin: 0;
+}
+
+.ui-dialog-titlebar, .ui-button-text {
+	display: none;
+}
+.form_foto, .ui-button-text  {
+	font-size: .7em;
+}
+.encabezado_dialog{
+	background: black;
+	font-size: 1em;
+	color: yellow;
+	font-style: bold;
+	height: 20px;
+	line-height: 20px;
+	margin-bottom: 10px;
+	box-shadow: 2px 2px 2px #000;
+}
+.cargar_foto {
+	margin-right: 20px;
+}
+.error_carga{
+	color: red;
+	font-weight: bold;
+}

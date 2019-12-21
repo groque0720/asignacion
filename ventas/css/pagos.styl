@@ -1,0 +1,193 @@
+@font-face {
+	font-family: 'iconos';
+	src:url('../fonts/icomoon.eot?-uck909');
+	src:url('../fonts/icomoon.eot?#iefix-uck909') format('embedded-opentype'),
+		url('../fonts/icomoon.woff?-uck909') format('woff'),
+		url('../fonts/icomoon.ttf?-uck909') format('truetype'),
+		url('../fonts/icomoon.svg?-uck909#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+body
+	
+	font-size .9em
+
+	header
+		color white
+		background #008080
+		box-shadow 0 5px 0 rgba(black, 0.1)
+		height 3em
+		position relative
+		text-align center
+		z-index 2
+	
+		h1 
+			font-size 1em	
+			margin 0
+			padding 1em
+
+	.ld
+		text-align left	
+	.li
+		text-align right
+				
+
+	nav
+		background white
+		border-left 15px solid red
+		display inline-block
+		font-size .7em
+		font-weight bold
+		height 1.3em
+		margin 0
+		padding 10px
+		position relative
+		overflow hidden
+		width 100%
+
+		&:before
+			content ""
+			border-top 20px solid transparent
+			border-bottom 20px solid transparent
+			border-left 7px solid red
+			position absolute
+			top 0
+			left 0
+
+		.menu
+			left 0
+			margin 0 0 0 1em
+			padding 0
+			position absolute
+			width 50%
+
+			li
+				display inline-block 
+				margin 0
+				margin-left 10px
+				text-align center
+				
+				img
+					width 15px
+					
+
+				a 
+					display inline-block
+					padding 0 0.2em
+					margin 0 0.5em
+					text-decoration none
+					color black
+					&:hover
+						color red
+
+		.busqueda
+			font-size 1em
+			margin 0px 10px 0 0
+			position absolute
+			right 0
+			width 40%
+
+			input
+				width 70%
+
+			a 
+				background #808080
+				border-radius .5em
+				color white	
+				padding 5px
+				text-decoration none
+
+	.tabla
+		margin 0 auto
+		width 99%
+		vertical-align center
+		.totales
+			background #FF8000
+			font-weight bold
+			padding 10px
+			&:hover
+				background #FF8000
+
+
+		table, .tabla_p
+			width 100%
+			font-size 0.65em
+			text-align center
+			
+			tr 
+				height 22px
+				border 1px solid black
+				vertical-align: center
+				
+			td 
+				border 1px solid black
+				overflow hidden
+
+				.admin
+					text-decoration none
+					&:before
+						font-family iconos
+						content "\e982"
+
+			thead
+				background #FF8000
+				color white
+				font-style italic
+
+			tbody
+				
+				tr
+					&:hover
+						background #DDFFDD
+					
+	
+	#form
+		font-size .9em
+		label
+			display inline-block 
+			width 200px
+			text-align left		
+
+@media print
+
+	body
+		font-size 0.85em
+
+		header
+			margin-bottom 5px
+
+	.control
+		display none
+
+
+	table
+		width 99%
+		margin-top 10px
+		color #000000
+
+		tr
+			td
+				color #000000
+
+				img
+					width 15px
+				&:last-child
+					display none
+
+		thead
+			tr
+				td
+					color #000000
+		tbody
+			tr
+				td
+					color #000000			
+		
+	.estados
+		display none									
+
+		
+
+					

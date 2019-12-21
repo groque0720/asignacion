@@ -1,0 +1,148 @@
+*{
+
+	font-size: 0.98em;
+
+}
+
+#agrupar {
+	width: 830px;
+	margin: 10px auto;
+	
+	
+}
+
+#seccion {
+	display: inline-block;
+}
+
+#encabezado {
+	overflow: hidden;
+	border-bottom: 1px solid #ccc;
+}
+
+#encabezado #imagen {
+	width: 220px;
+	float: left;
+}
+
+#encabezado #imagen img{
+	width: 200px;
+}
+
+#encabezado #titulo {
+	width: 450px;
+	float: left;
+	text-align: center;	
+	font-size: 1.1em;
+	font-weight: bold;
+	padding-top: 10px;
+	margin:0;
+	text-decoration: underline;
+}
+
+
+#encabezado #usuario {
+	width: 350px;
+	float: right;
+	text-align: right;	
+}
+
+#solicitud {
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	box-shadow: 5px 5px 10px #ccc;
+	padding: 10px;
+	background: #fff;
+	overflow: hidden;
+}
+
+fieldset {
+	padding: 5px;
+}
+
+
+#detalle {
+	text-align: center;
+	font-size: 1em;
+}
+
+#act_ajax {
+		font-size: 1em;
+	}
+
+#derecha, #izquierda {
+	width: 49%;
+	float: left;
+	margin: 0 2px;
+	border: 1px solid #ccc;
+}
+
+#detalle table {
+	width: 100%;
+}
+#detalle table tr{
+	height: 22px;
+	text-align: left;
+}
+
+#detalle table thead tr{
+	background: #ccc;
+}
+
+#lineauno, #lineados {
+	overflow: hidden;
+}
+
+#lineauno div { 
+	float: left;
+	margin: auto 3px;
+}
+
+#lineados div {
+	float: left;
+	margin: 0;
+}
+
+ .fila {
+ 		width: 100%;
+		float: left;
+		overflow: hidden;
+		margin: 1px 5px;
+}
+
+.fila div {
+		 float: left;
+		 margin: auto 3px;
+		 text-align: center;
+}
+
+#agregar_l {
+	width:30px;
+	height: 25px;
+	float:left;
+	cursor: pointer;
+	 margin-left: 20px;
+	 box-shadow: 2px 2px 1px #778899;
+	 border-radius: 5px;
+	 background: #f8f8ff;
+	 text-align: center;
+	 border: 1px solid #ccc;
+}
+
+#agregar_l:active {
+	width:30px;
+	height: 25px;
+	float:left;
+	cursor: pointer;
+	 margin-left: 20px;
+	 box-shadow: 2px 2px 1px #ccc inset;
+
+}
+
+table tbody tr:hover {
+	background: #E6EFFF;
+	}
+
+
+
+

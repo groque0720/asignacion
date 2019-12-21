@@ -1,0 +1,26 @@
+.app {
+	font-size: .8em;
+	line-height: 20px;
+/*	vertical-align: 50%;*/
+	background:linear-gradient(150deg, #4682B4 70%, #5EABEC 30%);
+/*	margin: 10px;*/
+	color: white;
+/*	font-weight: bold;*/
+	border-radius: 15%;
+	transition:  .2s;
+	border: 1px solid #797474;
+	cursor: pointer;
+	padding: 20px;
+
+}
+
+.app:hover{
+	box-shadow: 3px 3px 2px #6B6D72;
+	background:linear-gradient(150deg, #4F90C7 70%, #64B6FB 30%);
+	text-shadow: 2px 2px 1px #000;
+	font-weight: bold;
+}
+
+.caja-app{
+	margin-bottom: 20px;
+}

@@ -1,0 +1,183 @@
+
+*{
+	font-size: .97em;
+}
+
+h1{
+	font-size: 1.1em !important;
+}
+
+option.top{
+	background: royalblue;
+	color: white;
+}
+.titulo {
+	display: none;
+}
+.link-back{
+	display: none;
+}
+.nom_encuesta{
+	font-size: .7em;
+}
+.zona-tabla-50, .zona-tabla{
+	width: 100% !important;
+	margin:0 auto;
+	font-size: 1em;
+}
+.zona-tabla-75{
+	width: 100% !important;
+	margin:0 auto;
+	font-size: 1em;
+}
+.zona-tabla-70{
+	width: 100% !important;
+	margin:0 auto;
+	font-size: 1em;
+}
+.tabla-default {
+	border-collapse: collapse;
+	border: 1px solid #000;
+}
+.tabla-default thead {
+	background: #4682B4;
+	color: white;
+	text-align: center;
+}
+.tabla-default td, .tabla-default th {
+	border: 1px solid #D5D0D0;
+	padding-left: 5px;
+}
+.tabla-default tr:hover{
+	background:#CEF6F5;
+}
+
+.tabla-default .no_visible{
+	display: none;
+}
+/*.tabla-default tbody tr:hover {
+	background: #D8EBEF;
+}*/
+
+.tabla-default .no-activo{
+	color: red;
+}
+
+.zona-form {
+	width: 100%;
+	margin: 0 auto;
+	padding: 20px;
+}
+.zona-form-70 {
+	width: 100%;
+	margin: 0 auto;
+	padding: 10px;
+	font-size: .7em;
+	background: white;	
+}
+
+.web-1-3{
+	width: 33.33333%;
+}
+.web-50{
+	width: 50%;
+}
+
+.zona-form .linea {
+	margin-bottom: 3px;
+}
+
+.zona-form .lbl {
+	font-size: .9em;
+	font-weight: bold;
+	font-style: italic;
+	color: #6E6E6F;
+}
+
+.zona-form .cdr_input {
+	padding-left: 20px;
+	font-size: 1em;
+}
+
+.zona-form .cdr_input input{
+
+	padding-left: 10px;
+}
+
+.zona-form a .btn-enviar {
+	background: white;
+	border: none;
+	cursor: pointer;
+}
+.zona_pregunta {
+	font-size: .7em;
+}
+
+.btn_enviar_form{
+	background: white;
+	border: none;
+	cursor: pointer;
+	padding: 5px;
+	float: right;
+	color: royalblue;
+	font-weight: bold;
+	border: 1px solid royalblue;
+	border-radius: 5px;
+}
+
+.btn_enviar_form:hover{
+	color: red;
+	font-weight: bold;
+}
+.input-tabla {
+	border: none;
+	text-align: center;
+}
+.imp_check {
+	margin-left: 20px;
+	/*margin-top: 10px;*/
+}
+.textarea_tabla {
+	width: 100%;
+	font-size: 1em;
+	font-family: sans-serif;
+}
+.obs_preg{
+	color: red;
+	font-style: italic;
+}
+.input_tabla_resp{
+	width: 100%;
+}
+.pregunta_cues {
+	font-weight: bold;
+}
+
+.content_radio {
+	display: flex;
+}
+
+.item_radio {
+	/*margin-top: 10px;
+	margin-bottom: 10px;*/
+	flex:auto;
+}
+
+.req_obs {
+	color: red;
+	font-size: 1.2em;
+}
+
+.no_req_obs {
+	color: #CFD5CF;
+	font-size: 1.2em;
+}
+
+.opcion {
+	margin-left: 15px;
+}
+
+.pie{
+	display: none;
+}
+

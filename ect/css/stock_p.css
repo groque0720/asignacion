@@ -1,0 +1,60 @@
+*{
+	font-size: 7px !important;
+}
+.zona-contenido {
+	padding-top: 5px;
+}
+
+.zona-cabecera{
+	display: none;
+}
+
+.menu-icon, .zona-usuario, .menu-pmi {
+	display: none;
+}
+
+.menu-lateral{
+margin-left: -500px;
+}
+
+.zona-menu-secundario {
+	display: none
+}
+
+.zona-contenido, .contenido-principal { 
+width: 99%;
+font-size: 5px;
+}
+
+#grafico_ventas_acumuladas{
+	height: 50px;
+}
+
+table td {
+	/*border: 1px solid #D6D4D4;*/
+	border: .2px solid #000;
+	font-size: 11px;
+	cursor: pointer;
+	padding-top: .3px;
+	padding-bottom: .3px;
+}
+
+table thead {
+	color: #000;
+}
+
+.titulo-central, .nom-usu {
+	font-size: 15px !important;
+	font-weight: bolder !important;
+}
+
+.titulo-central {
+	margin-top: 10px !important;
+}
+
+
+.mes-pmi {
+	font-size: 12px !important;
+	font-weight: bolder !important;
+}
+

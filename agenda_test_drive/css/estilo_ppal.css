@@ -1,0 +1,291 @@
+*{
+	font-family: sans-serif;
+	font-size: 13px;
+}
+body{
+/*	position: fixed;*/
+/*	width: 100vw;
+	height: 100vh;*/
+	/*background: #F3F0F0;*/
+}
+.mod{
+	/*margin-top:px;*/
+}
+.zona-cabecera {
+	height: 50px;
+	padding: 10px;
+	border-bottom: 1px solid rgba(51,51,51, 0.5);
+	box-shadow: 0 2px 10px -2px rgba(51,51,51, 0.5);
+	min-width: 500px;
+	background: white;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+}
+.cabecera {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+.cabecera-izquierda, .cabecera-derecha {
+	height: 30px;
+	display: flex;
+}
+.zona-menu-secundario {
+	width: 100%;
+	height: 83px;
+	border-bottom: 1px solid rgba(51,51,51, 0.5);
+	box-shadow: 0 2px 10px -2px rgba(51,51,51, 0.5);
+	min-width: 500px;
+	position: fixed;
+	background: white;
+	top: 0;
+}
+.menu-secundario {
+	line-height:30px;
+	width: 80%;
+	float: right;
+	margin-right: 1%;
+	display: flex;
+	transition: .5s;
+	white-space:nowrap;
+	margin-top: 50px;
+}
+.menu-secundario menu ul li{
+	list-style: none;
+}
+.menu-icon{
+	line-height: 30px;
+	margin: 0 10px;
+}
+.icon-menu{
+	cursor: pointer;
+}
+#icono-menu{
+	display: none;
+}
+.zona-logo-ppal{
+	margin: 0 10px;
+}
+.logo-ppal {
+	max-height: 30px;
+}
+.zona-usuario{
+	display: flex;
+	margin: 0 30px;
+	line-height: 30px;
+}
+.nombre-usuario{
+	margin: 0 30px;
+}
+.alertas-generales{
+	width: 40px;
+	display: flex;
+}
+.cantidad_alerta{
+	margin: 0 5px;
+	line-height: 30px;
+}
+.img-toyota{
+	max-height: 30px;
+}
+
+
+.cuerpo_agenda{
+	display: flex;
+	margin: 100px auto;
+	justify-content: space-between;
+	min-width: 950px;
+}
+.contenido-ppal {
+	/*display: flex;*/
+	margin: 100px auto;
+	justify-content: space-between;
+	min-width: 950px;
+}
+.titulo-sucursales{
+	padding: 10px;
+	font-weight: bold;
+}
+.sucursal {
+	display: flex;
+	float: left;
+	padding: 10px;
+	border: 3px solid #999898;
+	margin: 5px 0px 5px 8px;
+	cursor: pointer;
+	background: white;
+}
+.sucursal:hover{
+	background: #1BF8FB;
+}
+
+.sucursal-activo {
+	border: 3px solid red;
+	box-shadow: 0 0 10px red;
+	color: red;
+}
+.nombre-sucursal {
+	margin: 0 auto;
+}
+.zona-calendario{
+	margin-top: 120px;
+}
+.zona-titulo-mes, .zona_titulo_informe{
+	width: 97%;
+	display: flex;
+	padding: 5px;
+	margin: 0 auto;
+	justify-content: space-between;
+	background: #B3C2C2;
+	font-weight: bold;
+}
+
+.zona_titulo_informe{
+	margin-bottom: 10px;
+}
+
+.fecha-mes{
+	cursor: pointer;
+
+}
+
+.fecha-mes:hover{
+	font-weight: bold;
+	color: red;
+}
+
+table{
+	width: 96%;
+	border-collapse: collapse;
+	margin:0 auto;
+	background: white;
+	padding: 3px;
+	border: 3px solid #999898;
+}
+table thead {
+	background: #B3C2C2;
+	/*color: white;*/
+	font-weight: bold;
+	text-align: center;
+}
+
+table td {
+	border: 1px solid #D6D4D4;
+	padding: 3px;
+}
+
+table .celda-activa  {
+	background: #F03E21;
+	font-weight: bold;
+	color: white;
+}
+
+table tbody tr:hover {
+	background: #C5F9FA;
+}
+
+.agendar{
+	cursor: pointer;
+}
+.zona-modelos{
+	width: 15%;
+}
+.modelo{
+	margin: 10px;
+	padding: 10px 0;
+	border-radius: 50%;
+	background: white;
+	text-align: center;
+	cursor: pointer;
+	border: 3px solid #999898;
+}
+
+.modelo:hover{
+	background: #38E4F8
+}
+.modelo-activo {
+	border: 3px solid red;
+	box-shadow: 0 0 10px red;
+}
+
+.imagen-modelo {
+	width: 100px;
+}
+
+.zona-agenda{
+	width:50%;
+}
+
+.lienzo-form-agendar{
+	width: 100vw;
+	height: 100vh;
+	background: rgba(51,51,51, 0.5);
+	z-index: 999;
+	position: fixed;
+	display: flex;
+	top:0;
+}
+
+.zona-formulario{
+	margin: auto;
+	margin-top: 100px;
+	min-width: 400px;
+	background: white;
+	/*min-height: 300px;*/
+	border-radius: 5px;
+	padding: 10px;
+
+}
+.form-agendar{
+	border: 1px solid rgba(51,51,51, 0.5);
+	padding: 5px;
+	border-radius: 5px;
+}
+.zona-titulo-agendar{
+	display: flex;
+}
+.flex {
+	display: flex;
+}
+
+.justificar-flex{
+	justify-content: space-between;
+} 
+
+.linea-form{
+	margin-top: 10px;
+}
+.linea-form input, .linea-form select{
+	padding: 5px;
+}
+
+.linea-form .cancelar{
+	background: #D94747;
+	border-radius: 5px;
+	color: white;
+	padding: 7px 20px;
+	border: 1px solid #D94747;
+	cursor: pointer;
+}
+.linea-form .aceptar{
+	background:green;
+	border-radius: 5px;
+	color: white;
+	padding: 7px 20px;
+	border: 1px solid green;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.fila-ok {
+	background: #DBFCD5;
+	color: green;
+	/*font-weight: bold;*/
+}
+
+.fila-no-ok{
+	background: #F9D4D4;
+	color: red;
+/*	font-weight: bold;*/
+}

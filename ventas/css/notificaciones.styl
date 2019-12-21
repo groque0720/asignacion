@@ -1,0 +1,312 @@
+@font-face 
+	font-family: 'iconitos';
+	src:url('../fonts/icomoon.eot?-1kxbcu');
+	src:url('../fonts/icomoon.eot?#iefix-1kxbcu') format('embedded-opentype'),
+		url('../fonts/icomoon.woff?-1kxbcu') format('woff'),
+		url('../fonts/icomoon.ttf?-1kxbcu') format('truetype'),
+		url('../fonts/icomoon.svg?-1kxbcu#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+
+
+// .icon-pencil:before {
+// 	content: "\e905"; 
+// }
+
+// .icon-library:before {
+// 	content: "\e921"; // Credito
+// }
+
+// .icon-coin-dollar:before {
+// 	content: "\e93b";
+// }
+
+// .icon-spinner9:before {
+// 	content: "\e982";
+// }
+
+// .icon-list-numbered:before {
+// 	content: "\e9b9";
+// }
+
+// .icon-eye:before {
+// 	content: "\e9ce";
+// }
+
+// .icon-eye-blocked:before {
+// 	content: "\e9d1";
+// }
+
+// .icon-cross:before {
+// 	content: "\ea0f";
+// }
+
+// .icon-checkmark:before {
+// 	content: "\ea10";
+// }
+
+// .icon-backward2:before {
+// 	content: "\ea1f";
+// }
+
+// .icon-forward3:before {
+// 	content: "\ea20";
+// }
+
+// .icon-search:before {
+// 	content: "\e600";
+// }
+
+// .icon-banknote:before {
+// 	content: "\e601";
+// }
+
+body	
+	background white
+	
+	.agrupar
+		width 80%
+		margin 10px auto
+		
+		.titulo
+			height 40px
+			border-radius 10px
+			padding 3px
+			background #000
+			box-shadow 2px 2px 3px #C0C0C0
+			
+			.bus_cab, .noti_iconos, .logo_dyv
+				float left
+				height 25px
+				display inline-block
+				padding 2px 2px 0 2px
+						
+			.bus_cab
+				display none
+				margin 6px
+				background white
+				border-radius 5px
+								
+				input 
+					margin-top 2px
+					border none
+					padding 0px 10px
+					font-size 102%
+					
+					&:focus
+						outline 0
+					
+				.box_btn_bus
+					
+					float right
+					margin 4px 
+
+
+					a	
+						text-decoration none
+						color #A9AB9A
+										
+						&:after
+							
+							font-family "iconitos"
+							content "\e600"
+			.estado
+				color white
+				
+			.noti_iconos
+				float right	
+				height 30px
+				margin 3px
+				
+				
+				.noti
+					display inline-block
+					height 20px
+					margin-right 7px
+					position relative
+					width 25px
+					&:hover
+						cursor pointer
+
+					.box_imagen
+						position absolute
+						top 2px
+						
+						img 
+							width 120%
+							// opacity .5
+
+					.cantidad
+						right -5px
+						bottom -10px
+						text-shadow 1px 1px 4px #000000
+						border-radius 50%
+						color #FFFFFF
+						font-size 100%
+						font-weight bold
+						padding 1px
+						position absolute
+						z-index 1
+								
+			.logo_dyv
+				margin 3px
+				padding-top 3px
+				border-radius 45%
+								
+				.box_imagen_logo
+					margin-top -4px
+					
+					img
+						width 35px
+																	
+		.zona_tabla
+			border 1px solid #767968
+			border-radius 5px
+			box-shadow 2px 2px 5px #767968
+			margin 10px	5px	
+			padding 5px	
+
+			.leyenda
+				border-bottom 1px solid #000
+				font-size 1.3em
+				text-align center
+				color red
+				padding-bottom 3px
+				
+				.bienvenida
+					height 30px
+					text-align right
+					font-size 1.3em
+					color red
+					img
+						width 25px
+						margin-left 5px		 		
+
+			
+			.barra_btns
+				margin 2px
+				overflow hidden
+				padding-bottom 10px
+				padding-top 10px
+				
+				.flecha
+					margin 0 30px 0 10px
+					position relative
+					width 40px
+										
+					img
+						position absolute
+						top -2px
+				.indice
+					padding 0 3px 0 3px
+					text-decoration none
+					border 1px solid #272822
+																		
+				.pag_sel
+					padding 0 3px 0 3px
+					background #A3A596
+					text-align center
+					text-decoration none
+					color white
+					border 1px solid #272822
+			
+
+
+				
+			.tabla				
+				margin-top 10px
+				table
+					font-size 85%
+					text-align center
+					
+					.idnoticia
+						display none
+
+					thead
+						background  #A3A596
+						color white	
+						
+					tbody
+						
+						.negrita // muestra en negrita las notificaciones no leidas.
+							font-weight bold
+							color red
+							
+
+						tr
+							&:hover
+								background #BCBCBC
+								color white				
+							
+							td 
+								a 
+									margin-right 4px
+								#ir 
+									text-decoration none
+									color #0080FF
+									&:after
+										font-family iconitos
+										content "\e905"
+										
+								#ir_factura
+									text-decoration none
+									color #808000
+									&:after
+										font-family iconitos
+										content "\ea20"
+										
+								#ir_credito
+									text-decoration none
+									color #808000
+									&:after
+										font-family iconitos
+										content "\e921"
+										
+								#ir_pago
+									text-decoration none
+									color #808000
+									&:after
+										font-family iconitos
+										content "\e93b"		
+											
+										
+								.novisto 
+									text-decoration none
+									color red
+									&:after
+										font-family iconitos
+										content "\e9d1"
+										
+								.visto 
+									text-decoration none
+									color green
+									&:after
+										font-family iconitos
+										content "\e9ce" 
+										
+								#borrar
+									text-decoration none
+									color #FF8000
+									&:after
+										font-family iconitos
+										content "\e602"
+								
+								#seguimiento
+									text-decoration none
+									color #0000FF
+									&:after
+										font-family iconitos
+										content "\e985"													
+					
+	#img_carga
+		position absolute
+		top 20px
+		left 20px
+		display inline
+		
+
+		
+					
+
+
+				

@@ -1,0 +1,28 @@
+/*body{
+	background: url("../imagenes/background.jpg") no-repeat center center fixed;
+	background-size: cover;
+}*/
+.cuadro_login{
+	border: 1px solid #000;
+	margin: 40px auto;
+	padding: 15px;
+	padding-bottom: 10px;
+}
+
+.cuadro_login input{
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.btn_enviar {
+	padding: 5px;
+	background: royalblue;
+	color: white;
+	font-weight: bold;
+}
+
+.invalido {
+	color: red;
+	font-size: .8em;
+	font-weight: bold;
+}	

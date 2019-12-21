@@ -1,0 +1,50 @@
+#menu-flotante {
+	position: fixed;
+	width: 70px;
+	top:auto;
+	left: auto;
+	bottom: 0;
+	right: 0;
+	text-align: center;
+}
+
+.menu-pie {
+	text-align: center;
+}
+
+
+.menu-pie ul li {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	display: flex;
+	width: 100%;
+	text-align: center;
+}
+.menu-pie ul li a {
+	width: 100%;
+}
+
+.menu-pie ul li a i{
+	margin: auto;
+	color: white;
+	width: 40px;
+	height: 40px;
+	background: blue;
+	border-radius: 50%;
+	line-height: 36px;
+	cursor: pointer;
+	box-shadow: 2px 2px 2px #9F9E9E;
+	border: 2px solid #FFFFFF;
+}
+
+
+.menu-pie ul .i-padre{
+	width: 60px;
+	height: 60px;
+	margin: auto;
+	line-height: 56px;
+}
+
+.menu-pie ul .item-hijo-oculto {
+	display: none;
+}

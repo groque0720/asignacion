@@ -1,0 +1,133 @@
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+a {
+	text-decoration: none;
+}
+.cuadro {
+	border: 1px solid #000;
+}
+
+.derecha-contenido {
+	float: right;
+}
+/*Formato Texto*/
+.centrar-texto {
+	text-align: center;
+}
+.derecha-texto {
+	text-align: right;
+}
+
+/*ANCHOS DE DIV*/
+
+.ancho-5 {
+	width: 5%;
+}
+.ancho-10 {
+	width: 10%;
+}
+.ancho-15 {
+	width: 15%;
+}
+.ancho-20 {
+	width: 20%;
+}
+.ancho-25 {
+	width: 25%;
+}
+.ancho-30 {
+	width: 30%;
+}
+.ancho-35 {
+	width: 35%;
+}
+.ancho-40 {
+	width: 40%;
+}
+.ancho-45 {
+	width: 45%;
+}
+.ancho-50 {
+	width: 50%;
+}
+.ancho-55 {
+	width: 55%;
+}
+.ancho-60 {
+	width: 60%;
+}
+.ancho-65 {
+	width: 65%;
+}
+.ancho-70 {
+	width: 70%;
+}
+.ancho-75 {
+	width: 75%;
+}
+.ancho-80 {
+	width: 80%;
+}
+.ancho-85 {
+	width: 85%;
+}
+.ancho-90 {
+	width: 90%;
+}
+.ancho-95 {
+	width: 95%;
+}
+.ancho-100 {
+	width: 100%;
+}
+
+.ancho-1-6 {
+	width: 16.66666%;
+}
+.ancho-2-6 {
+	width: 33.33333%;
+}
+.ancho-3-6 {
+	width: 50%;
+}
+.ancho-4-6 {
+	width: 66.66666%;
+}
+.ancho-5-6 {
+	width: 83.33333%;
+}
+.ancho-6-6 {
+	width: 100%;
+}
+
+.fz-15{
+	font-size: 15px;
+	margin-top: 5px;
+}
+.fz-16{
+	font-size: 16px;
+}
+.fz-17{
+	font-size: 17px;
+}
+.fz-18{
+	font-size: 18px;
+	margin-top: 10px;
+	padding: 10px;
+}
+.fz-19{
+	font-size: 19px;
+}
+.fz-20{
+	font-size: 25px;
+}
+.fz-21{
+	font-size: 21px;
+}
+
+.padding-5 {
+	padding: 5px;
+}

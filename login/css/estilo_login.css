@@ -1,0 +1,223 @@
+body{
+	background-color:black;
+	margin:0
+}
+
+.slider{
+	position: absolute;
+	width: 100%
+}
+
+.lienzo_medio {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background:  black;
+	z-index: 99;
+	opacity: .5;
+}
+
+
+.formulario {
+	font-family:sans-serif;
+	margin: 5% auto;
+	width: 100%;
+	position: absolute;
+	z-index: 100;
+	text-align: center;
+	
+}
+
+@media all and (max-width:760px) {
+	.formulario {
+		margin: 5% auto;
+	}
+}
+
+.cuadro_form {
+	background:rgba(0, 0, 0, 0.5);	
+	width: 400px;
+	margin: 0px auto;
+
+
+}
+
+.logo_world {
+	background: none !important;
+}
+
+.logo_world img{
+	width: 250px;
+}
+.derechos{
+	color: white;
+	background: none !important;
+	font-size: 13px;
+}
+
+@media all and (max-width:760px) {
+	.cuadro_form {
+		width: 90%;
+	}
+}
+
+h1{
+	color: #45B6AF;
+	font-weight: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400 !important;
+	font-size: 28px;
+}
+
+h2 {
+	font-size: 15px;
+	font-weight: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400 !important;
+	color: #4A4949
+}
+
+@media all and (max-width:760px) {
+	h1 {
+		font-size: 28px;
+	}
+	h2 {
+		font-size: 14px;
+	}
+}
+
+.cuadro{
+padding: 10px 20px 20px 20px;
+overflow: hidden;
+}
+
+.cuadro .logo {
+	padding: 10px;
+	border-bottom: 1px solid #DDE2E8;
+}
+
+.cuadro_form .logo img {
+	width: 100%;
+}
+
+@media all and (max-width:760px) {
+	.cuadro_form .logo img {
+		width: 100%;
+	}
+}
+
+.renglon {
+	margin-bottom: 10px;
+	text-align: left;
+	background: #DDE3EC;
+	overflow: hidden;
+}
+.renglon:focus{
+	border: 1px solid #000;
+}
+
+.renglon .zona_input{
+	width: 90%;
+	float: left;
+}
+
+.renglon .zona_input input{
+	background: #DDE3EC;
+	width: 96%;
+	padding-right: 10%;
+	padding-left: 5%;
+	height: 40px;
+	font-size: 1em;
+	border: none;
+}
+
+.renglon .zona_logo {
+	width: 8%;
+	float: left;
+	text-align: center;
+}
+
+.renglon .zona_logo img {
+	margin-top: 12px;
+}
+
+.zona_boton_envio {
+	width: 50%;
+	float: left;
+}
+
+.renglon_dos{
+	line-height: 40px;
+}
+.renglon_dos .zona_boton_envio{
+	text-align: left;
+}
+.renglon_dos .zona_boton_envio .btn_entrar{
+	text-align: center;
+	line-height: 40px;
+	background: #6699CC;
+	color: white;
+	border: none;
+	font-size: 14px;
+	font-family: sans-serif;
+	padding: 0 20px 0 20px;
+	font-weight: bolder;
+	cursor: pointer;
+}
+
+.zona_olvido {
+	width: 50%;
+	color: rgb(237, 109, 119);
+	text-align: right;
+	font-size: 14px;
+	float: left;
+}
+#olvido_pass{
+cursor: pointer;
+}
+
+.ly_se_olvido {
+	margin-bottom: 20px;
+}
+
+.zona_volver_atras{
+	width: 50%;
+	text-align: left;
+	float: left;
+}
+
+.zona_volver_atras .btn_volver {
+	line-height: 40px;
+	padding: 0 20px 0 20px;
+	cursor: pointer;
+	background: white;
+	outline: 0;
+	border: none;
+}
+
+.zona_volver_atras .btn_volver:hover{
+	color: #45B6AF;
+}
+
+.zona_restablecer{
+	width: 50%;
+	text-align: right;
+	float: right;
+}
+.zona_restablecer .btn_entrar{
+	text-align: center;
+	line-height: 40px;
+	background: #6699CC;
+	color: white;
+	border: none;
+	font-size: 14px;
+	font-family: sans-serif;
+	padding: 0 20px 0 20px;
+	font-weight: bolder;
+	cursor: pointer;
+}
+.mensaje_ajax{
+	visibility: hidden;
+}

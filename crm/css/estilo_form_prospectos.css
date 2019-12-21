@@ -1,0 +1,88 @@
+.formulario-prospecto	{
+	width: 1000px;
+	min-height: 200px;
+	/*height: 500px;*/
+	background: white;
+	margin: auto;
+	padding: 10px;
+	font-size: 8px;
+	border: 2px solid #878787;
+	border-radius: 7px;
+}
+
+
+.unidad-inputs label {
+	font-size: 12px;
+	font-family: sans-serif;
+}
+
+.form-inputs{
+	padding: 4px;
+	border-radius: 3px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	font-size: 12px;
+}
+
+.input-fecha {
+	font-size: 12px;
+	text-align: center;
+	border-radius: 3px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	padding: 2px;
+}
+
+.lado-70 {
+	width: 69.5%;
+	padding: 5px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	border-radius: 3px;
+}
+.lado-65 {
+	width: 64.5%;
+	padding: 5px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	border-radius: 3px;
+}
+.lado-60 {
+	width: 59.5%;
+	padding: 5px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	border-radius: 3px;
+}
+.lado-55 {
+	width: 54.5%;
+	padding: 5px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	border-radius: 3px;
+}
+.lado-50 {
+	width: 49.5%;
+	padding: 5px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	border-radius: 3px;
+}
+.lado-45 {
+	width: 44.5%;
+	padding: 5px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	border-radius: 3px;
+}
+.lado-40 {
+	width: 39.5%;
+	padding: 5px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	border-radius: 3px;
+}
+.lado-35 {
+	width: 34.5%;
+	padding: 5px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	border-radius: 3px;
+}
+
+.lado-30 {
+	width: 29.5%;
+	padding: 5px;
+	border: 1px solid rgba(51,51,51, 0.5);
+	border-radius: 3px;
+}

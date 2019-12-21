@@ -1,0 +1,165 @@
+*{
+	font-size: 0.97em;
+}
+
+#agrupar {
+	width: 800px;
+	margin: 5px auto;
+	}
+
+#encabezado {
+	overflow: hidden;
+	border-bottom: 1px solid #ccc;
+}
+
+#encabezado #imagen {
+	width: 180px;
+	float: left;
+}
+
+#encabezado #imagen img{
+	width: 100px;
+}
+
+#encabezado #titulo {
+	width: 400px;
+	float: left;
+	text-align: right;	
+	font-size: 1em;
+	font-weight: bold;
+	padding-top: 10px;
+	margin:0;
+	text-decoration: underline;
+}
+
+
+#encabezado #usuario {
+display: none;
+}
+
+#menu{
+
+	display: none;
+}
+
+
+#solicitud {
+	padding: 5px;
+	background: #fff;
+	overflow: hidden;
+}
+
+fieldset {
+	padding: 5px;
+}
+
+#ingreso_codigo {
+	display: none;
+}
+
+#detalle {
+	text-align: center;
+	font-size: 1em;
+}
+
+#act_ajax {
+		font-size: 1em;
+	}
+
+#derecha, #izquierda {
+	width: 49%;
+	float: left;
+	margin: 0 2px;
+	border: 1px solid #ccc;
+}
+
+#detalle table {
+	width: 100%;
+}
+#detalle table tr{
+	height: 22px;
+	text-align: left;
+}
+
+#detalle table thead tr{
+	background: #ccc;
+}
+table tr td:last-child
+{
+	display: none;
+}
+
+#lineauno, #lineados {
+	overflow: hidden;
+}
+
+#lineauno div { 
+	float: left;
+	margin: auto 3px;
+}
+
+#lineados div {
+	float: left;
+	margin: 0;
+}
+
+ .fila {
+ 		width: 100%;
+		float: left;
+		overflow: hidden;
+		margin: 1px 5px;
+}
+
+.fila div {
+		 float: left;
+		 margin: auto 3px;
+		 text-align: center;
+}
+
+#agregar_l {
+	width:30px;
+	height: 25px;
+	float:left;
+	cursor: pointer;
+	 margin-left: 20px;
+	 box-shadow: 2px 2px 1px #778899;
+	 border-radius: 5px;
+	 background: #f8f8ff;
+	 text-align: center;
+	 border: 1px solid #ccc;
+}
+
+#agregar_l:active {
+	width:30px;
+	height: 25px;
+	float:left;
+	cursor: pointer;
+	 margin-left: 20px;
+	 box-shadow: 2px 2px 1px #ccc inset;
+
+}
+
+table tbody tr:hover {
+	background: #E6EFFF;
+	}
+
+#btn_gdr {
+	display: none;
+}
+
+#volver {
+	display: none;
+}
+
+.no_imp{
+	display: none;
+}
+
+.buscli{
+	display: none;
+}
+
+.text_cli{
+	float: left;
+	text-align: left;
+}

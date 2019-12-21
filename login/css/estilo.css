@@ -1,0 +1,246 @@
+body {
+	margin: 0;
+	padding: 0;
+	background: black;
+}
+
+.slider {
+width: 100vw;	
+height: 100vh;
+overflow: hidden;
+position: absolute;;
+}
+.slider ul{
+	display: flex;
+	padding: 0;
+	width: 300%;
+	margin: 0;
+	overflow: hidden;
+	-webkit-animation: derecha 10s infinite alternate linear;
+	-o-animation: derecha 10s infinite alternate linear;
+	animation: derecha 10s infinite alternate linear;
+}
+.slider li {
+	padding: 0;
+	list-style: none;
+}
+.slider img {
+width: 100vw;	
+height: 100vh;
+}
+
+@keyframes derecha{
+
+	0% {margin-left: 0;}
+	35% {margin-left: 0;}
+
+	40% {margin-left: -100%;}
+	70% {margin-left: -100%;}
+
+	75% {margin-left: -200%;}
+	100% {margin-left: -200%;}
+}
+
+.lienzo {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0, 0.5);
+}
+
+.formulario {
+	font-family:sans-serif;
+	margin: 5% auto;
+	width: 100%;
+	position: absolute;
+	z-index: 100;
+	text-align: center;
+	
+}
+
+@media all and (max-width:760px) {
+	.formulario {
+		margin: 5% auto;
+	}
+}
+
+.cuadro_form {
+	background:rgba(0, 0, 0, 0.6);	
+	width: 400px;
+	margin: 0px auto;
+
+
+}
+
+.logo_world {
+	background: none !important;
+}
+
+.logo_world img{
+	width: 250px;
+}
+.derechos{
+	color: white;
+	background: none !important;
+	font-size: 13px;
+}
+
+@media all and (max-width:760px) {
+	.cuadro_form {
+		width: 90%;
+	}
+}
+
+h1{
+	color: #45B6AF;
+	font-weight: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400 !important;
+	font-size: 28px;
+}
+
+h2 {
+	font-size: 15px;
+	font-weight: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400 !important;
+	color: #4A4949
+}
+
+@media all and (max-width:760px) {
+	h1 {
+		font-size: 28px;
+	}
+	h2 {
+		font-size: 14px;
+	}
+}
+
+.cuadro{
+padding: 10px 20px 20px 20px;
+overflow: hidden;
+}
+
+.cuadro .logo {
+	padding: 10px;
+	border-bottom: 1px solid #DDE2E8;
+}
+
+.cuadro_form .logo img {
+	width: 100%;
+}
+
+@media all and (max-width:760px) {
+	.cuadro_form .logo img {
+		width: 90%;
+	}
+}
+
+.renglon {
+	margin-bottom: 10px;
+	text-align: left;
+	background: #DDE3EC;
+	overflow: hidden;
+}
+.renglon:focus{
+	border: 1px solid #000;
+}
+
+.renglon .zona_input{
+	width: 90%;
+	float: left;
+}
+
+.renglon .zona_input input{
+	background: #DDE3EC;
+	width: 96%;
+	padding-right: 10%;
+	padding-left: 5%;
+	height: 40px;
+	font-size: 1em;
+	border: none;
+}
+
+.renglon .zona_logo {
+	width: 8%;
+	float: left;
+	text-align: center;
+}
+
+.renglon .zona_logo img {
+	margin-top: 12px;
+}
+
+.zona_boton_envio {
+	width: 100%;
+	float: left;
+}
+
+.renglon_dos, .renglon_tres{
+	line-height: 40px;
+	width: 100%;
+}
+.renglon_dos .zona_boton_envio{
+	text-align: left;
+}
+.renglon_dos .zona_boton_envio .btn_entrar{
+	text-align: center;
+	line-height: 40px;
+	background: #6699CC;
+	color: white;
+	border: none;
+	font-size: 14px;
+	font-family: sans-serif;
+	padding: 0 20px 0 20px;
+	font-weight: bolder;
+	cursor: pointer;
+}
+
+.btn_entrar {
+	width: 50%;
+	float: right;
+}
+
+.zona_olvido {
+	width: 100%;
+	color: rgb(237, 109, 119);
+	text-align: right;
+	font-size: 14px;
+	
+}
+
+@media all and (max-width:760px) {
+	.zona_olvido {
+		color: rgb(237, 109, 119);
+		text-align: right;
+		font-size: 14px;
+		float: left;
+	}
+}
+
+#olvido_pass{
+cursor: pointer;
+font-family: "Roboto Condensed",sans-serif;
+
+}
+
+.ly_se_olvido {
+	margin-bottom: 20px;
+	color: #D5D3D3;
+
+}
+
+.texto-verde {
+	color: #7692B9;
+	display: block;
+	cursor: pointer;
+	float: left;
+	font-family: "Roboto Condensed",sans-serif;
+	border-bottom: 1px solid #7692B9;
+
+}
+.derechos {
+	font-family: "Roboto Condensed",sans-serif;
+}

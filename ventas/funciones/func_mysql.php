@@ -1,0 +1,32 @@
+<?php
+	include("../config/config_mysql.php");
+
+	date_default_timezone_set("America/Argentina/Buenos_Aires");
+
+	function conectar() {
+		global $con;
+		$con = mysqli_connect(HOST,USER,PASS) or die("ERROR EN CONEXION:".mysqli_error());
+		$base_datos=mysqli_select_db($con, DB) or die("ERROR AL SELECCIONAR LA BASE DE DATOS:".mysqli_error());
+		mysqli_query($con, "SET NAMES 'utf8'");
+		return $con;
+	};
+
+	// function conectar2() {
+	// 	global $con2;
+	// 	$con2 = mysqli_connect(HOST,USER,PASS) or die("ERROR EN CONEXION:".mysqli_error());
+	// 	$base_datos=mysqli_select_db($con2, DB) or die("ERROR AL SELECCIONAR LA BASE DE DATOS:".mysqli_error());
+	// 	mysqli_query($con2, "SET NAMES 'utf8'");
+	// 	return $con2;
+	// };
+
+	function cambiarFormatoFecha($fecha){
+    list($anio,$mes,$dia)=explode("-",$fecha);
+    return $dia."-".$mes."-".$anio;
+	};
+
+	function cambiarFormatohora($hora){
+    list($horas,$minutos,$segundos)=explode(":",$hora);
+    return $horas.":".$minutos;
+	};
+
+?>

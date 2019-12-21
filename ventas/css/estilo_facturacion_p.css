@@ -1,0 +1,160 @@
+*{
+	font-size: 0.98em;
+}
+
+#agrupar {
+	width: 800px;
+	margin: 10px auto;
+	
+}
+#cabecera {
+	display: none;
+}
+#encabezado {
+	overflow: hidden;
+	border-bottom: 1px solid #ccc;
+}
+
+#encabezado #imagen {
+	width: 350px;
+	float: left;
+}
+
+#encabezado #imagen img{
+	width: 200px;
+}
+
+#encabezado #titulo {
+	width: 450px;
+	float: right;
+	text-align: center;	
+	font-size: 1.2em;
+	font-weight: bold;
+	padding-top: 16px;
+	margin:0;
+	text-decoration: underline;
+}
+
+
+
+#menu{
+
+	display: none;
+}
+
+#solicitud {
+	
+	background: #fff;
+	overflow: hidden;
+}
+
+fieldset {
+	padding: 5px;
+}
+
+
+#opcion {
+	display: none;
+}
+
+#ingreso_codigo {
+	display: none;
+}
+
+#detalle {
+	text-align: center;
+}
+
+#derecha, #izquierda {
+	width: 49%;
+	float: left;
+	margin: 0 2px;
+	border: 1px solid #ccc;
+}
+
+#act_ajax table {
+	width: 100%;
+	
+}
+
+#act_ajax table thead {
+	background: #ccc;
+}
+
+#act_ajax table tr{
+	height: 23px;
+}
+#act_ajax table tr td:last-child{
+	display: hidden;
+	height: 23px;
+}
+
+table tr td:last-child
+{
+	display: none;
+}
+
+#lineauno, #lineados {
+	overflow: hidden;
+}
+
+
+#lineauno div { 
+	float: left;
+	margin: auto 3px;
+}
+
+#lineados div {
+	float: left;
+	margin: 0;
+}
+
+ .fila {
+ 		width: 100%;
+		float: left;
+		overflow: hidden;
+		margin: 1px 5px;
+}
+
+.fila div {
+		 float: left;
+		 margin: auto 3px;
+		 text-align: center;
+}
+#btn_gdr {
+	display: none;
+}
+
+.fila label {
+	font-weight: bold;
+	font-style: italic;
+}
+.fila input, .fila select {
+	border: none;
+	border-bottom: 1px dotted #000;
+}
+
+#unidad label {
+	font-weight: bold;
+	font-style: italic;
+}
+#unidad input, #unidad select  {
+	border: none;
+	border-bottom: 1px dotted #000;
+}
+
+#cabeceras label {
+font-weight: bold;
+	font-style: italic;
+}
+
+#cabeceras input, #cabeceras select  {
+	border: none;
+	border-bottom: 1px dotted #000;
+}
+	
+
+#volver {
+	display: none;
+}
+
