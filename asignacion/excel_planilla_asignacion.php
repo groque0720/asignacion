@@ -1,20 +1,19 @@
 ﻿<?php
 
- 
+
   include_once("funciones/func_mysql.php");
   conectar();
   mysqli_query($con,"SET NAMES 'utf8'");
 
-
   $SQL="SELECT * FROM view_asignaciones";
   $unidades = mysqli_query($con, $SQL);
 
- $registros = mysqli_num_rows ($unidades);
- 
+ $registros = mysqli_num_rows($unidades);
+
  if ($registros > 0) {
    require_once 'Classes/PHPExcel.php';
    $objPHPExcel = new PHPExcel();
-   
+
    //Informacion del excel
    $objPHPExcel->
     getProperties()
@@ -88,7 +87,7 @@
       }
 
 				$dias = '';
-			
+
 
 				if ($registro->fec_arribo<>'') {
 					$dias = ((strtotime($registro->fec_arribo)-strtotime(date("Y/m/d"))))/86400;
@@ -98,7 +97,7 @@
 					$dias = '-';
 				}
 
-      
+
       $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A'.$i, $registro->nro_unidad)
             ->setCellValue('B'.$i, $registro->mes)
