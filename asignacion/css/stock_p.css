@@ -1,0 +1,71 @@
+
+
+.zona-contenido {
+	padding-top: 5px;
+}
+
+.zona-cabecera{
+	display: none;
+}
+
+.menu-lateral{
+margin-left: -500px;
+}
+
+.zona-menu-secundario {
+	display: none
+}
+
+.zona-contenido, .contenido-principal { 
+width: 99%;
+}
+
+.print_stock thead {
+	text-align: center;
+	background: white;
+	color: black;
+	border: 1px solid #959292;
+	display: fixed
+}
+
+.print_stock tr {
+    border: 1px solid #959292;
+    margin-left: 3px;
+}
+
+.print_stock tbody tr:hover{
+	background: #E9EFFD;
+}
+.print_stock td {
+	border: 1px solid #959292;
+	font-size: 8px;
+
+}
+
+
+
+.listado_asignacion thead {
+	text-align: center;
+	background: white;
+	color: black;
+	border: 1px solid #959292;
+	display: fixed
+}
+
+.listado_asignacion tr {
+    border: 1px solid #959292;
+    margin-left: 3px;
+}
+
+.listado_asignacion tbody tr:hover{
+	background: #E9EFFD;
+}
+.listado_asignacion td {
+	border: 1px solid #959292;
+	font-size: 8px;
+
+}
+.saltopagina {
+	background: #5B5959;
+	color: white;
+}
