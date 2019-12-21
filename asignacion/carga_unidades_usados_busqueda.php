@@ -1,0 +1,256 @@
+﻿<?php 
+
+if ($cargado!='si') {
+	include("funciones/func_mysql.php");
+	conectar();
+	mysqli_query($con,"SET NAMES 'utf8'");
+}
+
+	extract($_POST);
+	$cadena=" (cliente LIKE '%" . $abuscar . "%'  OR
+	nro_unidad LIKE '%" . $abuscar . "%' OR 
+	interno LIKE '%" . $abuscar . "%' OR
+	vehiculo LIKE '%" . $abuscar . "%' OR
+	dominio LIKE '%" . $abuscar . "%' OR
+	ultimo_dueño LIKE '%" . $abuscar . "%' OR
+	cliente LIKE '%" . $abuscar . "%' OR
+	nombre LIKE '%" . $abuscar . "%' OR
+	asesor_venta LIKE '%" . $abuscar . "%' )";
+
+
+
+@session_start();
+$p=$_SESSION["idperfil"]; 
+
+//cargo en arreglo los colores de la tabla
+	$SQL="SELECT * FROM asignaciones_usados_colores ORDER BY color";
+	$colores=mysqli_query($con, $SQL);
+	$color_a[0]['color']= '-';
+	$i=1;
+	while ($color=mysqli_fetch_array($colores)) {
+		$color_a[$color['id_color']]['color']= $color['color'];
+		$i++;
+	}
+//fin de carga de colores
+//
+//	cargo los destinos de unidad
+	$SQL="SELECT * FROM sucursales";
+	$sucursales=mysqli_query($con, $SQL);
+	$sucursal_a[0]['sucres']= '-';
+	$i=1;
+	while ($sucursal=mysqli_fetch_array($sucursales)) {
+		$sucursal_a[$i]['sucres']= $sucursal['sucres'];
+		$i++;
+	}
+	//fin de carga de sucursales
+	//
+	$SQL="SELECT * FROM usuarios WHERE idperfil = 3";
+	$usuarios=mysqli_query($con, $SQL);
+	$usuario_a[1]['nombre']= '-';
+	$i=1;
+	while ($usuario=mysqli_fetch_array($usuarios)) {
+		$usuario_a[$usuario['idusuario']]['nombre']= $usuario['nombre'];
+		$i++;
+	}
+
+	$SQL="SELECT * FROM grupos WHERE activo = 1";
+	$grupos=mysqli_query($con, $SQL);
+	$por_a[]['grupo']= '-';
+	$i=1;
+	while ($grupo=mysqli_fetch_array($grupos)) {
+		$por_a[$grupo['idgrupo']]['grupo_res']= $grupo['grupo_res'];
+		$i++;
+	}
+
+	$SQL="SELECT * FROM asignaciones_usados_marcas";
+	$usados_marcas=mysqli_query($con, $SQL);
+	$marca_a[]['grupo']= '-';
+	$i=1;
+	while ($marca=mysqli_fetch_array($usados_marcas)) {
+		$marca_a[$marca['id_marca']]['marca']= $marca['marca'];
+		$i++;
+	}
+
+	$SQL="SELECT * FROM asignaciones_usados_modelos";
+	$usados_modelos=mysqli_query($con, $SQL);
+	$modelo_a[]['modelo']= '-';
+	$i=1;
+	while ($modelo=mysqli_fetch_array($usados_modelos)) {
+		$modelo_a[$modelo['id_modelo']]['modelo']= $modelo['modelo'];
+		$i++;
+	}
+
+	$SQL="SELECT * FROM asignaciones_usados_versiones";
+	$usados_versiones=mysqli_query($con, $SQL);
+	$version_a[]['grupo']= '-';
+	$i=1;
+	while ($version=mysqli_fetch_array($usados_versiones)) {
+		$version_a[$version['id_version']]['version']= $version['version'];
+		$i++;
+	}
+
+	if ($p==3) {
+		$ocultar='centrar-texto celda-usado fila-oculto';
+	}else{
+		$ocultar='centrar-texto celda-usado';
+	}
+
+?>
+
+<div class="titulo-modelo derecha-texto">
+	<input type="hidden" id="usado_activo" value='si'>
+	<a href="usados_pdf.php" target="_blank"><span class="icon-print"> Imprimir Planilla Usados</span></a>
+</div>
+
+<table class="listado_gestoria">
+	<colgroup>
+			<col width="1.5%">
+			<col width="10%">
+			<col width="1%">
+			<col width="1.5%">
+			<col width="2%">
+			<col width="2%">
+			<col width="2%">
+			<col width="6.5%">
+			<col width="3%">
+			<col width="3%">
+
+			<?php if ($p!=3) {?>
+				<col width="2%">
+				<col width="2%">
+				<col width="2%">
+			<?php } ?>
+
+                        
+			<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
+				<col width="2%">
+			<?php endif ?>
+		
+			<col width="2%">
+			<col width="1.5%">
+			<col width="5%">
+			<col width="3%">
+			<?php if ($p==14) {?>
+			<col width="1%">
+			<?php } ?>
+		
+	</colgroup>
+	<tbody class="lista-unidades">
+		<?php 
+
+			$SQL="SELECT * FROM asignaciones_usados_estados ORDER BY posicion";
+			$estado_usado = mysqli_query($con, $SQL);
+
+			while ($estado=mysqli_fetch_array($estado_usado)) { 
+
+				$SQL="SELECT * FROM view_asignaciones_usados WHERE ".$cadena." AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
+				$usados=mysqli_query($con, $SQL);
+				$cant=mysqli_num_rows($usados);
+
+				if ($cant>0) {?>
+					
+					<thead>
+						<tr class="titulo-estado-usado"><td colspan="18"> <?php echo $estado['estado_usado']; ?></td></tr>
+						<tr>
+							<td>Int.</td>
+							<td>Marca - Modelo - Versión</td>
+							<td>Por</td>
+							<td>Año</td>
+							<td>KM</td>
+							<td>Dominio</td>
+							<td>Color</td>
+							<td>Ult. Dueño</td>
+							<td>Asesor T.</td>
+							<td>Recep.</td>
+							
+							<?php if ($p!=3) {?>
+							<td>Toma + Imp</td>
+							<td>Costo Cont.</td>
+							<td>$ Info</td>
+							<td>$ Venta</td>
+							<?php } ?>
+							
+
+							<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
+								
+								<td>$ 0km</td>
+							<?php endif ?>
+							
+							
+							<td>Suc.</td>
+							<td>Cliente</td>
+							<td>Asesor</td>
+							<?php if ($p==14) {?>
+								<td><span class="icon-delete"></span></td>
+							<?php } ?>
+
+						</tr>
+					</thead>
+				<?php }
+				$fila=0;
+				while ($usado=mysqli_fetch_array($usados)) {$fila++; $libre = '';?>
+
+				<?php if ($usado['reservada']==0) {
+					$libre = 'unidad-libre';
+				}else{
+					$libre = '';
+				} ?>
+
+				<?php if ($usado['reservada']==1 AND $usado['estado_reserva']==0) {
+					$nc = 'unidad-reservada-nc';
+				}else{
+					$nc = '';
+				} ?>
+
+
+					<tr class="<?php echo 'fila_'.$estado['id_estado_usado'].'_'.$fila.' '.$libre. ' '.$nc ?>">
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['interno']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['vehiculo']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $por_a[$usado['por']]['grupo_res']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['año']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo number_format($usado['km'], 0, ',','.'); ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['dominio']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $color_a[$usado['color']]['color']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['ultimo_dueño']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usuario_a[$usado['asesortoma']]['nombre']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo cambiarFormatoFecha($usado['fec_recepcion']); ?></td>
+						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$ '.number_format($usado['toma_mas_impuesto'], 2, ',','.');?></td>
+						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$ '.number_format($usado['costo_contable'], 2, ',','.'); ?></td>
+						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$ '.number_format($usado['precio_info'], 2, ',','.'); ?></td>
+						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$ '.number_format($usado['precio_venta'], 2, ',','.'); ?></td>
+
+						
+							<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
+								
+								<td class="derecha-texto celda-usado" data-id="<?php echo $usado['precio_0km']; ?>"><?php echo '$ '.number_format($usado['precio_0km'], 2, ',','.'); ?></td>
+
+							<?php endif ?>
+
+						
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $sucursal_a[$usado['id_sucursal']]['sucres']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['cliente']; ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usuario_a[$usado['id_asesor']]['nombre'];; ?></td>
+						<?php if ($p==14) {?>
+							<td class="centrar-texto" ><span data-fila="<?php echo 'fila_'.$estado['id_estado_usado'].'_'.$fila; ?>" data-id="<?php echo $usado['id_unidad']; ?>" class="icon-delete borrar-unidad"></span></td>
+						<?php } ?>
+					</tr>
+				<?php } 
+				if ($cant>0) {?>
+				<tr class="titulo-estado-usado"><td colspan="17"></td></tr>
+				<?php } ?>
+			<?php } ?>
+	
+	</tbody>
+</table>
+
+
+
+
+
+
+
+
+<script src="js/usados.js"></script>
+
+
+
