@@ -1,10 +1,10 @@
 <?php
 	//servidor
-	define('HOST','localhost');
+	define('HOST','34.70.222.227');
 	//usuario bd
-	define('USER','root');
+	define('USER','remote_asignacion');
 	//pass
-	define('PASS','');
+	define('PASS','asignDyVSA2020');
 	//base de datos
 	define('DB','asignacion');
 ?>
