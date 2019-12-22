@@ -2,7 +2,7 @@
 
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
    extract($_POST);
 

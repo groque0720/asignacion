@@ -1,7 +1,7 @@
 <?php
 	include("../funciones/func_mysql.php");
 	conectar();
-	mysql_query("SET NAMES 'utf8'");
+	//mysql_query("SET NAMES 'utf8'");
 
 	$formato=$_POST["formato"];
 	$id=$_POST["id"];

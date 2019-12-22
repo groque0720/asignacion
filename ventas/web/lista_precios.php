@@ -108,7 +108,7 @@ $(document).ready(function(){
 
 			include("../funciones/func_mysql.php");
 			conectar();
-			mysql_query("SET NAMES 'utf8'");
+			//mysql_query("SET NAMES 'utf8'");
 			$SQL="SELECT * FROM reservas WHERE idusuario =".$_SESSION["id"]." AND anulada <> 1 AND entregada < 3 ORDER BY idreserva DESC";
 			$res=mysqli_query($con, $SQL);
 			 ?>

@@ -5,7 +5,7 @@ $datoBuscar = $_POST["abuscar"];
 //conecto con una base de datos
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
 
 $SQL="UPDATE reservas SET estadopago = 3, cancelada = 1 WHERE idreserva = ". $datoBuscar;

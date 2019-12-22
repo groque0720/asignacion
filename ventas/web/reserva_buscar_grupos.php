@@ -4,7 +4,7 @@ $options="";
 
   include("../funciones/func_mysql.php");
 conectar();
- mysql_query("SET NAMES 'utf8'");
+ //mysql_query("SET NAMES 'utf8'");
 
         $SQL="SELECT grupos.idgrupo as idgrupo, grupos.grupo as grupo, tipos.idtipo
         FROM (grupos INNER JOIN modelos ON grupos.idgrupo = modelos.idgrupo) INNER JOIN tipos ON modelos.idtipo = tipos.idtipo

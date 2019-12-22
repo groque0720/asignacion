@@ -2,7 +2,7 @@
 
 	include("../funciones/func_mysql.php");
 	conectar();
-	mysql_query("SET NAMES 'utf8'");
+	//mysql_query("SET NAMES 'utf8'");
 
 	extract($_POST);
 
@@ -12,7 +12,7 @@
 
 	$con = mysql_connect('localhost','root','872') or die("ERROR EN CONEXION:".mysql_error());
 	$base_datos=mysql_select_db('dyv', $con) or die("ERROR AL SELECCIONAR LA BASE DE DATOS:".mysql_error());
-	mysql_query("SET NAMES 'utf8'");
+	//mysql_query("SET NAMES 'utf8'");
 
 
 

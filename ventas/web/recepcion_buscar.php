@@ -12,7 +12,7 @@ if (empty($dato)) {
 //conecto con una base de datos
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
 $SQL="SELECT * FROM regrecepcion WHERE idusuario = $idusuario AND $campo LIKE '%$dato%' ORDER BY idcontacto DESC LIMIT 100";
 $contacto=mysqli_query($con, $SQL);

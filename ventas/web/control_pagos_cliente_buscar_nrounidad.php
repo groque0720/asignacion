@@ -5,7 +5,7 @@ $datoBuscar = $_POST["id"];
 //conecto con una base de datos
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
 $SQL="SELECT nrounidad FROM reservas WHERE idreserva = ". $datoBuscar;
 $res=mysqli_query($con, $SQL);

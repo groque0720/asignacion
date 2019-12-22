@@ -11,7 +11,7 @@
 	if ($mov==2) {
 	include("../funciones/func_mysql.php");
 	conectar();
-	mysql_query("SET NAMES 'utf8'");
+	//mysql_query("SET NAMES 'utf8'");
 	$SQL="SELECT * FROM aplicaciones WHERE id_app =".$id;
 	$res=mysqli_query($con, $SQL);
 	$app=mysqli_fetch_array($res);

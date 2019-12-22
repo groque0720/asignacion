@@ -1,7 +1,7 @@
 ﻿<?php
 include("funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
 $SQL="UPDATE cuestionarios SET ";
         $SQL .=" fecha_cuestionario = '".date("Y-m-d")."',";

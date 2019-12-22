@@ -2,7 +2,7 @@
 
 	include("../funciones/func_mysql.php");
 	conectar();
-	mysql_query("SET NAMES 'utf8'");
+	//mysql_query("SET NAMES 'utf8'");
 
 	$SQL="SELECT * FROM registros WHERE siac = 1 AND usuario <> 0";
 	$res = mysqli_query($con, $SQL);

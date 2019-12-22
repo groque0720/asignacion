@@ -3,7 +3,7 @@
 		include_once("../funciones/func_mysql.php");
 		include_once("../includes/security.php");
 		conectar();
-		//mysql_query("SET NAMES 'utf8'");
+		////mysql_query("SET NAMES 'utf8'");
 
 	 ?>
 

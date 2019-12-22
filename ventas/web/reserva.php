@@ -529,7 +529,7 @@
 		<?php
 		include("../funciones/func_mysql.php");
 		conectar();
-		//wqmysql_query("SET NAMES 'utf8'");
+		//wq//mysql_query("SET NAMES 'utf8'");
 		$SQL="SELECT * FROM tipos";
 		$tipos=mysqli_query($con, $SQL);
 

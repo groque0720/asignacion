@@ -1,7 +1,7 @@
 <?php
 	include("../funciones/func_mysql.php");
 	conectar();
-	mysql_query("SET NAMES 'utf8'");
+	//mysql_query("SET NAMES 'utf8'");
 	$encuesta=$_GET["id_encuesta"];
 	$SQL="SELECT * FROM encuestas_preguntas WHERE id_encuesta =".$encuesta."   AND baja = 0 ORDER BY nro_pregunta";
 	$res=mysqli_query($con, $SQL);

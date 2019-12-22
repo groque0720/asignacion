@@ -3,7 +3,7 @@ set_time_limit(300);
 	include("../_seguridad/_seguridad.php");
 	include("../funciones/func_mysql.php");
 	conectar();
-	mysql_query("SET NAMES 'utf8'");
+	//mysql_query("SET NAMES 'utf8'");
 	$id_cuestionario=$_GET["id"];
 	$encuesta=$_GET["cue"];
 

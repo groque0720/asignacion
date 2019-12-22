@@ -29,7 +29,7 @@ include ("../includes/security.php");?>
 			<?php
 			include("../funciones/func_mysql.php");
 			conectar();
-			mysql_query("SET NAMES 'utf8'");
+			//mysql_query("SET NAMES 'utf8'");
 			$SQL="SELECT * FROM financieras WHERE idfinanciera=".$_GET["IDrecord"];
 			$financieras=mysqli_query($con, $SQL);
 			$suc=mysqli_fetch_array($financieras);

@@ -1,7 +1,7 @@
 <?php
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
 echo '<script language = javascript>
 	alert("Facturacion Activa");

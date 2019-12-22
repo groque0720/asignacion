@@ -14,7 +14,7 @@
 		global $con;
 		$con = mysql_connect(HOST,USER,PASS) or die("ERROR EN CONEXION:".mysql_error());
 		$base_datos=mysql_select_db(DB, $con) or die("ERROR AL SELECCIONAR LA BASE DE DATOS:".mysql_error());
-		mysql_query("SET NAMES 'utf8'");
+		//mysql_query("SET NAMES 'utf8'");
 		return $con;
 	};
 

@@ -58,7 +58,7 @@ include("../includes/security.php");
 include("../funciones/func_mysql.php");
 conectar();
 @session_start();
-// mysql_query("SET NAMES 'utf8'");
+// //mysql_query("SET NAMES 'utf8'");
 ?>
 	<div class="ed-container">
 		-

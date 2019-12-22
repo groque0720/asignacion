@@ -2,7 +2,7 @@
 
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
 $SQL="SELECT * FROM codigos WHERE detalle= '".$_POST['det_l']."'";
 $cod=mysqli_query($con, $SQL);

@@ -3,7 +3,7 @@
 
 	include("../funciones/func_mysql.php");
 	conectar();
-	mysql_query("SET NAMES 'utf8'");
+	//mysql_query("SET NAMES 'utf8'");
 
 	//determino que movimiento viene del formulario para realizar la acción.
 	$mov=$_POST["mov"];

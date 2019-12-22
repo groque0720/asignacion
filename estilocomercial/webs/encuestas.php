@@ -56,7 +56,7 @@
 			<?php
 				include("../funciones/func_mysql.php");
 				conectar();
-				mysql_query("SET NAMES 'utf8'");
+				//mysql_query("SET NAMES 'utf8'");
 				$SQL="SELECT * FROM encuestas WHERE baja = 0 ORDER BY encuesta";
 				$res=mysqli_query($con, $SQL);
 			?>

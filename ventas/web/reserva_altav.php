@@ -4,7 +4,7 @@ session_start();
 
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
 $SQL="INSERT INTO clientes(activo) VALUES (1)";
 mysqli_query($con, $SQL);

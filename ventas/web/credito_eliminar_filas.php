@@ -2,7 +2,7 @@
 
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
 
 //borro la linea del estado dek credito

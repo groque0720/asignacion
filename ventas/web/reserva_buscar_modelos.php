@@ -4,7 +4,7 @@ $options="";
 
     include("../funciones/func_mysql.php");
     conectar();
-   mysql_query("SET NAMES 'utf8'");
+   //mysql_query("SET NAMES 'utf8'");
 
     $SQL="SELECT * FROM modelos WHERE activo = 1 AND idgrupo=".$_POST["elegido"];
     $modelos=mysqli_query($con, $SQL); ?>

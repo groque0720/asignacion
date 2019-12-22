@@ -92,7 +92,7 @@
 			<?php
 				include("../funciones/func_mysql.php");
 				conectar();
-				mysql_query("SET NAMES 'utf8'");
+				//mysql_query("SET NAMES 'utf8'");
 			?>
 
 			<div class="zona-tabla-90" id="zona_ajax">

@@ -19,7 +19,7 @@
 <?php
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'"); ?>
+//mysql_query("SET NAMES 'utf8'"); ?>
 
 <table rules="all" border="1" id="tabla_res"
 

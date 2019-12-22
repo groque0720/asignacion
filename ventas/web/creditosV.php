@@ -72,7 +72,7 @@
 
 			include("../funciones/func_mysql.php");
 			conectar();
-			mysql_query("SET NAMES 'utf8'");
+			//mysql_query("SET NAMES 'utf8'");
 			$SQL="SELECT
 				reservas.idreserva AS idreserva,
 				reservas.fecres AS fecres,

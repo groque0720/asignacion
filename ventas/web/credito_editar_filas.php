@@ -2,7 +2,7 @@
 
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
 $SQL="UPDATE creditos_lineas SET observacion='".$_POST['ob']."' WHERE idcreditolinea =".$_POST['idfila'];
 mysqli_query($con, $SQL);

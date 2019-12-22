@@ -39,7 +39,7 @@ include ("../includes/security.php");?>
 		<?php
 		include("../funciones/func_mysql.php");
 		conectar();
-		mysql_query("SET NAMES 'utf8'");
+		//mysql_query("SET NAMES 'utf8'");
 		$SQL="SELECT modelos.idmodelo, modelos.idgrupo, modelos.idtipo, modelos.modelo, modelos.posicion, grupos.grupo, modelos.activo FROM modelos , grupos WHERE modelos.idgrupo =  grupos.idgrupo and modelos.activo = 1 ORDER BY grupos.posicion, modelos.posicion ASC";
 		$modelos=mysqli_query($con, $SQL);?>
 

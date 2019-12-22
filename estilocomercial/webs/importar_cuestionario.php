@@ -4,7 +4,7 @@ set_time_limit(300);
 
 include("../funciones/func_mysql.php");
 conectar();
-mysql_query("SET NAMES 'utf8'");
+//mysql_query("SET NAMES 'utf8'");
 
    extract($_POST);
 
