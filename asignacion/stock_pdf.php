@@ -346,4 +346,3 @@ $pdf->Output('Stock.pdf','I');
 $pdf->close();
 
  ?>
-
