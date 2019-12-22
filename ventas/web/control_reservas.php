@@ -75,7 +75,7 @@
 		<?php
 			include("../funciones/func_mysql.php");
 			conectar();
-			mysql_query("SET NAMES 'utf8'");
+			//mysql_query("SET NAMES 'utf8'");
 			$SQL="SELECT count(*) as cantidad FROM notificaciones WHERE idusuario =".$_SESSION["id"]." AND visto=0 and borrar=0";
 			$res=mysqli_query($con, $SQL);
 			if (empty($res)) {$cant_res['cantidad']=0;}else{ $cant_res=mysqli_fetch_array($res);}

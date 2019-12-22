@@ -25,13 +25,15 @@
 		}else{
 			return '-';
 		}
-
-
 	};
 
 	function cambiarFormatohora($hora){
-    list($horas,$minutos,$segundos)=explode(":",$hora);
-    return $horas.":".$minutos;
+		if ($hora != null AND $hora != '') {
+			list($horas,$minutos,$segundos)=explode(":",$hora);
+    		return $horas.":".$minutos;
+		}else{
+			return '-';
+		}
 	};
 
 	function dias_transcurridos($fecha_i,$fecha_f)

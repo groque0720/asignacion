@@ -149,7 +149,7 @@
 	}
 
 	$fila=0;
-	while ( $unidad=mysqli_fetch_assoc($unidades)) { $fila++; $libre = '';?>
+	while ( $unidad=mysqli_fetch_array($unidades)) { $fila++; $libre = '';?>
 
 		<?php if ($unidad['reservada']==0) {
 			$libre = 'unidad-libre';
@@ -230,7 +230,8 @@
 			<td class="celda-espacio-left celda celda_cliente" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $cliente; ?></td>
 			<td class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $usuario_a[$unidad['id_asesor']]['nombre']; ?></td>
 			<td class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_pedido']); ?></td>
-			<td class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatohora($unidad['hora_pedido']); ?></td>
+			<td class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>">
+				<?php echo cambiarFormatohora($unidad['hora_pedido']); ?></td>
 			<?php  $color_estado ="";// $estados_a[$unidad['id_estado_entrega']]['color']; ?>
 			<td style="<?php echo 'background: '.$color_estado; ?>" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $estados_a[$unidad['id_estado_entrega']]['estado_unidad']; ?></td>
 			<td class="celda" style="padding-left: 3px;" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['observacion']; ?></td>

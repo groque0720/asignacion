@@ -16,6 +16,12 @@
 
 <?php
 
+
+
+
+
+
+
 	$SQL="SELECT * FROM view_asignaciones_entregas WHERE id_ubicacion = ".$_SESSION["idsuc"]." ORDER BY fec_pedido DESC, hora_pedido ASC";
 	$unidades = mysqli_query($con, $SQL);
 
