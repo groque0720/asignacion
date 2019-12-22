@@ -76,7 +76,7 @@ function Header()
 	if ($this->PageNo()==1) {
 		$this->SetFont('Arial','B',10);
 		$this->Cell(60,5,'DERKA Y VARGAS S. A.',0,0,'L');
-		$this->Cell(150,5,utf8_decode('COSTOS UNIDADES TASA POR FECHA'),0,0,'C');
+		$this->Cell(150,5,('COSTOS UNIDADES TASA POR FECHA'),0,0,'C');
 		$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
 		$this->Ln();
 		$this->Cell(0,0,'',1,0,'C');
@@ -84,11 +84,11 @@ function Header()
 	}
 $this->SetFont('Arial','I',7);
 $this->SetFont('');
-$this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
+$this->Cell(0,5,('Pag').$this->PageNo().'/{nb}',0,0,'R');
 $this->Ln();
 $this->Cell(9,5,'Nro Un.',0,0,'C');
 $this->Cell(15,5,'Mes',0,0,'C');
-$this->Cell(10,5,utf8_decode('Año'),0,0,'C');
+$this->Cell(10,5,('Ano'),0,0,'C');
 $this->Cell(19,5,'Nro Orden',0,0,'C');
 $this->Cell(15,5,'Fec. Playa',0,0,'C');
 $this->Cell(15,5,'Despacho',0,0,'C');
@@ -123,8 +123,8 @@ $pdf->AliasNbPages();
 $pdf->AddPage('L','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-$pdf->SetAutoPageBreak(auto,5);
-			
+$pdf->SetAutoPageBreak(true,5);
+$cant = 0;
 
 	$SQL="SELECT * FROM view_asignaciones_costos";
 	$unidades = mysqli_query($con, $SQL);
@@ -146,7 +146,7 @@ $pdf->SetAutoPageBreak(auto,5);
 	$parcial=0;
 	$acum_r=0;
 	$parcial_r=0;
-	while ($unidad=mysqli_fetch_array($unidades)) { 
+	while ($unidad=mysqli_fetch_array($unidades)) {
 
 		$cant_unidades++;
 
@@ -184,18 +184,18 @@ $pdf->SetAutoPageBreak(auto,5);
 			$pdf->SetFont('');
 		}
 
-		$pdf->Cell(9,5,utf8_decode($unidad['nro_unidad']),1,0,'C');
-		$pdf->Cell(15,5,utf8_decode($mes_a[$unidad['id_mes']]['mes']),1,0,'C');
-		$pdf->Cell(10,5,utf8_decode($unidad['año']),1,0,'C');
-		$pdf->Cell(19,5,utf8_decode($unidad['nro_orden']),1,0,'C');
+		$pdf->Cell(9,5,($unidad['nro_unidad']),1,0,'C');
+		$pdf->Cell(15,5,($mes_a[$unidad['id_mes']]['mes']),1,0,'C');
+		$pdf->Cell(10,5,($unidad['año']),1,0,'C');
+		$pdf->Cell(19,5,($unidad['nro_orden']),1,0,'C');
 		$pdf->Cell(15,5,cambiarFormatoFecha($unidad['fec_playa']),1,0,'C');
 		$pdf->Cell(15,5,cambiarFormatoFecha($unidad['fec_despacho']),1,0,'C');
-		$pdf->Cell(47,5,utf8_decode($grupo_a[$unidad['id_grupo']]['grupo']." ".$modelo_a[$unidad['id_modelo']]['modelo']),1,0,'C');
+		$pdf->Cell(47,5,($grupo_a[$unidad['id_grupo']]['grupo']." ".$modelo_a[$unidad['id_modelo']]['modelo']),1,0,'C');
 		$pdf->Cell(27,5,'$ '.number_format($unidad['costo'], 2, ',','.'),1,0,'R');
 
 		$SQL="SELECT * FROM reservas_suma_montos WHERE nrounidad = ".$unidad['nro_unidad'];
 		$montos=mysqli_query($con, $SQL);
-		
+
 		$cant_monto=mysqli_num_rows($montos)+1;
 
 		if ($cant_monto>0) {
@@ -207,7 +207,7 @@ $pdf->SetAutoPageBreak(auto,5);
 
 		$SQL="SELECT * FROM reservas_suma_pagos WHERE nrounidad = ".$unidad['nro_unidad'];
 		$montos=mysqli_query($con, $SQL);
-		
+
 		$cant_monto=mysqli_num_rows($montos);
 
 		if ($cant_monto>0) {
@@ -215,23 +215,23 @@ $pdf->SetAutoPageBreak(auto,5);
 			$monto_pago=(int)$monto['pagos'];
 		}else{
 			$monto_pago=0;
-		}		
+		}
 
 		$parcial_r=$parcial_r+($monto_res-$monto_pago);
 		$acum_r=$acum_r+($monto_res-$monto_pago);
 
 		//recurso
 		$pdf->Cell(27,5,'$ '.number_format(($monto_res-$monto_pago), 2, ',','.'),1,0,'R');
-		$pdf->Cell(15,5,utf8_decode($color_a[$unidad['id_color']]['color']),1,0,'C');
+		$pdf->Cell(15,5,($color_a[$unidad['id_color']]['color']),1,0,'C');
 
 		if ($unidad['fec_arribo']!='' AND $unidad['fec_arribo']!=null) {
-			$pdf->Cell(9,5,utf8_decode($sucursal_a[$unidad['id_ubicacion']]['sucres']),1,0,'C');
+			$pdf->Cell(9,5,($sucursal_a[$unidad['id_ubicacion']]['sucres']),1,0,'C');
 		 }else{
-			$pdf->Cell(9,5,utf8_decode($sucursal_a[$unidad['id_sucursal']]['sucres']),1,0,'C');
+			$pdf->Cell(9,5,'-',1,0,'C');
 		}
 		//resalto la fuente de cancelación - Pedido Don Vargas
 		$pdf->SetFont('Arial','B',7.5);
-		
+
 		if ($unidad['cancelada']==1) { $can= 'Si';}else{$can= '';}
 		if ($unidad['patentada']==1) { $pat= '/Si';}else{$pat= '';}
 
@@ -244,8 +244,8 @@ $pdf->SetAutoPageBreak(auto,5);
 			$pdf->SetFont('Arial','B',6.5);
 			$pdf->SetFont('');
 		}
-		$pdf->Cell(36,5,utf8_decode($unidad['cliente']),1,0,'L');
-		$pdf->Cell(17,5,utf8_decode($usuario_a[$unidad['id_asesor']]['nombre']),1,0,'C');
+		$pdf->Cell(36,5,($unidad['cliente']),1,0,'L');
+		$pdf->Cell(17,5,($usuario_a[$unidad['id_asesor']]['nombre']),1,0,'C');
 		$pdf->Cell(12,5,cambiarFormatoFecha($unidad['fec_reserva']),1,0,'C');
 		$pdf->Ln();
 
@@ -265,7 +265,7 @@ $pdf->SetAutoPageBreak(auto,5);
 	$pdf->Cell(130,5,'Acumulado ',0,0,'R');
 	$pdf->Cell(27,5,number_format($acum, 2, ',','.'),1,0,'R');
 	$pdf->Cell(27,5,number_format($acum_r, 2, ',','.'),1,0,'R');
-	
+
 	$pdf->Ln(2);
 
 $pdf->Output('Costos_TASA_'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
