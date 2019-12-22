@@ -121,9 +121,18 @@ $this->Ln(3);
 }
 
 
-$pdf = new FPDF();
-$pdf->AddPage();
-$pdf->SetFont('Arial','B',16);
+$pdf = new PDF();
+$pdf->AliasNbPages();
+$pdf->AddPage('L','A4');
+$pdf->SetLineWidth(0.1);
+$pdf->SetDrawColor(184, 184, 184);
+$pdf->SetAutoPageBreak(true,5);
+
+
+
+// $pdf = new FPDF();
+// $pdf->AddPage();
+// $pdf->SetFont('Arial','B',16);
 $pdf->Cell(40,10,'¡Hola, Mundo!');
 $pdf->Output();
 ?>
