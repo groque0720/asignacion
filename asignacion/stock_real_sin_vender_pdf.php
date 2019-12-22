@@ -1,4 +1,4 @@
-﻿<?php 
+﻿<?php
 include("funciones/func_mysql.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
@@ -13,7 +13,7 @@ class PDF extends FPDF
 		if ($this->PageNo()==1) {
 			$this->SetFont('Arial','B',8);
 			$this->Cell(45,5,'DERKA Y VARGAS S. A.',0,0,'C');
-			$this->Cell(100,5,utf8_decode('PLANILLA DE STOCK - Real Sin Vender'),0,0,'C');
+			$this->Cell(100,5,('PLANILLA DE STOCK - Real Sin Vender'),0,0,'C');
 			$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'C');
 			$this->Ln();
 			$this->Cell(0,0,'',1,0,'C');
@@ -23,7 +23,7 @@ class PDF extends FPDF
 
 		$this->SetFont('Arial','I',6.5);
 		$this->SetFont('');
-		$this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
+		$this->Cell(0,5,('Pag.').$this->PageNo().'/{nb}',0,0,'R');
 		$this->Ln();
 
 
@@ -109,9 +109,17 @@ $pdf->AliasNbPages();
 $pdf->AddPage('P','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-$pdf->SetAutoPageBreak(auto,6);
+$pdf->SetAutoPageBreak(true,6);
 $pdf->SetFont('Arial','B',6.5);
 $pdf->SetFont('');
+
+	for ($i=0; $i < 10; $i++) {
+		$stock_ant_g[$i]['cant'] = 0;
+		$total_m[$i]['cant'] = 0;
+		$total_g[$i]['cant'] = 0;
+		$total_r_m[$i]['cant'] = 0;
+		$total_r_g[$i]['cant'] = 0;
+	}
 
 $SQL="SELECT * FROM grupos WHERE idgrupo<>1 AND cerokilometro = 1 AND posicion > 0 AND activo = 1 ORDER BY posicion";
 $grupos = mysqli_query($con, $SQL);
@@ -144,8 +152,8 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$acum=0;
 		$s_p=0;
 
-
-		$SQL="SELECT * FROM view_asignacion_pisadas WHERE id_modelo = ". $modelo['idmodelo'];
+		$SQL="select `asignaciones`.`id_unidad` AS `id_unidad`,`asignaciones`.`id_modelo` AS `id_modelo` from `asignaciones` where ((`asignaciones`.`reservada` = 1) and (`asignaciones`.`estado_reserva` = 0) and (`asignaciones`.`entregada` = 0) and (`asignaciones`.`borrar` = 0)) and id_modelo = ". $modelo['idmodelo'];
+		//$SQL="SELECT * FROM view_asignacion_pisadas WHERE id_modelo = ". $modelo['idmodelo'];
 		$pisadas=mysqli_query($con, $SQL);
 		$cant_pisada=mysqli_num_rows($pisadas);
 
@@ -268,13 +276,13 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Ln();
 
 		//Acumulo Totales TASA Por MODELO y GENERAL
-		for ($i=0; $i < 10; $i++) { 
+		for ($i=0; $i < 10; $i++) {
 				$total_m[$i]['cant']=(int)$total_m[$i]['cant']+(int)$stock_a[$i]['cant'];
 				$total_g[$i]['cant']=(int)$total_g[$i]['cant']+(int)$stock_a[$i]['cant'];
 		}
 		$total_r_m[9]['cant']=0;
 		//Acumulo Totales RESERVAS Por MODELO y GENERAL
-		for ($i=0; $i < 9; $i++) { 
+		for ($i=0; $i < 9; $i++) {
 			if ($i==0) {
 				$total_r_m[$i]['cant']=(int)$total_r_m[$i]['cant']+(int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant'];
 				$total_r_g[$i]['cant']=(int)$total_r_g[$i]['cant']+(int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant'];
@@ -313,10 +321,10 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Ln(2);
 
 
-		for ($i=0; $i < 10; $i++) { 
+		for ($i=0; $i < 10; $i++) {
 			$total_m[$i]['cant']=0;
 		}
-		for ($i=0; $i < 10; $i++) { 
+		for ($i=0; $i < 10; $i++) {
 			$total_r_m[$i]['cant']=0;
 		}
 
