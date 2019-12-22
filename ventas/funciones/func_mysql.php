@@ -1,5 +1,5 @@
 <?php
-	include("../config/config_mysql.php");
+	include($_SERVER['DOCUMENT_ROOT']."/config/config_mysql.php");
 
 	date_default_timezone_set("America/Argentina/Buenos_Aires");
 

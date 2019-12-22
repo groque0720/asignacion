@@ -1,4 +1,4 @@
-<?php 
+<?php
 	include_once("funciones/func_mysql.php");
 	conectar();
 	mysqli_query($con,"SET NAMES 'utf8'");
@@ -14,8 +14,8 @@
 			</div>
 
 			<div class="zona-sucursal">
-				
-				<?php 
+
+				<?php
 					$SQL="SELECT * FROM sucursales";
 					$sucursales=mysqli_query($con, $SQL);
 
@@ -61,7 +61,7 @@
 				<span class="">Fecha:</span>
 				<input type="text" id="fecha" value="" placeholder="dd/mm/aaaa">
 			</div>
-			
+
 			<div class='agenda' >
 
 				<table>
@@ -80,7 +80,7 @@
 						</tr>
 					</thead>
 					<tbody>
-					<?php 
+					<?php
 						$SQL="SELECT * FROM agenda_td_horarios";
 						$horarios = mysqli_query($con, $SQL);
 
@@ -96,7 +96,7 @@
 						<?php } ?>
 					</tbody>
 				</table>
-				
+
 			</div>
 
 		</div>

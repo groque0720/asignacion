@@ -1,13 +1,13 @@
 <?php
-	//servidor
-	define('HOST','34.70.222.227');
-	//usuario bd
-	define('USER','remote_asignacion');
-	//pass
-	define('PASS','872');
-	//base de datos
-	define('DB','eventos');
-
+	// //servidor
+	// define('HOST','34.70.222.227');
+	// //usuario bd
+	// define('USER','remote_asignacion');
+	// //pass
+	// define('PASS','872');
+	// //base de datos
+	// define('DB','eventos');
+include($_SERVER['DOCUMENT_ROOT']."/config/config_mysql.php");
 
 	// define('HOST','mysql.hostinger.com.ar');
 	// //usuario bd
