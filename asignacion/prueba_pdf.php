@@ -67,6 +67,49 @@ require('fpdf/fpdf.php');
 		$i++;
 	}
 
+
+class PDF extends FPDF
+{
+// Cabecera de página
+function Header()
+{
+	if ($this->PageNo()==1) {
+		$this->SetFont('Arial','B',10);
+		$this->Cell(60,5,'DERKA Y VARGAS S. A.',0,0,'L');
+		$this->Cell(150,5,utf8_decode('PLANILLA DE ASIGNACIÓN'),0,0,'C');
+		$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
+		$this->Ln();
+		$this->Cell(0,0,'',1,0,'C');
+		$this->Ln();
+	}
+$this->SetFont('Arial','I',7);
+$this->SetFont('');
+$this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
+$this->Ln();
+$this->Cell(9,5,'Nro Un.',0,0,'C');
+$this->Cell(15,5,'Mes',0,0,'C');
+$this->Cell(10,5,utf8_decode('Año'),0,0,'C');
+$this->Cell(18,5,'Nro Orden',0,0,'C');
+$this->Cell(10,5,'Interno',0,0,'C');
+$this->Cell(12,5,'Despacho',0,0,'C');
+$this->Cell(12,5,'Arribo',0,0,'C');
+$this->Cell(45,5,'Modelo',0,0,'C');
+$this->Cell(13,5,'Chasis',0,0,'C');
+$this->Cell(35,5,'Colores Pedidos',0,0,'C');
+$this->Cell(12,5,'Asignado',0,0,'C');
+$this->Cell(9,5,'D./Ub.',0,0,'C');
+$this->Cell(9,5,'Canc.',0,0,'C');
+$this->Cell(9,5,'Ant.',0,0,'C');
+$this->Cell(31,5,'Cliente',0,0,'C');
+$this->Cell(17,5,'Asesor',0,0,'C');
+$this->Cell(12,5,'Reserva',0,0,'C');
+$this->Ln();
+$this->Cell(0,0,'',1,0,'C');
+$this->Ln(3);
+}
+
+
+
 $pdf = new FPDF();
 $pdf->AddPage();
 $pdf->SetFont('Arial','B',16);
