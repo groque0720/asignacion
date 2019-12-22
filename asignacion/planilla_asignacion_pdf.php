@@ -127,8 +127,8 @@ $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
 $pdf->SetAutoPageBreak(true,5);
 
-$SQL="SELECT * FROM grupos WHERE activo = 1 AND cerokilometro = 1 AND posicion>0 ORDER BY posicion";
-$grupos=mysqli_query($con, $SQL);
+// $SQL="SELECT * FROM grupos WHERE activo = 1 AND cerokilometro = 1 AND posicion>0 ORDER BY posicion";
+// $grupos=mysqli_query($con, $SQL);
 
 	// while ($grupo=mysqli_fetch_array($grupos)) {
 	// 	$pdf->SetFont('Arial','B',10);
