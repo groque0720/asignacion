@@ -76,7 +76,7 @@ class PDF extends FPDF
 		if ($this->PageNo()==1) {
 			$this->SetFont('Arial','B',10);
 			$this->Cell(60,5,'DERKA Y VARGAS S. A.',0,0,'L');
-			$this->Cell(150,5,utf8_decode('PLANILLA DE ASIGNACIÓN'),0,0,'C');
+			$this->Cell(150,5,'PLANILLA DE ASIGNACIÓN',0,0,'C');
 			$this->Cell(0,5,'-',0,0,'R');
 			// $this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
 			$this->Ln();
