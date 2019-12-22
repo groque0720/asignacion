@@ -13,7 +13,7 @@ class PDF extends FPDF
 		if ($this->PageNo()==1) {
 			$this->SetFont('Arial','B',8);
 			$this->Cell(45,5,'DERKA Y VARGAS S. A.',0,0,'C');
-			$this->Cell(100,5,('PLANILLA DE STOCK'),0,0,'C');
+			$this->Cell(100,5,utf8_decode('PLANILLA DE STOCK'),0,0,'C');
 			$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'C');
 			$this->Ln();
 			$this->Cell(0,0,'',1,0,'C');
@@ -23,7 +23,7 @@ class PDF extends FPDF
 
 		$this->SetFont('Arial','I',6.5);
 		$this->SetFont('');
-		$this->Cell(0,5,('Página').$this->PageNo().'/{nb}',0,0,'R');
+		$this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
 		$this->Ln();
 
 
