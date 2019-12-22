@@ -82,30 +82,30 @@ function Header()
 	// 	$this->Cell(0,0,'',1,0,'C');
 	// 	$this->Ln();
 	// }
-$this->SetFont('Arial','I',7);
-$this->SetFont('');
-$this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
-$this->Ln();
-$this->Cell(9,5,'Nro Un.',0,0,'C');
-$this->Cell(15,5,'Mes',0,0,'C');
-$this->Cell(10,5,utf8_decode('Año'),0,0,'C');
-$this->Cell(18,5,'Nro Orden',0,0,'C');
-$this->Cell(10,5,'Interno',0,0,'C');
-$this->Cell(12,5,'Despacho',0,0,'C');
-$this->Cell(12,5,'Arribo',0,0,'C');
-$this->Cell(45,5,'Modelo',0,0,'C');
-$this->Cell(13,5,'Chasis',0,0,'C');
-$this->Cell(35,5,'Colores Pedidos',0,0,'C');
-$this->Cell(12,5,'Asignado',0,0,'C');
-$this->Cell(9,5,'D./Ub.',0,0,'C');
-$this->Cell(9,5,'Canc.',0,0,'C');
-$this->Cell(9,5,'Ant.',0,0,'C');
-$this->Cell(31,5,'Cliente',0,0,'C');
-$this->Cell(17,5,'Asesor',0,0,'C');
-$this->Cell(12,5,'Reserva',0,0,'C');
-$this->Ln();
-$this->Cell(0,0,'',1,0,'C');
-$this->Ln(3);
+// $this->SetFont('Arial','I',7);
+// $this->SetFont('');
+// $this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
+// $this->Ln();
+// $this->Cell(9,5,'Nro Un.',0,0,'C');
+// $this->Cell(15,5,'Mes',0,0,'C');
+// $this->Cell(10,5,utf8_decode('Año'),0,0,'C');
+// $this->Cell(18,5,'Nro Orden',0,0,'C');
+// $this->Cell(10,5,'Interno',0,0,'C');
+// $this->Cell(12,5,'Despacho',0,0,'C');
+// $this->Cell(12,5,'Arribo',0,0,'C');
+// $this->Cell(45,5,'Modelo',0,0,'C');
+// $this->Cell(13,5,'Chasis',0,0,'C');
+// $this->Cell(35,5,'Colores Pedidos',0,0,'C');
+// $this->Cell(12,5,'Asignado',0,0,'C');
+// $this->Cell(9,5,'D./Ub.',0,0,'C');
+// $this->Cell(9,5,'Canc.',0,0,'C');
+// $this->Cell(9,5,'Ant.',0,0,'C');
+// $this->Cell(31,5,'Cliente',0,0,'C');
+// $this->Cell(17,5,'Asesor',0,0,'C');
+// $this->Cell(12,5,'Reserva',0,0,'C');
+// $this->Ln();
+// $this->Cell(0,0,'',1,0,'C');
+// $this->Ln(3);
 }
 
 // Pie de página
