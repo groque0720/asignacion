@@ -31,7 +31,7 @@ function Footer()
 }
 
 // Creación del objeto de la clase heredada
-$pdf = new PDF();
+$pdf = new FPDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Times','',12);
