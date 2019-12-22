@@ -8,7 +8,7 @@
 	// //base de datos
 	// define('DB','asignacion');
 
-	define('HOST','34.70.222.227');
+	define('HOST','localhost');
 	//usuario bd
 	define('USER','remote_asignacion');
 	//pass
