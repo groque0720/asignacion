@@ -344,5 +344,3 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 
 $pdf->Output('Stock.pdf','I');
 $pdf->close();
-
- ?>
