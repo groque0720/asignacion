@@ -223,8 +223,8 @@ $pdf->SetAutoPageBreak(true,5);
 	// 		$pdf->Ln(2);
 	// 	}
 	// }
-
-$pdf->Output('PlanilaAsignacion_'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
+$pdf->Output();
+//$pdf->Output('PlanilaAsignacion_'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
 $pdf->close();
 
 ?>
