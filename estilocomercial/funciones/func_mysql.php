@@ -7,7 +7,7 @@
 	// define('PASS','872');
 	// //base de datos
 	// define('DB','sysdyv');
-include($_SERVER['DOCUMENT_ROOT']."/config/config_mysql.php");
+	include($_SERVER['DOCUMENT_ROOT']."/config/config_mysql.php");
 	date_default_timezone_set("America/Argentina/Buenos_Aires");
 
 	function conectar() {
