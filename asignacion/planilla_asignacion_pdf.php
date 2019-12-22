@@ -127,102 +127,102 @@ $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
 $pdf->SetAutoPageBreak(true,5);
 
-// $SQL="SELECT * FROM grupos WHERE activo = 1 AND cerokilometro = 1 AND posicion>0 ORDER BY posicion";
-// $grupos=mysqli_query($con, $SQL);
+$SQL="SELECT * FROM grupos WHERE activo = 1 AND cerokilometro = 1 AND posicion>0 ORDER BY posicion";
+$grupos=mysqli_query($con, $SQL);
 
-	// while ($grupo=mysqli_fetch_array($grupos)) {
-	// 	$pdf->SetFont('Arial','B',10);
-	// 	$pdf->SetFont('');
-	// 	$pdf->Cell(0,5,$grupo_a[$grupo['idgrupo']]['grupo'],1,1,'C');
-
-
-	// 	$SQL="SELECT * FROM modelos WHERE activo = 1 AND idgrupo=".$grupo['idgrupo']." ORDER BY posicion" ;
-	// 	$modelos=mysqli_query($con, $SQL);
-
-	// 	while ($modelo=mysqli_fetch_array($modelos)) {
+	while ($grupo=mysqli_fetch_array($grupos)) {
+		$pdf->SetFont('Arial','B',10);
+		$pdf->SetFont('');
+		$pdf->Cell(0,5,$grupo_a[$grupo['idgrupo']]['grupo'],1,1,'C');
 
 
-	// 		$SQL="SELECT * FROM asignaciones WHERE borrar=0 AND entregada = 0 AND id_modelo = ". $modelo['idmodelo'] ." ORDER BY año, id_mes, nro_orden, nro_unidad";
-	// 		$unidades = mysqli_query($con, $SQL);
+		$SQL="SELECT * FROM modelos WHERE activo = 1 AND idgrupo=".$grupo['idgrupo']." ORDER BY posicion" ;
+		$modelos=mysqli_query($con, $SQL);
 
-	// 		$cant=mysqli_num_rows($unidades);
-
-	// 		$pdf->SetFont('Arial','B',8);
-	// 		$pdf->SetFont('');
-
-	// 		if ($cant>0) {
-	// 			$pdf->Cell(0,5,$modelo_a[$modelo['idmodelo']]['modelo'],0,1,'C');
-	// 			$pdf->Ln(2);
-	// 		}
-	// 		$pdf->SetFont('Arial','B',6.5);
-	// 		$pdf->SetFont('');
+		while ($modelo=mysqli_fetch_array($modelos)) {
 
 
-	// 		while ($unidad=mysqli_fetch_array($unidades)) {
+			$SQL="SELECT * FROM asignaciones WHERE borrar=0 AND entregada = 0 AND id_modelo = ". $modelo['idmodelo'] ." ORDER BY año, id_mes, nro_orden, nro_unidad";
+			$unidades = mysqli_query($con, $SQL);
 
-	// 			if ($unidad['reservada']==1 AND $unidad['estado_reserva']==0 ) {
-	// 				$pdf->SetFont('Arial','BI',6.5);
-	// 			}else{
-	// 				$pdf->SetFont('Arial','B',6.5);
-	// 				$pdf->SetFont('');
-	// 			}
-	// 			$dias = '';
+			$cant=mysqli_num_rows($unidades);
 
+			$pdf->SetFont('Arial','B',8);
+			$pdf->SetFont('');
 
-	// 			if ($unidad['fec_arribo']<>'') {
-	// 				$dias = ((strtotime($unidad['fec_arribo'])-strtotime(date("Y/m/d"))))/86400;
-	// 				$dias = abs($dias);
-	// 				$dias = floor($dias);
-	// 			}else{
-	// 				$dias = '-';
-	// 			}
+			if ($cant>0) {
+				$pdf->Cell(0,5,$modelo_a[$modelo['idmodelo']]['modelo'],0,1,'C');
+				$pdf->Ln(2);
+			}
+			$pdf->SetFont('Arial','B',6.5);
+			$pdf->SetFont('');
 
 
-	// 			$pdf->Cell(9,5,utf8_decode($unidad['nro_unidad']),1,0,'C');
-	// 			$pdf->Cell(15,5,utf8_decode($mes_a[$unidad['id_mes']]['mes']),1,0,'C');
-	// 			$pdf->Cell(10,5,utf8_decode($unidad['año']),1,0,'C');
-	// 			$pdf->Cell(18,5,utf8_decode($unidad['nro_orden']),1,0,'C');
-	// 			$pdf->Cell(10,5,utf8_decode($unidad['interno']),1,0,'C');
-	// 			$pdf->Cell(12,5,cambiarFormatoFecha($unidad['fec_despacho']),1,0,'C');
-	// 			$pdf->Cell(12,5,cambiarFormatoFecha($unidad['fec_arribo']),1,0,'C');
-	// 			$pdf->Cell(45,5,utf8_decode($grupo_a[$unidad['id_grupo']]['grupo']." ".$modelo_a[$unidad['id_modelo']]['modelo']),1,0,'C');
-	// 			$pdf->Cell(13,5,utf8_decode($unidad['chasis']),1,0,'C');
-	// 			$pdf->Cell(35,5,utf8_decode($color_a[$unidad['color_uno']]['color']." - ".$color_a[$unidad['color_dos']]['color']." - ".$color_a[$unidad['color_tres']]['color']),1,0,'C');
-	// 			$pdf->Cell(12,5,utf8_decode($color_a[$unidad['id_color']]['color']),1,0,'C');
+			while ($unidad=mysqli_fetch_array($unidades)) {
 
-	// 			if ($unidad['fec_arribo']!='' AND $unidad['fec_arribo']!=null) {
-	// 				$pdf->Cell(9,5,utf8_decode($sucursal_a[$unidad['id_ubicacion']]['sucres']),1,0,'C');
-	// 			 }else{
-	// 				// $pdf->Cell(9,5,utf8_decode($sucursal_a[$unidad['id_sucursal']]['sucres']),1,0,'C');
-	// 				$pdf->Cell(9,5,'-',1,0,'C');
-	// 			}
-	// 			//resalto la fuente de cancelación - Pedido Don Vargas
-	// 			$pdf->SetFont('Arial','B',7.5);
-
-	// 			if ($unidad['cancelada']==1) { $can= 'Si';}else{$can= '';}
-	// 			if ($unidad['patentada']==1) { $pat= '/Si';}else{$pat= '';}
-
-	// 			$pdf->Cell(9,5,$can."".$pat,1,0,'C');
+				if ($unidad['reservada']==1 AND $unidad['estado_reserva']==0 ) {
+					$pdf->SetFont('Arial','BI',6.5);
+				}else{
+					$pdf->SetFont('Arial','B',6.5);
+					$pdf->SetFont('');
+				}
+				$dias = '';
 
 
+				if ($unidad['fec_arribo']<>'') {
+					$dias = ((strtotime($unidad['fec_arribo'])-strtotime(date("Y/m/d"))))/86400;
+					$dias = abs($dias);
+					$dias = floor($dias);
+				}else{
+					$dias = '-';
+				}
 
-	// 			//retorno a la fuente original de la primera fila
 
-	// 			if ($unidad['reservada']==1 AND $unidad['estado_reserva']==0 ) {
-	// 				$pdf->SetFont('Arial','BI',6.5);
-	// 			}else{
-	// 				$pdf->SetFont('Arial','B',6.5);
-	// 				$pdf->SetFont('');
-	// 			}
-	// 			$pdf->Cell(9,5,$dias,1,0,'C');
-	// 			$pdf->Cell(31,5,utf8_decode($unidad['cliente']),1,0,'L');
-	// 			$pdf->Cell(17,5,utf8_decode($usuario_a[$unidad['id_asesor']]['nombre']),1,0,'C');
-	// 			$pdf->Cell(12,5,cambiarFormatoFecha($unidad['fec_reserva']),1,0,'C');
-	// 			$pdf->Ln();
-	// 		}
-	// 		$pdf->Ln(2);
-	// 	}
-	// }
+				$pdf->Cell(9,5,utf8_decode($unidad['nro_unidad']),1,0,'C');
+				$pdf->Cell(15,5,utf8_decode($mes_a[$unidad['id_mes']]['mes']),1,0,'C');
+				$pdf->Cell(10,5,utf8_decode($unidad['año']),1,0,'C');
+				$pdf->Cell(18,5,utf8_decode($unidad['nro_orden']),1,0,'C');
+				$pdf->Cell(10,5,utf8_decode($unidad['interno']),1,0,'C');
+				$pdf->Cell(12,5,cambiarFormatoFecha($unidad['fec_despacho']),1,0,'C');
+				$pdf->Cell(12,5,cambiarFormatoFecha($unidad['fec_arribo']),1,0,'C');
+				$pdf->Cell(45,5,utf8_decode($grupo_a[$unidad['id_grupo']]['grupo']." ".$modelo_a[$unidad['id_modelo']]['modelo']),1,0,'C');
+				$pdf->Cell(13,5,utf8_decode($unidad['chasis']),1,0,'C');
+				$pdf->Cell(35,5,utf8_decode($color_a[$unidad['color_uno']]['color']." - ".$color_a[$unidad['color_dos']]['color']." - ".$color_a[$unidad['color_tres']]['color']),1,0,'C');
+				$pdf->Cell(12,5,utf8_decode($color_a[$unidad['id_color']]['color']),1,0,'C');
+
+				if ($unidad['fec_arribo']!='' AND $unidad['fec_arribo']!=null) {
+					$pdf->Cell(9,5,utf8_decode($sucursal_a[$unidad['id_ubicacion']]['sucres']),1,0,'C');
+				 }else{
+					// $pdf->Cell(9,5,utf8_decode($sucursal_a[$unidad['id_sucursal']]['sucres']),1,0,'C');
+					$pdf->Cell(9,5,'-',1,0,'C');
+				}
+				//resalto la fuente de cancelación - Pedido Don Vargas
+				$pdf->SetFont('Arial','B',7.5);
+
+				if ($unidad['cancelada']==1) { $can= 'Si';}else{$can= '';}
+				if ($unidad['patentada']==1) { $pat= '/Si';}else{$pat= '';}
+
+				$pdf->Cell(9,5,$can."".$pat,1,0,'C');
+
+
+
+				//retorno a la fuente original de la primera fila
+
+				if ($unidad['reservada']==1 AND $unidad['estado_reserva']==0 ) {
+					$pdf->SetFont('Arial','BI',6.5);
+				}else{
+					$pdf->SetFont('Arial','B',6.5);
+					$pdf->SetFont('');
+				}
+				$pdf->Cell(9,5,$dias,1,0,'C');
+				$pdf->Cell(31,5,utf8_decode($unidad['cliente']),1,0,'L');
+				$pdf->Cell(17,5,utf8_decode($usuario_a[$unidad['id_asesor']]['nombre']),1,0,'C');
+				$pdf->Cell(12,5,cambiarFormatoFecha($unidad['fec_reserva']),1,0,'C');
+				$pdf->Ln();
+			}
+			$pdf->Ln(2);
+		}
+	}
 $pdf->Output();
 //$pdf->Output('PlanilaAsignacion_'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
 //$pdf->close();
