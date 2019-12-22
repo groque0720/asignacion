@@ -21,7 +21,7 @@
 	};
 
 	function cambiarFormatoFecha($fecha){
-		if ($fecha!='') {
+		if ($fecha!='' AND $fecha != null) {
 			list($anio,$mes,$dia)=explode("-",$fecha);
     		return $dia."-".$mes."-".substr($anio,2);
 		}else{
