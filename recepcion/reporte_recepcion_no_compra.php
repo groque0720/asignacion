@@ -63,7 +63,7 @@ $pdf->AliasNbPages();
 $pdf->AddPage('P','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-// $pdf->SetAutoPageBreak(auto,6);
+// $pdf->SetAutoPageBreak(true,6);
 $pdf->SetFont('Arial','BI',8);
 
 

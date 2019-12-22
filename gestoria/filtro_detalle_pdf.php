@@ -1,4 +1,4 @@
-﻿<?php 
+﻿<?php
 include("funciones/func_mysql.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
@@ -100,7 +100,7 @@ $pdf->SetTitle($grupos);
 $pdf->AddPage('P','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-$pdf->SetAutoPageBreak(auto,6);
+$pdf->SetAutoPageBreak(true,6);
 $pdf->SetFont('Arial','B',7);
 $pdf->SetFont('');
 $nro=0;
@@ -108,7 +108,7 @@ $nro=0;
 $SQL="SELECT * FROM provincias";
 $provincias = mysqli_query($con, $SQL);
 
-	for ($i=0; $i <= $cant_grupo; $i++) { 
+	for ($i=0; $i <= $cant_grupo; $i++) {
 		$total_gral_a[$i]=0;
 	}
 
@@ -120,7 +120,7 @@ while ($provincia=mysqli_fetch_array($provincias)) {
 	// $pdf->Ln();
 	$cant_tramites_p=mysqli_num_rows($tram_provs);
 
-	for ($i=0; $i <= $cant_grupo; $i++) { 
+	for ($i=0; $i <= $cant_grupo; $i++) {
 		$total_por_provincia_a[$i]=0;
 	}
 
@@ -169,7 +169,7 @@ while ($provincia=mysqli_fetch_array($provincias)) {
 				$pdf->Ln();
 			}
 		}// fin while localidades
-		
+
 	}// fin if  cantidad tramites provincia
 
 }//fin while provincias

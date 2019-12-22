@@ -1,4 +1,4 @@
-<?php 
+<?php
 include("funciones/func_mysql.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
@@ -28,7 +28,7 @@ class PDF extends FPDF
 
 
 		$this->Cell(37,5,'Meses',1,0,'C');
-		
+
 		$m_a = (int)date("n")-1;
 		$a_a=(int)date("y");
 		$mes_a[1]='Ene';
@@ -104,7 +104,7 @@ $pdf->AliasNbPages();
 $pdf->AddPage('P','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-// $pdf->SetAutoPageBreak(auto,6);
+// $pdf->SetAutoPageBreak(true,6);
 $pdf->SetFont('Arial','B',6.5);
 $pdf->SetFont('');
 
@@ -250,13 +250,13 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Ln();
 
 		//Acumulo Totales TASA Por MODELO y GENERAL
-		for ($i=0; $i < 10; $i++) { 
+		for ($i=0; $i < 10; $i++) {
 				$total_m[$i]['cant']=(int)$total_m[$i]['cant']+(int)$stock_a[$i]['cant'];
 				$total_g[$i]['cant']=(int)$total_g[$i]['cant']+(int)$stock_a[$i]['cant'];
 		}
 		$total_r_m[9]['cant']=0;
 		//Acumulo Totales RESERVAS Por MODELO y GENERAL
-		for ($i=0; $i < 9; $i++) { 
+		for ($i=0; $i < 9; $i++) {
 			if ($i==0) {
 				$total_r_m[$i]['cant']=(int)$total_r_m[$i]['cant']+(int)$stock_ant[0]['cant']+(int)$reserva_a[0]['cant'];
 				$total_r_g[$i]['cant']=(int)$total_r_g[$i]['cant']+(int)$stock_ant[0]['cant']+(int)$reserva_a[0]['cant'];
@@ -292,10 +292,10 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Ln(2);
 
 
-		for ($i=0; $i < 10; $i++) { 
+		for ($i=0; $i < 10; $i++) {
 			$total_m[$i]['cant']=0;
 		}
-		for ($i=0; $i < 10; $i++) { 
+		for ($i=0; $i < 10; $i++) {
 			$total_r_m[$i]['cant']=0;
 		}
 

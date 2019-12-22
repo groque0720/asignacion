@@ -1,4 +1,4 @@
-<?php 
+<?php
 include("funciones/func_mysql.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
@@ -37,7 +37,7 @@ class PDF extends FPDF
 
 
 		//$this->Cell(0.3,5,'',1,0,'C');//linea divisoria por mes
-		
+
 
 
 		$this->Ln();
@@ -57,7 +57,7 @@ $pdf->AliasNbPages();
 $pdf->AddPage('P','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-// $pdf->SetAutoPageBreak(auto,6);
+// $pdf->SetAutoPageBreak(true,6);
 $pdf->SetFont('Arial','B',6.5);
 $pdf->SetFont('');
 

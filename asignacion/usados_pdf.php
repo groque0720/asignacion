@@ -91,7 +91,7 @@ class PDF extends FPDF
 		if ($this->PageNo()==1) {
 			$this->SetFont('Arial','B',10);
 			$this->Cell(100,5,'DERKA Y VARGAS S. A.',0,0,'L');
-			$this->Cell(150,5,utf8_decode('PLANILLA DE UNIDADES USADAS'),0,0,'C');
+			$this->Cell(150,5,('PLANILLA DE UNIDADES USADAS'),0,0,'C');
 			$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
 			$this->Ln();
 			$this->Cell(0,0,'',1,0,'C');
@@ -99,20 +99,20 @@ class PDF extends FPDF
 		}
 	$this->SetFont('Arial','I',7);
 	$this->SetFont('');
-	$this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
+	$this->Cell(0,5,('Pag.').$this->PageNo().'/{nb}',0,0,'R');
 	$this->Ln();
 	$this->Cell(7,5,'Nro Un.',0,0,'C');
 	$this->Cell(7,5,'Interno',0,0,'C');
-	$this->Cell(51,5,utf8_decode('Marca - Modelo - Versión'),0,0,'C');
+	$this->Cell(51,5,('Marca - Modelo - Version'),0,0,'C');
 	$this->Cell(5,5,'Por',0,0,'C');
-	$this->Cell(8,5,utf8_decode('Año'),0,0,'C');
+	$this->Cell(8,5,('Ano'),0,0,'C');
 	$this->Cell(11,5,'Km',0,0,'C');
 	$this->Cell(13,5,'Dominio',0,0,'C');
 	$this->Cell(13,5,'Color',0,0,'C');
-	$this->Cell(33,5,utf8_decode('Ult. Dueño'),0,0,'C');
-	$this->Cell(15,5,utf8_decode('Tomó'),0,0,'C');
-	$this->Cell(13,5,utf8_decode('Fec. Rec.'),0,0,'C');
-	$this->Cell(6,5,utf8_decode('Ant.'),0,0,'C');
+	$this->Cell(33,5,('Ult. Dueno'),0,0,'C');
+	$this->Cell(15,5,('Tomo'),0,0,'C');
+	$this->Cell(13,5,('Fec. Rec.'),0,0,'C');
+	$this->Cell(6,5,('Ant.'),0,0,'C');
 	$this->Cell(17,5,'Toma + Imp.',0,0,'C');
 	$this->Cell(17,5,'Costo Cont.',0,0,'C');
 	$this->Cell(17,5,'Costo Rep.',0,0,'C');
@@ -122,7 +122,7 @@ class PDF extends FPDF
 	$this->Cell(6,5,'Canc.',0,0,'C');
 	$this->Cell(26,5,'Cliente',0,0,'C');
 	$this->Cell(17,5,'Asesor',0,0,'C');
-	$this->Cell(14,5,utf8_decode('Fec. Rva.'),0,0,'C');
+	$this->Cell(14,5,('Fec. Rva.'),0,0,'C');
 	$this->Ln();
 	$this->Cell(0,0,'',1,0,'C');
 	$this->Ln(3);
@@ -148,13 +148,16 @@ $estado_usado = mysqli_query($con, $SQL);
 
 $nro = 0;
 
+$total_costo_rep = 0;
+$total_gral_costo_rep=0;
+
 while ($estado=mysqli_fetch_array($estado_usado)) {
 
 	$total_toma=0;
 	$total_costo=0;
 	$total_p_venta=0;
 	$total_p_info=0;
-	$nro = 0;		
+	$nro = 0;
 
 	$SQL="SELECT *, DATEDIFF(DATE(NOW()),fec_recepcion)as ant FROM asignaciones_usados WHERE entregado = 0 AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
 	$usados=mysqli_query($con, $SQL);
@@ -164,7 +167,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 
 		$pdf->SetFont('Arial','BI',8);
 
-		$pdf->Cell(0,5,utf8_decode($estado['estado_usado']),0,0,'L');
+		$pdf->Cell(0,5,($estado['estado_usado']),0,0,'L');
 		$pdf->Ln();
 
 
@@ -187,7 +190,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 				$cortar=$largo-39;
 				$vehiculo=substr($usado['vehiculo'], 0, -$cortar).'[..]';
 			}
-			$pdf->Cell(51,5,utf8_decode($vehiculo),1,0,'L');
+			$pdf->Cell(51,5,($vehiculo),1,0,'L');
 			$pdf->Cell(3,5,$por_a[$usado['por']]['grupo_res'],1,0,'C');
 			$pdf->Cell(8,5,$usado['año'],1,0,'C');
 			$pdf->Cell(11,5,number_format($usado['km'], 0, ',','.'),1,0,'R');
@@ -205,8 +208,8 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 
 
 
-			$pdf->Cell(33,5,utf8_decode($ultimo_dueño),1,0,'L');
-			$pdf->Cell(15,5,utf8_decode($usuario_a[$usado['asesortoma']]['nombre']),1,0,'C');
+			$pdf->Cell(33,5,($ultimo_dueño),1,0,'L');
+			$pdf->Cell(15,5,($usuario_a[$usado['asesortoma']]['nombre']),1,0,'C');
 			$pdf->Cell(12,5,cambiarFormatoFecha($usado['fec_recepcion']),1,0,'C');
 
 			if ($usado['ant']/30>=1) {
@@ -246,8 +249,8 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 				$cliente=substr($usado['cliente'], 0, -$cortar).'[..]';
 			}
 
-			$pdf->Cell(26,5,utf8_decode($cliente),1,0,'L');
-			$pdf->Cell(17,5,utf8_decode($usuario_a[$usado['id_asesor']]['nombre']),1,0,'C');
+			$pdf->Cell(26,5,($cliente),1,0,'L');
+			$pdf->Cell(17,5,($usuario_a[$usado['id_asesor']]['nombre']),1,0,'C');
 			$pdf->Cell(12,5,cambiarFormatoFecha($usado['fec_reserva']),1,0,'C');
 			$pdf->Ln();
 
@@ -266,7 +269,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 		}
 
 		$pdf->SetFont('Arial','BI',8);
-		$pdf->Cell(182,5,'Total '.utf8_decode($estado['estado_usado']).'   ',0,0,'R');
+		$pdf->Cell(182,5,'Total '.($estado['estado_usado']).'   ',0,0,'R');
 		$pdf->SetFont('Arial','B',6.5);
 
 		if ($es_gerente==1) {
