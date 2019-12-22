@@ -5,7 +5,7 @@ require('fpdf/fpdf.php');
 
 	include("funciones/func_mysql.php");
 	conectar();
-	//mysqli_query($con,"SET NAMES 'utf8'");
+	mysqli_query($con,"SET NAMES 'utf8'");
 	extract($_POST);
 
 	//cargo en un arreglo todos los meses que ocuparia en la tabla.
@@ -76,7 +76,7 @@ class PDF extends FPDF
 		if ($this->PageNo()==1) {
 			$this->SetFont('Arial','B',10);
 			$this->Cell(60,5,'DERKA Y VARGAS S. A.',0,0,'L');
-			$this->Cell(150,5,('PLANILLA DE ASIGNACIÓN'),0,0,'C');
+			$this->Cell(150,5,('PLANILLA DE ASIGNACION'),0,0,'C');
 			$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
 			$this->Ln();
 			$this->Cell(0,0,'',1,0,'C');
@@ -84,11 +84,11 @@ class PDF extends FPDF
 		}
 		$this->SetFont('Arial','I',7);
 		$this->SetFont('');
-		$this->Cell(0,5,('Página').$this->PageNo().'/{nb}',0,0,'R');
+		$this->Cell(0,5,('Pag.').$this->PageNo().'/{nb}',0,0,'R');
 		$this->Ln();
 		$this->Cell(9,5,'Nro Un.',0,0,'C');
 		$this->Cell(15,5,'Mes',0,0,'C');
-		$this->Cell(10,5,('Año'),0,0,'C');
+		$this->Cell(10,5,('Ano'),0,0,'C');
 		$this->Cell(18,5,'Nro Orden',0,0,'C');
 		$this->Cell(10,5,'Interno',0,0,'C');
 		$this->Cell(12,5,'Despacho',0,0,'C');
