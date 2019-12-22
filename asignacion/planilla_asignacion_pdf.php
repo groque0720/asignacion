@@ -73,15 +73,15 @@ class PDF extends FPDF
 // Cabecera de página
 function Header()
 {
-	if ($this->PageNo()==1) {
-		$this->SetFont('Arial','B',10);
-		$this->Cell(60,5,'DERKA Y VARGAS S. A.',0,0,'L');
-		$this->Cell(150,5,utf8_decode('PLANILLA DE ASIGNACIÓN'),0,0,'C');
-		$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
-		$this->Ln();
-		$this->Cell(0,0,'',1,0,'C');
-		$this->Ln();
-	}
+	// if ($this->PageNo()==1) {
+	// 	$this->SetFont('Arial','B',10);
+	// 	$this->Cell(60,5,'DERKA Y VARGAS S. A.',0,0,'L');
+	// 	$this->Cell(150,5,utf8_decode('PLANILLA DE ASIGNACIÓN'),0,0,'C');
+	// 	$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
+	// 	$this->Ln();
+	// 	$this->Cell(0,0,'',1,0,'C');
+	// 	$this->Ln();
+	// }
 $this->SetFont('Arial','I',7);
 $this->SetFont('');
 $this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
