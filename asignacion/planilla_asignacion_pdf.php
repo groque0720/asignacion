@@ -120,7 +120,7 @@ $this->Ln(3);
 // }
 }
 
-$pdf = new PDF();
+$pdf = new FPDF();
 $pdf->AliasNbPages();
 $pdf->AddPage('L','A4');
 $pdf->SetLineWidth(0.1);

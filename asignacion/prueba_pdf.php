@@ -124,6 +124,7 @@ $this->Ln(3);
 $pdf = new FPDF();
 $pdf->AliasNbPages();
 $pdf->AddPage('L','A4');
+$pdf->SetFont('Arial','B',16);
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
 $pdf->SetAutoPageBreak(true,5);
