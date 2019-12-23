@@ -12,25 +12,35 @@
 
 	function conectar() {
 		global $con;
-		$con = mysql_connect(HOST,USER,PASS) or die("ERROR EN CONEXION:".mysql_error());
-		$base_datos=mysql_select_db(DB, $con) or die("ERROR AL SELECCIONAR LA BASE DE DATOS:".mysql_error());
-		//mysql_query("SET NAMES 'utf8'");
+		$con = mysqli_connect(HOST,USER,PASS) or die("ERROR EN CONEXION:".mysqli_error());
+		$base_datos=mysqli_select_db($con, DB) or die("ERROR AL SELECCIONAR LA BASE DE DATOS:".mysqli_error());
+		mysqli_query($con, "SET NAMES 'utf8'");
 		return $con;
 	};
 
 	function cambiarFormatoFecha($fecha){
-		if (is_null($fecha)) {
-			return "";
+		if ($fecha!='' AND $fecha != null) {
+			list($anio,$mes,$dia)=explode("-",$fecha);
+    		return $dia."-".$mes."-".substr($anio,2);
 		}else{
-		    list($anio,$mes,$dia)=explode("-",$fecha);
-		    return $dia."-".$mes."-".$anio;
+			return '-';
 		}
-
 	};
 
 	function cambiarFormatohora($hora){
-    list($horas,$minutos,$segundos)=explode(":",$hora);
-    return $horas.":".$minutos;
-	};
+		if ($hora != null AND $hora != '') {
+			list($horas,$minutos,$segundos)=explode(":",$hora);
+    		return $horas.":".$minutos;
+		}else{
+			return '-';
+		}
+ 	};
+
+	function dias_transcurridos($fecha_i,$fecha_f)
+	{
+		$dias	= (strtotime($fecha_i)-strtotime($fecha_f))/86400;
+		$dias 	= abs($dias); $dias = floor($dias);
+		return $dias;
+	}
 
 ?>
