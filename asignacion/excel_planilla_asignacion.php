@@ -3,7 +3,7 @@
 
   include_once("funciones/func_mysql.php");
   conectar();
-  mysqli_query($con,"SET NAMES 'utf8'");
+  //mysqli_query($con,"SET NAMES 'utf8'");
 
   $SQL="SELECT * FROM view_asignaciones";
   $unidades = mysqli_query($con, $SQL);
@@ -89,13 +89,13 @@
 				$dias = '';
 
 
-				// if ($registro->fec_arribo<>'') {
-				// 	$dias = ((strtotime($registro->fec_arribo)-strtotime(date("Y/m/d"))))/86400;
-				// 	$dias = abs($dias);
-				// 	$dias = floor($dias);
-				// }else{
-				// 	$dias = '-';
-				// }
+				if ($registro->fec_arribo<>'') {
+					$dias = ((strtotime($registro->fec_arribo)-strtotime(date("Y/m/d"))))/86400;
+					$dias = abs($dias);
+					$dias = floor($dias);
+				}else{
+					$dias = '-';
+				}
 
 
       $objPHPExcel->setActiveSheetIndex(0)
