@@ -26,6 +26,3 @@ header('Cache-Control: max-age=0');
     </tr>
 </table>
 
-<?php
-ob_end_clean();
- ?>
