@@ -64,7 +64,7 @@
 
    $i = 2;
 
-   while ($registro = mysqli_fetch_object ($unidades)) {
+   while ($registro = mysqli_fetch_object($unidades)) {
 
       if ($registro->id_ubicacion != '' AND $registro->id_ubicacion != null AND $registro->id_ubicacion != 0) {
         $ubicacion = $sucursal_a[$registro->id_ubicacion]['sucursal'];
@@ -140,5 +140,5 @@ $objWriter=PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 ob_end_clean();
 $objWriter->save('php://output');
 exit;
-mysql_close ();
+//mysql_close ();
 ?>
