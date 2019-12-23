@@ -25,23 +25,23 @@
         ->setKeywords("RoqueSystem")
         ->setCategory("Asignación");
 
-      $SQL="SELECT * FROM colores ORDER BY color";
-      $colores=mysqli_query($con, $SQL);
-      $color_a[0]['color']= '-';
-      $i=1;
-        while ($color=mysqli_fetch_array($colores)) {
-          $color_a[$color['idcolor']]['color']= $color['color'];
-          $i++;
-        }
+      // $SQL="SELECT * FROM colores ORDER BY color";
+      // $colores=mysqli_query($con, $SQL);
+      // $color_a[0]['color']= '-';
+      // $i=1;
+      //   while ($color=mysqli_fetch_array($colores)) {
+      //     $color_a[$color['idcolor']]['color']= $color['color'];
+      //     $i++;
+      //   }
 
-      $SQL="SELECT * FROM sucursales";
-      $sucursales=mysqli_query($con, $SQL);
-      $sucursal_a[0]['sucursal']= '-';
-      $i=1;
-        while ($sucursal=mysqli_fetch_array($sucursales)) {
-          $sucursal_a[$i]['sucursal']= $sucursal['sucursal'];
-          $i++;
-        }
+      // $SQL="SELECT * FROM sucursales";
+      // $sucursales=mysqli_query($con, $SQL);
+      // $sucursal_a[0]['sucursal']= '-';
+      // $i=1;
+      //   while ($sucursal=mysqli_fetch_array($sucursales)) {
+      //     $sucursal_a[$i]['sucursal']= $sucursal['sucursal'];
+      //     $i++;
+      //   }
       $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A1','Nro Unidad')
             ->setCellValue('B1','Mes')
