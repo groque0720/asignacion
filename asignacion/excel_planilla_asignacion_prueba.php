@@ -64,23 +64,23 @@
 
    $i = 2;
 
-   while ($registro = mysqli_fetch_object($unidades)) {
+   while ($registro = mysqli_fetch_array($unidades)) {
 
-      if ($registro->id_ubicacion != '' AND $registro->id_ubicacion != null AND $registro->id_ubicacion != 0) {
-        $ubicacion = $sucursal_a[$registro->id_ubicacion]['sucursal'];
+      if ($registro['id_ubicacion'] != '' AND $registro['id_ubicacion'] != null AND $registro['id_ubicacion'] != 0) {
+        $ubicacion = $sucursal_a[$registro['id_ubicacion']]['sucursal'];
       }else{
-        $ubicacion = $sucursal_a[$registro->id_ubicacion]['sucursal'];
+        $ubicacion = $sucursal_a[$registro['id_ubicacion']]['sucursal'];
       }
 
-      $color_asignado =$color_a[$registro->id_color]['color'];
+      $color_asignado =$color_a[$registro['id_color']]['color'];
 
-      if ($registro->cancelada == 1) {
+      if ($registro['cancelada'] == 1) {
         $cancelado = 'Si';
       }else{
         $cancelado = 'No';
       }
 
-      if ($registro->estado_reserva == 1) {
+      if ($registro['estado_reserva'] == 1) {
         $estado_reserva = 'Si';
       }else{
         $estado_reserva = 'No';
@@ -89,8 +89,8 @@
 				$dias = '';
 
 
-				if ($registro->fec_arribo<>'') {
-					$dias = ((strtotime($registro->fec_arribo)-strtotime(date("Y/m/d"))))/86400;
+				if ($registro['fec_arribo']<>'') {
+					$dias = ((strtotime($registro['fec_arribo'])-strtotime(date("Y/m/d"))))/86400;
 					$dias = abs($dias);
 					$dias = floor($dias);
 				}else{
@@ -99,23 +99,23 @@
 
 
       $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A'.$i, $registro->nro_unidad)
-            ->setCellValue('B'.$i, $registro->mes)
-            ->setCellValue('C'.$i, $registro->año)
-            ->setCellValue('D'.$i, $registro->nro_orden)
-            ->setCellValue('E'.$i, $registro->interno)
-            ->setCellValue('F'.$i, cambiarFormatoFecha($registro->fec_despacho))
-            ->setCellValue('G'.$i, cambiarFormatoFecha($registro->fec_arribo))
-            ->setCellValue('H'.$i, $registro->grupo)
-            ->setCellValue('I'.$i, $registro->modelo)
-            ->setCellValue('J'.$i, $registro->chasis)
+            ->setCellValue('A'.$i, $registro['nro_unidad'])
+            ->setCellValue('B'.$i, $registro['mes'])
+            ->setCellValue('C'.$i, $registro['año'])
+            ->setCellValue('D'.$i, $registro['nro_orden'])
+            ->setCellValue('E'.$i, $registro['interno'])
+            ->setCellValue('F'.$i, cambiarFormatoFecha($registro['fec_despacho']))
+            ->setCellValue('G'.$i, cambiarFormatoFecha($registro['fec_arribo']))
+            ->setCellValue('H'.$i, $registro['grupo'])
+            ->setCellValue('I'.$i, $registro['modelo'])
+            ->setCellValue('J'.$i, $registro['chasis'])
             ->setCellValue('K'.$i, $color_asignado)
             ->setCellValue('L'.$i, $ubicacion)
             ->setCellValue('M'.$i, $cancelado)
 	          ->setCellValue('N'.$i, $dias)
-            ->setCellValue('O'.$i, $registro->cliente)
-            ->setCellValue('P'.$i, $registro->asesor)
-            ->setCellValue('Q'.$i, cambiarFormatoFecha($registro->fec_reserva))
+            ->setCellValue('O'.$i, $registro['cliente'])
+            ->setCellValue('P'.$i, $registro['asesor'])
+            ->setCellValue('Q'.$i, cambiarFormatoFecha($registro['fec_reserva']))
             ->setCellValue('R'.$i, $estado_reserva);
       $i++;
    }
