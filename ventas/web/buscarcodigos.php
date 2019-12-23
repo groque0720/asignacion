@@ -1,6 +1,8 @@
 <?php
 //recibo el dato que deseo buscar sugerencias
-$datoBuscar = utf8_decode($_GET["term"]);
+//$datoBuscar = utf8_decode($_GET["term"]);
+
+$datoBuscar = $_GET["term"];
 
 //conecto con una base de datos
 include("../funciones/func_mysql.php");
