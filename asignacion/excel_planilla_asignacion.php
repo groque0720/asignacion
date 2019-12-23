@@ -1,4 +1,4 @@
-﻿<?php
+﻿ <?php
 
 
   include_once("funciones/func_mysql.php");
