@@ -36,7 +36,7 @@ header('Cache-Control: max-age=0');
 
 ?>
 
-<table>
+<table border="1">
     <thead>
         <tr style="background: #CBC6C6;">
             <td>Nro Unidad</td>
