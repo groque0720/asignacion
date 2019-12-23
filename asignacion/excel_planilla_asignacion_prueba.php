@@ -15,15 +15,15 @@
    $objPHPExcel = new PHPExcel();
 
    //Informacion del excel
-   $objPHPExcel->
-    getProperties()
-        ->setCreator("Roque Gómez")
-        ->setLastModifiedBy("Roque Gómez")
-        ->setTitle("Derka y Vargas S. A.")
-        ->setSubject("Planilla de Asignación")
-        ->setDescription("Documento generado en RoqueSystem")
-        ->setKeywords("RoqueSystem")
-        ->setCategory("Asignación");
+   // $objPHPExcel->
+   //  getProperties()
+   //      ->setCreator("Roque Gómez")
+   //      ->setLastModifiedBy("Roque Gómez")
+   //      ->setTitle("Derka y Vargas S. A.")
+   //      ->setSubject("Planilla de Asignación")
+   //      ->setDescription("Documento generado en RoqueSystem")
+   //      ->setKeywords("RoqueSystem")
+   //      ->setCategory("Asignación");
 
       // $SQL="SELECT * FROM colores ORDER BY color";
       // $colores=mysqli_query($con, $SQL);
