@@ -3,6 +3,8 @@ include("../funciones/func_mysql.php");
 conectar();
 //mysql_query("SET NAMES 'utf8'");
 
+extract($_POST);
+
 echo '<script language = javascript>
 	alert("Facturacion Activa");
 	</script>';
@@ -16,7 +18,7 @@ $lin_res=mysqli_query($con, $SQL);
 
 $SQL="SELECT * FROM facturas_lineas WHERE idfactura =".$factura['idfactura'];
 $result = mysqli_query($con, $SQL);
-$cant = mysql_num_rows($result);
+$cant = mysqli_num_rows($result);
 
 if ($cant == 0) {
 
