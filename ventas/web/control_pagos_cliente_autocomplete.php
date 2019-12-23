@@ -1,7 +1,7 @@
 <?php
 //recibo el dato que deseo buscar sugerencias
-$datoBuscar = utf8_decode($_GET["term"]);
-
+// $datoBuscar = utf8_decode($_GET["term"]);
+$datoBuscar = $_GET["term"];
 //conecto con una base de datos
 include("../funciones/func_mysql.php");
 conectar();
@@ -18,7 +18,7 @@ $ssql="SELECT
 			nombre LIKE '%" . $datoBuscar . "%' ORDER BY cliente ASC LIMIT 15";
 //$ssql = "SELECT * FROM codigos WHERE  detalle LIKE '%" . $datoBuscar . "%'";
 //echo $ssql;
-$rs = mysql_query($ssql);
+$rs = mysqli_query($con, $ssql);
 
 
 //creo el array de los elementos sugeridos

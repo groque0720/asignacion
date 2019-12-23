@@ -86,7 +86,7 @@ $(document).ready(function(){
 
 		$(".facturar").click(function(event) {
 
-		var id = $(this).attr('data-id');
+			var id = $(this).attr('data-id');
 			$.ajax({
 				url:"facturacion_cargar.php",
 				cache:false,
@@ -95,7 +95,7 @@ $(document).ready(function(){
 				success:function(result){
 					document.location.href ="facturacion.php?IDrecord="+id;
 				}
-			})
+			});
 		});
 
 	});
