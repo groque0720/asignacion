@@ -11,7 +11,7 @@ conectar();
 // $ssql = "SELECT * FROM codigos WHERE idcodigo <> 1 AND idcodigo <> 2 AND  idcodigo <> 3 AND detalle LIKE '%" . $datoBuscar . "%'";
 $ssql = "SELECT * FROM codigos WHERE  detalle LIKE '%" . $datoBuscar . "%'";
 //echo $ssql;
-$rs = mysql_query($ssql);
+$rs = mysqli_query($con, $ssql);
 
 //creo el array de los elementos sugeridos
 $arrayElementos = array();
