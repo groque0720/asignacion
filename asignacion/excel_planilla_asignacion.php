@@ -39,24 +39,24 @@ header('Cache-Control: max-age=0');
 <table border="1">
     <thead>
         <tr style="background: #CBC6C6;">
-            <td>Nro Unidad</td>
-            <td>Mes</td>
-            <td>Año</td>
-            <td>Nro Orden</td>
-            <td>Interno</td>
-            <td>Fec. Despacho</td>
-            <td>Fec. Arribo</td>
-            <td>Modelo</td>
-            <td>Versión</td>
-            <td>Chasis</td>
-            <td>Color Asignado</td>
-            <td>Dest. / Ub.</td>
-            <td>Cancelado</td>
-            <td>Antiguedad</td>
-            <td>Cliente</td>
-            <td>Asesor</td>
-            <td>Fec. Reserva</td>
-            <td>Confirmada</td>
+            <td style="text-align: center;">Nro Unidad</td>
+            <td style="text-align: center;">Mes</td>
+            <td style="text-align: center;">Año</td>
+            <td style="text-align: center;">Nro Orden</td>
+            <td style="text-align: center;">Interno</td>
+            <td style="text-align: center;">Fec. Despacho</td>
+            <td style="text-align: center;">Fec. Arribo</td>
+            <td style="text-align: center;">Modelo</td>
+            <td style="text-align: center;">Versión</td>
+            <td style="text-align: center;">Chasis</td>
+            <td style="text-align: center;">Color Asignado</td>
+            <td style="text-align: center;">Dest. / Ub.</td>
+            <td style="text-align: center;">Cancelado</td>
+            <td style="text-align: center;">Antiguedad</td>
+            <td style="text-align: center;">Cliente</td>
+            <td style="text-align: center;">Asesor</td>
+            <td style="text-align: center;">Fec. Reserva</td>
+            <td style="text-align: center;">Confirmada</td>
         </tr>
     </thead>
     <tbody>
