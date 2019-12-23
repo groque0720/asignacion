@@ -124,23 +124,23 @@ $pdf->AliasNbPages();
 $pdf->AddPage('L','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-$pdf->SetAutoPageBreak(auto,5);
+$pdf->SetAutoPageBreak(true,5);
 
 $SQL="SELECT * FROM grupos WHERE activo = 1 AND cerokilometro = 1 AND posicion>0 ORDER BY posicion";
 $grupos=mysqli_query($con, $SQL);
 
 	while ($grupo=mysqli_fetch_array($grupos)) {
-		// $pdf->SetFont('Arial','B',10); 
+		// $pdf->SetFont('Arial','B',10);
 		// $pdf->SetFont('');
 		// $pdf->Cell(0,5,$grupo_a[$grupo['idgrupo']]['grupo'],1,1,'C');
-		
+
 
 		$SQL="SELECT * FROM modelos WHERE activo = 1 AND idgrupo=".$grupo['idgrupo']." ORDER BY posicion" ;
 		$modelos=mysqli_query($con, $SQL);
 
 
 		while ($modelo=mysqli_fetch_array($modelos)) {
-			
+
 
 			$SQL="SELECT * FROM asignaciones WHERE entregada = 0 AND id_modelo = ". $modelo['idmodelo'] .$cadena."  ORDER BY año, id_mes, nro_orden, nro_unidad";
 			$unidades = mysqli_query($con, $SQL);
@@ -157,7 +157,7 @@ $grupos=mysqli_query($con, $SQL);
 			$pdf->SetFont('Arial','B',6.5);
 			$pdf->SetFont('');
 
-			
+
 			while ($unidad=mysqli_fetch_array($unidades)) {
 
 				if ($unidad['reservada']==1 AND $unidad['estado_reserva']==0 ) {
@@ -186,7 +186,7 @@ $grupos=mysqli_query($con, $SQL);
 				}
 				//resalto la fuente de cancelación - Pedido Don Vargas
 				$pdf->SetFont('Arial','B',7.5);
-				
+
 				if ($unidad['cancelada']==1) { $can= 'Si';}else{$can= '';}
 				if ($unidad['patentada']==1) { $pat= '/Si';}else{$pat= '';}
 
@@ -207,7 +207,7 @@ $grupos=mysqli_query($con, $SQL);
 			if ($cant>0) {
 				$pdf->Ln(2);
 			}
-		}	
+		}
 	}
 
 $pdf->Output('PlanilaAsignacion_'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
