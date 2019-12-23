@@ -1,6 +1,5 @@
 ﻿ <?php
 
-
   include_once("funciones/func_mysql.php");
   conectar();
   //mysqli_query($con,"SET NAMES 'utf8'");
@@ -8,9 +7,9 @@
   $SQL="SELECT * FROM view_asignaciones";
   $unidades = mysqli_query($con, $SQL);
 
- $registros = mysqli_num_rows($unidades);
+ // $registros = mysqli_num_rows($unidades);
 
- if ($registros > 0) {
+ // if ($registros > 0) {
    require_once 'Classes/PHPExcel.php';
    $objPHPExcel = new PHPExcel();
 
@@ -119,7 +118,8 @@
             ->setCellValue('R'.$i, $estado_reserva);
       $i++;
    }
-}
+// } //cierre del if
+
 //header('Content-Type: application/vnd.ms-excel');
 //header('Content-Disposition: attachment;filename="PlanillaAsignación_'.date("d-m-Y").'_'.date("H").date("i").date("s").'".xls"');
 //header('Cache-Control: max-age=0');
