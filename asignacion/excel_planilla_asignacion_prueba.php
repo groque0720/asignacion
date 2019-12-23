@@ -1,6 +1,6 @@
 ﻿<?php
 header('Content-type: application/vnd.ms-excel;charset=iso-8859-15');
-header('Content-Disposition: attachment; filename=nombre_archivo.xls');
+header('Content-Disposition: attachment; filename=nombre_archivo.xlsx');
 ?>
 
 <table border="1" cellpadding="2" cellspacing="0" width="100%">
