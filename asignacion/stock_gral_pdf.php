@@ -13,7 +13,7 @@ class PDF extends FPDF
 		if ($this->PageNo()==1) {
 			$this->SetFont('Arial','B',8);
 			$this->Cell(45,5,'DERKA Y VARGAS S. A.',0,0,'C');
-			$this->Cell(100,5,utf8_decode('PLANILLA DE STOCK GRAL (0 KM y TPA)'),0,0,'C');
+			$this->Cell(100,5,('PLANILLA DE STOCK GRAL (0 KM y TPA)'),0,0,'C');
 			$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'C');
 			$this->Ln();
 			$this->Cell(0,0,'',1,0,'C');
@@ -23,7 +23,7 @@ class PDF extends FPDF
 
 		$this->SetFont('Arial','I',6.5);
 		$this->SetFont('');
-		$this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
+		$this->Cell(0,5,('Página').$this->PageNo().'/{nb}',0,0,'R');
 		$this->Ln();
 
 
@@ -111,6 +111,14 @@ $pdf->SetFont('');
 $SQL="SELECT * FROM grupos WHERE cerokilometro = 1 AND posicion > 0 AND activo = 1 ORDER BY posicion";
 $grupos = mysqli_query($con, $SQL);
 $cant_grupo=0;
+
+	for ($i=0; $i < 10; $i++) {
+		$stock_ant_g[$i]['cant'] = 0;
+		$total_m[$i]['cant'] = 0;
+		$total_g[$i]['cant'] = 0;
+		$total_r_m[$i]['cant'] = 0;
+		$total_r_g[$i]['cant'] = 0;
+	}
 
 while ($grupo=mysqli_fetch_array($grupos)) {
 

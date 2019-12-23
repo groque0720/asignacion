@@ -58,7 +58,7 @@
 						<option value="2017/2018" <?php  if ($reserva['anoentrega'] == "2017/2018") { echo "selected"; } ?>>2017/2018</opcion>
 						<option value="2018" <?php  if ($reserva['anoentrega'] == "2018") { echo "selected"; } ?>>2018</opcion>
 					<?php } ?>
-					
+
 
 					<option value="2018/2019" <?php  if ($reserva['anoentrega'] == "2018/2019") { echo "selected"; } ?>>2018/2019</opcion>
 					<option value="2019" <?php  if ($reserva['anoentrega'] == "2019") { echo "selected"; } ?>>2019</opcion>
@@ -76,13 +76,18 @@
 		<textarea id="observacion" name="observacion" rows="4" style="width: 97%; font-size:1em;" ><?php echo $reserva['observacion']." ".$reserva['obsanulada']  ?></textarea>
 	</div>
 
+
+
 	<?php
+
+
 		if ($reserva['modificaciones']!="" OR $reserva['modificaciones']!=null) {?>
 			Historial de Modificaciones.
-			<div id="observaciones" style="padding: 5px; border: 1px solid #C0C0C0; font-size: .9em">
+			<div id="observaciones" style="padding: 5px; border: 1px solid #C0C0C0; font-size: .9em;">
 				<?php echo $reserva['modificaciones']; ?>
-				<textarea style="display: none" id="obs_cambio_a" name="obs_cambio_a" rows="4" style="width: 97%; font-size:1em;" ><?php echo $reserva['modificaciones'] ?></textarea>
 			</div>
 	 <?php  }?>
+
+	 <textarea style="display: none" id="obs_cambio_a" name="obs_cambio_a" rows="4" style="width: 97%; font-size:1em;" ><?php echo $reserva['modificaciones'] ?></textarea>
 
 </fieldset>

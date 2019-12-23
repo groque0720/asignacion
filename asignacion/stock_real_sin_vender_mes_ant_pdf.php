@@ -103,7 +103,6 @@ class PDF extends FPDF
 	}
 }
 
-
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage('P','A4');

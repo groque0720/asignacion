@@ -2,6 +2,9 @@
  include("../funciones/func_mysql.php");
 conectar();
 //mysql_query("SET NAMES 'utf8'");
+extract($_POST);
+
+// var_dump($_POST);
 
 
 $SQL = "UPDATE entregausado SET";
@@ -15,6 +18,7 @@ $SQL .=" km ='".$_POST["km"]."', ";
 $SQL .=" info ='".$_POST["info"]."' ";
 $SQL .=" WHERE identregau =".$_POST["identregau"];
 mysqli_query($con, $SQL);
+
 
 
 $SQL = "UPDATE clientes SET";
@@ -79,18 +83,21 @@ $SQL .="  tipocompra='".$_POST["tipocompra"]."', ";
 $SQL .="  marcareem='".$_POST["marcareem"]."', ";
 $SQL .="  modeloreem='".$_POST["modeloreem"]."', ";
 $SQL .="  anioreem='".$_POST["anioreem"]."', ";
-$SQL .="  confort='".$_POST["confort"]."', ";
-$SQL .="  disenio='".$_POST["disenio"]."', ";
-$SQL .="  equipamiento='".$_POST["equipamiento"]."', ";
-$SQL .="  garantia='".$_POST["garantia"]."', ";
-$SQL .="  marcatoyota='".$_POST["marcatoyota"]."', ";
-$SQL .="  precio='".$_POST["precio"]."', ";
+// $SQL .="  confort='".$_POST["confort"]."', ";
+// $SQL .="  disenio='".$_POST["disenio"]."', ";
+// $SQL .="  equipamiento='".$_POST["equipamiento"]."', ";
+// $SQL .="  garantia='".$_POST["garantia"]."', ";
+// $SQL .="  marcatoyota='".$_POST["marcatoyota"]."', ";
+// $SQL .="  precio='".$_POST["precio"]."', ";
 $SQL .="  porque_no='".$_POST["porque_no"]."', ";
-$SQL .="  otra='".$_POST["otra"]."', ";
+// $SQL .="  otra='".$_POST["otra"]."', ";
 $SQL .="  venta='".$_POST["venta"]."', ";
 $SQL .="  ofreciotd='".$_POST["ofreciotd"]."', ";
 $SQL .="  realizotd='".$_POST["realizotd"]."', ";
 $SQL .="  enviada=".$_POST["enviado"].", ";
+
+$SQL .="  modificaciones =' ".cambiarFormatoFecha(date("Y-m-d"))." ".$_POST["obs_cambio"]."  *   ||   *  ".$_POST["obs_cambio_a"]."', ";
+
 	if ($_POST["obs_cambio_a"]!="" OR $_POST["obs_cambio_a"]!=null OR $_POST["obs_cambio"]!="") { // si la observaciones anteriores esta vacia entonces es una reserva nueva o sin modificaciones previas
 	$SQL .="  modificaciones =' ".cambiarFormatoFecha(date("Y-m-d"))." ".$_POST["obs_cambio"]."  *   ||   *  ".$_POST["obs_cambio_a"]."', ";
 	};
@@ -191,9 +198,9 @@ if ($_POST["enviado"] > 1) {
 	$mensaje .= "LINK: http://dyvsa.com.ar/web/reserva_web.php?IDrecord=".$_POST["nrores"];
 
 
-if (($_POST["compra"]=="Usado") || (($_POST["marcau"]!="") && ($_POST["tipou"]!="") && ($_POST["modelou"]!=""))) {
-			mail($para, $titulo, $mensaje, $headers);
-	};
+// if (($_POST["compra"]=="Usado") || (($_POST["marcau"]!="") && ($_POST["tipou"]!="") && ($_POST["modelou"]!=""))) {
+// 			mail($para, $titulo, $mensaje, $headers);
+// 	};
 
 	//mail($parauno, $titulo, $mensaje, $headers);
 

@@ -1,5 +1,5 @@
 <fieldset>
-	
+
 	<div id="cabecera" >
 		<div id="asesor" style="width:35%; float: left;">
 			<label style="margin: 2px;">Nro: </label><span style="font-weight: bold; margin: 0 10px 0 0;"><?php echo $reserva["idreserva"]; ?></span>
@@ -24,21 +24,21 @@
 					<option value="Reg. Discapacidad" <?php  if ($reserva['venta'] == "Reg. Discapacidad") { echo "selected"; } ?>>Reg. Discapacidad</option>
 
 				</select>
-			</div>	
+			</div>
 		</div>
 
 		<div style="width: 40%; float:right; text-align: right; margin-left:15px;">
 			<label>Fecha:</label>
-			<input type="date" id="fecres" name="fecres" size="10" value="<?php echo $reserva["fecres"]; ?>" required disabled>
+			<input type="date" id="fecres" name="fecres" size="10" value="<?php echo $reserva["fecres"]; ?>" required>
 			<input type="time" id="fectime" name="fectime" step="1" value="<?php echo $reserva["hora"]; ?>" required disabled>
 		</div>
 
 		<div style="width: 35%; float:right;; text-align: right; margin: 5px;">
-			<?php if ($reserva['fecult']!="") { ?>Fecha.:Ult. Act. <?php echo cambiarformatofecha($reserva['fecult']);} ?> 
+			<?php if ($reserva['fecult']!="") { ?>Fecha.:Ult. Act. <?php echo cambiarformatofecha($reserva['fecult']);} ?>
 			<input type="date" id="fecult" name="fecult" style="display: none;" value="<?php echo $reserva["fecult"]; ?>" >
-			
+
 		</div>
 
-	</div>	
+	</div>
 
 </fieldset>

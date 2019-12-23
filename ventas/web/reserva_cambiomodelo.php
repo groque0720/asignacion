@@ -12,7 +12,7 @@ $lista=mysqli_fetch_array($lis);
 
 $SQL="SELECT * FROM lineas_detalle WHERE idreserva='".$_POST['nrores']."'";
 $result=mysqli_query($con, $SQL);
-if (empty($result)){$cantidad=0;}else{$cantidad=mysql_num_rows($result);} ;
+if (empty($result)){$cantidad=0;}else{$cantidad=mysqli_num_rows($result);} ;
 
 
 if ($cantidad > 1) {
