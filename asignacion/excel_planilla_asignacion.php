@@ -56,7 +56,7 @@
             ->setCellValue('K1','Color Asignado')
             ->setCellValue('L1','Dest. / Ub.')
             ->setCellValue('M1','Cancelado')
-	    ->setCellValue('N1','Antiguedad')
+            ->setCellValue('N1','Antiguedad')
             ->setCellValue('O1','Cliente')
             ->setCellValue('P1','Asesor')
             ->setCellValue('Q1','Fec. Reserva')
@@ -89,13 +89,13 @@
 				$dias = '';
 
 
-				if ($registro->fec_arribo<>'') {
-					$dias = ((strtotime($registro->fec_arribo)-strtotime(date("Y/m/d"))))/86400;
-					$dias = abs($dias);
-					$dias = floor($dias);
-				}else{
-					$dias = '-';
-				}
+				// if ($registro->fec_arribo<>'') {
+				// 	$dias = ((strtotime($registro->fec_arribo)-strtotime(date("Y/m/d"))))/86400;
+				// 	$dias = abs($dias);
+				// 	$dias = floor($dias);
+				// }else{
+				// 	$dias = '-';
+				// }
 
 
       $objPHPExcel->setActiveSheetIndex(0)
