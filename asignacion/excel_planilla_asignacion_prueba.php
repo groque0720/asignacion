@@ -38,7 +38,7 @@ header('Cache-Control: max-age=0');
 
 <table>
     <thead>
-        <tr>
+        <tr style="background: #CBC6C6;">
             <td>Nro Unidad</td>
             <td>Mes</td>
             <td>Año</td>
@@ -96,23 +96,23 @@ header('Cache-Control: max-age=0');
                 }
              ?>
             <tr>
-                <td><?php echo $registro['nro_unidad'] ?></td>
+                <td style="text-align: center;"><?php echo $registro['nro_unidad'] ?></td>
                 <td><?php echo $registro['mes'] ?></td>
-                <td><?php echo $registro['año'] ?></td>
-                <td><?php echo $registro['nro_orden'] ?></td>
-                <td><?php echo $registro['interno'] ?></td>
-                <td><?php echo cambiarFormatoFecha($registro['fec_despacho']) ?></td>
-                <td><?php echo cambiarFormatoFecha($registro['fec_arribo']) ?></td>
-                <td><?php echo $registro['grupo'] ?></td>
+                <td style="text-align: center;"><?php echo $registro['año'] ?></td>
+                <td style="text-align: center;"><?php echo $registro['nro_orden'] ?></td>
+                <td style="text-align: center;"><?php echo $registro['interno'] ?></td>
+                <td style="text-align: center;"><?php echo cambiarFormatoFecha($registro['fec_despacho']) ?></td>
+                <td style="text-align: center;"><?php echo cambiarFormatoFecha($registro['fec_arribo']) ?></td>
+                <td style="text-align: center;"><?php echo $registro['grupo'] ?></td>
                 <td><?php echo $registro['modelo'] ?></td>
-                <td><?php echo $registro['chasis'] ?></td>
-                <td><?php echo $color_asignado ?></td>
-                <td><?php echo $ubicacion ?></td>
-                <td><?php echo $cancelado ?></td>
-                <td><?php echo $dias ?></td>
+                <td style="text-align: center;"><?php echo $registro['chasis'] ?></td>
+                <td style="text-align: center;"><?php echo $color_asignado ?></td>
+                <td style="text-align: center;"><?php echo $ubicacion ?></td>
+                <td style="text-align: center;"><?php echo $cancelado ?></td>
+                <td style="text-align: center;"><?php echo $dias ?></td>
                 <td><?php echo $registro['cliente'] ?></td>
                 <td><?php echo $registro['asesor'] ?></td>
-                <td><?php echo cambiarFormatoFecha($registro['fec_reserva']) ?></td>
+                <td style="text-align: center;"><?php echo cambiarFormatoFecha($registro['fec_reserva']) ?></td>
                 <td style="text-align: center;"><?php echo $estado_reserva ?></td>
             </tr>
         <?php } ?>
