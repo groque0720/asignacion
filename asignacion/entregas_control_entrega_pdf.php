@@ -62,7 +62,7 @@ $pdf->AliasNbPages();
 $pdf->AddPage('P','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-$pdf->SetAutoPageBreak(auto,5);
+$pdf->SetAutoPageBreak(true,5);
 $pdf->Ln(5);
 $pdf->SetFont('Arial','BU',15);
 $pdf->Cell(0,5,'CONTROL DE SALIDA',0,0,'C');
