@@ -78,25 +78,25 @@ $pdf->Ln(10);
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(50,5,'VEHICULO:',0,0,'R');
 $pdf->SetFont('Arial','',12);
-$pdf->Cell(140,5,utf8_decode(strtoupper($grupo_a[$_GET['grupo']]['grupo'].' '.$modelo_a[$_GET['modelo']]['modelo'])),0,0,'L');
+$pdf->Cell(140,5,(strtoupper($grupo_a[$_GET['grupo']]['grupo'].' '.$modelo_a[$_GET['modelo']]['modelo'])),0,0,'L');
 $pdf->Ln(10);
 
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(50,5,'COLOR:',0,0,'R');
 $pdf->SetFont('Arial','',12);
-$pdf->Cell(140,5,utf8_decode(strtoupper($color_a[$_GET['color']]['color'])),0,0,'L');
+$pdf->Cell(140,5,(strtoupper($color_a[$_GET['color']]['color'])),0,0,'L');
 $pdf->Ln(10);
 
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(50,5,'CHASIS:',0,0,'R');
 $pdf->SetFont('Arial','',12);
-$pdf->Cell(140,5,utf8_decode($_GET['chasis']),0,0,'L');
+$pdf->Cell(140,5,($_GET['chasis']),0,0,'L');
 $pdf->Ln(10);
 
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(50,5,'TITULAR:',0,0,'R');
 $pdf->SetFont('Arial','',12);
-$pdf->Cell(140,5,utf8_decode(strtoupper($_GET['cliente'])),0,0,'L');
+$pdf->Cell(140,5,(strtoupper($_GET['cliente'])),0,0,'L');
 $pdf->Ln(30);
 
 $pdf->Cell(20,0,'',0,0,'R');
