@@ -84,11 +84,11 @@ function Header()
 	}
 $this->SetFont('Arial','I',7);
 $this->SetFont('');
-$this->Cell(0,5,('Página').$this->PageNo().'/{nb}',0,0,'R');
+$this->Cell(0,5,('Pag.').$this->PageNo().'/{nb}',0,0,'R');
 $this->Ln();
 $this->Cell(9,5,'Nro Un.',0,0,'C');
 $this->Cell(15,5,'Mes',0,0,'C');
-$this->Cell(10,5,('Año'),0,0,'C');
+$this->Cell(10,5,('Ano'),0,0,'C');
 $this->Cell(18,5,'Nro Orden',0,0,'C');
 $this->Cell(10,5,'Interno',0,0,'C');
 $this->Cell(12,5,'Despacho',0,0,'C');
