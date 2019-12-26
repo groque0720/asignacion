@@ -2,7 +2,7 @@
  /* Ejemplo 1 generando excel desde mysql con PHP
     @Autor: Carlos Hernan Aguilar Hurtado
  */
- 
+
   include_once("funciones/func_mysql.php");
   conectar();
   mysqli_query($con,"SET NAMES 'utf8'");
@@ -12,11 +12,11 @@
   $unidades = mysqli_query($con, $SQL);
 
  $registros = mysqli_num_rows ($unidades);
- 
+
  if ($registros > 0) {
    require_once 'Classes/PHPExcel.php';
    $objPHPExcel = new PHPExcel();
-   
+
    //Informacion del excel
    $objPHPExcel->
     getProperties()
@@ -88,7 +88,7 @@
         $estado_reserva = 'No';
       }
 
-      
+
       $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A'.$i, $registro->nro_unidad)
             ->setCellValue('B'.$i, $registro->mes)
@@ -115,6 +115,7 @@ header('Content-Disposition: attachment;filename="PlanillaAsignación_'.date("d-
 header('Cache-Control: max-age=0');
 
 $objWriter=PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
+ob_end_clean();
 $objWriter->save('php://output');
 exit;
 mysql_close ();
