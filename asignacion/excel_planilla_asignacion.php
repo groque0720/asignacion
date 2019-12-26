@@ -1,7 +1,7 @@
 ﻿<?php
 // header('Content-type: application/vnd.ms-excel;charset=iso-8859-15');
 // header('Content-Disposition: attachment; filename=nombre_archivo.xlsx');
-ob_start();
+
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="PlanillaAsignación_'.date("d-m-Y").'_'.date("H").date("i").date("s").'".xls"');
 header('Cache-Control: max-age=0');
@@ -118,11 +118,3 @@ header('Cache-Control: max-age=0');
         <?php } ?>
     </tbody>
 </table>
-
-<?php
-$objWriter=PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
-ob_end_clean();
-$objWriter->save('php://output');
-exit;
-mysql_close ();
- ?>
