@@ -1,8 +1,9 @@
-﻿<?php 
+﻿<?php
 	include("funciones/func_mysql.php");
 	conectar();
-	mysqli_query($con,"SET NAMES 'utf8'");
+	//mysqli_query($con,"SET NAMES 'utf8'");
 	extract($_POST);
+	$lectura = "";
  ?>
 <form class="form-busq-entregadas" action="">
 	<div class="contenedor_item_filtro cuadro" style="display:flex;">
@@ -13,7 +14,7 @@
 			<label class="ancho-25 centrar-texto" for="cb_modelo">Mes</label>
 			<select class="form-inputs ancho-60" name="mes_desde" id="mes_desde" <?php echo $lectura; ?>>
 			<option value="0" selected></option>
-			<?php 
+			<?php
 				$SQL="SELECT * FROM meses";
 				$meses=mysqli_query($con, $SQL);
 				while ($mes=mysqli_fetch_array($meses)) { ?>
@@ -27,14 +28,14 @@
 			<label class="ancho-25 centrar-texto" for="cb_modelo">Hasta</label>
 			<select class="form-inputs ancho-60" name="mes_hasta" id="mes_hasta" <?php echo $lectura; ?>>
 			<option value="0" selected></option>
-			<?php 
+			<?php
 				$SQL="SELECT * FROM meses";
 				$meses=mysqli_query($con, $SQL);
 				while ($mes=mysqli_fetch_array($meses)) { ?>
 					<option value="<?php echo $mes['idmes']; ?>"><?php echo $mes['mes']; ?></option>
 				<?php } ?>
 			</select>
-			<?php 
+			<?php
 
 			 ?>
 			<input class="centrar-texto" type="text" size="4" id="año_hasta" name="año_hasta" value="<?php echo date('Y'); ?>" placeholder="Año" style="margin-left:5px;">

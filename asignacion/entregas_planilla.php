@@ -5,7 +5,7 @@ require('fpdf/fpdf.php');
 
 	include("funciones/func_mysql.php");
 	conectar();
-	mysqli_query($con,"SET NAMES 'utf8'");
+	//mysqli_query($con,"SET NAMES 'utf8'");
 	extract($_POST);
 
 	$SQL="SELECT * FROM meses";
@@ -94,7 +94,7 @@ function Header()
 	if ($this->PageNo()==1) {
 		$this->SetFont('Arial','B',10);
 		$this->Cell(60,5,'DERKA Y VARGAS S. A.',0,0,'L');
-		$this->Cell(150,5,utf8_decode('UNIDADES - SECTOR ENTREGAS'),0,0,'C');
+		$this->Cell(150,5,('UNIDADES - SECTOR ENTREGAS'),0,0,'C');
 		$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
 		$this->Ln();
 		$this->Cell(0,0,'',1,0,'C');
@@ -102,7 +102,7 @@ function Header()
 	}
 $this->SetFont('Arial','I',7);
 $this->SetFont('');
-$this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
+$this->Cell(0,5,('Pag.').$this->PageNo().'/{nb}',0,0,'R');
 $this->Ln();
 $this->Cell(8,5,'Nro.',0,0,'C');
 $this->Cell(10,5,'Interno',0,0,'C');
@@ -119,7 +119,7 @@ $this->Cell(13,5,'Pedido',0,0,'C');
 $this->Cell(9,5,'Hora',0,0,'C');
 $this->Cell(20,5,'Estado',0,0,'C');
 
-$this->Cell(40,5,utf8_decode('Observación'),0,0,'C');
+$this->Cell(40,5,('Observación'),0,0,'C');
 $this->Ln();
 $this->Cell(0,0,'',1,0,'C');
 $this->Ln(3);
@@ -142,7 +142,7 @@ $pdf->AliasNbPages();
 $pdf->AddPage('L','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-$pdf->SetAutoPageBreak(auto,5);
+$pdf->SetAutoPageBreak(true,5);
 $unidades = mysqli_query($con, $_POST['sql']);
 
 $fila=0;
@@ -154,8 +154,8 @@ $pdf->Cell(19,5,trim($unidad['nro_orden']),1,0,'C');
 $pdf->Cell(15,5,$unidad['chasis'],1,0,'C');
 $pdf->Cell(47,5,$grupo_a[$unidad['id_grupo']]['grupo']." ".$modelo_a[$unidad['id_modelo']]['modelo'],1,0,'L');
 $pdf->Cell(13,5,cambiarFormatoFecha($unidad['fec_arribo']),1,0,'C');
-$pdf->Cell(15,5,utf8_decode($color_a[$unidad['id_color']]['color']),1,0,'C');
-$pdf->Cell(14,5,utf8_decode($ubicaciones_a[$unidad['id_ubicacion_entrega']]['ubicacion_entrega']),1,0,'C');
+$pdf->Cell(15,5,($color_a[$unidad['id_color']]['color']),1,0,'C');
+$pdf->Cell(14,5,($ubicaciones_a[$unidad['id_ubicacion_entrega']]['ubicacion_entrega']),1,0,'C');
 
 	if ($unidad['cancelada']==1) { $resp='Si';}else{$resp= '-';}
 
@@ -168,8 +168,8 @@ $pdf->Cell(7,5,$resp,1,0,'C');
 		$cliente =$unidad['cliente'];
 	}
 
-$pdf->Cell(30,5,utf8_decode($cliente),1,0,'L');
-$pdf->Cell(17,5,utf8_decode($usuario_a[$unidad['id_asesor']]['nombre']),1,0,'C');
+$pdf->Cell(30,5,($cliente),1,0,'L');
+$pdf->Cell(17,5,($usuario_a[$unidad['id_asesor']]['nombre']),1,0,'C');
 $pdf->Cell(13,5,cambiarFormatoFecha($unidad['fec_pedido']),1,0,'C');
 $pdf->Cell(9,5,cambiarFormatohora($unidad['hora_pedido']),1,0,'C');
 
@@ -180,7 +180,7 @@ $pdf->Cell(9,5,cambiarFormatohora($unidad['hora_pedido']),1,0,'C');
 		$estado =$estados_a[$unidad['id_estado_entrega']]['estado_unidad'];
 	}
 
-$pdf->Cell(20,5,utf8_decode($estado),1,0,'C');
+$pdf->Cell(20,5,($estado),1,0,'C');
 
 	$largo_obs=strlen ($unidad['observacion']);
 	if ($largo_obs>=27) {
@@ -190,7 +190,7 @@ $pdf->Cell(20,5,utf8_decode($estado),1,0,'C');
 	}
 
 
-$pdf->Cell(40,5,utf8_decode($observacion),1,0,'L');
+$pdf->Cell(40,5,($observacion),1,0,'L');
 $pdf->Ln();
 }
 
