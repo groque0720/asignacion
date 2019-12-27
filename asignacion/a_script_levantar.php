@@ -1,7 +1,7 @@
-﻿<?php 
+﻿<?php
 	include("funciones/func_mysql.php");
 	conectar();
-	mysqli_query($con,"SET NAMES 'utf8'");
+	//mysqli_query($con,"SET NAMES 'utf8'");
 	extract($_POST);
 
 	$nro_dia=jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y")) , 0 );
@@ -24,8 +24,8 @@
 		$cant_feriados = mysqli_num_rows($feriados);
 
 		if ($cant_feriados<1) {
-	
-			if ($hora_actual>$hora12) { // 
+
+			if ($hora_actual>$hora12) { //
 
 				echo "12 medio dia <br><br><br>";
 
@@ -46,7 +46,7 @@
 					$SQL.=" cliente = '', ";
 					$SQL.=" id_asesor = 1, ";
 					$SQL.=" fec_limite = null, ";
-						
+
 					if ($unidad['color_uno'] != 23){
 					$SQL.=" color_uno = 0, ";
 					}
@@ -59,7 +59,7 @@
 					mysqli_query($con,$SQL);
 				}
 				echo 'Usados';
-				//levantar usados	
+				//levantar usados
 				//
 				$SQL="SELECT * FROM view_asignaciones_usados_no_confirmados";
 				$usados=mysqli_query($con, $SQL);
@@ -123,10 +123,10 @@
 
 							}
 
-						} 
+						}
 
-				}	// fin if 22:00 	
-	}	
+				}	// fin if 22:00
+	}
 }
 
 
