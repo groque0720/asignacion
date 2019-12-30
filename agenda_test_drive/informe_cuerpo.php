@@ -1,10 +1,10 @@
-<?php 
+<?php
 	include_once("funciones/func_mysql.php");
 	conectar();
 	mysqli_query($con,"SET NAMES 'utf8'");
 	extract($_POST);
 	@session_start();
-	$perfil=$_SESSION["idperfil"]; 
+	$perfil=$_SESSION["idperfil"];
 
 
 
@@ -85,7 +85,7 @@ $cad=$cad." ORDER BY asesor, fecha ASC, horario ASC";
 	</thead>
 	<tbody class="lista-unidades">
 
-	<?php 
+	<?php
 
 	$bloqueado='';
 	if ($perfil==3) {

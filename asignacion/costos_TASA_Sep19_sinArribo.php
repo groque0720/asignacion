@@ -123,8 +123,8 @@ $pdf->AliasNbPages();
 $pdf->AddPage('L','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-$pdf->SetAutoPageBreak(auto,5);
-			
+$pdf->SetAutoPageBreak(true,5);
+$cant = 0;
 
 	$SQL="SELECT * FROM view_asignaciones_costos_pagadas_septiembre_nollegadas";
 	$unidades = mysqli_query($con, $SQL);
@@ -146,7 +146,7 @@ $pdf->SetAutoPageBreak(auto,5);
 	$parcial=0;
 	$acum_r=0;
 	$parcial_r=0;
-	while ($unidad=mysqli_fetch_array($unidades)) { 
+	while ($unidad=mysqli_fetch_array($unidades)) {
 
 		$cant_unidades++;
 
@@ -195,7 +195,7 @@ $pdf->SetAutoPageBreak(auto,5);
 
 		$SQL="SELECT * FROM reservas_suma_montos WHERE nrounidad = ".$unidad['nro_unidad'];
 		$montos=mysqli_query($con, $SQL);
-		
+
 		$cant_monto=mysqli_num_rows($montos)+1;
 
 		if ($cant_monto>0) {
@@ -207,7 +207,7 @@ $pdf->SetAutoPageBreak(auto,5);
 
 		$SQL="SELECT * FROM reservas_suma_pagos WHERE nrounidad = ".$unidad['nro_unidad'];
 		$montos=mysqli_query($con, $SQL);
-		
+
 		$cant_monto=mysqli_num_rows($montos);
 
 		if ($cant_monto>0) {
@@ -215,7 +215,7 @@ $pdf->SetAutoPageBreak(auto,5);
 			$monto_pago=(int)$monto['pagos'];
 		}else{
 			$monto_pago=0;
-		}		
+		}
 
 		$parcial_r=$parcial_r+($monto_res-$monto_pago);
 		$acum_r=$acum_r+($monto_res-$monto_pago);
@@ -231,7 +231,7 @@ $pdf->SetAutoPageBreak(auto,5);
 		}
 		//resalto la fuente de cancelación - Pedido Don Vargas
 		$pdf->SetFont('Arial','B',7.5);
-		
+
 		if ($unidad['cancelada']==1) { $can= 'Si';}else{$can= '';}
 		if ($unidad['patentada']==1) { $pat= '/Si';}else{$pat= '';}
 
@@ -265,7 +265,7 @@ $pdf->SetAutoPageBreak(auto,5);
 	$pdf->Cell(130,5,'Acumulado ',0,0,'R');
 	$pdf->Cell(27,5,number_format($acum, 2, ',','.'),1,0,'R');
 	$pdf->Cell(27,5,number_format($acum_r, 2, ',','.'),1,0,'R');
-	
+
 	$pdf->Ln(2);
 
 $pdf->Output('Costos_TASA_'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
