@@ -4,6 +4,9 @@
 	//mysqli_query($con,"SET NAMES 'utf8'");
 	extract($_POST);
 
+	$SQL="INSERT INTO sesiones (id_usuario, nombre, fecha, hora, latitud, longitud, ip) VALUES (1,'pepe','".date("Y-m-d")."','".date( 'H:i:s')."','','',5)";
+	mysqli_query($con, $SQL);
+
 	$nro_dia=jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y")) , 0 );
 
 	echo $nro_dia.' borrado las modificaciones';

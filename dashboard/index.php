@@ -86,7 +86,22 @@ if ($_SESSION["autentificado"] != "SI") {
 
 		<?php
 
-			$SQL="SELECT * FROM view_aplicaciones_usuarios WHERE id_usuario = ".$_SESSION["id"];
+			$SQL="select aplicaciones.id_aplicacion AS id_aplicacion,aplicaciones.url AS url,aplicaciones.imagen AS imagen,usuarios_aplicaciones.id_usuario AS id_usuario,aplicaciones.aplicacion AS aplicacion,usuarios.idsucursal AS idsucursal from ((usuarios_aplicaciones join aplicaciones on((usuarios_aplicaciones.id_aplicaciones = aplicaciones.id_aplicacion))) join usuarios on((usuarios_aplicaciones.id_usuario = usuarios.idusuario))) where (aplicaciones.activo = 1 AND id_usuario =". $_SESSION['id'].") order by aplicaciones.aplicacion ";
+
+
+			$SQL = "SELECT
+					aplicaciones.id_aplicacion AS id_aplicacion,
+					aplicaciones.url AS url,
+					aplicaciones.imagen AS imagen,
+					usuarios_aplicaciones.id_usuario AS id_usuario,
+					aplicaciones.aplicacion AS aplicacion,
+					usuarios.idsucursal AS idsucursal,
+					aplicaciones.activo
+					from ((usuarios_aplicaciones join aplicaciones on((usuarios_aplicaciones.id_aplicaciones = aplicaciones.id_aplicacion))) join usuarios on((usuarios_aplicaciones.id_usuario = usuarios.idusuario)))
+					where (aplicaciones.activo = 1 AND id_usuario =". $_SESSION['id'].")
+					order by aplicaciones.aplicacion ";
+
+			///$SQL="SELECT * FROM view_aplicaciones_usuarios WHERE id_usuario = ".$_SESSION["id"];
 			$aplicaciones=mysqli_query($con, $SQL);
 
 			while ($aplicacion = mysqli_fetch_array($aplicaciones)) { ?>
