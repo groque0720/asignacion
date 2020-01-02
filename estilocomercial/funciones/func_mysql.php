@@ -15,7 +15,7 @@
 	//pass
 	define('PASS','asignDyVSA2020');
 	//base de datos
-	define('DB','sysdyv');
+	define('DB','asignacion');
 
 
 
