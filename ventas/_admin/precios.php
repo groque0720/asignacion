@@ -73,7 +73,7 @@ include ("../includes/security.php");?>
 
 					$SQL="SELECT * FROM listaprecio WHERE idmodelo = ".$mod['idmodelo']." AND activo = 1";
 					$precios=mysqli_query($con, $SQL);
-					$afectadas = mysql_num_rows($precios);
+					$afectadas = mysqli_num_rows($precios);
 					if ($afectadas!=0) {
 					$precio=mysqli_fetch_array($precios);
 					?>
