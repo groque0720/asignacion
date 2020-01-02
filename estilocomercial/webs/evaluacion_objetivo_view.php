@@ -113,7 +113,7 @@
 								$SQL="SELECT * FROM evaluacion_ponderaciones_o WHERE puntos = '".$eva['autoevaluacion']."'";
 								$respueta_p=mysqli_query($con, $SQL);
 								$pon['resultado']='';
-								if (mysql_num_rows($respueta_p)) {
+								if (mysqli_num_rows($respueta_p)) {
 									$pon=mysqli_fetch_array($respueta_p);
 								}
 								$tot_auto= $tot_auto + ($eva['autoevaluacion']/100*$eva['ponderacion']);
@@ -125,7 +125,7 @@
 								$SQL="SELECT * FROM evaluacion_ponderaciones_o WHERE puntos = '".$eva['evaluacion_sup']."'";
 								$respueta_p=mysqli_query($con, $SQL);
 								$pon['resultado']='';
-								if (mysql_num_rows($respueta_p)) {
+								if (mysqli_num_rows($respueta_p)) {
 									$pon=mysqli_fetch_array($respueta_p);
 								}
 								$tot_eva=$tot_eva + ($eva['evaluacion_sup']/100*$eva['ponderacion']);
