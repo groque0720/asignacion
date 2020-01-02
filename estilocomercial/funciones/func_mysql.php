@@ -11,9 +11,9 @@
 
 	define('HOST','localhost');
 	//usuario bd
-	define('USER','remote_asignacion');
+	define('USER','root');
 	//pass
-	define('PASS','asignDyVSA2020');
+	define('PASS','');
 	//base de datos
 	define('DB','sysdyv');
 
