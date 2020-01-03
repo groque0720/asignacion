@@ -11,6 +11,10 @@
 	$SQL="DELETE FROM a_modificaciones WHERE fecha < CURDATE()";
 	mysqli_query($con, $SQL);
 
+
+	$SQL="INSERT INTO sesiones (id_usuario, nombre, fecha, hora, latitud, longitud, ip) VALUES (1,'pepe','".date("Y-m-d")."','".date( 'H:i:s')."','','',5)";
+	mysqli_query($con, $SQL);
+
 	if ($nro_dia!=0) {
 
 		$hora12 = strtotime( "11:59" );
