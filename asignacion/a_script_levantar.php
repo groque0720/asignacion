@@ -20,7 +20,7 @@
 		$hora22 = strtotime( "21:59" );
 		$hora_actual = strtotime(date('h:i:sa'));
 
-		echo $hora12. " - ".$hora22." - ".$hora_actual." +++ ";
+		echo '<br>'.$hora12. " - ".$hora22." - ".$hora_actual." +++ ";
 
 		$SQL="SELECT * FROM feriados WHERE dia = CURDATE()";
 		$feriados=mysqli_query($con, $SQL);
@@ -32,7 +32,8 @@
 
 				echo "12 medio dia <br><br><br>";
 
-				$SQL="SELECT * FROM view_asignaciones_no_confirmada WHERE (fec_reserva < CURDATE() AND hora < '22:00') OR (fec_reserva < CURDATE()-1)";
+				// $SQL="SELECT * FROM view_asignaciones_no_confirmada WHERE (fec_reserva < CURDATE() AND hora < '22:00') OR (fec_reserva < CURDATE()-1)";
+				$SQL="SELECT * FROM view_asignacion_no_confirmadas_12hs";
 				$unidades=mysqli_query($con, $SQL);
 
 				while ($unidad=mysqli_fetch_array($unidades)) {
@@ -94,7 +95,9 @@
 
 							echo "22 medio dia <br><br><br>";
 
-							$SQL="SELECT * FROM view_asignaciones_no_confirmada WHERE (fec_reserva = CURDATE() AND hora < '12:00') OR (fec_reserva < CURDATE())";
+							// $SQL="SELECT * FROM view_asignaciones_no_confirmada WHERE (fec_reserva = CURDATE() AND hora < '12:00') OR (fec_reserva < CURDATE())";
+
+							$SQL="SELECT * FROM view_asignacion_no_confirmadas_22hs";
 							$unidades=mysqli_query($con, $SQL);
 
 							while ($unidad=mysqli_fetch_array($unidades)) {

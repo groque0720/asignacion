@@ -1,4 +1,4 @@
-<?php 
+<?php
 include("funciones/func_mysql.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
@@ -39,15 +39,15 @@ class PDF extends FPDF
 		if ($this->PageNo()==1) {
 			$this->SetFont('Arial','B',8);
 			$this->Cell(45,5,'DERKA Y VARGAS S. A.',0,0,'C');
-			$this->Cell(100,5,utf8_decode('REPORTE DE GESTORIA RESUMEN'),0,0,'C');
+			$this->Cell(100,5,('REPORTE DE GESTORIA RESUMEN'),0,0,'C');
 			$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'C');
 			$this->Ln();
 			$this->Cell(0,0,'',1,0,'C');
 			$this->Ln();
-			// $this->Cell(0,5,utf8_decode('Sucursal :'.$sucursal.' Período :'.cambiarFormatoFecha($_GET['desde']).' al '.cambiarFormatoFecha($_GET['hasta']).' Inscriptas :'.$patente) ,0,0,'C');
-			$this->Cell(45,5,utf8_decode('Sucursal: '.$sucursal),0,0,'C');
-			$this->Cell(100,5,utf8_decode('Período: '.cambiarFormatoFecha($_GET['desde']).' al '.cambiarFormatoFecha($_GET['hasta'])),0,0,'C');
-			$this->Cell(0,5,utf8_decode('Inscriptas: '.$patente),0,0,'C');
+			// $this->Cell(0,5,('Sucursal :'.$sucursal.' Período :'.cambiarFormatoFecha($_GET['desde']).' al '.cambiarFormatoFecha($_GET['hasta']).' Inscriptas :'.$patente) ,0,0,'C');
+			$this->Cell(45,5,('Sucursal: '.$sucursal),0,0,'C');
+			$this->Cell(100,5,('Período: '.cambiarFormatoFecha($_GET['desde']).' al '.cambiarFormatoFecha($_GET['hasta'])),0,0,'C');
+			$this->Cell(0,5,('Inscriptas: '.$patente),0,0,'C');
 			$this->Ln();
 			$this->Cell(0,0,'',1,0,'C');
 			$this->Ln();
@@ -56,7 +56,7 @@ class PDF extends FPDF
 
 		$this->SetFont('Arial','I',5);
 		$this->SetFont('');
-		$this->Cell(0,5,utf8_decode('Página').$this->PageNo().'/{nb}',0,0,'R');
+		$this->Cell(0,5,('Página').$this->PageNo().'/{nb}',0,0,'R');
 		$this->Ln();
 
 		$this->Cell(28,5,'Sucursal / Registro',1,0,'C');
@@ -68,7 +68,7 @@ class PDF extends FPDF
 				$this->SetFont('Arial','BI',5);
 				$this->Cell(11,5,"TOT HILUX",1,0,'C');
 				$this->SetFont('');
-			}			
+			}
 		}
 		$this->Cell(11,5,'TOTAL',1,0,'C');
 		$this->Ln();
@@ -114,7 +114,7 @@ $pdf->SetFont('');
 $SQL="SELECT * FROM provincias";
 $provincias = mysqli_query($con, $SQL);
 
-	for ($i=0; $i <= $cant_grupo; $i++) { 
+	for ($i=0; $i <= $cant_grupo; $i++) {
 		$total_gral_a[$i]=0;
 	}
 
@@ -126,7 +126,7 @@ while ($provincia=mysqli_fetch_array($provincias)) {
 	// $pdf->Ln();
 	$cant_tramites_p=mysqli_num_rows($tram_provs);
 
-	for ($i=0; $i <= $cant_grupo; $i++) { 
+	for ($i=0; $i <= $cant_grupo; $i++) {
 		$total_por_provincia_a[$i]=0;
 	}
 
@@ -134,7 +134,7 @@ while ($provincia=mysqli_fetch_array($provincias)) {
 		$pdf->Ln(2);
 		$prov=mysqli_fetch_array($tram_provs);
 		$pdf->SetFont('Arial','B',7);
-		$pdf->Cell(0,5,' '.utf8_decode(strtoupper($prov['provincia'])),0,0,'L');
+		$pdf->Cell(0,5,' '.(strtoupper($prov['provincia'])),0,0,'L');
 		$pdf->Ln();
 		$pdf->SetFont('Arial','B',7);
 		$pdf->SetFont('');
@@ -155,10 +155,10 @@ while ($provincia=mysqli_fetch_array($provincias)) {
 			if ($cant_tramites_l>0) {
 
 				$loc=mysqli_fetch_array($tram_loc);
-				$pdf->Cell(28,5,' '.utf8_decode(strtoupper($loc['localidad'])),1,0,'L');
+				$pdf->Cell(28,5,' '.(strtoupper($loc['localidad'])),1,0,'L');
 				$cant_por_loc=0;
 
-				for ($i=0; $i < $cant_grupo; $i++) { 
+				for ($i=0; $i < $cant_grupo; $i++) {
 
 					$SQL="SELECT * FROM view_registros_gestoria WHERE id_localidad = ".$localidad['id_localidad']." AND id_modelo =".$grupo_a[$i]['id_grupo'].$cadena;
 					$tram_loc=mysqli_query($con, $SQL);
@@ -186,11 +186,11 @@ while ($provincia=mysqli_fetch_array($provincias)) {
 			}//fin if cantidad de tramites por localidad
 		}// fin while localidades
 
-		
+
 			$pdf->Ln(2);
 			$pdf->SetFont('Arial','B',7);
-			$pdf->Cell(28,5,'Total '.utf8_decode(strtoupper($prov['provincia'])),1,0,'C');
-			for ($i=0; $i <= $cant_grupo; $i++) { 
+			$pdf->Cell(28,5,'Total '.(strtoupper($prov['provincia'])),1,0,'C');
+			for ($i=0; $i <= $cant_grupo; $i++) {
 				$pdf->SetFont('Arial','B',7);
 				$pdf->Cell(11,5,$total_por_provincia_a[$i],1,0,'C');
 					if ($i==1) {
@@ -208,7 +208,7 @@ while ($provincia=mysqli_fetch_array($provincias)) {
 $pdf->Ln();
 $pdf->SetFont('Arial','B',7);
 $pdf->Cell(28,5,'TOTAL GRAL ',1,0,'C');
-for ($i=0; $i <= $cant_grupo; $i++) { 
+for ($i=0; $i <= $cant_grupo; $i++) {
 	$pdf->SetFont('Arial','B',7);
 	$pdf->Cell(11,5,$total_gral_a[$i],1,0,'C');
 
