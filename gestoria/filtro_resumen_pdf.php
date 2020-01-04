@@ -91,7 +91,7 @@ if ($sucursal!=0) {
 	$cadena .= " AND id_sucursal = ".$sucursal;
 }
 
-$SQL="SELECT * FROM grupos WHERE activo = 1 AND posicion > 0 AND cerokilometro = 1 ORDER BY posicion";
+$SQL="SELECT * FROM grupos WHERE idgrupo <> 11 AND idgrupo <> 10 AND activo = 1 AND posicion > 0 AND cerokilometro = 1 ORDER BY posicion";
 $grupos=mysqli_query($con, $SQL);
 $grupos_dos=mysqli_query($con, $SQL);
 $cant_grupo=0;
