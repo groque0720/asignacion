@@ -100,7 +100,7 @@ $pdf->SetTitle($grupos);
 $pdf->AddPage('P','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
-$pdf->SetAutoPageBreak(true,6);
+$pdf->SetAutoPageBreak(1,6);
 $pdf->SetFont('Arial','B',7);
 $pdf->SetFont('');
 $nro=0;

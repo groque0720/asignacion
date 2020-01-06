@@ -11,8 +11,8 @@ set_time_limit(300);
 	$SQL="INSERT INTO evaluaciones (periodo, fecha) VALUES ('$periodo','$fecha')";
 	mysqli_query($con, $SQL);
 
-	$rs = mysql_query("SELECT MAX(id_evaluacion) AS id FROM evaluaciones LIMIT 1");
-	if ($row = mysql_fetch_row($rs)) {
+	$rs = mysqli_query($con, "SELECT MAX(id_evaluacion) AS id FROM evaluaciones LIMIT 1");
+	if ($row = mysqli_fetch_row($rs)) {
 		$id_evaluacion= trim($row[0]);
 	}
 	//----- busco asesores
@@ -24,9 +24,9 @@ set_time_limit(300);
 		$SQL="INSERT INTO evaluaciones_realizadas (id_evaluacion, id_usuario) VALUES (".$id_evaluacion.",".$usu['id_usuario'].")";
 		mysqli_query($con, $SQL);
 
-			$rs = mysql_query("SELECT MAX(id_evaluacion_realizada) AS id FROM evaluaciones_realizadas LIMIT 1");
+			$rs = mysqli_query($con, "SELECT MAX(id_evaluacion_realizada) AS id FROM evaluaciones_realizadas LIMIT 1");
 
-			if ($row = mysql_fetch_row($rs)) {
+			if ($row = mysqli_fetch_row($rs)) {
 				$id_evaluacion_realizada= trim($row[0]);
 			}
 
