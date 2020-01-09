@@ -16,9 +16,11 @@
 
 	if ($nro_dia!=0) {
 
-		$hora12 = strtotime( "11:59" );
-		$hora22 = strtotime( "21:59" );
-		$hora_actual = strtotime(date('h:i:sa'));
+		$hora12 = date('11:59:00a');
+		$hora22 = date('21:59:00a');
+		$hora_actual = date('h:i:sa');
+
+		// $hora_actual = date('12:00:00a');
 
 		echo '<br>'.$hora12. " - ".$hora22." - ".$hora_actual." +++ ";
 
@@ -28,7 +30,7 @@
 
 		if ($cant_feriados<1) {
 
-			if ($hora_actual>$hora12) { //
+			if ($hora_actual>$hora12 AND $hora_actual<$hora22) { //
 
 				echo "12 medio dia <br><br><br>";
 
