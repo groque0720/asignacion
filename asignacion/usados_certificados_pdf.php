@@ -11,6 +11,8 @@ if ($_SESSION["autentificado"] != "SI") {
 	//ademas salgo de este script
 	exit();
 }
+$total_costo_rep = 0;
+$total_gral_costo_rep = 0;
 
 $p=$_SESSION["idperfil"];
 $es_gerente=$_SESSION["es_gerente"];
@@ -262,7 +264,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 		}
 
 		$pdf->SetFont('Arial','BI',8);
-		$pdf->Cell(182,5,'Total '.utf8_decode($estado['estado_usado']).'   ',0,0,'R');
+		$pdf->Cell(182,5,'Total '.utf8_decode($estado['estado_certificado']).'   ',0,0,'R');
 		$pdf->SetFont('Arial','B',6.5);
 
 		if ($es_gerente==1) {
