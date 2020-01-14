@@ -93,8 +93,7 @@
 
 				if ($nro_dia!=6 AND $nro_dia!=0) {
 
-						// if ($hora_actual>$hora22) {
-					if (true) {
+						if ($hora_actual>$hora22) {
 
 							echo "22 medio dia <br><br><br>";
 
