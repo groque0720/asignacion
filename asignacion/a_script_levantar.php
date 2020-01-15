@@ -18,7 +18,7 @@
 
 		$hora12 = date('11:59:00a');
 		$hora22 = date('21:59:00a');
-		$hora_actual = date('h:i:sa');
+		$hora_actual = date('H:i:sa');
 
 		// $hora_actual = date('12:00:00a');
 
@@ -95,7 +95,7 @@
 
 						if ($hora_actual>$hora22) {
 
-							echo "22 medio dia <br><br><br>";
+							echo "22 Noche <br><br><br>";
 
 							// $SQL="SELECT * FROM view_asignaciones_no_confirmada WHERE (fec_reserva = CURDATE() AND hora < '12:00') OR (fec_reserva < CURDATE())";
 
