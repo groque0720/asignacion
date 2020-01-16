@@ -1,5 +1,4 @@
 <?php
-}
 
 	// 	//servidor
 	// define('HOST','mysql.hostinger.com.ar');
