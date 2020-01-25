@@ -119,7 +119,7 @@ $es_gerente = $_SESSION["es_gerente"];
 				<col width="2%">
 			<?php endif ?>
 
-			
+
 			<col width="1.5%">
 			<col width="1%">
 			<col width="5%">
@@ -137,7 +137,7 @@ $es_gerente = $_SESSION["es_gerente"];
 
 			while ($estado=mysqli_fetch_array($estado_usado)) {
 
-				$SQL="SELECT * FROM asignaciones_usados WHERE entregado = 0 AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
+				$SQL="SELECT *, DATEDIFF(DATE(NOW()),fec_recepcion)as ant FROM asignaciones_usados WHERE entregado = 0 AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
 				$usados=mysqli_query($con, $SQL);
 				$cant=mysqli_num_rows($usados);
 				$sumatoria_precio_venta = 0;
@@ -156,7 +156,7 @@ $es_gerente = $_SESSION["es_gerente"];
 							<td>Color</td>
 							<td>Ult. Dueño</td>
 							<td>Asesor T.</td>
-							<td>Recep.</td>
+							<td>Recep / días</td>
 
 							<?php if ($es_gerente == 1) {?>
 							<td>Toma + Imp</td>
@@ -166,12 +166,12 @@ $es_gerente = $_SESSION["es_gerente"];
 							<?php } ?>
 							<td>$ Venta</td>
 
-							
+
 							<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
 								<td>$ 0km</td>
 							<?php endif ?>
 
-							
+
 							<td>Suc.</td>
 							<td>Canc.</td>
 							<td>Cliente</td>
@@ -200,8 +200,21 @@ $es_gerente = $_SESSION["es_gerente"];
 					$nc = '';
 				} ?>
 
+				<?php
 
-					<tr class="<?php echo 'fila_'.$estado['id_estado_usado'].'_'.$fila.' '.$libre. ' '.$nc ?>">
+					if ($usado['ant']>=50) {
+						$antiguedad = number_format(((int)$usado['ant']), 0, ',','.');
+						$antiguedad_d = ' ('.$antiguedad.')';
+						$antiguedad_color = 'background:#C8CBC2;';
+					}else{
+						$antiguedad = '';
+						$antiguedad_d = $antiguedad;
+						$antiguedad_color = '';
+					}
+
+				 ?>
+
+					<tr class="<?php echo 'fila_'.$estado['id_estado_usado'].'_'.$fila.' '.$libre. ' '.$nc ?>" style="<?php echo $antiguedad_color;  ?>">
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $fila; ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['interno']; ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['vehiculo']; ?> <span style="color: #f0f0f0;background: #efb810;"><?php if($usado['id_estado_certificado'] == 2) { echo '(**UCT**)'; } ?></span> </td>
@@ -212,17 +225,17 @@ $es_gerente = $_SESSION["es_gerente"];
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $color_a[$usado['color']]['color']; ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['ultimo_dueño']; ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usuario_a[$usado['asesortoma']]['nombre']; ?></td>
-						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo cambiarFormatoFecha($usado['fec_recepcion']); ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo cambiarFormatoFecha($usado['fec_recepcion'])."<b style='font-size: 10px; color:red;'>$antiguedad_d</b>"; ?></td>
 						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$ '.number_format($usado['toma_mas_impuesto'], 2, ',','.');?></td>
 						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$ '.number_format($usado['costo_contable'], 2, ',','.'); ?></td>
 						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$ '.number_format($usado['costo_reparacion'], 2, ',','.'); ?></td>
 						<td class="centrar-texto celda-usado <?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$ '.number_format($usado['precio_info'], 2, ',','.'); ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>" style="font-weight: bold; color: black;"><?php echo '$ '.number_format($usado['precio_venta'], 2, ',','.'); ?></td>
-						
+
 							<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
 								<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>" style="font-weight: bold; color: black;"><?php echo '$ '.number_format($usado['precio_0km'], 2, ',','.'); ?></td>
 							<?php endif ?>
-						
+
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $sucursal_a[$usado['id_sucursal']]['sucres']; ?></td>
 
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php
