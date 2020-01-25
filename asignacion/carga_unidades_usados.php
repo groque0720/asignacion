@@ -166,7 +166,6 @@ $es_gerente = $_SESSION["es_gerente"];
 							<?php } ?>
 							<td>$ Venta</td>
 
-
 							<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
 								<td>$ 0km</td>
 							<?php endif ?>
