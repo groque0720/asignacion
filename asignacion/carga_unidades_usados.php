@@ -156,7 +156,7 @@ $es_gerente = $_SESSION["es_gerente"];
 							<td>Color</td>
 							<td>Ult. Dueño</td>
 							<td>Asesor T.</td>
-							<td>Recep / días</td>
+							<td>Recep / Ant.</td>
 
 							<?php if ($es_gerente == 1) {?>
 							<td>Toma + Imp</td>
