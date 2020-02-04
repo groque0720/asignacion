@@ -2,7 +2,7 @@
 	//servidor
 	define('HOST','localhost');
 	//usuario bd
-	define('USER','root');
+	define('USER','usuario_remoto');
 	//pass
 	define('PASS','Belgrano872');
 	//base de datos
