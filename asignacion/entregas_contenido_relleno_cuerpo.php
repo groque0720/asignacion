@@ -149,7 +149,7 @@
 	}
 
 	$fila=0;
-	while ( $unidad=mysqli_fetch_array($unidades)) { $fila++; $libre = '';?>
+	while ($unidad=mysqli_fetch_array($unidades)) { $fila++; $libre = '';?>
 
 		<?php if ($unidad['reservada']==0) {
 			$libre = 'unidad-libre';
