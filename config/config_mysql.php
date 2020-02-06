@@ -8,6 +8,8 @@
 	//base de datos
 	define('DB','asignacion');
 
+
+
 	// define('HOST','localhost');
 	// //usuario bd
 	// define('USER','remote_asignacion');
