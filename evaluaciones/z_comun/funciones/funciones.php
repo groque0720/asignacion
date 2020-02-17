@@ -2,9 +2,9 @@
 		//servidor
 	define('HOST','localhost');
 	//usuario bd
-	define('USER','remote_asignacion');
+	define('USER','usuario_remoto');
 	//pass
-	define('PASS','asignDyVSA2020');
+	define('PASS','Belgrano872');
 	//base de datos
 	define('DB','evaluacion');
 // include($_SERVER['DOCUMENT_ROOT']."/config/config_mysql.php");
