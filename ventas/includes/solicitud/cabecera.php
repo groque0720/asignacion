@@ -29,7 +29,7 @@
 
 		<div style="width: 40%; float:right; text-align: right; margin-left:15px;">
 			<label>Fecha:</label>
-			<input type="date" id="fecres" name="fecres" size="10" value="<?php echo $reserva["fecres"]; ?>" required>
+			<input type="date" id="fecres" name="fecres" size="10" value="<?php echo $reserva["fecres"]; ?>" required disabled>
 			<input type="time" id="fectime" name="fectime" step="1" value="<?php echo $reserva["hora"]; ?>" required disabled>
 		</div>
 

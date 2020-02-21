@@ -91,6 +91,7 @@ $SQL .="  anioreem='".$_POST["anioreem"]."', ";
 // $SQL .="  precio='".$_POST["precio"]."', ";
 $SQL .="  porque_no='".$_POST["porque_no"]."', ";
 // $SQL .="  otra='".$_POST["otra"]."', ";
+$SQL .="  fecest='".$_POST["fecest"]."', ";
 $SQL .="  venta='".$_POST["venta"]."', ";
 $SQL .="  ofreciotd='".$_POST["ofreciotd"]."', ";
 $SQL .="  realizotd='".$_POST["realizotd"]."', ";

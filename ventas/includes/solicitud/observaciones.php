@@ -2,7 +2,7 @@
 
 	<div class="fila" style="margin-bottom:3px;">
 
-			<div style="width: 15%; text-align: center;">
+			<div style="width: 20%; text-align: center;">
 				<label>Precio:</label>
 				<select id="tipoprecio" name="tipoprecio" style="width:70px" required>
 					<option value=""></option>
@@ -10,12 +10,13 @@
 					<option value="fijo" <?php  if ($reserva['tipoprecio'] == "fijo") { echo "selected"; } ?>>Fijo</option>
 				</select>
 			</div>
-			<div style="width: 12%; text-align: center;">
+			<div style="width: 20%; text-align: center;">
 				<label>Factura:</label>
 				<input type="text" id="factura" name="factura" size="1" style=" padding-left: 2px;"value="<?php echo $reserva["factura"]; ?>" required>
 			</div>
-
-
+	</div>
+	<div class="fila" style="margin-bottom:3px; display: flex; justify-content: space-between;">
+		<div style="width: 45%">
 			<label>Entrega mes:</label>
 			<select name="mesentrega" id="mesentrega" required>
 				<option value=""></option>
@@ -65,10 +66,21 @@
 					<option value="2019/2020" <?php  if ($reserva['anoentrega'] == "2019/2020") { echo "selected"; } ?>>2019/2020</opcion>
 					<option value="2020" <?php  if ($reserva['anoentrega'] == "2020") { echo "selected"; } ?>>2020</opcion>
 			</select>
+		</div>
+		<div style="width: 55%">
+			<label>Fecha estimada:</label>
+			<?php
+				$fechaControl = "2020-02-21";
+				if ($reserva["fecres"]  >= $fechaControl ) { ?>
 
-		<span>Seg&uacute;n disponibilidad de F&aacute;brica.</span>
+					<input type="date" id="fecest" name="fecest" size="10" value="<?php echo $reserva["fecest"]; ?>" required>
+				<?php } else { ?>
+					<input type="date" id="fecest" name="fecest" size="10" value="" disabled>
+			 <?php } ?>
+			 <span>Seg&uacute;n disponibilidad de F&aacute;brica.</span>
+
+		</div>
 	</div>
-
 
 	<hr>
 	Observaciones.
