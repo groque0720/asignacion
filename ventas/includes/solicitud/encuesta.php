@@ -57,13 +57,13 @@
 
 					</div>
 
-					<div class="fila">
+					<!-- <div class="fila">
 
 						<div style="width: 97%; text-align: center; border-top: 1px solid #ccc; padding-top: 3px;">
 							<label>Motivos de Selecci&oacute;n de Compra</label>
 						</div>
 
-					</div>
+					</div> -->
 					<div class="fila" style="margin: 3px;">
 
 							<div style="width: 15%; text-align: center;">
@@ -97,7 +97,7 @@
 
 					</div>
 
-
+<!--
 					<div class="fila" >
 
 						<div style="width: 35%; padding-top: 3px;">
@@ -108,7 +108,7 @@
 							<input type="text" id="modalt" name="modalt" style="width: 100%; text-align: center;" value="<?php echo $reserva['modalt']; ?>">
 						</div>
 
-					</div>
+					</div> -->
 
 
 
