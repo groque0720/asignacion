@@ -514,8 +514,8 @@ if ($cant>=1) {
 		<?php
 			$visualizar = '';
 
-			 if ($id_perfil!=5) {
-			$visualizar = 'style=display:none';
+			 if ($id_perfil!=5 and $id_usuario != 106) {
+				$visualizar = 'style=display:none';
 			} ?>
 
 		<div class="zona-botones zona-entregas" <?php echo $visualizar; ?>>
