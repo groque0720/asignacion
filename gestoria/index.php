@@ -1,4 +1,4 @@
-<?php 
+<?php
 	include("funciones/func_mysql.php");
 	conectar();
 	mysqli_query($con,"SET NAMES 'utf8'");
@@ -20,7 +20,7 @@
 	<title>Gestoría</title>
 	<link rel="shortcut icon" type="image/x-icon" href="dyv.ico" />
 	<link rel="stylesheet" href="css/estilo.css">
-	<link href="https://file.myfontastic.com/PKG4Yur63nr52FU8DsbmDY/icons.css" rel="stylesheet">
+	<!-- <link href="https://file.myfontastic.com/PKG4Yur63nr52FU8DsbmDY/icons.css" rel="stylesheet"> -->
 	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 	<script src="js/index.js"></script>
 	<link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico" />
@@ -33,12 +33,12 @@
 	<section class="mod model-3">
 	  <div class="spinner">
 	  	<img class="imagen_gira" src="imagenes/logo_dyv.png" alt="">
-	  	
+
 	  </div>
 	</section>
 	<header>
 		<div class="zona-header input-90">
-			
+
 			<div class="zona-logo-dyv">
 				<img class="logo-dyv" src="imagenes/logodyv.png" alt="DyV">
 			</div>
@@ -54,16 +54,16 @@
 				<ul class="menu">
 					<li class="item-menu"><a class="icon-plus item__link cuadro" id="btn_nuevo" href="nuevo_registro.php">Nuevo</a></li>
 				</ul>
-				
+
 			</div>
 
-			<div class="zona-filtro"> 
-				
+			<div class="zona-filtro">
+
 				<form action="" class="form_filtro" method="post">
 					<label for="">Sucursal</label>
 					<select  id="idsucursal" name="idsucursal">
 						<option value="0">Todos</option>
-						<?php 
+						<?php
 							$SQL="SELECT * FROM sucursales";
 							$res=mysqli_query($con, $SQL);
 							;
@@ -82,7 +82,7 @@
 
 					</select>
 					<span class="icon-filter"> <input type="submit" class="buscar_fecha cuadro" value="Filtrar"></span>
-				</form>	
+				</form>
 			</div>
 
 			<div class='zona-activador'>
@@ -91,24 +91,24 @@
 			<div class="zona-buscar">
 				<input type="text" name="buscar" id="buscar" class="input-buscar" placeholder="Buscar">
 			</div>
-			
+
 		</div>
 		<div class="contenido">
 
-			<?php 
+			<?php
 				$SQL="SELECT * FROM view_registros_gestoria WHERE id_sucursal = $id_sucursal ORDER BY id_reg_gestoria DESC LIMIT 200";
 				//$SQL="SELECT * FROM view_registros_gestoria ORDER BY id_reg_gestoria DESC";
 				$res_reg = mysqli_query($con, $SQL);
 
 				include('contenido_cuerpo.php');
 			 ?>
-			
+
 		</div>
 	</div>
 
 	<footer>
 		<div class='pie centrar-texto'> <img class="logo-dyv" src="imagenes/logodyv.png" alt="DyV"></div>
-	</footer>	
+	</footer>
 </body>
 
 </html>
