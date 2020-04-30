@@ -375,13 +375,15 @@ if ($cant>=1) {
 					<div class="ancho-30 ">
 						<label class="ancho-1-3" for="">Color 1</label>
 						<select class="form-inputs ancho-100 <?php echo $asesor_class; ?>" name="color_uno" id="color_uno" readonly >
-						<?php if ($unidad['color_uno']!=15 AND $unidad['color_uno']!=16 AND $unidad['color_uno']!=23) {	 ?>
+							<!-- $id_usuario == 16 = Jergus Ariel -->
+							<!-- $id_usuario == 106 = Acosta Lucas -->
+						<?php if (($unidad['color_uno']!=15 AND $unidad['color_uno']!=16 AND $unidad['color_uno']!=23)
+							 OR ($id_usuario == 16 OR $id_usuario == 106)  ) {	 ?>
 							<option value="0"></option>
 							<?php
 								for ($j=1; $j < $i ; $j++) { ?>
 									<option value="<?php echo $j; ?>"  <?php if ($j==$unidad['color_uno']) { echo 'selected';} ?>><?php echo $color_a[$j]['color'] ?></option>
 							<?php } ?>
-
 							<?php }else{ ?>
 									<option value="<?php echo $unidad['color_uno']; ?>"  selected ?> <?php echo $color_a[$unidad['color_uno']]['color'] ?></option>
 								<?php } ?>

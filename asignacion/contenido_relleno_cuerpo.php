@@ -198,19 +198,15 @@ if ($_SESSION["id"]==47) {
 				$pago_tasa = 'background: orange;';
 
 			}else{
-				
+
 				$pago_tasa = '';
-				
+
 			}
 
 			if ($unidad['color_uno'] == 20) {
-
 				$tasa_cero = 'background: #a8b29f;';
-
 			}else{
-				
 				$tasa_cero = '';
-				
 			}
 
 
@@ -220,15 +216,15 @@ if ($_SESSION["id"]==47) {
 				$chasis_k = 'background: linear-gradient(to right, rgba(145,232,66,1) 0%, rgba(232,235,221,1) 100%)';
 
 			}else{
-				
+
 				$chasis_k = '';
-				
+
 			}
 
 
-			
+
 			$dias = '';
-			
+
 
 			if ($unidad['fec_arribo']<>'') {
 				$dias = ((strtotime($unidad['fec_arribo'])-strtotime(date("Y/m/d"))))/86400;
