@@ -168,7 +168,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 				$a_a++;
 			}
 			//Cantidad de Stock por parte de TASA
-			$SQL="SELECT * FROM view_stock_tasa WHERE id_negocio = 1 AND  id_modelo =".$modelo['idmodelo']." AND id_mes = ".$m_a." AND año = ".$a_a;
+			$SQL="SELECT * FROM view_stock_tasa_ma WHERE id_negocio = 1 AND  id_modelo =".$modelo['idmodelo']." AND id_mes = ".$m_a." AND año = ".$a_a;
 			$stocks=mysqli_query($con, $SQL);
 			$cant_stock=mysqli_num_rows($stocks);
 			if ($cant_stock>0) {
