@@ -64,25 +64,25 @@
 					<li><a href="stock_siniestrada_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Siniestradas</a></li>
 					<li><a href="#" class="item_link icon-outdent" data-id="ultimas_entregas"> <span></span>Últimas Entregas</a></li>
 					<li><a href="llegadas_porllegar_mesactual.php" class="icon-file-pdf-o" data-id=""> <span></span>Por Llegar Mes Actual</a></li>
-					
+
 				</ul>
 			</li>
 			<li><a href="#" class="item_link"><span class="icon-car">  </span>Info Stock</a>
 				<ul>
-					
-					
+
+
 					<li><a href="stock_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM</a></li>
 					<li><a href="stock_real_sin_vender_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender</a></li>
 					<li><a href="stock_llegadas_sin_confirmar_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Físico Sin Vender</a></li>
 					<li><a href="stock_real_sin_vender_con_interno.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Sin Vender con interno</a></li>
 					<li><a href="stock_real_sin_vender_mes_ant_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM (Mes Ant.)</a></li>
 					<li><a href="stock_gral_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock Gral. (0km+TPA)</a></li>
-					<li><a href="stock_gral_ma_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock Gral. (Mes Ant.)</a></li>
+					<!-- <li><a href="stock_gral_ma_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock Gral. (Mes Ant.)</a></li> -->
 					<li><a href="stock_efv_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock EFV</a></li>
 					<li><a href="stock_por_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock x Suc.</a></li>
-					
+
 				</ul>
-			</li>			
+			</li>
 
 			<li><a href="#" class="item_link"><span class="icon-pinterest-p">  </span>Plan Ahorro</a>
 				<ul>
@@ -96,7 +96,7 @@
 	<?php endif ?>
 			<li><a href="#" class="item_link">USADOS</a>
 				<ul>
-					
+
 					<li><a href="usados_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Planilla Gral.</a></li>
 					<li><a href="usados_certificados_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Planilla Físico</a></li>
 				</ul>
