@@ -7,12 +7,12 @@
 	<script src="ventas/js/jquery-1.9.1.js"></script>
 	<script>
 		$(document).ready(function(){
-			// window.location.href = "login/index.php";
+			window.location.href = "login/index.php";
 		});
 	</script>
 </head>
 <body>
-<h1>Estamos haciendo mantenimiento.. en breve estaremos en linea nuevamente!</h1><br>
-<span>Roque Gómez</span>
+<!-- <h1>Estamos haciendo mantenimiento.. en breve estaremos en linea nuevamente!</h1><br>
+<span>Roque Gómez</span> -->
 </body>
 </html>

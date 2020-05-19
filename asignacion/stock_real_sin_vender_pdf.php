@@ -160,8 +160,6 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$total_pisadas_grupo = $total_pisadas_grupo + $cant_pisada;
 		$total_pisadas_gral = $total_pisadas_gral + $cant_pisada;
 
-
-
 		for ($i=0; $i < 9; $i++) {
 
 			if ($m_a>12) {
@@ -201,12 +199,11 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			$cant_stock=mysqli_num_rows($reservas);
 			if ($cant_stock>0) {
 				$reserva=mysqli_fetch_array($reservas);
-				$reserva_a[$i]['cant']=$reserva['cantidad'];
+				$reserva_a[$i]['cant']=0;//$reserva['cantidad'];
 				$reserva_a[9]['cant']=(int)$reserva_a[9]['cant']+(int)$reserva['cantidad'];
 			}else{
 				$reserva_a[$i]['cant']=0;
 			}
-
 			$m_a++;
 		}
 		//cantidad por parte de
