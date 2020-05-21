@@ -85,7 +85,6 @@ $(document).ready(function(){
 		});
 
 		$(".facturar").click(function(event) {
-
 			var id = $(this).attr('data-id');
 			$.ajax({
 				url:"facturacion_cargar.php",

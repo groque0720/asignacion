@@ -8,13 +8,17 @@
 							<td width="19%">Cliente</td>
 							<td width="6%">Fecha</td>
 							<td width="19%">Modelo</td>
-							<td width="7%"> Control</td>
+							<td width="10%"> Control</td>
 						</tr>
 
 					</thead>
 
 					<tbody>
 							<?php while ($reserva=mysqli_fetch_array($res)) {
+
+								$SQL="SELECT * FROM facturas WHERE idfactura=".$reserva['idfactura'];
+								$fact=mysqli_query($con, $SQL);
+								if (empty($fact)) {$factura['nombre']="";}else{ $factura=mysqli_fetch_array($fact);}
 
 
 								$SQL="SELECT * FROM grupos WHERE idgrupo=".$reserva['idgrupo'];
@@ -25,7 +29,7 @@
 									$mod=mysqli_query($con, $SQL);
 									if (empty($mod)) {$modelo['modelo']="";}else{ $modelo=mysqli_fetch_array($mod);}
 								?>
-								<tr>
+								<tr <?php if ($reserva['anulada']==1) { echo 'class=anulada';} ?>>
 									<td style="text-align:center;"><?php echo $reserva['idreserva']; ?></td>
 									<td style="text-align:center;"><?php echo $reserva['compra']; ?></td>
 									<td style="text-align:center;"><?php echo $reserva['asesor']; ?></td>
@@ -75,6 +79,31 @@
 											<?php if ($reserva['estadopago']==3) {?>
 											<img src="../imagenes/pagos_ok.png" width="20px"></a>
 											<?php } ?>
+
+											&nbsp;&nbsp;&nbsp;
+											<?php
+												if (($usuario_id==56 or $usuario_id==11) and $reserva['anulada']==0) { ?>
+											<!-- facturar -->
+												<a class="facturar" href="#" data-id="<?php echo $reserva['idreserva']; ?>">
+												<?php if ($factura['estado']==0) { ?>
+												<img src="../imagenes/cajaregistradora_n.png" title="Sin Facturar" width="20px"></a>
+												<?php } ?>
+												<?php if ($factura['estado']==1) { ?>
+												<img src="../imagenes/cajaregistradora_e.png" title="Facturaci&oacute;n Enviada" width="20px"></a>
+												<?php } ?>
+												<?php if ($factura['estado']==3) { ?>
+												<img src="../imagenes/cajaregistradora_ok.png" title="Facturaci&oacute;n OK" width="20px"></a>
+												<?php } ?>
+												<?php if ($factura['estado']==2) { ?>
+												<img src="../imagenes/cajaregistradora_obs.png" title="Facturaci&oacute;n Observada" width="20px"></a>
+												<?php } ?>
+												<!-- anular -->
+												<a href="#" class="anular_reserva" name="anular_r" data-id="<?php echo $reserva['idreserva'];?>"><img src="../imagenes/eliminar.png" width="20px"></a>
+											<?php }
+											 ?>
+
+
+
 
 
 										<!-- <img src="../imagenes/lupa.png" width="15px">

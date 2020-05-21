@@ -3,9 +3,16 @@
 conectar();
 //mysql_query("SET NAMES 'utf8'");
 
+
+
 $SQL="UPDATE facturas SET";
 $SQL .=" anombre ='".$_POST["tipo_fact"]."', ";
-$SQL .=" nombre ='".$_POST["nombre_cli"].$_POST["nombre_a"]."', ";
+if (isset($_POST["nombre_cli"])) {
+	$SQL .=" nombre ='".$_POST["nombre_cli"].$_POST["nombre_a"]."', ";
+}else{
+	$SQL .=" nombre ='".$_POST["nombre_a"]."', ";
+}
+
 
 if ($_POST["fecnac"]!='') {
 	$SQL.=" fecnac = '".$_POST["fecnac"]."', ";
@@ -69,5 +76,11 @@ if ($_POST["estado"] != 0) {
 
 }
  mysqli_close($con);
-header("Location: asesores.php");
+
+if ($_POST['idusuario']==56 or $_POST['idusuario']==11) {
+	header("Location: control_reservas.php");
+}else{
+	header("Location: asesores.php");
+}
+
  ?>

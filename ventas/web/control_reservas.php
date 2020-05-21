@@ -46,8 +46,9 @@
 
 		$(".boton_s").click(function(event) {
 			ini=parseInt($("#pagina").val())+20;
+			usuario_id =$("#idusu").val();
 			$("#pagina").val(ini);
-			$.ajax({url:"control_reservas_paginas.php",cache:false,type:"POST",data:{inicio:ini},success:function(result){
+			$.ajax({url:"control_reservas_paginas.php",cache:false,type:"POST",data:{inicio:ini, usuario_id:usuario_id},success:function(result){
 	      	$("#cuerpo_asesor").html(result);
 
 	    	}});
@@ -55,11 +56,43 @@
 
 		$(".boton_a").click(function(event) {
 			ini=parseInt($("#pagina").val())-20;
+			usuario_id =$("#idusu").val();
 			if (ini>=0) {
 			$("#pagina").val(ini);
-			$.ajax({url:"control_reservas_paginas.php",cache:false,type:"POST",data:{inicio:ini},success:function(result){
+			$.ajax({url:"control_reservas_paginas.php",cache:false,type:"POST",data:{inicio:ini, usuario_id:usuario_id},success:function(result){
 	      	$("#cuerpo_asesor").html(result);
 	    	}});}else{alert("No Hay Mas Registros Anteriores.")};
+		});
+
+		$(".facturar").click(function(event) {
+			var id = $(this).attr('data-id');
+			$.ajax({
+				url:"facturacion_cargar.php",
+				cache:false,
+				type:"POST",
+				data:{idres:id},
+				success:function(result){
+					document.location.href ="facturacion.php?IDrecord="+id;
+				}
+			});
+		});
+
+		$(".anular_reserva").click(function(event) {
+			if (confirm("Seguro que deseas anular la operaci\u00f3n??")) {
+				var id = $(this).attr('data-id'); //llamar a ajax anular la operacion y volver a la pagina asesores
+				var obs = prompt("Ingrese Motivo por la cual anula la reserva.");
+
+
+				if (obs!="" && obs != null) {
+
+					$.ajax({url:"reserva_anular.php?idres=" + id + "&obser=" + obs + "&",cache:false,type:"POST",success:function(result){
+						alert('Se anuló la reserva');
+				      location.reload();
+				   	}});
+					// document.location.href = "reserva_anular.php?idres=" + id + "&obser=" + obs + "&";
+					//return false;
+				};
+			};
 		});
 
 	});
@@ -68,13 +101,14 @@
 </head>
 
 <body>
-<div id="agrupar">
+<div id="agrupar" style="width: 70%;">
 
 		<?php include("../includes/header.php") ?>
 
 		<?php
 			include("../funciones/func_mysql.php");
 			conectar();
+			$usuario_id = $_SESSION["id"];
 			////mysql_query("SET NAMES 'utf8'");
 			$SQL="SELECT count(*) as cantidad FROM notificaciones WHERE idusuario =".$_SESSION["id"]." AND visto=0 and borrar=0";
 			$res=mysqli_query($con, $SQL);
@@ -114,14 +148,15 @@ usuarios.nombre AS asesor,
 reservas.fecres,
 reservas.enviada AS enviada,
 reservas.estadopago AS estadopago,
-reservas.idcliente as idcliente
+reservas.idcliente as idcliente,
+reservas.anulada,
+reservas.idfactura
 FROM
 reservas
 Inner Join clientes ON clientes.idcliente = reservas.idcliente
 Inner Join usuarios ON usuarios.idusuario = reservas.idusuario
 WHERE
 reservas.enviada >=  1
-
 ORDER BY
 enviada ASC, reservas.fecres DESC
 LIMIT 20";
@@ -139,8 +174,6 @@ LIMIT 20";
 					</div>
 				</div>
 			<div id="cuerpo_asesor">
-
-
 				<?php include("control_reservas_cuerpo.php"); ?>
 			</div>
 		</section>
