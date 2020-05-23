@@ -22,29 +22,29 @@
 				<option value=""></option>
 				<option value="P.A." <?php  if ($reserva['mesentrega'] == "P.A.") { echo "selected"; } ?>>P.A.</opcion>
 				<option value="Enero" <?php  if ($reserva['mesentrega'] == "Enero" ) { echo "selected"; } ?>>Enero</opcion>
-				<option value="Enero/Febrero" <?php  if ($reserva['mesentrega'] == "Enero/Febrero" || $reserva['mesentrega'] == "Enero" ) { echo "selected"; } ?>>Enero/Febrero</opcion>
+				<option value="Enero/Febrero" <?php  if ($reserva['mesentrega'] == "Enero/Febrero") { echo "selected"; } ?>>Enero/Febrero</opcion>
 				<option value="Febrero" <?php  if ($reserva['mesentrega'] == "Febrero" ) { echo "selected"; } ?>>Febrero</opcion>
-				<option value="Febrero/Marzo" <?php  if ($reserva['mesentrega'] == "Febrero/Marzo" || $reserva['mesentrega'] == "Febrero") { echo "selected"; } ?>>Febrero/Marzo</opcion>
+				<option value="Febrero/Marzo" <?php  if ($reserva['mesentrega'] == "Febrero/Marzo") { echo "selected"; } ?>>Febrero/Marzo</opcion>
 				<option value="Marzo" <?php  if ($reserva['mesentrega'] == "Marzo" ) { echo "selected"; } ?>>Marzo</opcion>
-				<option value="Marzo/Abril" <?php  if ($reserva['mesentrega'] == "Marzo/Abril" || $reserva['mesentrega'] == "Marzo") { echo "selected"; } ?>>Marzo/Abril</opcion>
+				<option value="Marzo/Abril" <?php  if ($reserva['mesentrega'] == "Marzo/Abril") { echo "selected"; } ?>>Marzo/Abril</opcion>
 				<option value="Abril" <?php  if ($reserva['mesentrega'] == "Abril" ) { echo "selected"; } ?>>Abril</opcion>
-				<option value="Abril/Mayo" <?php  if ($reserva['mesentrega'] == "Abril/Mayo" || $reserva['mesentrega'] == "Abril") { echo "selected"; } ?>>Abril/Mayo</opcion>
+				<option value="Abril/Mayo" <?php  if ($reserva['mesentrega'] == "Abril/Mayo") { echo "selected"; } ?>>Abril/Mayo</opcion>
 				<option value="Mayo" <?php  if ($reserva['mesentrega'] == "Mayo" ) { echo "selected"; } ?>>Mayo</opcion>
-				<option value="Mayo/Junio" <?php  if ($reserva['mesentrega'] == "Mayo/Junio" || $reserva['mesentrega'] == "Mayo") { echo "selected"; } ?>>Mayo/Junio</opcion>
+				<option value="Mayo/Junio" <?php  if ($reserva['mesentrega'] == "Mayo/Junio" ) { echo "selected"; } ?>>Mayo/Junio</opcion>
 				<option value="Junio" <?php  if ($reserva['mesentrega'] == "Junio" ) { echo "selected"; } ?>>Junio</opcion>
-				<option value="Junio/Julio" <?php  if ($reserva['mesentrega'] == "Junio/Julio" || $reserva['mesentrega'] == "Junio") { echo "selected"; } ?>>Junio/Julio</opcion>
+				<option value="Junio/Julio" <?php  if ($reserva['mesentrega'] == "Junio/Julio") { echo "selected"; } ?>>Junio/Julio</opcion>
 					<option value="Julio" <?php  if ($reserva['mesentrega'] == "Julio" ) { echo "selected"; } ?>>Julio</opcion>
-				<option value="Julio/Agosto" <?php  if ($reserva['mesentrega'] == "Julio/Agosto" || $reserva['mesentrega'] == "Julio") { echo "selected"; } ?>>Julio/Agosto</opcion>
+				<option value="Julio/Agosto" <?php  if ($reserva['mesentrega'] == "Julio/Agosto") { echo "selected"; } ?>>Julio/Agosto</opcion>
 					<option value="Agosto" <?php  if ($reserva['mesentrega'] == "Agosto" ) { echo "selected"; } ?>>Agosto</opcion>
-				<option value="Agosto/Septiembre" <?php  if ($reserva['mesentrega'] == "Agosto/Septiembre" || $reserva['mesentrega'] == "Agosto") { echo "selected"; } ?>>Agosto/Septiembre</opcion>
+				<option value="Agosto/Septiembre" <?php  if ($reserva['mesentrega'] == "Agosto/Septiembre") { echo "selected"; } ?>>Agosto/Septiembre</opcion>
 					<option value="Septiembre" <?php  if ($reserva['mesentrega'] == "Septiembre" ) { echo "selected"; } ?>>Septiembre</opcion>
-				<option value="Septiembre/Octubre" <?php  if ($reserva['mesentrega'] == "Septiembre/Octubre" || $reserva['mesentrega'] == "Septiembre") { echo "selected"; } ?>>Septiembre/Octubre</opcion>
+				<option value="Septiembre/Octubre" <?php  if ($reserva['mesentrega'] == "Septiembre/Octubre") { echo "selected"; } ?>>Septiembre/Octubre</opcion>
 				<option value="Octubre" <?php  if ($reserva['mesentrega'] == "Octubre" ) { echo "selected"; } ?>>Octubre</opcion>
-				<option value="Octubre/Noviembre" <?php  if ($reserva['mesentrega'] == "Octubre/Noviembre" || $reserva['mesentrega'] == "Octubre") { echo "selected"; } ?>>Octubre/Noviembre</opcion>
+				<option value="Octubre/Noviembre" <?php  if ($reserva['mesentrega'] == "Octubre/Noviembre") { echo "selected"; } ?>>Octubre/Noviembre</opcion>
 				<option value="Noviembre" <?php  if ($reserva['mesentrega'] == "Noviembre" ) { echo "selected"; } ?>>Noviembre</opcion>
-				<option value="Noviembre/Diciembre" <?php  if ($reserva['mesentrega'] == "Noviembre/Diciembre" || $reserva['mesentrega'] == "Noviembre") { echo "selected"; } ?>>Noviembre/Diciembre</opcion>
+				<option value="Noviembre/Diciembre" <?php  if ($reserva['mesentrega'] == "Noviembre/Diciembre") { echo "selected"; } ?>>Noviembre/Diciembre</opcion>
 				<option value="Diciembre" <?php  if ($reserva['mesentrega'] == "Diciembre" ) { echo "selected"; } ?>>Diciembre</opcion>
-				<option value="Diciembre/Enero" <?php  if ($reserva['mesentrega'] == "Diciembre/Enero" || $reserva['mesentrega'] == "Diciembre") { echo "selected"; } ?>>Diciembre/Enero</opcion>
+				<option value="Diciembre/Enero" <?php  if ($reserva['mesentrega'] == "Diciembre/Enero") { echo "selected"; } ?>>Diciembre/Enero</opcion>
 			</select>
 
 			<span>del</span>
@@ -65,6 +65,7 @@
 					<option value="2019" <?php  if ($reserva['anoentrega'] == "2019") { echo "selected"; } ?>>2019</opcion>
 					<option value="2019/2020" <?php  if ($reserva['anoentrega'] == "2019/2020") { echo "selected"; } ?>>2019/2020</opcion>
 					<option value="2020" <?php  if ($reserva['anoentrega'] == "2020") { echo "selected"; } ?>>2020</opcion>
+					<option value="2020/2021" <?php  if ($reserva['anoentrega'] == "2020/2021") { echo "selected"; } ?>>2020/2021</opcion>
 			</select>
 		</div>
 		<div style="width: 55%">
