@@ -586,17 +586,19 @@ if ($cant>=1) {
 				<div class="ancho-20">
 					<input type="submit" class="botones btn-cancelar" value="Cancelar">
 				</div>
-				<div class="ancho-20 derecha-texto">
+				<?php if ($unidad['nro_unidad'] >= 34555   ): ?>
+					<div class="ancho-20 derecha-texto">
 
-					<?php if ($id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94) { ?>
-						<input type="submit" class="botones btn-aceptar" value="Guardar">
-					<?php }else { ?>
-						<?php if ($id_perfil==3 AND $unidad['reservada']==0 AND $cant<=0) {?>
-							<input type="submit" class="botones btn-aceptar" value="Reservar">
-						<?php }
-					 	}?>
+						<?php if ($id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94) { ?>
+							<input type="submit" class="botones btn-aceptar" value="Guardar">
+						<?php }else { ?>
+							<?php if ($id_perfil==3 AND $unidad['reservada']==0 AND $cant<=0) {?>
+								<input type="submit" class="botones btn-aceptar" value="Reservar">
+							<?php }
+						 	}?>
+					</div>
+				<?php endif ?>
 
-				</div>
 			</div>
 		</div>
 		<div id="mensajes_unidad"></div>
