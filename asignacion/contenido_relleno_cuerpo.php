@@ -209,6 +209,19 @@ if ($_SESSION["id"]==47) {
 				$tasa_cero = '';
 			}
 
+			if ($unidad['nro_unidad'] > 23621 and  $unidad['nro_unidad'] <= 23656) {
+				// $color_no_disponible = 'background: #F9A5FA;';
+				$color_no_disponible = "background: repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0) 5px,
+      rgba(0, 0, 0, 0) 10px,
+      #F3C5DD 10px,
+      #F3C5DD 15px
+    )";
+			}else{
+				$color_no_disponible = '';
+			}
+
 
 
 			if ( ($unidad['id_grupo'] == 17 or $unidad['id_grupo']== 7) AND $unidad['estado_reserva']== 0 AND substr($unidad['chasis'], 0, 1) == 'K') {
@@ -241,7 +254,7 @@ if ($_SESSION["id"]==47) {
 
 		 ?>
 
-		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k; ?>">
+		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible; ?>">
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
 
