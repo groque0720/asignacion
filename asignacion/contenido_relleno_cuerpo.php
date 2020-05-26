@@ -209,15 +209,15 @@ if ($_SESSION["id"]==47) {
 				$tasa_cero = '';
 			}
 
-			if ($unidad['nro_unidad'] > 23621 and  $unidad['nro_unidad'] <= 23656) {
+			if ($unidad['no_disponible'] == 1) {
 				// $color_no_disponible = 'background: #F9A5FA;';
 				$color_no_disponible = "background: repeating-linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0) 5px,
-      rgba(0, 0, 0, 0) 10px,
-      #F3C5DD 10px,
-      #F3C5DD 15px
-    )";
+			      45deg,
+			      rgba(0, 0, 0, 0) 5px,
+			      rgba(0, 0, 0, 0) 10px,
+			      #F3C5DD 10px,
+			      #F3C5DD 15px
+			    )";
 			}else{
 				$color_no_disponible = '';
 			}
