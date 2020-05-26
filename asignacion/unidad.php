@@ -586,7 +586,7 @@ if ($cant>=1) {
 				<div class="ancho-20">
 					<input type="submit" class="botones btn-cancelar" value="Cancelar">
 				</div>
-				<?php if ($unidad['nro_unidad'] >= 34555   ): ?>
+				<?php if ($unidad['nro_unidad'] > 34555): ?>
 					<div class="ancho-20 derecha-texto">
 
 						<?php if ($id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94) { ?>
@@ -598,7 +598,6 @@ if ($cant>=1) {
 						 	}?>
 					</div>
 				<?php endif ?>
-
 			</div>
 		</div>
 		<div id="mensajes_unidad"></div>
