@@ -1,4 +1,4 @@
-<?php 
+<?php
 include("funciones/func_mysql.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
@@ -30,7 +30,7 @@ mysqli_query($con,"SET NAMES 'utf8'");
 				<label class="ancho-1-3" for="">Mes</label>
 				<select class="form-inputs ancho-2-3" name="id_mes" id="" required>
 					<option value="0"></option>
-					<?php 
+					<?php
 						$SQL="SELECT * FROM meses";
 						$meses=mysqli_query($con, $SQL);
 						while ($mes=mysqli_fetch_array($meses)) {?>
@@ -51,7 +51,7 @@ mysqli_query($con,"SET NAMES 'utf8'");
 				<label class="ancho-20" for="">Modelo</label>
 				<select class="form-inputs ancho-2-3" name="id_grupo" id="grupo" required>
 				<option value="0"></option>
-				<?php 
+				<?php
 					$SQL="SELECT * FROM grupos WHERE cerokilometro = 1 AND activo = 1 ORDER BY posicion";
 					$grupos=mysqli_query($con, $SQL);
 					while ($modelo=mysqli_fetch_array($grupos)) { ?>
@@ -63,7 +63,7 @@ mysqli_query($con,"SET NAMES 'utf8'");
 				<label class="ancho-20" for="">Versión</label>
 				<select class="form-inputs ancho-80" name="id_modelo" id="id_modelo" required>
 				<option value="0"></option>
-				<?php 
+				<?php
 					$SQL="SELECT * FROM modelos WHERE idgrupo = ".$unidad['id_grupo']." ORDER BY posicion";
 					$versiones=mysqli_query($con, $SQL);
 					while ($version=mysqli_fetch_array($versiones)) { ?>
@@ -80,6 +80,13 @@ mysqli_query($con,"SET NAMES 'utf8'");
 			</div>
 		</div>
 
+		<div class="lado inputs-masivo">
+			<div class="form-linea ancho-80">
+				<label class="ancho-80" for="">No disponible</label>
+				<input class="form-inputs" type="checkbox" size="5" name="no_disponible">
+			</div>
+		</div>
+
 		<div class="zona-botones">
 			<div class="form-linea">
 				<div class="ancho-50">
@@ -90,7 +97,7 @@ mysqli_query($con,"SET NAMES 'utf8'");
 				</div>
 			</div>
 		</div>
-		
+
 
 	</form>
 </div>

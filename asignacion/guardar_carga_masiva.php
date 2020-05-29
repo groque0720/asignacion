@@ -10,6 +10,13 @@ if ($estado_tasa) {
 	$estado=0;
 }
 
+if ($no_disponible) {
+	$no_disponible_=1;
+}else{
+	$no_disponible_=0;
+}
+
+
 $SQL="SELECT MAX(nro_unidad) as nro_unidad FROM asignaciones";
 $unidades=mysqli_query($con, $SQL);
 $unidad=mysqli_fetch_array($unidades);
@@ -17,22 +24,22 @@ $nro = (int)$unidad['nro_unidad'] + 1;
 
 if ($reserva_gerencia) {
 
-	for ($i=0; $i < $cantidad; $i++) { 
+	for ($i=0; $i < $cantidad; $i++) {
 
-		$SQL="INSERT INTO asignaciones (nro_unidad, id_negocio, id_mes, año, id_grupo, id_modelo, estado_tasa, guardado, reservada, cliente, fec_reserva, id_asesor)
-		 VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1, 1, 'RESERVADA EFV','".date("Y-m-d")."', 2)";
+		$SQL="INSERT INTO asignaciones (nro_unidad, id_negocio, id_mes, año, id_grupo, id_modelo, estado_tasa, guardado, reservada, cliente, fec_reserva, id_asesor, no_disponible)
+		 VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1, 1, 'RESERVADA EFV','".date("Y-m-d")."', 2,$no_disponible_)";
 		mysqli_query($con, $SQL);
-		$nro++;	
+		$nro++;
 	}
 
 } else {
 
-	for ($i=0; $i < $cantidad; $i++) { 
+	for ($i=0; $i < $cantidad; $i++) {
 
-		$SQL="INSERT INTO asignaciones (nro_unidad, id_negocio, id_mes, año, id_grupo, id_modelo, estado_tasa, guardado)
-		 VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1)";
+		$SQL="INSERT INTO asignaciones (nro_unidad, id_negocio, id_mes, año, id_grupo, id_modelo, estado_tasa, guardado, no_disponible)
+		 VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1, $no_disponible_)";
 		mysqli_query($con, $SQL);
-		$nro++;	
+		$nro++;
 	}
 
 }
