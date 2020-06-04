@@ -211,9 +211,9 @@ if ($cant>=1) {
 							<option value="1" <?php if ($unidad['estado_tasa']==1) { echo 'selected';	} ?>>Confirmada</option>
 						</select>
 					</div>
-					<div class="ancho-30 centrar-texto ">
+					<div class="ancho-30 centrar-texto" style="display: <?php if ($deshabilitado == 'disabled') { echo 'none'; } ?>">
 						<label class="ancho-40" for="">Disponible</label>
-						<input class="form-inputs input-fecha" type="checkbox" size="5" name="no_disponible" <?php if ($unidad['no_disponible']!=1) { echo 'checked';} ?> <?php echo $deshabilitado; ?>>
+						<input class="form-inputs input-fecha" type="checkbox" size="5" name="no_disponible" <?php if ($unidad['no_disponible']!=1) { echo 'checked';} ?>>
 					</div>
 				</div>
 				<div class="form-linea">
