@@ -205,11 +205,15 @@ if ($cant>=1) {
 					</div>
 				</div>
 				<div class="form-linea">
-					<div class="ancho-100 centrar-texto ">
-						<select class="form-inputs ancho-50" name="estado_tasa" id="estado_tasa" <?php echo $lectura; ?>>
+					<div class="ancho-50 centrar-texto ">
+						<select class="form-inputs ancho-100" name="estado_tasa" id="estado_tasa" <?php echo $lectura; ?>>
 							<option value="0" <?php if ($unidad['estado_tasa']==0) { echo 'selected';	} ?>>No Confirmada</option>
 							<option value="1" <?php if ($unidad['estado_tasa']==1) { echo 'selected';	} ?>>Confirmada</option>
 						</select>
+					</div>
+					<div class="ancho-30 centrar-texto ">
+						<label class="ancho-40" for="">Disponible</label>
+						<input class="form-inputs input-fecha" type="checkbox" size="5" name="no_disponible" <?php if ($unidad['no_disponible']!=1) { echo 'checked';} ?> <?php echo $deshabilitado; ?>>
 					</div>
 				</div>
 				<div class="form-linea">

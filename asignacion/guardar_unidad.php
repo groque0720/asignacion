@@ -1,4 +1,4 @@
-﻿<?php 
+﻿<?php
 
 include("funciones/func_mysql.php");
 conectar();
@@ -33,6 +33,9 @@ $SQL.=" id_ubicacion = ".$_POST["id_ubicacion"].",";
 $SQL.=" estado_tasa = ".$_POST["estado_tasa"].",";
 $SQL.=" hora = '".$_POST["hora"]."',";
 
+
+
+
 if ($_POST["fec_despacho"]!='') {
 	$SQL.=" fec_despacho = '".$_POST["fec_despacho"]."', ";
 }else{
@@ -45,14 +48,14 @@ if ($_POST["fec_arribo"]!='') {
 	$SQL.=" fec_arribo = null ,";
 }
 if (isset($_POST["fec_entrega"])) {
-	
+
 	if ($_POST["fec_entrega"]!='') {
 		$SQL.=" fec_entrega = '".$_POST["fec_entrega"]."', ";
 		$SQL.=" entregada = 1 , ";
 	}else{
 		$SQL.=" fec_entrega = null ,";
 		$SQL.=" entregada = 0 , ";
-	}	
+	}
 }
 
 if (isset($_POST["nro_remito"])) {
@@ -154,6 +157,12 @@ if ($_POST["hora_pedido"]!='') {
 	$SQL.=" hora_pedido = null ,";
 }
 
+	if ($_POST["no_disponible"]==true) {
+		$SQL.=" no_disponible = 0, ";
+	}else{
+		$SQL.=" no_disponible = 1, ";
+	}
+
 // $SQL.=" hora_pedido = '".$_POST["hora_pedido"]."',";
 
 $SQL.=" id_estado_entrega = ".$_POST["id_estado_entrega"].",";
@@ -180,8 +189,8 @@ if ($_POST['es_planilla_tpa']!='es_tpa') {
 			if ($text_busqueda!='' AND $text_busqueda!=null ) {
 				$abuscar=$text_busqueda;
 				include ('busqueda_rapida_unidades_cuerpo.php');
-			}else{ 
-				include ('contenido_relleno.php');	
+			}else{
+				include ('contenido_relleno.php');
 			}
 
 		}else{ // si es igual a planilla entregas cargo contenido de la planilla de entregas
@@ -189,21 +198,21 @@ if ($_POST['es_planilla_tpa']!='es_tpa') {
 			if ($text_busqueda!='' AND $text_busqueda!=null ) {
 				$abuscar=$text_busqueda;
 				include ('entregas_busqueda_rapida_unidades_cuerpo.php');
-			}else{ 
-				include('entregas_contenido_relleno.php');	
+			}else{
+				include('entregas_contenido_relleno.php');
 			}
 
 		}
 
 
-	}else{ // cargo la planilla de asignacion 
+	}else{ // cargo la planilla de asignacion
 
-	
+
 		if ($text_busqueda!='' AND $text_busqueda!=null ) {
 			$abuscar=$text_busqueda;
 			include ('busqueda_rapida_unidades_cuerpo.php');
 		}else{
-			include ('contenido_relleno.php');	
+			include ('contenido_relleno.php');
 		}
 
 	}
@@ -214,7 +223,7 @@ if ($_POST['es_planilla_tpa']!='es_tpa') {
 		$abuscar=$text_busqueda;
 		include ('plan_ahorro_busqueda_rapida_unidades_cuerpo.php');
 	}else{
-		include ('plan_ahorro_contenido_relleno_total.php');	
+		include ('plan_ahorro_contenido_relleno_total.php');
 
 }
 }
