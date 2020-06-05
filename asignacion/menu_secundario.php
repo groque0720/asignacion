@@ -27,9 +27,9 @@
 
 			<li><a href="#" class="item_link"><span class="icon-ambulance">  </span>Alertas</a>
 				<ul>
-					<li class=""><a href="#" class="item_link" data-id="reservas_sin_sena"><span class="icon-usd"> </span>Reservas Sin Seña</a></li>
+<!-- 					<li class=""><a href="#" class="item_link" data-id="reservas_sin_sena"><span class="icon-usd"> </span>Reservas Sin Seña</a></li>
 					<li class=""><a href="#" class="item_link" data-id="reservas_nro_unidad_duplicada"><span class="icon-code-fork"> </span>Unidades Duplicadas</a></li>
-					<li class=""><a href="#" class="item_link" data-id="reservas_sin_nro_unidad"><span class="icon-chain-broken"> </span>Reservas Sin N° Unidad</a></li>
+					<li class=""><a href="#" class="item_link" data-id="reservas_sin_nro_unidad"><span class="icon-chain-broken"> </span>Reservas Sin N° Unidad</a></li> -->
 					<li class=""><a href="#" class="item_link" data-id="reservas_levantadas"><span class="icon-chevron-up"> </span>Reservas Levantadas</a></li>
 				</ul>
 			</li>
