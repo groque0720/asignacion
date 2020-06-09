@@ -25,9 +25,9 @@
 
 		$(".boton_b").click(function(event) {
 			det=$("#buscar_c").val();
-			idusuario =$("#idusu").val();
+			usuario_id =$("#idusu").val();
 			$("#pagina").val(0);
-			$.ajax({url:"control_reservas_filtro.php",cache:false,type:"POST",data:{buscar:det, idusu:idusuario },success:function(result){
+			$.ajax({url:"control_reservas_filtro.php",cache:false,type:"POST",data:{buscar:det, usuario_id:usuario_id},success:function(result){
 	      	$("#cuerpo_asesor").html(result);
 	    	}});
 		});
@@ -35,9 +35,9 @@
 		$("#buscar_c").keypress(function(e){
        		var keycode = (event.keyCode ? event.keyCode : event.which);
        		det=$("#buscar_c").val();
-			idusuario =$("#idusu").val();
+			usuario_id =$("#idusu").val();
 			$("#pagina").val(0);
-			$.ajax({url:"control_reservas_filtro.php",cache:false,type:"POST",data:{buscar:det, idusu:idusuario },success:function(result){
+			$.ajax({url:"control_reservas_filtro.php",cache:false,type:"POST",data:{buscar:det, usuario_id:usuario_id },success:function(result){
 	      	$("#cuerpo_asesor").html(result);
 	    	}});
 

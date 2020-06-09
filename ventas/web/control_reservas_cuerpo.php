@@ -116,3 +116,41 @@
 							<?php } ?>
 					</tbody>
 				</table>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		$(".facturar").click(function(event) {
+			var id = $(this).attr('data-id');
+			$.ajax({
+				url:"facturacion_cargar.php",
+				cache:false,
+				type:"POST",
+				data:{idres:id},
+				success:function(result){
+					document.location.href ="facturacion.php?IDrecord="+id;
+				}
+			});
+		});
+
+		$(".anular_reserva").click(function(event) {
+			if (confirm("Seguro que deseas anular la operaci\u00f3n??")) {
+				var id = $(this).attr('data-id'); //llamar a ajax anular la operacion y volver a la pagina asesores
+				var obs = prompt("Ingrese Motivo por la cual anula la reserva.");
+
+
+				if (obs!="" && obs != null) {
+
+					$.ajax({url:"reserva_anular.php?idres=" + id + "&obser=" + obs + "&",cache:false,type:"POST",success:function(result){
+						alert('Se anuló la reserva');
+				      location.reload();
+				   	}});
+					// document.location.href = "reserva_anular.php?idres=" + id + "&obser=" + obs + "&";
+					//return false;
+				};
+			};
+		});
+
+	});
+</script>

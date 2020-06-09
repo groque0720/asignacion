@@ -15,7 +15,11 @@ reservas.compra AS compra,
 reservas.detalleu AS detalleu,
 usuarios.nombre AS asesor,
 reservas.fecres,
-reservas.enviada AS enviada
+reservas.enviada AS enviada,
+reservas.estadopago AS estadopago,
+reservas.idcliente as idcliente,
+reservas.anulada,
+reservas.idfactura
 FROM
 reservas
 Inner Join clientes ON clientes.idcliente = reservas.idcliente
@@ -28,6 +32,7 @@ enviada ASC, reservas.fecres DESC
 LIMIT 20";
 
 $res=mysqli_query($con, $SQL);
+$usuario_id = $_POST["usuario_id"];
 include("control_reservas_cuerpo.php");
  mysqli_close($con);
 ?>
