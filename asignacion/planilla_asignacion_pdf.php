@@ -160,6 +160,12 @@ $grupos=mysqli_query($con, $SQL);
 
 			while ($unidad=mysqli_fetch_array($unidades)) {
 
+				if ($unidad['no_disponible'] == 1) {
+					$disponible = "// No Disponible //";
+				}else{
+					$disponible = "";
+				}
+
 				if ($unidad['reservada']==1 AND $unidad['estado_reserva']==0 ) {
 					$pdf->SetFont('Arial','BI',6.5);
 				}else{
@@ -187,7 +193,8 @@ $grupos=mysqli_query($con, $SQL);
 				$pdf->Cell(12,5,cambiarFormatoFecha($unidad['fec_arribo']),1,0,'C');
 				$pdf->Cell(45,5,($grupo_a[$unidad['id_grupo']]['grupo']." ".$modelo_a[$unidad['id_modelo']]['modelo']),1,0,'C');
 				$pdf->Cell(13,5,($unidad['chasis']),1,0,'C');
-				$pdf->Cell(35,5,($color_a[$unidad['color_uno']]['color']." - ".$color_a[$unidad['color_dos']]['color']." - ".$color_a[$unidad['color_tres']]['color']),1,0,'C');
+
+				$pdf->Cell(35,5,($disponible." ".$color_a[$unidad['color_uno']]['color']." - ".$color_a[$unidad['color_dos']]['color']." - ".$color_a[$unidad['color_tres']]['color']),1,0,'C');
 				$pdf->Cell(12,5,($color_a[$unidad['id_color']]['color']),1,0,'C');
 
 				if ($unidad['fec_arribo']!='' AND $unidad['fec_arribo']!=null) {
@@ -215,7 +222,7 @@ $grupos=mysqli_query($con, $SQL);
 					$pdf->SetFont('');
 				}
 				$pdf->Cell(9,5,$dias,1,0,'C');
-				$pdf->Cell(31,5,($unidad['cliente']),1,0,'L');
+				$pdf->Cell(31,5,($disponible.$unidad['cliente']),1,0,'L');
 				$pdf->Cell(17,5,($usuario_a[$unidad['id_asesor']]['nombre']),1,0,'C');
 				$pdf->Cell(12,5,cambiarFormatoFecha($unidad['fec_reserva']),1,0,'C');
 				$pdf->Ln();
