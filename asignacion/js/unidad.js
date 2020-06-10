@@ -85,7 +85,7 @@ $("#costo_z").focusout(function() {
 			event.preventDefault();
 		}
 	});
-	
+
 	$("#costo_z").val(formatoNumero(res2, 2, ",", "."));
 
 	if (valor=='' || valor==null) {
@@ -104,11 +104,11 @@ $(".form-unidad").submit(function(event) {
 	if ($('#fec_reserva').val()!='' && $('#fec_reserva').val()!=null && $('#fec_arribo').val()!='' && $('#fec_arribo').val()!=null) {
 
 		if ($('#fec_reserva').val()>=$('#fec_arribo').val()) {
-			$fecha=$('#fec_reserva').val().split('-');	
+			$fecha=$('#fec_reserva').val().split('-');
 		}else{
 			$fecha=$('#fec_arribo').val().split('-');
 		}
-		
+
 		$ano=parseInt($fecha[0]);
 		$mes=parseInt($fecha[1]);
 		$dia=parseInt($fecha[2])+10;
@@ -124,7 +124,7 @@ $(".form-unidad").submit(function(event) {
 		$fecha_nueva = $ano +'-'+$mes+'-'+$dia;
 
 		$("#fec_limite").val($fecha_nueva);
-		
+
 	}else{
 		$("#fec_limite").val('');
 	}
@@ -243,7 +243,7 @@ if ($('#id_perfil').val()==3) {
 			$('#id_sucursal option:not(:selected)').attr('disabled',true);
 	}else{
 		asesor_a_reservar=$('#asesor_a_reservar').val();
-		$("#id_asesor > option[value="+asesor_a_reservar+"]").attr('selected', 'selected');	
+		$("#id_asesor > option[value="+asesor_a_reservar+"]").attr('selected', 'selected');
 		suc_a_reservar=$('#suc_a_reservar').val();
 		$("#id_sucursal > option[value="+suc_a_reservar+"]").attr('selected', 'selected');
 
@@ -280,7 +280,7 @@ $("#levantar_reserva").click(function(event) {
 	  confirmButtonText: "Si, Levantar!",
 	  closeOnConfirm: true },
 	  function(){
-		$("#id_asesor > option[value=1]").attr('selected', 'selected');	
+		$("#id_asesor > option[value=1]").attr('selected', 'selected');
 		$("#color_uno > option[value=0]").attr('selected', 'selected');
 		$("#color_dos > option[value=0]").attr('selected', 'selected');
 		$("#color_tres > option[value=0]").attr('selected', 'selected');
@@ -289,7 +289,7 @@ $("#levantar_reserva").click(function(event) {
 		$("#cliente").val('-');
 		$("#fec_reserva").val('');
 		$("#fec_limite").val('');
-		$("#hora").val('');
+		$("#hora").val('00:00');
 	 });
 });
 
@@ -342,7 +342,7 @@ $("#fec_reserva").focusout(function(event) {
 		$fecha_nueva = $ano +'-'+$mes+'-'+$dia;
 
 		$("#fec_limite").val($fecha_nueva);
-		
+
 	}
 
 });
@@ -396,7 +396,7 @@ $("#nro_remito").focusin(function(event) {
 // 		var hora = tiempo.getHours();
 // 		var minuto = tiempo.getMinutes();
 // 		var segundo = tiempo.getSeconds();
-		
+
 // 		$("#hora").val(hora+':'+minuto+':'+segundo);
 
 // 		var day = ("0" + tiempo.getDate()).slice(-2);
@@ -440,7 +440,7 @@ $("#nro_remito").focusin(function(event) {
 // 		var hora = tiempo.getHours();
 // 		var minuto = tiempo.getMinutes();
 // 		var segundo = tiempo.getSeconds();
-		
+
 // 		$("#hora").val(hora+':'+minuto+':'+segundo);
 
 // 		var day = ("0" + tiempo.getDate()).slice(-2);

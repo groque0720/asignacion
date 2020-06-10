@@ -305,7 +305,7 @@ if ($cant>=1) {
 							<?php if ($unidad['hora']!='' AND $unidad['reservada']==1) {?>
 								<input class="form-inputs input-fecha <?php echo $asesor_class; ?>" type="time" id="hora" name="hora" placeholder="HH:mm:ss" value="<?php echo $unidad['hora']; ?>" readonly="readonly">
 							<?php }else{?>
-								<input class="form-inputs input-fecha <?php echo $asesor_class; ?>" type="time" id="hora" name="hora" placeholder="HH:mm:ss" value="<?php echo date("H:i:s"); ?>" readonly="readonly">
+								<input class="form-inputs input-fecha <?php echo $asesor_class; ?>" type="time" id="hora" name="hora" placeholder="HH:mm:ss" value="<?php echo date("H:i"); ?>" readonly="readonly">
 							<?php } ?>
 						<?php }else{?>
 
@@ -313,7 +313,7 @@ if ($cant>=1) {
 								<input class="form-inputs input-fecha <?php echo $asesor_class; ?>" type="time" id="hora" name="hora" placeholder="HH:mm:ss" value="<?php echo $unidad['hora']; ?>" >
 							<?php }else{?>
 									<?php if ($id_perfil==14) { ?>
-										<input class="form-inputs input-fecha <?php echo $asesor_class; ?>" type="time" id="hora" name="hora" placeholder="HH:mm:ss" value="<?php echo date("H:i:s"); ?>">
+										<input class="form-inputs input-fecha <?php echo $asesor_class; ?>" type="time" id="hora" name="hora" placeholder="HH:mm:ss" value="<?php echo date("H:i"); ?>">
 									<?php } ?>
 
 							<?php } ?>
