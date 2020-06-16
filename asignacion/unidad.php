@@ -603,6 +603,8 @@ if ($cant>=1) {
 								 	}?>
 							</div>
 						<?php endif ?>
+				<?php else: ?>
+						<span>Solicitar al Gerente para realizar reserva o algún cambio</span>
 				<?php endif ?>
 			</div>
 		</div>
