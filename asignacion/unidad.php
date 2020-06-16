@@ -590,17 +590,19 @@ if ($cant>=1) {
 				<div class="ancho-20">
 					<input type="submit" class="botones btn-cancelar" value="Cancelar">
 				</div>
-				<?php if ($unidad['no_disponible'] != 1 or $id_usuario == 11 or $id_usuario == 56 OR $id_usuario == 16): ?>
-					<div class="ancho-20 derecha-texto">
-
-						<?php if ($id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94) { ?>
-							<input type="submit" class="botones btn-aceptar" value="Guardar">
-						<?php }else { ?>
-							<?php if ($id_perfil==3 AND $unidad['reservada']==0 AND $cant<=0) {?>
-								<input type="submit" class="botones btn-aceptar" value="Reservar">
-							<?php }
-						 	}?>
-					</div>
+					<!-- este es el filtro para que no pisen los vendedores -->
+				<?php if (in_array($id_usuario, [11, 14, 16, 27, 28, 43, 56, 71, 72, 79, 94, 96, 103, 106]) ):?>
+						<?php if ($unidad['no_disponible'] != 1 or $id_usuario == 11 or $id_usuario == 56 OR $id_usuario == 16): ?>
+							<div class="ancho-20 derecha-texto">
+								<?php if ($id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94) { ?>
+									<input type="submit" class="botones btn-aceptar" value="Guardar">
+								<?php }else { ?>
+									<?php if ($id_perfil==3 AND $unidad['reservada']==0 AND $cant<=0) {?>
+										<input type="submit" class="botones btn-aceptar" value="Reservar">
+									<?php }
+								 	}?>
+							</div>
+						<?php endif ?>
 				<?php endif ?>
 			</div>
 		</div>
