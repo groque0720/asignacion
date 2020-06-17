@@ -285,6 +285,10 @@ if ($_SESSION["id"]==47) {
 					echo "<span style='color: red;font-weight: bold; font-size: 12px;'>// No Disponible //</span>";
 					}
 				 ?>
+				 <?php if ($unidad['libre_condicionada'] == 1 AND $unidad['no_disponible'] != 1) {
+					echo "<span style='color: green;font-weight: bold; font-size: 12px;'>// Precio Junio//</span>";
+					}
+				 ?>
 				<?php echo $color_a[$unidad['color_uno']]['color']." - ".$color_a[$unidad['color_dos']]['color']." - ".$color_a[$unidad['color_tres']]['color']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['id_color']!='') {echo $color_a[$unidad['id_color']]['color'];}else{ echo '-';}  ?></td>
 			<?php
