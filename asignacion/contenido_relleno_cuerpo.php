@@ -209,7 +209,10 @@ if ($_SESSION["id"]==47) {
 				$tasa_cero = '';
 			}
 
-			if ($unidad['no_disponible'] == 1) {
+			$libre_condicionada = '';
+			$color_no_disponible = '';
+
+			if ($unidad['no_disponible'] == 1 and $unidad['libre_condicionada'] != 1) {
 				// $color_no_disponible = 'background: #F9A5FA;';
 				$color_no_disponible = "background: repeating-linear-gradient(
 			      45deg,
@@ -218,23 +221,18 @@ if ($_SESSION["id"]==47) {
 			      #F3C5DD 10px,
 			      #F3C5DD 15px
 			    )";
-			}else{
-				$color_no_disponible = '';
+			}else {
+				if ($unidad['libre_condicionada'] == 1) {
+					// $color_no_disponible = 'background: #F9A5FA;';
+					$libre_condicionada = "background: repeating-linear-gradient(
+				      45deg,
+				      rgba(0, 0, 0, 0) 5px,
+				      rgba(0, 0, 0, 0) 10px,
+				      #A4FABC 10px,
+				      #A4FABC 15px
+				    )";
+				}
 			}
-
-			if ($unidad['libre_condicionada'] == 1 AND $unidad['no_disponible'] != 1) {
-				// $color_no_disponible = 'background: #F9A5FA;';
-				$libre_condicionada = "background: repeating-linear-gradient(
-			      45deg,
-			      rgba(0, 0, 0, 0) 5px,
-			      rgba(0, 0, 0, 0) 10px,
-			      #A4FABC 10px,
-			      #A4FABC 15px
-			    )";
-			}else{
-				$libre_condicionada = '';
-			}
-
 
 			if ( ($unidad['id_grupo'] == 17 or $unidad['id_grupo']== 7) AND $unidad['estado_reserva']== 0 AND substr($unidad['chasis'], 0, 1) == 'K') {
 
@@ -281,14 +279,20 @@ if ($_SESSION["id"]==47) {
 			<td class="centrar-texto celda fila-modelo fila-oculto" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $modelo_a[$unidad['id_modelo']]['modelo']; ?></td>
 			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
 			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" data-id="<?php echo $unidad['id_unidad']; ?>">
-				<?php if ($unidad['no_disponible'] == 1) {
-					echo "<span style='color: red;font-weight: bold; font-size: 12px;'>// No Disponible //</span>";
+				<?php
+					if ($unidad['no_disponible'] == 1 AND $unidad['libre_condicionada'] == 1) {
+						echo "<span style='color: green;font-weight: bold; font-size: 12px;'>// No Disponible//</span>";
+					}else{
+						 if ($unidad['no_disponible'] == 1) {
+							echo "<span style='color: red;font-weight: bold; font-size: 12px;'>// No Disponible //</span>";
+						}
 					}
 				 ?>
 				 <?php if ($unidad['libre_condicionada'] == 1 AND $unidad['no_disponible'] != 1) {
 					echo "<span style='color: green;font-weight: bold; font-size: 12px;'>// Precio Junio//</span>";
 					}
 				 ?>
+
 				<?php echo $color_a[$unidad['color_uno']]['color']." - ".$color_a[$unidad['color_dos']]['color']." - ".$color_a[$unidad['color_tres']]['color']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['id_color']!='') {echo $color_a[$unidad['id_color']]['color'];}else{ echo '-';}  ?></td>
 			<?php
