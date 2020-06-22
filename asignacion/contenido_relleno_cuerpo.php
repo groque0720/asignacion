@@ -211,6 +211,7 @@ if ($_SESSION["id"]==47) {
 
 			$libre_condicionada = '';
 			$color_no_disponible = '';
+			$rosada_precio_junio ='';
 
 			if ($unidad['no_disponible'] == 1 and $unidad['libre_condicionada'] != 1) {
 				// $color_no_disponible = 'background: #F9A5FA;';
@@ -233,6 +234,18 @@ if ($_SESSION["id"]==47) {
 				    )";
 				}
 			}
+			if ($unidad['rosada_precio_junio'] == 1 AND $unidad['no_disponible'] == 0) {
+				$color_no_disponible = '';
+				$libre_condicionada = '';
+				$rosada_precio_junio = "background: repeating-linear-gradient(
+			      45deg,
+			      rgba(0, 0, 0, 0) 5px,
+			      rgba(0, 0, 0, 0) 10px,
+			      #F3C5DD 10px,
+			      #F3C5DD 15px
+			    )";
+			}
+
 
 			if ( ($unidad['id_grupo'] == 17 or $unidad['id_grupo']== 7) AND $unidad['estado_reserva']== 0 AND substr($unidad['chasis'], 0, 1) == 'K') {
 
@@ -264,7 +277,7 @@ if ($_SESSION["id"]==47) {
 
 		 ?>
 
-		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada; ?>">
+		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio; ?>">
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
 
@@ -292,6 +305,12 @@ if ($_SESSION["id"]==47) {
 					echo "<span style='color: green;font-weight: bold; font-size: 12px;'>// Precio Junio//</span>";
 					}
 				 ?>
+
+				 <?php if ($unidad['rosada_precio_junio'] == 1) {
+					echo "<span style='color: red;font-weight: bold; font-size: 12px;'>// Precio Junio//</span>";
+					}
+				 ?>
+
 
 				<?php echo $color_a[$unidad['color_uno']]['color']." - ".$color_a[$unidad['color_dos']]['color']." - ".$color_a[$unidad['color_tres']]['color']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['id_color']!='') {echo $color_a[$unidad['id_color']]['color'];}else{ echo '-';}  ?></td>
