@@ -72,6 +72,7 @@ clientes.tfijo LIKE '%" . $datoBuscar . "%' OR
 clientes.tcelu LIKE '%" . $datoBuscar . "%' OR
  clientes.nombre LIKE '%" . $datoBuscar . "%' OR
  reservas.idreserva LIKE '%" . $datoBuscar . "%' OR
+ reservas.nroorden LIKE '%" . $datoBuscar . "%' OR
  reservas.nrounidad LIKE '%" . $datoBuscar . "%' OR
  reservas.interno LIKE '%" . $datoBuscar . "%' )";
 $SQL .= $FIL." ORDER BY usuarios.nombre, clientes.nombre";
