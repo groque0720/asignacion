@@ -49,12 +49,6 @@
 					<li><a href="planilla_asignacion_nc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Reservas No Confirmadas</a></li>
 					<li><a href="planilla_asignacion_stock_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Costo Asignación Stock</a></li>
 
-					<li><a href="costos_TASA_Sep19_sinArribo.php" target="_blank" class="icon-file-pdf-o"> <span></span>Costo Sep 19 No llegadas</a></li>
-					<li><a href="costos_TASA_Sep19_sinArriboSinVender.php" target="_blank" class="icon-file-pdf-o"> <span></span>Costo Sep 19 No llegadas Sin Vender</a></li>
-
-					<li><a href="costos_TASA_Octubre19_sinArribo.php" target="_blank" class="icon-file-pdf-o"> <span></span>Costo Oct 19 No llegadas</a></li>
-					<li><a href="costos_TASA_Oct19_sinArriboSinVender.php" target="_blank" class="icon-file-pdf-o"> <span></span>Costo Oct 19 No llegadas Sin Vender</a></li>
-
 					<li><a href="falta_cancelacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar</a></li>
 					<li><a href="falta_cancelacion_mas_diez_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 10 dias</a></li>
 					<li><a href="stock_por_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock x Suc.</a></li>
