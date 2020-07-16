@@ -101,11 +101,11 @@
 				<td>Fec. Ent.</td>
 			</tr>
 		</thead>
-<?php 
+<?php
 
-		
-		
-		
+
+
+
 		while ($unidad=mysqli_fetch_array($unidades)) { ?>
 		<tbody  style="page-break-inside: always;" class="lista-unidades listado_asignacion">
 			<tr style="page-break-inside: always;" class="<?php echo 'fila_'.$fila.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>">
@@ -126,7 +126,7 @@
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $usuario_a[$unidad['id_asesor']]['nombre']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_entrega']); ?></td>
 			</tr>
-	
+
 	<?php } ?>
 	</tbody>
 
@@ -135,3 +135,4 @@
 	</table>
 
 	<script src="js/entregas.js"></script>
+	<script src="js/entregadas.js"></script>
