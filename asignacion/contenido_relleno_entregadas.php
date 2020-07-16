@@ -52,4 +52,4 @@ $unidades = mysqli_query($con, $SQL);
  include('contenido_relleno_entregadas_cuerpo.php'); ?>
 </div>
 
-<script src="js/entregadas.js"></script>
+<!-- <script src="js/entregadas.js"></script> -->
