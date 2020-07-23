@@ -42,7 +42,7 @@
 			<tr>
 				<td width="3%">N.Res.</td>
 				<td width="5%">Fec.Mod.</td>
-				<td width="4%">Compra</td>
+				<td width="4%">Hora</td>
 				<td width="4%">Int.</td>
 				<td width="13%">Modelo</td>
 				<td width="15%">Cliente</td>
@@ -60,10 +60,10 @@
 			<tr class="<?php if ($noti_res["visto"]==0) { echo "negrita";} ?>">
 				<td ><?php echo $noti_res["idreserva"];?></td>
 				<td ><?php echo cambiarformatofecha($noti_res['fechanot']);?> </td>
-
-				<td ><?php echo $noti_res["compra"];?></td>
+				<td ><?php echo cambiarformatohora($noti_res['hora']);?></td>
 				<td ><?php if ($noti_res["interno"]!=0) { echo $noti_res["interno"];}else{echo "-";}?></td>
-				<td ><?php echo $noti_res["modelo"];?></td>
+				<td ><?php if ($noti_res["compra"]=='Usado'){ echo '<b>Usado:</b>'; };?>
+					<?php echo $noti_res["modelo"];?></td>
 				<td ><?php echo $noti_res["cliente"];?></td>
 				<td ><?php echo $noti_res["asesor"];?></td>
 				<td ><?php echo $noti_res["Obs"];?></td>

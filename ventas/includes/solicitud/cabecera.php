@@ -34,7 +34,8 @@
 		</div>
 
 		<div style="width: 35%; float:right;; text-align: right; margin: 5px;">
-			<?php if ($reserva['fecult']!="") { ?>Fecha.:Ult. Act. <?php echo cambiarformatofecha($reserva['fecult']);} ?>
+			<?php if ($reserva['fecult']!="") { ?>Ult. Act. <?php echo cambiarformatofecha($reserva['fecult']);} ?>
+			<?php if ($reserva['horault']!="") { ?><?php echo ' - '.cambiarformatohora($reserva['horault']);} ?>
 			<input type="date" id="fecult" name="fecult" style="display: none;" value="<?php echo $reserva["fecult"]; ?>" >
 
 		</div>

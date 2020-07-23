@@ -6,6 +6,7 @@ extract($_POST);
 
 // var_dump($_POST);
 
+$hora=date('H:i');
 
 $SQL = "UPDATE entregausado SET";
 $SQL .=" marca ='".$_POST["marcau"]."', ";
@@ -61,6 +62,7 @@ $SQL .="  nrounidad='".$_POST["nrounidad"]."', ";
 $SQL .="  lugarventa ='".$_POST["lugarventa"]."', ";
 $SQL .="  factura='".$_POST["factura"]."', ";
 $SQL .="  fecult='".date("Y-m-d")."', ";
+$SQL .="  horault='".date("H:i:s")."', ";
 $SQL .="  tipoprecio='".$_POST["tipoprecio"]."', ";
 $SQL .="  condicionpago='".$_POST["condicionpago"]."', ";
 $SQL .="  mesentrega='".$_POST["mesentrega"]."', ";
@@ -97,11 +99,16 @@ $SQL .="  ofreciotd='".$_POST["ofreciotd"]."', ";
 $SQL .="  realizotd='".$_POST["realizotd"]."', ";
 $SQL .="  enviada=".$_POST["enviado"].", ";
 
-$SQL .="  modificaciones =' ".cambiarFormatoFecha(date("Y-m-d"))." ".$_POST["obs_cambio"]."  *   ||   *  ".$_POST["obs_cambio_a"]."', ";
+if ($_POST["enviado"]>1) {
+	$SQL .="  modificaciones =' (".cambiarFormatoFecha(date("Y-m-d"))." ".cambiarformatohora($hora).") ".$_POST["obs_cambio"]."  *   ||   *  ".$_POST["obs_cambio_a"]."', ";
 
-	if ($_POST["obs_cambio_a"]!="" OR $_POST["obs_cambio_a"]!=null OR $_POST["obs_cambio"]!="") { // si la observaciones anteriores esta vacia entonces es una reserva nueva o sin modificaciones previas
-	$SQL .="  modificaciones =' ".cambiarFormatoFecha(date("Y-m-d"))." ".$_POST["obs_cambio"]."  *   ||   *  ".$_POST["obs_cambio_a"]."', ";
-	};
+		if ($_POST["obs_cambio_a"]!="" OR $_POST["obs_cambio_a"]!=null OR $_POST["obs_cambio"]!="") { // si la observaciones anteriores esta vacia entonces es una reserva nueva o sin modificaciones previas
+		$SQL .="  modificaciones =' (".cambiarFormatoFecha(date("Y-m-d"))." ".cambiarformatohora($hora).") ".$_POST["obs_cambio"]."  *   ||   *  ".$_POST["obs_cambio_a"]."', ";
+		};
+}else{
+	$SQL .="  modificaciones =' (".cambiarFormatoFecha(date("Y-m-d"))." ".cambiarformatohora($hora).") envío de reserva ', ";
+}
+
 $SQL .="  modalt ='".$_POST["modalt"]."' ";
 $SQL .=" WHERE idreserva =".$_POST["nrores"];
 mysqli_query($con, $SQL);
