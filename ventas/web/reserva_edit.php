@@ -154,7 +154,12 @@ if ($_POST["enviado"] == 1 ) {
 	while ($not=mysqli_fetch_array($res)) {
 
 	$SQL="INSERT INTO notificaciones(tiponot, fechanot, hora, idusuario, compra, idreserva, interno, modelo, cliente, asesor, visto, obs )";
-	$SQL .=" VALUES (1,'".date("Y-m-d")."','$hora','".$not["idusuario"]."','".$_POST["compra"]."','".$_POST["nrores"]."','".$_POST["interno"].$_POST["internou"]."','".$grupo['grupo'].' '.$modelo['modelo']."".$_POST["detalleu"]."','".$_POST["nombre"]."','".$_POST["asesor_res"]."',0,'".$_POST["observacion"]."')";
+	if ($_POST["compra"] == "Usado") {
+		$interno = $_POST["internou"];
+	}else{
+		$interno = $_POST["interno"];
+	}
+	$SQL .=" VALUES (1,'".date("Y-m-d")."','$hora','".$not["idusuario"]."','".$_POST["compra"]."','".$_POST["nrores"]."','".$interno."','".$grupo['grupo'].' '.$modelo['modelo']."".$_POST["detalleu"]."','".$_POST["nombre"]."','".$_POST["asesor_res"]."',0,'".$_POST["observacion"]."')";
 	mysqli_query($con, $SQL);
 
 	};
@@ -186,7 +191,12 @@ if ($_POST["enviado"] > 1) {
 	while ($not=mysqli_fetch_array($res)) {
 
 	$SQL="INSERT INTO notificaciones(tiponot, fechanot, hora, idusuario, compra, idreserva, interno, modelo, cliente, asesor, visto, obs )";
-	$SQL .=" VALUES (2,'".date("Y-m-d")."','$hora','".$not["idusuario"]."','".$_POST["compra"]."','".$_POST["nrores"]."','".$_POST["interno"].$_POST["internou"]."','".$grupo['grupo'].' '.$modelo['modelo']."".$_POST["detalleu"]."','".$_POST["nombre"]."','".$idudres["idusuario"]."',0,'".$_POST["obs_cambio"]."-".$_POST["observacion"]."')";
+		if ($_POST["compra"] == "Usado") {
+			$interno = $_POST["internou"];
+		}else{
+			$interno = $_POST["interno"];
+		}
+	$SQL .=" VALUES (2,'".date("Y-m-d")."','$hora','".$not["idusuario"]."','".$_POST["compra"]."','".$_POST["nrores"]."','".$interno."','".$grupo['grupo'].' '.$modelo['modelo']."".$_POST["detalleu"]."','".$_POST["nombre"]."','".$idudres["idusuario"]."',0,'".$_POST["obs_cambio"]."-".$_POST["observacion"]."')";
 	mysqli_query($con, $SQL);
 
 	};
