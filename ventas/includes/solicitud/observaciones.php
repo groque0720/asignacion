@@ -66,6 +66,7 @@
 					<option value="2019/2020" <?php  if ($reserva['anoentrega'] == "2019/2020") { echo "selected"; } ?>>2019/2020</opcion>
 					<option value="2020" <?php  if ($reserva['anoentrega'] == "2020") { echo "selected"; } ?>>2020</opcion>
 					<option value="2020/2021" <?php  if ($reserva['anoentrega'] == "2020/2021") { echo "selected"; } ?>>2020/2021</opcion>
+					<option value="2021" <?php  if ($reserva['anoentrega'] == "2021") { echo "selected"; } ?>>2021</opcion>
 			</select>
 		</div>
 		<div style="width: 55%">
