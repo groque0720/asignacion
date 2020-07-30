@@ -250,7 +250,7 @@ if ($cant>=1) {
 					<?php if ($id_perfil!=3 OR $es_gerente==1) { ?>
 						<div class="centrar-texto"><label class="ancho-30" for="">Precio 0km</label></div>
 						<input class="form-inputs centrar-texto ancho-90" type="text" size="10" id="precio_0km_z" name="precio_0km_z" value="<?php echo number_format($unidad['precio_0km'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
-						
+
 					<?php } ?>
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="precio_0km" name="precio_0km" value="<?php echo $unidad['precio_0km']; ?>" <?php echo $lectura; ?>>
 
@@ -282,8 +282,8 @@ if ($cant>=1) {
 					<div class="centrar-texto ancho-100 subtitulo">
 						DATOS DE RESERVA
 					</div>
-					
-						
+
+
 				</div>
 
 				<div class="form-linea centrar-texto">
@@ -413,15 +413,15 @@ if ($cant>=1) {
 					<input type="submit" class="botones btn-cancelar" value="Cancelar">
 				</div>
 				<div class="ancho-20 derecha-texto">
-
-					<?php if ($id_perfil==14 OR $id_usuario==87 or $id_perfil==5) { ?>
-						<input type="submit" class="botones btn-aceptar" value="Guardar">
-					<?php }else { ?>
-						<?php if ($id_perfil==3 AND $unidad['reservada']==0 AND $cant<=0) {?>
-							<input type="submit" class="botones btn-aceptar" value="Reservar">
-						<?php }
-					 	}?>
-
+					<?php if ($unidad['id_estado'] == 1 OR $id_perfil!=3): ?>
+						<?php if ($id_perfil==14 OR $id_usuario==87 or $id_perfil==5) { ?>
+							<input type="submit" class="botones btn-aceptar" value="Guardar">
+						<?php }else { ?>
+							<?php if ($id_perfil==3 AND $unidad['reservada']==0 AND $cant<=0) {?>
+								<input type="submit" class="botones btn-aceptar" value="Reservar">
+							<?php }
+						 	}?>
+					<?php endif ?>
 				</div>
 			</div>
 		</div>
