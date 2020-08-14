@@ -262,8 +262,8 @@ if ($_SESSION["id"]==47) {
 			      45deg,
 			      rgba(0, 0, 0, 0) 5px,
 			      rgba(0, 0, 0, 0) 10px,
-			      #FEC787 10px,
-			      #FEC787 15px
+			      #F9D0A1 10px,
+			      #F9D0A1 15px
 			    )";
 			}
 
