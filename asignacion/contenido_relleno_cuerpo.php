@@ -268,7 +268,7 @@ if ($_SESSION["id"]==47) {
 			}
 			$corolla_dic2020 = '';
 			if ($unidad['corolla_dic2020']==1) {
-				$corolla_dic2020 = "background: #C9E8FB;";
+				$corolla_dic2020 = "background: #72C6FA;";
 			}
 
 			if ( ($unidad['id_grupo'] == 17 or $unidad['id_grupo']== 7) AND $unidad['estado_reserva']== 0 AND substr($unidad['chasis'], 0, 1) == 'K') {
