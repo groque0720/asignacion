@@ -256,6 +256,17 @@ if ($_SESSION["id"]==47) {
 			    )";
 			}
 
+			$naranja_agosto = '';
+			if ($unidad['naranja'] == 1 AND $unidad['precio_agosto'] == 1) {
+				$naranja_agosto = "background: repeating-linear-gradient(
+			      45deg,
+			      rgba(0, 0, 0, 0) 5px,
+			      rgba(0, 0, 0, 0) 10px,
+			      #FEC787 10px,
+			      #FEC787 15px
+			    )";
+			}
+
 			if ( ($unidad['id_grupo'] == 17 or $unidad['id_grupo']== 7) AND $unidad['estado_reserva']== 0 AND substr($unidad['chasis'], 0, 1) == 'K') {
 
 				$chasis_k = 'background: linear-gradient(to right, rgba(145,232,66,1) 0%, rgba(232,235,221,1) 100%)';
@@ -286,7 +297,7 @@ if ($_SESSION["id"]==47) {
 
 		 ?>
 
-		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio; ?>">
+		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto ?>">
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
 
@@ -308,6 +319,10 @@ if ($_SESSION["id"]==47) {
 				 ?>
 				 <?php if ($unidad['precio_junio'] == 1 ) {
 					echo "<span style='font-weight: bold; font-size: 12px;'>// Precio Junio//</span>";
+					}
+				 ?>
+				 <?php if ($unidad['precio_agosto'] == 1 ) {
+					echo "<span style='font-weight: bold; font-size: 12px;'>// Precio Agosto//</span>";
 					}
 				 ?>
 
