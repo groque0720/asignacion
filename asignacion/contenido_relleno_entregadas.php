@@ -47,7 +47,7 @@
 </form>
 
 <?php
-$SQL="SELECT * FROM view_asignaciones_entregadas LIMIT 500";
+$SQL="SELECT * FROM view_asignaciones_entregadas LIMIT 150";
 $unidades = mysqli_query($con, $SQL);
  include('contenido_relleno_entregadas_cuerpo.php'); ?>
 </div>
