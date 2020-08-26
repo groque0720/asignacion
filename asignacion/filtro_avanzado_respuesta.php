@@ -142,7 +142,7 @@ $grupos=mysqli_query($con, $SQL);
 		while ($modelo=mysqli_fetch_array($modelos)) {
 
 
-			$SQL="SELECT * FROM asignaciones WHERE entregada = 0 AND id_modelo = ". $modelo['idmodelo'] .$cadena."  ORDER BY año, id_mes, nro_orden, nro_unidad";
+			$SQL="SELECT * FROM asignaciones WHERE borrar=0 AND entregada = 0 AND id_modelo = ". $modelo['idmodelo'] .$cadena."  ORDER BY año, id_mes, nro_orden, nro_unidad";
 			$unidades = mysqli_query($con, $SQL);
 
 			$cant=mysqli_num_rows($unidades);
