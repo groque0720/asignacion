@@ -21,7 +21,6 @@ $SQL .=" WHERE identregau =".$_POST["identregau"];
 mysqli_query($con, $SQL);
 
 
-
 $SQL = "UPDATE clientes SET";
 $SQL .=" nombre ='".$_POST["nombre"]."', ";
 $SQL .=" sexo ='".$_POST["sexo"]."', ";
@@ -51,8 +50,6 @@ $SQL .=" prefcontacto='".$_POST["prefcontacto"]."', ";
 $SQL .=" ctoyota ='".$_POST["ctoyota"]."'";
 $SQL .=" WHERE idcliente =".$_POST["idcliente"];
 mysqli_query($con, $SQL);
-
-
 
 $SQL="UPDATE reservas SET";
 $SQL .="  observacion ='".$_POST["observacion"]."', ";
@@ -106,7 +103,11 @@ if ($_POST["enviado"]>1) {
 		$SQL .="  modificaciones =' (".cambiarFormatoFecha(date("Y-m-d"))." ".cambiarformatohora($hora).") ".$_POST["obs_cambio"]."  *   ||   *  ".$_POST["obs_cambio_a"]."', ";
 		};
 }else{
+	//if ($_POST["enviado"]==0) {
+		$SQL .="  fecres='".date("Y-m-d")."', ";
+	//}
 	$SQL .="  modificaciones =' (".cambiarFormatoFecha(date("Y-m-d"))." ".cambiarformatohora($hora).") envío de reserva ', ";
+
 }
 
 $SQL .="  modalt ='".$_POST["modalt"]."' ";
