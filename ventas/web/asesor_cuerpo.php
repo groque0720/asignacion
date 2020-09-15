@@ -147,7 +147,7 @@
 								<img src="../imagenes/auto_ll.png" width="20px" title="Con Arribo">
 						<?php } ?>
 
-				<a href="#" class="anular_reserva" name="anular_r" data-id="<?php echo $reserva['idreserva'];?>"><img src="../imagenes/eliminar.png" width="20px"></a>
+				<a href="#" class="anular_reserva" name="anular_r"  data-enviada="<?php echo $reserva['enviada'];?>" data-id="<?php echo $reserva['idreserva'];?>"><img src="../imagenes/eliminar.png" width="20px"></a>
 			</td>
 		</tr>
 	<?php } ?>

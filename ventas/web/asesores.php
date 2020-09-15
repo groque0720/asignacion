@@ -54,12 +54,20 @@ $(document).ready(function(){
 		$(".anular_reserva").click(function(event) {
 			if (confirm("Seguro que deseas anular la operaci\u00f3n??")) {
 				var id = $(this).attr('data-id'); //llamar a ajax anular la operacion y volver a la pagina asesores
-				var obs = prompt("Ingrese Motivo por la cual anula la reserva.");
+				var enviada = $(this).attr('data-enviada');
 
+				if (enviada > 0) {
+					var obs = prompt("Ingrese Motivo por la cual anula la reserva.");
+				}else{
+					var obs = '';
+				}
 
-				if (obs!="" && obs != null) {
+				if ((obs!="" && obs != null) || enviada == 0)  {
 					document.location.href = "reserva_anular.php?idres=" + id + "&obser=" + obs + "&";
-					//return false;
+				}else{
+					if (enviada > 0) {
+						alert('Para poder anular ingrese motivo de anulación')
+					}
 				};
 			};
 		});
