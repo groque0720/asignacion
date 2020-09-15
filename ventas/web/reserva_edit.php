@@ -105,6 +105,7 @@ if ($_POST["enviado"]>1) {
 }else{
 	//if ($_POST["enviado"]==0) {
 		$SQL .="  fecres='".date("Y-m-d")."', ";
+		$SQL .="  hora='".date("H:i:s")."', ";
 	//}
 	$SQL .="  modificaciones =' (".cambiarFormatoFecha(date("Y-m-d"))." ".cambiarformatohora($hora).") envío de reserva ', ";
 
