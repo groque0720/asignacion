@@ -50,6 +50,7 @@
 					<li class=""><a href="excel_planilla_asignacion_amarillas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Amarillas</a></li>
 					<li class=""><a href="excel_planilla_asignacion_naranjas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Naranjas (Agosto)</a></li>
 					<li class=""><a href="excel_planilla_asignacion_corollas_celeste.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Corolla Celestes (Dic 20)</a></li>
+					<li class=""><a href="excel_planilla_asignacion_preventa_sep20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Sep 2020</a></li>
 					<li><a href="planilla_asignacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Asignación Gral.</a></li>
 					<li><a href="planilla_asignacion_nc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Reservas No Confirmadas</a></li>
 					<li><a href="planilla_asignacion_stock_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Costo Asignación Stock</a></li>
