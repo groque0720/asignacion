@@ -42,15 +42,22 @@
 					<li class=""><a href="../agenda_test_drive" target="_blank"><span class="icon-calendar">  </span>Agenda TD</a></li>
 				</ul>
 			</li>
-			<li><a href="#" class="item_link"><span class="icon-car">  </span>Reportes</a>
+
+			<li><a href="#" class="item_link"><span class="icon-car">  </span>Excel</a>
 				<ul>
-					<li class=""><a href="excel_planilla_asignacion.php" class="" data-id=""><span class="icon-download">  </span>En Excel</a></li>
+					<li class=""><a href="excel_planilla_asignacion.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Asiganción</a></li>
 					<li class=""><a href="excel_planilla_asignacion_rosadas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Rosadas</a></li>
 					<li class=""><a href="excel_planilla_asignacion_verdes.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Verdes</a></li>
 					<li class=""><a href="excel_planilla_asignacion_amarillas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Amarillas</a></li>
 					<li class=""><a href="excel_planilla_asignacion_naranjas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Naranjas (Agosto)</a></li>
 					<li class=""><a href="excel_planilla_asignacion_corollas_celeste.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Corolla Celestes (Dic 20)</a></li>
 					<li class=""><a href="excel_planilla_asignacion_preventa_sep20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Sep 2020</a></li>
+				</ul>
+			</li>
+
+
+			<li><a href="#" class="item_link"><span class="icon-car">  </span>Reportes</a>
+				<ul>
 					<li><a href="planilla_asignacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Asignación Gral.</a></li>
 					<li><a href="planilla_asignacion_nc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Reservas No Confirmadas</a></li>
 					<li><a href="planilla_asignacion_stock_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Costo Asignación Stock</a></li>
