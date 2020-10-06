@@ -313,7 +313,7 @@ if ($_SESSION["id"]==47) {
 					linear-gradient(315deg, #ECEDDC 25%, transparent 25%),
 					linear-gradient(45deg, #ECEDDC 25%, transparent 25%);
 					background-size: 10px 10px;
-					background-color: rgba(231,149,148,0.7)";
+					background-color: rgba(231,149,148,0.5)";
 
 			}
 
