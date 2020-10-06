@@ -279,9 +279,19 @@ if ($_SESSION["id"]==47) {
 			      rgba(0, 0, 0, 0) 10px,
 			      rgba(169	,102, 62, 0.7) 10px,
 			      rgba(169	,102, 62, 0.7) 15px
-			    )";;
+			    )";
 			}
 
+			$preventa_oct20 = '';
+			if ($unidad['preventa_oct20']==1) {
+				$preventa_sep20 = "background: repeating-linear-gradient(
+			      45deg,
+			      rgba(0, 0, 0, 0) 5px,
+			      rgba(0, 0, 0, 0) 10px,
+			      #A6A6A6 10px,
+			      #A6A6A6 15px
+			    )";
+			}
 
 			if ( ($unidad['id_grupo'] == 17 or $unidad['id_grupo']== 7) AND $unidad['estado_reserva']== 0 AND substr($unidad['chasis'], 0, 1) == 'K') {
 
@@ -313,7 +323,7 @@ if ($_SESSION["id"]==47) {
 
 		 ?>
 
-		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_sep20 ?>">
+		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_sep20.' '.$preventa_oct20 ?>">
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
 
