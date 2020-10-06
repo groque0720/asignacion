@@ -3,7 +3,7 @@
 // header('Content-Disposition: attachment; filename=nombre_archivo.xlsx');
 
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="AsignaciónPreventaOct20_'.date("d-m-Y").'_'.date("H").date("i").date("s").'".xls"');
+header('Content-Disposition: attachment;filename="AsignaciónPreventaHilux'.date("d-m-Y").'_'.date("H").date("i").date("s").'".xls"');
 header('Cache-Control: max-age=0');
 
 
@@ -11,7 +11,7 @@ header('Cache-Control: max-age=0');
   conectar();
   //mysqli_query($con,"SET NAMES 'utf8'");
 
-    $SQL="SELECT * FROM view_asignaciones_preventa_oct20";
+    $SQL="SELECT * FROM view_asignaciones_preventa_hilux20";
     $unidades = mysqli_query($con, $SQL);
 
     $SQL="SELECT * FROM colores ORDER BY color";

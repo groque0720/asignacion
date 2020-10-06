@@ -293,6 +293,34 @@ if ($_SESSION["id"]==47) {
 			    )";
 			}
 
+			// $preventa_hilux20 = '';
+			// if ($unidad['preventa_hilux20']==1) {
+			// 	$preventa_hilux20 = "background: #36c;
+			// 		background:
+			// 		linear-gradient(115deg, transparent 50%, rgba(255,255,255,.75) 50%) 0 0,
+			// 		linear-gradient(245deg, transparent 50%, rgba(255,255,255,.75) 50%) 0 0,
+			// 		linear-gradient(115deg, transparent 50%, rgba(255,255,255,.75) 50%) 7px -15px,
+			// 		linear-gradient(245deg, transparent 50%, rgba(255,255,255,.75) 50%) 7px -15px,
+			// 		#36c;
+			// 		background-size: 15px 30px;";
+			// }
+
+			$preventa_hilux20 = '';
+			if ($unidad['preventa_hilux20']==1) {
+				$preventa_hilux20 = "background:
+					linear-gradient(135deg, #ECEDDC 25%, transparent 25%) -50px 0,
+					linear-gradient(225deg, #ECEDDC 25%, transparent 25%) -50px 0,
+					linear-gradient(315deg, #ECEDDC 25%, transparent 25%),
+					linear-gradient(45deg, #ECEDDC 25%, transparent 25%);
+					background-size: 10px 10px;
+					background-color: rgba(0,0,0,0.2)";
+
+			}
+
+
+
+
+
 			if ( ($unidad['id_grupo'] == 17 or $unidad['id_grupo']== 7) AND $unidad['estado_reserva']== 0 AND substr($unidad['chasis'], 0, 1) == 'K') {
 
 				$chasis_k = 'background: linear-gradient(to right, rgba(145,232,66,1) 0%, rgba(232,235,221,1) 100%)';
@@ -323,7 +351,7 @@ if ($_SESSION["id"]==47) {
 
 		 ?>
 
-		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_sep20.' '.$preventa_oct20 ?>">
+		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_sep20.' '.$preventa_oct20.' '.$preventa_hilux20 ?>">
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
 

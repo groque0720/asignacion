@@ -53,6 +53,7 @@
 					<li class=""><a href="excel_planilla_asignacion_corollas_celeste.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Corolla Celestes (Dic 20)</a></li>
 					<li class=""><a href="excel_planilla_asignacion_preventa_sep20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Sep 2020</a></li>
 					<li class=""><a href="excel_planilla_asignacion_preventa_oct20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Oct 2020</a></li>
+					<li class=""><a href="excel_planilla_asignacion_preventa_hilux20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Hilux</a></li>
 				</ul>
 			</li>
 
