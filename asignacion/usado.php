@@ -414,7 +414,7 @@ if ($cant>=1) {
 				</div>
 				<div class="ancho-20 derecha-texto">
 					<?php if ($unidad['id_estado'] == 1 OR $id_perfil!=3): ?>
-						<?php if ($id_perfil==14 OR $id_usuario==87 or $id_perfil==5) { ?>
+						<?php if ($id_perfil==14 OR $id_usuario==87 or $id_perfil==5 OR $id_usuario == 31 OR $id_usuario == 50) { ?>
 							<input type="submit" class="botones btn-aceptar" value="Guardar">
 						<?php }else { ?>
 							<?php if ($id_perfil==3 AND $unidad['reservada']==0 AND $cant<=0) {?>
