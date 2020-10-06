@@ -456,7 +456,7 @@ if ($cant>=1) {
 						 //}
 
 						// Habilitar a Roxy cuando venga de Vacaciones
-						if ($id_usuario==87 OR $id_usuario==94 OR $id_usuario==120 OR $id_usuario==119) {
+						if ($id_usuario==87 OR $id_usuario==94 OR $id_usuario==120 OR $id_usuario==119 OR $id_usuario==31 OR $id_usuario==50) {
 						//if ($id_usuario==87) {
 							$leyenda = "";
 							$lectura = "";
