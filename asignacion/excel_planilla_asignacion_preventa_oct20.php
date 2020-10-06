@@ -11,7 +11,7 @@ header('Cache-Control: max-age=0');
   conectar();
   //mysqli_query($con,"SET NAMES 'utf8'");
 
-    $SQL="SELECT * FROM view_asignaciones_preventa_sep20";
+    $SQL="SELECT * FROM view_asignaciones_preventa_oct20";
     $unidades = mysqli_query($con, $SQL);
 
     $SQL="SELECT * FROM colores ORDER BY color";
