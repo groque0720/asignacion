@@ -44,11 +44,11 @@
 
 
 	</style>
-	<script>
+<!-- 	<script>
 		$(document).ready(function(){
 
 		})
-	</script>
+	</script> -->
 </head>
 <body>
 <?php
