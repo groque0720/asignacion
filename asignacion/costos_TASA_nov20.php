@@ -76,7 +76,7 @@ function Header()
 	if ($this->PageNo()==1) {
 		$this->SetFont('Arial','B',10);
 		$this->Cell(60,5,'DERKA Y VARGAS S. A.',0,0,'L');
-		$this->Cell(150,5,('COSTOS UNIDADES TASA POR FECHA'),0,0,'C');
+		$this->Cell(150,5,('COSTOS y RECURSOS - NOV 2020'),0,0,'C');
 		$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
 		$this->Ln();
 		$this->Cell(0,0,'',1,0,'C');
