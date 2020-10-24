@@ -1,6 +1,7 @@
 
 <?php
 set_time_limit(300);
+ini_set('max_execution_time', 300);
 require('fpdf/fpdf.php');
 
 	include("funciones/func_mysql.php");
@@ -268,7 +269,7 @@ $cant = 0;
 
 	$pdf->Ln(2);
 
-$pdf->Output('Costos_TASA_'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
+$pdf->Output('Costos_Recursos_Nov20_'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
 $pdf->close();
 
 ?>
