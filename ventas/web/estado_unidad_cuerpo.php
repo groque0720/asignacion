@@ -82,17 +82,15 @@ $total_saldo=0;
 						$total_costo = $total_costo +  $reg["costo"];
 				 		$subtot_costo = $subtot_costo + $reg["costo"];
 					}else{
-						echo "-";
+						echo "-".$totaldet["idreserva"];
 					}  ?>
 				</td>
 				<td class="li" width="4%" >
 					<?php
 
-						$SQL="SELECT monto AS totalus FROM	lineas_detalle 	WHERE idcodigo =  51 AND idreserva = ". $totaldet["idreserva"];
+					$SQL="SELECT monto AS totalus FROM	lineas_detalle 	WHERE idcodigo = 51 AND idreserva = ". $totaldet["idreserva"];
 						$toUsa=mysqli_query($con, $SQL);
 						if (empty($toUsa)) {$toUs["totalus"]=0;}else{$toUs = mysqli_fetch_array($toUsa);}
-
-
 
 					 echo number_format(($totaldet["totalop"] - $reg_pagos["pagado"] - $toUs["totalus"]), 2, ',','.');
 					 $total_saldo = $total_saldo +  ($totaldet["totalop"] - $reg_pagos["pagado"] - $toUs["totalus"]);
