@@ -49,8 +49,12 @@ $total_saldo=0;
 				lineas_detalle.movimiento =  1 AND
 				reservas.nrounidad = ".  $reg["nrounidad"];
 
+		$id_reserva =
+
 		$toto=mysqli_query($con, $SQL);
 		$totaldet=mysqli_fetch_array($toto);
+
+		$id_reserva = $totaldet['idreserva'];
 
 		$SQL="SELECT Sum(pagos_lineas.monto) AS pagado FROM pagos_lineas WHERE idreserva = ".$totaldet["idreserva"];
 		$res_p=mysqli_query($con, $SQL);
@@ -194,13 +198,19 @@ $total_saldo=0;
 						echo "-";
 					}  ?>
 				</td>
-
-
 				<td class="li" width="4%" >
 					<?php
-					 echo number_format(($totaldet["totalop"] - $reg_pagos["pagado"]), 2, ',','.');
-					 $total_saldo = $total_saldo +  ($totaldet["totalop"] - $reg_pagos["pagado"]);
-				 	 $subtot_saldo = $subtot_saldo + ($totaldet["totalop"] - $reg_pagos["pagado"]);
+					$SQL="SELECT monto AS totalus FROM	lineas_detalle 	WHERE idcodigo = 51 AND idreserva = ". $totaldet["idreserva"];
+						$toUsa=mysqli_query($con, $SQL);
+						$total_usado=0;
+						while ($usado=mysqli_fetch_array($toUsa)) {
+							$total_usado = $total_usado + $usado["totalus"];
+						}
+						// if (empty($toUsa)) {$toUs["totalus"]=0;}else{$toUs = mysqli_fetch_array($toUsa);}
+
+					 echo number_format(($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado), 2, ',','.');
+					 $total_saldo = $total_saldo +  ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
+				 	 $subtot_saldo = $subtot_saldo + ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
 					 ?>
 				</td>
 				<td width="4%" style="<?php if ($totaldet["estadopago"]==3) {echo "background:#28FF28";};?>">
