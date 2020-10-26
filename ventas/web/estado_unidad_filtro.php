@@ -25,7 +25,6 @@
 	if ($_POST["id"] != 2) {
 
 			$SQL="SELECT
-
 			nro_unidad AS nrounidad,
 			id_mes AS asigmes,
 			año AS asigano,
