@@ -83,7 +83,7 @@ $total_saldo=0;
 						$total_costo = $total_costo +  $reg["costo"];
 				 		$subtot_costo = $subtot_costo + $reg["costo"];
 					}else{
-						echo "-".$totaldet["idreserva"];
+						echo "-";
 					}  ?>
 				</td>
 				<td class="li" width="4%" >
