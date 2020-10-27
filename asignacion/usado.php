@@ -354,7 +354,7 @@ if ($cant>=1) {
 				</div>
 
 				<?php
-						if ($id_usuario==87 or $id_usuario==119 or $id_usuario==120 OR $id_usuario==31 OR $id_usuario==50) {
+						if ($id_usuario==87 or $id_usuario==119 or $id_usuario==120 OR $id_usuario==31 OR $id_usuario==50 OR $id_usuario==14 OR $id_usuario==96) {
 							$lectura = "";
 						 }
 						   ?>
