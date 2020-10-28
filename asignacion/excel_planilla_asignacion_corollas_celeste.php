@@ -40,7 +40,7 @@ header('Cache-Control: max-age=0');
     <thead>
         <tr><td colspan="18"></td></tr>
         <tr>
-            <td colspan="18" style="text-align: center;font-size: 16px; font-weight: bold;">Diciembre 2020 (Celeste)</td>
+            <td colspan="18" style="text-align: center;font-size: 16px; font-weight: bold;">Corolla Diciembre 2020 (Celeste)</td>
         </tr>
         <tr><td colspan="18"></td></tr>
         <tr style="background: #CBC6C6;">
