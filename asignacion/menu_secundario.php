@@ -54,6 +54,7 @@
 					<li class=""><a href="excel_planilla_asignacion_preventa_oct20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Oct 2020 (Gris Rayas)</a></li>
 					<li class=""><a href="excel_planilla_asignacion_corollas_celeste.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Corolla Dic 2020 (Celeste)</a></li>
 					<li class=""><a href="excel_planilla_asignacion_preventa_hilux20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Hilux (Rosado Cuadros)</a></li>
+					<li class=""><a href="excel_planilla_asignacion_sininterno_sincolor_concostos.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Unidades Sin Interno y Colores</a></li>
 				</ul>
 			</li>
 
