@@ -3,7 +3,7 @@
 // header('Content-Disposition: attachment; filename=nombre_archivo.xlsx');
 
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="AsignaciónPreventaHilux'.date("d-m-Y").'_'.date("H").date("i").date("s").'".xls"');
+header('Content-Disposition: attachment;filename="AsignaciónPreventaHilux(RosadoCuadritos)'.date("d-m-Y").'_'.date("H").date("i").date("s").'".xls"');
 header('Cache-Control: max-age=0');
 
 
@@ -38,6 +38,11 @@ header('Cache-Control: max-age=0');
 
 <table border="1">
     <thead>
+        <tr><td colspan="18"></td></tr>
+        <tr>
+            <td colspan="18" style="text-align: center;font-size: 16px; font-weight: bold;">Preventa Hilux (Rosado Cuadritos)</td>
+        </tr>
+        <tr><td colspan="18"></td></tr>
         <tr style="background: #CBC6C6;">
             <td style="text-align: center;">Nro Unidad</td>
             <td style="text-align: center;">Mes</td>
