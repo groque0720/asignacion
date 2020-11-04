@@ -3,7 +3,7 @@
 // header('Content-Disposition: attachment; filename=nombre_archivo.xlsx');
 
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="AsignaciónCorollaDiciembre2020(Celeste)'.date("d-m-Y").'_'.date("H").date("i").date("s").'".xls"');
+header('Content-Disposition: attachment;filename="AsignaciónSinInternoConCosto'.date("d-m-Y").'_'.date("H").date("i").date("s").'".xls"');
 header('Cache-Control: max-age=0');
 
 
