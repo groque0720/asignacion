@@ -28,7 +28,7 @@
 		//}
 
 		if ($("#enviado").val() >= 1) {
-			$("#ingreso_codigo").show();
+			$("#ingreso_codigo").show(0);
 			$("#guardar_res").hide();
 			$("#nvares").show();
 			// $("#fecres").attr("disabled", true);
@@ -494,6 +494,13 @@
 
 				};
 	     });
+
+	    if ($("#enviado").val() >= 1) {
+			$("#ingreso_codigo").show(0);
+			$("#guardar_res").hide();
+			$("#nvares").show();
+			// $("#fecres").attr("disabled", true);
+		};
 
 
   })
