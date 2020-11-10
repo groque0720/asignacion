@@ -28,6 +28,7 @@
 		//}
 
 		if ($("#enviado").val() >= 1) {
+			$("#ingreso_codigo").show();
 			$("#guardar_res").hide();
 			$("#nvares").show();
 			// $("#fecres").attr("disabled", true);
@@ -302,7 +303,7 @@
 
 		$('#enviar_res').click(function(event) {
 			if (confirm("Confirma el envio de la Reserva??")) {
-				if ($("#enviado").val() > 1) {
+				if ($("#enviado").val() > 0) {
 
 					var obs = prompt("Ingrese comentario de reenvio de reserva (ejm. Cambio de precio.");
 
@@ -344,6 +345,8 @@
 	  	}else {
 		$(".mr").hide(250);
 		};
+
+
 
 
 
