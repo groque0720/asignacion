@@ -303,7 +303,7 @@
 
 		$('#enviar_res').click(function(event) {
 			if (confirm("Confirma el envio de la Reserva??")) {
-				if ($("#enviado").val() > 0) {
+				if ($("#enviado").val() > 1) {
 
 					var obs = prompt("Ingrese comentario de reenvio de reserva (ejm. Cambio de precio.");
 
