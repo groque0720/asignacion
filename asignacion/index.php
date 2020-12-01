@@ -25,7 +25,7 @@
 
 </head>
 <body>
-<h1><center>Realizando Asignación Octubre 2020</center></h1>
+<h1><center>Realizando Asignación Diciembre 2020</center></h1>
 
 	<div class="cuerpo">
 		<div class="img">
