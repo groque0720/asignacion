@@ -100,9 +100,17 @@ $total_saldo=0;
 						}
 						// if (empty($toUsa)) {$toUs["totalus"]=0;}else{$toUs = mysqli_fetch_array($toUsa);}
 
-					 echo number_format(($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado), 2, ',','.');
-					 $total_saldo = $total_saldo +  ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
-				 	 $subtot_saldo = $subtot_saldo + ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
+					 // echo number_format(($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado), 2, ',','.');
+					 // $total_saldo = $total_saldo +  ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
+				 	//  $subtot_saldo = $subtot_saldo + ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
+
+
+				 	  echo number_format(($totaldet["totalop"] - $reg_pagos["pagado"]), 2, ',','.');
+					 $total_saldo = $total_saldo +  ($totaldet["totalop"] - $reg_pagos["pagado"]);
+				 	 $subtot_saldo = $subtot_saldo + ($totaldet["totalop"] - $reg_pagos["pagado"]);
+
+
+
 					 ?>
 				</td>
 				<td width="4%" style="<?php if ($totaldet["estadopago"]==3) {echo "background:#28FF28";};?>">
@@ -208,9 +216,14 @@ $total_saldo=0;
 						}
 						// if (empty($toUsa)) {$toUs["totalus"]=0;}else{$toUs = mysqli_fetch_array($toUsa);}
 
-					 echo number_format(($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado), 2, ',','.');
-					 $total_saldo = $total_saldo +  ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
-				 	 $subtot_saldo = $subtot_saldo + ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
+					 // echo number_format(($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado), 2, ',','.');
+					 // $total_saldo = $total_saldo +  ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
+				 	//  $subtot_saldo = $subtot_saldo + ($totaldet["totalop"] - $reg_pagos["pagado"] - $total_usado);
+
+						echo number_format(($totaldet["totalop"] - $reg_pagos["pagado"]), 2, ',','.');
+					 $total_saldo = $total_saldo +  ($totaldet["totalop"] - $reg_pagos["pagado"]);
+				 	 $subtot_saldo = $subtot_saldo + ($totaldet["totalop"] - $reg_pagos["pagado"]);
+
 					 ?>
 				</td>
 				<td width="4%" style="<?php if ($totaldet["estadopago"]==3) {echo "background:#28FF28";};?>">
