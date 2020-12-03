@@ -126,7 +126,7 @@ $pdf->SetDrawColor(184, 184, 184);
 $pdf->SetAutoPageBreak(true,5);
 $cant = 0;
 
-	$SQL="SELECT * FROM view_asignaciones_costos";
+	$SQL="SELECT * FROM view_asignaciones_costos_con_tpa";
 	$unidades = mysqli_query($con, $SQL);
 
 	$pdf->SetFont('Arial','B',8);
