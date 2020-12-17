@@ -6,7 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico" />
 	<link rel="stylesheet" href="css/estilo.css">
-	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script> -->
+	<script src="js/jquery-2.1.3.min.js"></script>
 	<link rel="stylesheet" href="css/en_proceso.css">
 	<script src="alertas_query/sweetalert-dev.js"></script>
 	<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
