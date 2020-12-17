@@ -131,7 +131,7 @@
 
 		</div>
 		<div class="cuadro_form logo_world">
-			<img src="imagenes/logo_toyota.png" alt="Wor(l)d GN">
+			<img src="imagenes/logo_toyota.png" alt="">
 		</div>
 		<div class="cuadro_form derechos">
 			<span>2020 &copy; Derka y Vargas S. A. Todos los Derechos Reservados</span>
