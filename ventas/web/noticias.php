@@ -56,15 +56,20 @@ include("../funciones/func_mysql.php");
 
 		<input id="idusuario" name="idusuario" type="hidden" value="<?php echo $_SESSION["id"]; ?>">
 		<input id="pos_not" name="pos_not" type="hidden" value="">
-
-		<?php
-			$SQL="DELETE FROM notificaciones WHERE fechanot < (CURDATE()-30)";
-			mysqli_query($con, $SQL);
-		 ?>
-
 		<div id="titulo" class="titulo">
 			<?php include("noti_barra.php"); ?>
 		</div>
+
+		<?php
+			if ($usu == 47) {
+				// $SQL="DELETE FROM notificaciones WHERE fechanot < (CURDATE()-1) AND idusuario = $usu";
+				$SQL = "UPDATE notificaciones SET borrar = 1 WHERE fechanot <= (CURDATE()-1) AND idusuario = $usu";
+				mysqli_query($con, $SQL);
+			}else{
+				$SQL="DELETE FROM notificaciones WHERE fechanot < (CURDATE()-35)";
+				mysqli_query($con, $SQL);
+			}
+		 ?>
 
 		<?php
 				// $SQL="DELETE FROM notificaciones WHERE idusuario = 52";
