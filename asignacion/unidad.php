@@ -336,7 +336,7 @@ if ($cant>=1) {
 					</div>
 					<div class="ancho-20">
 						<label class="ancho-15" for="">ReVta</label>
-						<input class="form-inputs input-fecha" type="checkbox" size="5" name="reventa" <?php if ($unidad['reventa']==1) { echo 'checked';} ?> <?php echo $lectura; ?>>
+						<input class="form-inputs input-fecha" type="checkbox" size="5" name="reventa" <?php if ($unidad['reventa']==1) { echo 'checked';} ?>>
 					</div>
 				</div>
 				<div class="form-linea centrar-texto">
