@@ -404,7 +404,10 @@ if ($_SESSION["id"]==47) {
 
 			<td class="centrar-texto celda" style="font-weight: bold;font-size: 12px;" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['cancelada']==1) { echo 'Si';}else{echo '-';} ?></td>
 			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $dias; ?></td>
-			<td class="celda-espacio-left celda celda_cliente" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $cliente; ?></td>
+			<td class="celda-espacio-left celda celda_cliente" data-id="<?php echo $unidad['id_unidad']; ?>">
+					<?php echo $cliente.' '; ?>
+					<span style="<?php echo ($unidad['reventa'] == 1) ? 'color:red; text-decoration: underline;' :''; ?>"><?php echo ($unidad['reventa'] == 1) ? '(revta)' : ''; ?></span>
+				</td>
 			<td class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $usuario_a[$unidad['id_asesor']]['nombre']; ?></td>
 			<td class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_reserva']); ?></td>
 			<?php if ($p==14) {?>
