@@ -329,15 +329,19 @@ if ($cant>=1) {
 					</div>
 				</div>
 
-				<div class="form-linea centrar-texto">
-					<div class="ancho-100 ">
-						<label class="ancho-15" for="">Cliente</label>
+				<div class="form-linea centrar-texto" style="display: flex; justify-content: space-between;">
+					<div class="ancho-80" style="display: flex;">
+						<div style="width: 50px;"><label class="ancho-15" for="">Cliente</label></div>
 						<input class="form-inputs ancho-85 <?php echo $asesor_class; ?>" type="text" size="5" id="cliente" name="cliente" value="<?php echo $unidad['cliente']; ?> ">
+					</div>
+					<div class="ancho-20">
+						<label class="ancho-15" for="">ReVta</label>
+						<input class="form-inputs input-fecha" type="checkbox" size="5" name="reventa" <?php if ($unidad['reventa']==1) { echo 'checked';} ?> <?php echo $lectura; ?>>
 					</div>
 				</div>
 				<div class="form-linea centrar-texto">
-					<div class="ancho-100 ">
-						<label class="ancho-15" for="">Asesor</label>
+					<div class="ancho-100 " style="display: flex;">
+						<label class="ancho-15" style="width: 50px;" for="">Asesor</label>
 							<select class="form-inputs ancho-85 <?php echo $asesor_class; ?>" name="id_asesor" id="id_asesor" <?php echo $lectura; ?>>
 									<option value="1"></option>
 									<?php

@@ -54,6 +54,7 @@ if ($estaba_pisada==false) {
 	$SQL.=" estado_tasa = ".$_POST["estado_tasa"].",";
 	$SQL.=" hora = '".$_POST["hora"]."',";
 
+
 	if ($_POST["fec_despacho"]!='') {
 		$SQL.=" fec_despacho = '".$_POST["fec_despacho"]."', ";
 	}else{
@@ -104,6 +105,7 @@ if ($estaba_pisada==false) {
 
 
 	$SQL.=" estado_reserva = ".$_POST["estado_reserva"].",";
+
 
 	if ($_POST["fec_reserva"]!='') {
 		$SQL.=" fec_reserva = '".$_POST["fec_reserva"]."', ";
@@ -169,6 +171,14 @@ if ($estaba_pisada==false) {
 		}else{
 			$SQL.=" no_disponible = 1, ";
 		}
+
+		if ($_POST["reventa"]==true) {
+			$SQL.=" reventa = 1, ";
+		}else{
+			$SQL.=" reventa = 0, ";
+		}
+
+
 
 	// $SQL.=" hora_pedido = '".$_POST["hora_pedido"]."',";
 
