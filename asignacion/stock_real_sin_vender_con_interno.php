@@ -78,7 +78,7 @@ class PDF extends FPDF
 
 		$this->Cell(0.3,5,'',1,0,'C');
 		$this->Ln();
-		$this->Ln(3);
+		$this->Ln(5);
 	}
 }
 
