@@ -172,7 +172,7 @@ if ($estaba_pisada==false) {
 			$SQL.=" no_disponible = 1, ";
 		}
 
-		if ($_POST["reventa"]==true) {
+		if ( isset($_POST["reventa"]) AND $_POST["reventa"]==true) {
 			$SQL.=" reventa = 1, ";
 		}else{
 			$SQL.=" reventa = 0, ";
