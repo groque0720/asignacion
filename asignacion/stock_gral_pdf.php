@@ -153,7 +153,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			//Cantidad de Stock por parte de TASA
 			$SQL="SELECT * FROM view_stock_tasa_gral WHERE  id_modelo =".$modelo['idmodelo']." AND id_mes = ".$m_a." AND año = ".$a_a;
 			$stocks=mysqli_query($con, $SQL);
-			$cant_stock=mysqli_num_rows($stocks);
+			$cant_stock= !empty($cant_stock) ? mysqli_num_rows($stocks) : 0;
 			if ($cant_stock>0) {
 				$stock=mysqli_fetch_array($stocks);
 				$stock_a[$i]['cant']=$stock['cantidad'];
@@ -166,7 +166,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			if ($i==0) {
 				$SQL="SELECT sum(cantidad) AS cantidad FROM view_stock_libre_anteriores WHERE id_modelo =".$modelo['idmodelo'];
 				$stocks_anterior=mysqli_query($con, $SQL);
-				$cant_stock_anterior=mysqli_num_rows($stocks_anterior);
+				$cant_stock_anterior= !empty($cant_stock_anterior) ? mysqli_num_rows($stocks_anterior) : 0;
 				if ($cant_stock_anterior>0) {
 					$stock=mysqli_fetch_array($stocks_anterior);
 					$stock_ant[$i]['cant']=$stock['cantidad'];
@@ -180,7 +180,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			//Cantidad de Reservas realizadas actuales
 			$SQL="SELECT * FROM view_stock_libre_actuales_gral WHERE id_modelo =".$modelo['idmodelo']." AND id_mes = ".$m_a." AND año = ".$a_a;
 			$reservas=mysqli_query($con, $SQL);
-			$cant_stock=mysqli_num_rows($reservas);
+			$cant_stock= !empty($reservas) ? mysqli_num_rows($reservas) : 0;
 			if ($cant_stock>0) {
 				$reserva=mysqli_fetch_array($reservas);
 				$reserva_a[$i]['cant']=$reserva['cantidad'];
