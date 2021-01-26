@@ -216,7 +216,14 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		}
 		//cantidad por parte de
 
-		$pdf->Cell(30,5,'   '.$modelo['modelo'],1,0);
+		$largo=strlen($modelo['modelo']);
+		$nombre_modelo = $modelo['modelo'];
+		if ($largo > 20) {
+			$cortar = $largo - 20;
+			$nombre_modelo = substr($modelo['modelo'], 0, -$cortar).'..';
+		}
+
+		$pdf->Cell(30,5,' '.$nombre_modelo,1,0);
 		$pdf->Cell(0.8,5,'',0,0,'C');
 		$pdf->Cell(6,5,$cant_pisada,1,0,'C');
 		$pdf->Cell(0.8,5,'',0,0,'C');
