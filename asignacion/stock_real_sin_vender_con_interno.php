@@ -175,7 +175,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			if ($i==0) {
 				$SQL="SELECT sum(cantidad) AS cantidad FROM view_stock_libre_anteriores_stock_real WHERE id_negocio = 1 AND id_modelo =".$modelo['idmodelo'];
 				$stocks_anterior=mysqli_query($con, $SQL);
-				$cant_stock_anterior=mysqli_num_rows($stocks_anterior);
+				$cant_stock_anterior=!empty($stocks_anterior) ? mysqli_num_rows($stocks_anterior) : 0;
 				if ($cant_stock_anterior>0) {
 					$stock=mysqli_fetch_array($stocks_anterior);
 					$stock_ant[$i]['cant']=$stock['cantidad'];
@@ -188,8 +188,8 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 
 			//Cantidad de Reservas realizadas actuales
 			$SQL="SELECT * FROM view_stock_libre_actuales_stock_real WHERE id_negocio = 1 AND id_modelo =".$modelo['idmodelo']." AND id_mes = ".$m_a." AND año = ".$a_a;
-			$reservas=mysqli_query($con, $SQL);
-			$cant_stock=mysqli_num_rows($reservas);
+			$reservas = mysqli_query($con, $SQL);
+			$cant_stock = !empty($reservas) ? mysqli_num_rows($reservas) : 0;
 			if ($cant_stock>0) {
 				$reserva=mysqli_fetch_array($reservas);
 				$reserva_a[$i]['cant']=$reserva['cantidad'];

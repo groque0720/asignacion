@@ -169,7 +169,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			if ($i==0) {
 				$SQL="SELECT sum(cantidad) AS cantidad FROM view_stock_libre_actuales_fisico_s_vender WHERE id_negocio = 1 AND id_modelo =".$modelo['idmodelo'];
 				$stocks_anterior=mysqli_query($con, $SQL);
-				$cant_stock_anterior=mysqli_num_rows($stocks_anterior);
+				$cant_stock_anterior= !empty($stocks_anterior) ? mysqli_num_rows($stocks_anterior) : 0;
 				if ($cant_stock_anterior>0) {
 					$stock=mysqli_fetch_array($stocks_anterior);
 					$stock_ant[$i]['cant']=$stock['cantidad'];
@@ -183,7 +183,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			//Cantidad de Reservas realizadas actuales
 			$SQL="SELECT * FROM view_stock_libre_actuales WHERE id_negocio = 1 AND id_modelo =".$modelo['idmodelo']." AND id_mes = ".$m_a." AND año = ".$a_a;
 			$reservas=mysqli_query($con, $SQL);
-			$cant_stock=mysqli_num_rows($reservas);
+			$cant_stock= !empty($reservas) ? mysqli_num_rows($reservas) : 0;
 
 			//if ($cant_stock>0) {
 			if (false) {
@@ -197,8 +197,13 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			$m_a++;
 		}
 		//cantidad por parte de
-
-		$pdf->Cell(37,5,'   '.$modelo['modelo'],1,0);
+		$largo=strlen($modelo['modelo']);
+		$nombre_modelo = $modelo['modelo'];
+		if ($largo > 20) {
+			$cortar = $largo - 20;
+			$nombre_modelo = substr($modelo['modelo'], 0, -$cortar).'..';
+		}
+		$pdf->Cell(37,5,' '.$nombre_modelo,1,0);
 		$acum=0;
 		if ((int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant']!=0){
 			//$s_p=(int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant'];
@@ -226,7 +231,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		for ($i=1; $i <= 9; $i++) {
 
 			if ((int)$stock_a[$i]['cant']-(int)$reserva_a[$i]['cant']!=0 AND $i!=9){
-				$s_p=$stock_ant[$i]['cant'];
+				$s_p= isset($stock_ant[$i]['cant']) ? $stock_ant[$i]['cant'] : 0;
 				$acum=$acum+$s_p;
 			}else{
 				$s_p='-';

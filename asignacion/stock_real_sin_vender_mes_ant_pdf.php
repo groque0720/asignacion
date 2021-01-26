@@ -30,7 +30,7 @@ class PDF extends FPDF
 		$this->Cell(37.6,5,'Meses',1,0,'C');
 
 		$m_a = (int)date("n")-1;
-		$a_a=(int)date("y");
+		$a_a = (int)date("y");
 		$mes_a[1]='Ene';
 		$mes_a[2]='Feb';
 		$mes_a[3]='Mar';
@@ -50,10 +50,16 @@ class PDF extends FPDF
 				$m_a=$m_a-12;
 				$a_a++;
 			}
+
+			if ($m_a == 0) {
+				$m_a = 12 ;
+				$a_a --;
+			}
+
 			$this->Cell(0.3,5,'',1,0,'C');//linea divisoria por mes
 			$this->Cell(15,5,$mes_a[$m_a].' '.$a_a,1,0,'C');
+			 //$this->Cell(15,5,$m_a,1,0,'C');
 			$m_a++;
-
 		}
 
 		$this->Cell(0.3,5,'',1,0,'C');//linea divisoria por mes
@@ -183,7 +189,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			if ($i==0) {
 				$SQL="SELECT sum(cantidad) AS cantidad FROM view_stock_libre_anteriores_stock_real WHERE id_negocio = 1 AND id_modelo =".$modelo['idmodelo'];
 				$stocks_anterior=mysqli_query($con, $SQL);
-				$cant_stock_anterior=mysqli_num_rows($stocks_anterior);
+				$cant_stock_anterior= !empty($stocks_anterior) ? mysqli_num_rows($stocks_anterior) : 0;
 				if ($cant_stock_anterior>0) {
 					$stock=mysqli_fetch_array($stocks_anterior);
 					$stock_ant[$i]['cant']=$stock['cantidad'];
@@ -197,7 +203,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			//Cantidad de Reservas realizadas actuales
 			$SQL="SELECT * FROM view_stock_libre_actuales_stock_real WHERE id_negocio = 1 AND id_modelo =".$modelo['idmodelo']." AND id_mes = ".$m_a." AND año = ".$a_a;
 			$reservas=mysqli_query($con, $SQL);
-			$cant_stock=mysqli_num_rows($reservas);
+			$cant_stock= !empty($reservas) ? mysqli_num_rows($reservas) : 0;
 			if ($cant_stock>0) {
 				$reserva=mysqli_fetch_array($reservas);
 				$reserva_a[$i]['cant']=$reserva['cantidad'];
