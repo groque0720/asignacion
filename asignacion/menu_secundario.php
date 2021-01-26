@@ -88,7 +88,7 @@
 					<li><a href="stock_real_sin_vender_mes_ant_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM (Mes Ant.)</a></li>
 					<!-- <li><a href="stock_gral_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock Gral. (0km+TPA)</a></li> -->
 					<!-- <li><a href="stock_gral_ma_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock Gral. (Mes Ant.)</a></li> -->
-					<li><a href="stock_efv_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock EFV</a></li>
+					<!-- <li><a href="stock_efv_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock EFV</a></li> -->
 					<li><a href="stock_por_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock x Suc.</a></li>
 
 				</ul>
