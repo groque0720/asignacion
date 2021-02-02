@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include("funciones/func_mysql.php");
 conectar();
@@ -11,28 +11,29 @@ if ($_SESSION["autentificado"] != "SI") {
 	//ademas salgo de este script
 	exit();
 }
-	
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<title>Asignación TPA</title>
-	
+
 <!-- 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> -->
 	<link rel="shortcut icon" type="image/x-icon" href="../imagenes/favicon.ico" />
 	<link rel="stylesheet" href="css/roquesystem.css">
 	<link rel="stylesheet" href="css/menu-secundario-dos.css">
 	<link href="https://file.myfontastic.com/6CRLECjnYdYKU5BvcK7cQA/icons.css" rel="stylesheet">
 	<script src="alertas_query/sweetalert-dev.js"></script>
-	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script> -->
+	<script src="js/jquery-2.1.3.min.js"></script>
 	<link rel="stylesheet" href="en_proceso/en_proceso.css">
 	<link rel="stylesheet" href="css/estilo_app.css">
 	<script scr="js/plan_ahorro_menu-secundario.js"></script>
 	<link rel="stylesheet" href="alertas_query/sweetalert.css">
 	<link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico" />
 	<link rel="stylesheet" type="text/css" media="print" href="css/stock_p.css">
-	
+
 </head>
 <body>
 	<?php include('en_proceso/en_proceso.php'); ?>
@@ -59,7 +60,7 @@ if ($_SESSION["autentificado"] != "SI") {
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 <!-- 	<div class="menu-lateral menu-lateral-scroll">
 			<?php //include('menu-lateral.php'); ?>
@@ -71,7 +72,7 @@ if ($_SESSION["autentificado"] != "SI") {
 	<div class="zona-contenido">
 	<input type="hidden" id="es_tpa" value="es_tpa" >
 		<div class="contenido-principal">
-			
+
 			<?php include('plan_ahorro_contenido_relleno_total.php'); ?>
 		</div>
 	</div>
@@ -81,6 +82,6 @@ if ($_SESSION["autentificado"] != "SI") {
 	</div>
 
 	<div id="mensaje_respuesta"></div>
-	
+
 </body>
 </html>
