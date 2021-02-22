@@ -9,13 +9,13 @@
 	// Luis Gutierrez  = 94
 	// vargas Fredy = 41
 
-	//$SQL="UPDATE notificaciones SET visto = 1 WHERE idusuario = 41";
-	//mysqli_query($con, $SQL);
+	$SQL="UPDATE notificaciones SET visto = 1 WHERE idusuario = 56";
+	mysqli_query($con, $SQL);
 
 	// $SQL="DELETE FROM notificaciones WHERE idnotificaciones < 685873";
 	// mysqli_query($con, $SQL);
 
-	$SQL="DELETE FROM sesiones WHERE id < 170464";
-	mysqli_query($con, $SQL);
+	// $SQL="DELETE FROM sesiones WHERE id < 170464";
+	// mysqli_query($con, $SQL);
 
 ?>
