@@ -51,10 +51,10 @@
 			<select name="anoentrega" id="anoentrega" required>
 				<option value="P.A." <?php  if ($reserva['anoentrega'] == "P.A.") { echo "selected"; } ?>>P.A.</opcion>
 				<option value=""></option>
-					<?php if ($reserva['enviada']>=1 and false) { ?>
+					<?php if ($reserva['enviada']>=1) { ?>
 						<option value="2015" <?php  if ($reserva['anoentrega'] == "2015") { echo "selected"; } ?>>2015</opcion>
 						<option value="2016" <?php  if ($reserva['anoentrega'] == "2016") { echo "selected"; } ?>>2016</opcion>
-                        			<option value="2016/2017" <?php  if ($reserva['anoentrega'] == "2016/2017") { echo "selected"; } ?>>2016/2017</opcion>
+                        <option value="2016/2017" <?php  if ($reserva['anoentrega'] == "2016/2017") { echo "selected"; } ?>>2016/2017</opcion>
 						<option value="2017" <?php  if ($reserva['anoentrega'] == "2017") { echo "selected"; } ?>>2017</opcion>
 						<option value="2017/2018" <?php  if ($reserva['anoentrega'] == "2017/2018") { echo "selected"; } ?>>2017/2018</opcion>
 						<option value="2018" <?php  if ($reserva['anoentrega'] == "2018") { echo "selected"; } ?>>2018</opcion>
