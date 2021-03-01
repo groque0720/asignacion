@@ -25,7 +25,7 @@
 
 </head>
 <body>
-<h1><center>Realizando Asignación Febrero 2021</center></h1>
+<h1><center>Realizando Asignación <?php echo date('mm')." - ".date('Y') ?>  2021</center></h1>
 
 	<div class="cuerpo">
 		<div class="img">
