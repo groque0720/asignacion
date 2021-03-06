@@ -259,7 +259,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 				$s_p='-';
 			}
 
-			if ($i==12) {
+			if ($i==11) {
 				if ($acum!=0) {
 					$s_p=$acum;
 				}else{
@@ -351,7 +351,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Cell(0.8,5,'',0,0,'C');
 
 		//Relleno Linea Total de MOdelo o Total Gral
-		for ($i=0; $i < 12; $i++) {
+		for ($i=0; $i <= 12; $i++) {
 		$pdf->SetDrawColor(60, 60, 60);
 		$pdf->Cell(0.3,5,'',1,0,'C');//linea separador de meses
 		$pdf->SetDrawColor(184, 184, 184);
