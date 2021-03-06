@@ -106,7 +106,7 @@ class PDF extends FPDF
 
 $pdf = new PDF();
 $pdf->AliasNbPages();
-$pdf->AddPage('P','A4');
+$pdf->AddPage('L','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
 $pdf->SetAutoPageBreak(true,6);
