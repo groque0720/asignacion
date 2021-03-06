@@ -29,7 +29,7 @@ class PDF extends FPDF
 
 		$this->Cell(37.6,5,'Meses',1,0,'C');
 
-		$m_a = (int)date("n")+1;
+		$m_a = (int)date("n");
 		$a_a=(int)date("y");
 		$mes_a[1]='Ene';
 		$mes_a[2]='Feb';
@@ -44,7 +44,7 @@ class PDF extends FPDF
 		$mes_a[11]='Nov';
 		$mes_a[12]='Dic';
 
-		for ($i=1; $i <= 10 ; $i++) {
+		for ($i=1; $i <= 12 ; $i++) {
 
 			if ($m_a>12) {
 				$m_a=$m_a-12;
@@ -113,7 +113,7 @@ $pdf->SetAutoPageBreak(true,6);
 $pdf->SetFont('Arial','B',6.5);
 $pdf->SetFont('');
 
-	for ($i=0; $i < 10; $i++) {
+	for ($i=0; $i <= 12; $i++) {
 		$stock_ant_g[$i]['cant'] = 0;
 		$total_m[$i]['cant'] = 0;
 		$total_g[$i]['cant'] = 0;
@@ -143,7 +143,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 
 	while ($modelo=mysqli_fetch_array($modelos)) {
 
-		$m_a = (int)date("n")+1;
+		$m_a = (int)date("n");
 		$a_a = (int)date("Y");
 		//reinicio totales
 		$stock_a[9]['cant']=0;
