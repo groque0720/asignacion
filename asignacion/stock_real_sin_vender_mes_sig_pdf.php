@@ -241,7 +241,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Cell(7.5,5,$s_a,1,0,'C');
 		//Relleno Linea Con datos traidos por modelos.-
 
-		for ($i=1; $i <= 9; $i++) {
+		for ($i=1; $i <= 11; $i++) {
 
 			if ((int)$stock_a[$i]['cant']-(int)$reserva_a[$i]['cant']!=0 AND $i!=9){
 				$s_p=(int)$stock_a[$i]['cant']-(int)$reserva_a[$i]['cant'];
@@ -250,7 +250,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 				$s_p='-';
 			}
 
-			if ($i==9) {
+			if ($i==11) {
 				if ($acum!=0) {
 					$s_p=$acum;
 				}else{
@@ -279,13 +279,13 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Ln();
 
 		//Acumulo Totales TASA Por MODELO y GENERAL
-		for ($i=0; $i < 10; $i++) {
+		for ($i=0; $i <= 12; $i++) {
 				$total_m[$i]['cant']=(int)$total_m[$i]['cant']+(int)$stock_a[$i]['cant'];
 				$total_g[$i]['cant']=(int)$total_g[$i]['cant']+(int)$stock_a[$i]['cant'];
 		}
 		$total_r_m[9]['cant']=0;
 		//Acumulo Totales RESERVAS Por MODELO y GENERAL
-		for ($i=0; $i < 9; $i++) {
+		for ($i=0; $i < 11; $i++) {
 			if ($i==0) {
 				$total_r_m[$i]['cant']=(int)$total_r_m[$i]['cant']+(int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant'];
 				$total_r_g[$i]['cant']=(int)$total_r_g[$i]['cant']+(int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant'];
@@ -310,7 +310,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Cell(6,5,$total_pisadas_grupo,1,0,'C');
 		$pdf->Cell(0.8,5,'',0,0,'C');
 		//Relleno Linea Total de Modelo
-		for ($i=0; $i < 10; $i++) {
+		for ($i=0; $i <= 12; $i++) {
 		$pdf->SetDrawColor(60, 60, 60);
 		$pdf->Cell(0.3,5,'',1,0,'C');//linea separador de meses
 		$pdf->SetDrawColor(184, 184, 184);
@@ -324,10 +324,10 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Ln(2);
 
 
-		for ($i=0; $i < 10; $i++) {
+		for ($i=0; $i <= 12; $i++) {
 			$total_m[$i]['cant']=0;
 		}
-		for ($i=0; $i < 10; $i++) {
+		for ($i=0; $i <= 12; $i++) {
 			$total_r_m[$i]['cant']=0;
 		}
 
@@ -342,7 +342,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Cell(0.8,5,'',0,0,'C');
 
 		//Relleno Linea Total de MOdelo o Total Gral
-		for ($i=0; $i < 10; $i++) {
+		for ($i=0; $i <= 12; $i++) {
 		$pdf->SetDrawColor(60, 60, 60);
 		$pdf->Cell(0.3,5,'',1,0,'C');//linea separador de meses
 		$pdf->SetDrawColor(184, 184, 184);
@@ -363,7 +363,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Cell(6,5,$total_pisadas_gral,1,0,'C');
 		$pdf->Cell(0.8,5,'',0,0,'C');
 
-		for ($i=0; $i < 10; $i++) {
+		for ($i=0; $i <= 12; $i++) {
 		$pdf->SetDrawColor(60, 60, 60);
 		$pdf->Cell(0.3,5,'',1,0,'C');//linea separador de meses
 		$pdf->SetDrawColor(184, 184, 184);
