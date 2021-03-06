@@ -292,7 +292,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 				$total_m[$i]['cant']=(int)$total_m[$i]['cant']+(int)$stock_a[$i]['cant'];
 				$total_g[$i]['cant']=(int)$total_g[$i]['cant']+(int)$stock_a[$i]['cant'];
 		}
-		$total_r_m[11]['cant']=0;
+		$total_r_m[12]['cant']=0;
 		//Acumulo Totales RESERVAS Por MODELO y GENERAL
 		for ($i=0; $i <= 12; $i++) {
 			if ($i==0) {
