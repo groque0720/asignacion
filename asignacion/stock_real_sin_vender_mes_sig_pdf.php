@@ -160,7 +160,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$total_pisadas_grupo = $total_pisadas_grupo + $cant_pisada;
 		$total_pisadas_gral = $total_pisadas_gral + $cant_pisada;
 
-		for ($i=0; $i < 9; $i++) {
+		for ($i=0; $i < 12; $i++) {
 
 			if ($m_a>12) {
 				$m_a=$m_a-12;
