@@ -104,6 +104,9 @@ class PDF extends FPDF
 		$this->Cell(7.5,5,'stock',1,0,'C');
 		$this->Cell(7.5,5,'Asig.',1,0,'C');
 		$this->Cell(0.3,5,'',1,0,'C');
+		$this->Cell(7.5,5,'stock',1,0,'C');
+		$this->Cell(7.5,5,'Asig.',1,0,'C');
+		$this->Cell(0.3,5,'',1,0,'C');
 		$this->Ln();
 		$this->Ln(5);
 	}
@@ -152,9 +155,9 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$m_a = (int)date("n");
 		$a_a = (int)date("Y");
 		//reinicio totales
-		$stock_a[9]['cant']=0;
-		$reserva_a[9]['cant']=0;
-		$stock_ant[0]['cant']=0;
+		$stock_a[12]['cant']=0;
+		$reserva_a[12]['cant']=0;
+		$stock_ant[12]['cant']=0;
 		$acum=0;
 		$s_p=0;
 
@@ -166,7 +169,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$total_pisadas_grupo = $total_pisadas_grupo + $cant_pisada;
 		$total_pisadas_gral = $total_pisadas_gral + $cant_pisada;
 
-		for ($i=0; $i <= 11; $i++) {
+		for ($i=0; $i <= 12; $i++) {
 
 			if ($m_a>12) {
 				$m_a=$m_a-12;
@@ -179,7 +182,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			if ($cant_stock>0) {
 				$stock=mysqli_fetch_array($stocks);
 				$stock_a[$i]['cant']=$stock['cantidad'];
-				$stock_a[9]['cant']=(int)$stock_a[9]['cant']+(int)$stock['cantidad'];
+				$stock_a[12]['cant']=(int)$stock_a[12]['cant']+(int)$stock['cantidad'];
 			}else{
 				$stock_a[$i]['cant']=0;
 			}
@@ -193,7 +196,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 					$stock=mysqli_fetch_array($stocks_anterior);
 					$stock_ant[$i]['cant']=$stock['cantidad'];
 					$stock_ant_g[$i]['cant']=$stock_ant_g[$i]['cant']+$stock_ant[$i]['cant'];
-					$reserva_a[9]['cant']=(int)$stock['cantidad'];
+					$reserva_a[12]['cant']=(int)$stock['cantidad'];
 				}else{
 					$stock_ant[$i]['cant']=0;
 				}
@@ -206,7 +209,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			if ($cant_stock>0) {
 				$reserva=mysqli_fetch_array($reservas);
 				$reserva_a[$i]['cant']=$reserva['cantidad'];
-				$reserva_a[9]['cant']=(int)$reserva_a[9]['cant']+(int)$reserva['cantidad'];
+				$reserva_a[12]['cant']=(int)$reserva_a[12]['cant']+(int)$reserva['cantidad'];
 			}else{
 				$reserva_a[$i]['cant']=0;
 			}
@@ -247,16 +250,16 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Cell(7.5,5,$s_a,1,0,'C');
 		//Relleno Linea Con datos traidos por modelos.-
 
-		for ($i=1; $i <= 11; $i++) {
+		for ($i=1; $i <= 12; $i++) {
 
-			if ((int)$stock_a[$i]['cant']-(int)$reserva_a[$i]['cant']!=0 AND $i!=11){
+			if ((int)$stock_a[$i]['cant']-(int)$reserva_a[$i]['cant']!=0 AND $i!=12){
 				$s_p=(int)$stock_a[$i]['cant']-(int)$reserva_a[$i]['cant'];
 				$acum=$acum+$s_p;
 			}else{
 				$s_p='-';
 			}
 
-			if ($i==11) {
+			if ($i==12) {
 				if ($acum!=0) {
 					$s_p=$acum;
 				}else{
@@ -291,23 +294,23 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		}
 		$total_r_m[11]['cant']=0;
 		//Acumulo Totales RESERVAS Por MODELO y GENERAL
-		for ($i=0; $i <= 11; $i++) {
+		for ($i=0; $i <= 12; $i++) {
 			if ($i==0) {
 				$total_r_m[$i]['cant']=(int)$total_r_m[$i]['cant']+(int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant'];
 				$total_r_g[$i]['cant']=(int)$total_r_g[$i]['cant']+(int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant'];
-				$total_r_m[11]['cant']=(int)$total_r_m[11]['cant'] + (int)$total_r_m[$i]['cant'];
+				$total_r_m[12]['cant']=(int)$total_r_m[12]['cant'] + (int)$total_r_m[$i]['cant'];
 
 			}else{
 				$total_r_m[$i]['cant']=(int)$total_r_m[$i]['cant'] + (int)$stock_a[$i]['cant']-(int)$reserva_a[$i]['cant'];
 				$total_r_g[$i]['cant']=(int)$total_r_g[$i]['cant'] + (int)$stock_a[$i]['cant']-(int)$reserva_a[$i]['cant'];
-				$total_r_m[11]['cant']=(int)$total_r_m[11]['cant'] + (int)$total_r_m[$i]['cant'];
+				$total_r_m[12]['cant']=(int)$total_r_m[12]['cant'] + (int)$total_r_m[$i]['cant'];
 
 			}
 		}
 
 	}
 
-	$total_r_g[11]['cant']=$total_r_g[11]['cant']+$total_r_m[11]['cant'];
+	$total_r_g[12]['cant']=$total_r_g[12]['cant']+$total_r_m[12]['cant'];
 
 
 		$pdf->SetFont('Arial','BI',6.5);
