@@ -44,7 +44,7 @@ class PDF extends FPDF
 		$mes_a[11]='Nov';
 		$mes_a[12]='Dic';
 
-		for ($i=1; $i <= 12 ; $i++) {
+		for ($i=1; $i < 13 ; $i++) {
 
 			if ($m_a>12) {
 				$m_a=$m_a-12;
@@ -122,7 +122,7 @@ $pdf->SetAutoPageBreak(true,6);
 $pdf->SetFont('Arial','B',6.5);
 $pdf->SetFont('');
 
-	for ($i=0; $i <= 12; $i++) {
+	for ($i=0; $i < 13; $i++) {
 		$stock_ant_g[$i]['cant'] = 0;
 		$total_m[$i]['cant'] = 0;
 		$total_g[$i]['cant'] = 0;
@@ -169,7 +169,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$total_pisadas_grupo = $total_pisadas_grupo + $cant_pisada;
 		$total_pisadas_gral = $total_pisadas_gral + $cant_pisada;
 
-		for ($i=0; $i <= 12; $i++) {
+		for ($i=0; $i < 12; $i++) {
 
 			if ($m_a>12) {
 				$m_a=$m_a-12;
@@ -259,7 +259,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 				$s_p='-';
 			}
 
-			if ($i==11) {
+			if ($i==12) {
 				if ($acum!=0) {
 					$s_p=$acum;
 				}else{
@@ -288,13 +288,13 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Ln();
 
 		//Acumulo Totales TASA Por MODELO y GENERAL
-		for ($i=0; $i <= 12; $i++) {
+		for ($i=0; $i < 13; $i++) {
 				$total_m[$i]['cant']=(int)$total_m[$i]['cant']+(int)$stock_a[$i]['cant'];
 				$total_g[$i]['cant']=(int)$total_g[$i]['cant']+(int)$stock_a[$i]['cant'];
 		}
 		$total_r_m[12]['cant']=0;
 		//Acumulo Totales RESERVAS Por MODELO y GENERAL
-		for ($i=0; $i <= 12; $i++) {
+		for ($i=0; $i < 12; $i++) {
 			if ($i==0) {
 				$total_r_m[$i]['cant']=(int)$total_r_m[$i]['cant']+(int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant'];
 				$total_r_g[$i]['cant']=(int)$total_r_g[$i]['cant']+(int)$stock_a[0]['cant']+(int)$stock_ant[0]['cant']-(int)$reserva_a[0]['cant'];
@@ -319,7 +319,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Cell(6,5,$total_pisadas_grupo,1,0,'C');
 		$pdf->Cell(0.8,5,'',0,0,'C');
 		//Relleno Linea Total de Modelo
-		for ($i=0; $i <= 12; $i++) {
+		for ($i=0; $i < 13; $i++) {
 		$pdf->SetDrawColor(60, 60, 60);
 		$pdf->Cell(0.3,5,'',1,0,'C');//linea separador de meses
 		$pdf->SetDrawColor(184, 184, 184);
@@ -333,10 +333,10 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Ln(2);
 
 
-		for ($i=0; $i <= 12; $i++) {
+		for ($i=0; $i < 13; $i++) {
 			$total_m[$i]['cant']=0;
 		}
-		for ($i=0; $i <= 12; $i++) {
+		for ($i=0; $i < 13; $i++) {
 			$total_r_m[$i]['cant']=0;
 		}
 
@@ -351,7 +351,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Cell(0.8,5,'',0,0,'C');
 
 		//Relleno Linea Total de MOdelo o Total Gral
-		for ($i=0; $i <= 12; $i++) {
+		for ($i=0; $i < 13; $i++) {
 		$pdf->SetDrawColor(60, 60, 60);
 		$pdf->Cell(0.3,5,'',1,0,'C');//linea separador de meses
 		$pdf->SetDrawColor(184, 184, 184);
@@ -372,7 +372,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Cell(6,5,$total_pisadas_gral,1,0,'C');
 		$pdf->Cell(0.8,5,'',0,0,'C');
 
-		for ($i=0; $i <=12; $i++) {
+		for ($i=0; $i < 13; $i++) {
 		$pdf->SetDrawColor(60, 60, 60);
 		$pdf->Cell(0.3,5,'',1,0,'C');//linea separador de meses
 		$pdf->SetDrawColor(184, 184, 184);
