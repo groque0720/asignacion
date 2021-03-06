@@ -143,7 +143,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 
 	while ($modelo=mysqli_fetch_array($modelos)) {
 
-		$m_a = (int)date("n");
+		$m_a = (int)date("n")+1;
 		$a_a = (int)date("Y");
 		//reinicio totales
 		$stock_a[9]['cant']=0;
