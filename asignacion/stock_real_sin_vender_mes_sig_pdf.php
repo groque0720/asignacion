@@ -44,7 +44,7 @@ class PDF extends FPDF
 		$mes_a[11]='Nov';
 		$mes_a[12]='Dic';
 
-		for ($i=1; $i < 10 ; $i++) {
+		for ($i=1; $i =< 10 ; $i++) {
 
 			if ($m_a>12) {
 				$m_a=$m_a-12;
