@@ -61,7 +61,7 @@ $("#costo_reparacion_z").focusout(function() {
 			event.preventDefault();
 		}
 	});
-	
+
 	$("#costo_reparacion_z").val(formatoNumero(res2, 2, ",", "."));
 
 	if (valor=='' || valor==null) {
@@ -83,7 +83,7 @@ $("#toma_mas_impuesto_z").focusout(function() {
 			event.preventDefault();
 		}
 	});
-	
+
 	$("#toma_mas_impuesto_z").val(formatoNumero(res2, 2, ",", "."));
 
 	if (valor=='' || valor==null) {
@@ -105,7 +105,7 @@ $("#costo_contable_z").focusout(function() {
 			event.preventDefault();
 		}
 	});
-	
+
 	$("#costo_contable_z").val(formatoNumero(res2, 2, ",", "."));
 
 	if (valor=='' || valor==null) {
@@ -115,6 +115,30 @@ $("#costo_contable_z").focusout(function() {
 	}
 
 });
+
+$("#transferencia_z").focusout(function() {
+	valor=$(this).val();
+	var str = valor;
+	var res1= str.replace(".","");
+	var res2= res1.replace(",",".");
+	$("#transferencia_z").keypress(function(event) {
+		var keycode = (event.keyCode ? event.keyCode : event.which);
+		if(keycode == '13'){
+			event.preventDefault();
+		}
+	});
+
+	$("#transferencia_z").val(formatoNumero(res2, 2, ",", "."));
+
+	if (valor=='' || valor==null) {
+		("#transferencia").val(0);
+	}else{
+		$("#transferencia").val(res2);
+	}
+
+});
+
+
 //---------------------------------------------
 $("#precio_venta_z").focusout(function() {
 	valor=$(this).val();
@@ -127,7 +151,7 @@ $("#precio_venta_z").focusout(function() {
 			event.preventDefault();
 		}
 	});
-	
+
 	$("#precio_venta_z").val(formatoNumero(res2, 2, ",", "."));
 
 	if (valor=='' || valor==null) {
@@ -150,7 +174,7 @@ $("#precio_0km_z").focusout(function() {
 			event.preventDefault();
 		}
 	});
-	
+
 	$("#precio_0km_z").val(formatoNumero(res2, 2, ",", "."));
 
 	if (valor=='' || valor==null) {
@@ -173,7 +197,7 @@ $("#precio_info_z").focusout(function() {
 			event.preventDefault();
 		}
 	});
-	
+
 	$("#precio_info_z").val(formatoNumero(res2, 2, ",", "."));
 
 	if (valor=='' || valor==null) {
@@ -196,7 +220,7 @@ $("#km_z").focusout(function() {
 			event.preventDefault();
 		}
 	});
-	
+
 	$("#km_z").val(formatoNumero(res2, 0, ",", "."));
 
 	if (valor=='' || valor==null) {
@@ -255,7 +279,7 @@ if ($('#id_perfil').val()==3) {
 		$('#cliente').attr('readonly', 'readonly');
 	}else{
 		asesor_a_reservar=$('#asesor_a_reservar').val();
-		$("#id_asesor > option[value="+asesor_a_reservar+"]").attr('selected', 'selected');	
+		$("#id_asesor > option[value="+asesor_a_reservar+"]").attr('selected', 'selected');
 	}
 
 	$('#id_asesor option:not(:selected)').attr('disabled',true);

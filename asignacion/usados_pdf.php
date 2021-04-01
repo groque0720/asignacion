@@ -101,26 +101,28 @@ class PDF extends FPDF
 	$this->SetFont('');
 	$this->Cell(0,5,('Pag.').$this->PageNo().'/{nb}',0,0,'R');
 	$this->Ln();
-	$this->Cell(7,5,'Nro Un.',0,0,'C');
+	$this->Cell(4,5,'Nro.',0,0,'C');
+	$this->Cell(7,5,'Un.',0,0,'C');
 	$this->Cell(7,5,'Interno',0,0,'C');
-	$this->Cell(51,5,('Marca - Modelo - Version'),0,0,'C');
+	$this->Cell(48,5,('Marca - Modelo - Version'),0,0,'C');
 	$this->Cell(5,5,'Por',0,0,'C');
-	$this->Cell(8,5,('Ano'),0,0,'C');
-	$this->Cell(11,5,'Km',0,0,'C');
+	$this->Cell(7,5,('Ano'),0,0,'C');
+	$this->Cell(10,5,'Km',0,0,'C');
 	$this->Cell(13,5,'Dominio',0,0,'C');
 	$this->Cell(13,5,'Color',0,0,'C');
-	$this->Cell(33,5,('Ult. Dueno'),0,0,'C');
+	$this->Cell(29,5,('Ult. Dueno'),0,0,'C');
 	$this->Cell(15,5,('Tomo'),0,0,'C');
 	$this->Cell(13,5,('Fec. Rec.'),0,0,'C');
 	$this->Cell(6,5,('Ant.'),0,0,'C');
-	$this->Cell(17,5,'Toma + Imp.',0,0,'C');
-	$this->Cell(17,5,'Costo Cont.',0,0,'C');
-	$this->Cell(17,5,'Costo Rep.',0,0,'C');
-	$this->Cell(17,5,'Precio Venta',0,0,'C');
-	$this->Cell(17,5,'Precio Info',0,0,'C');
-	$this->Cell(8,5,'Ubic.',0,0,'C');
+	$this->Cell(17,5,'Toma+Imp.',0,0,'C');
+	$this->Cell(15,5,'Costo Cont.',0,0,'C');
+	$this->Cell(15,5,'Costo Rep.',0,0,'C');
+	$this->Cell(17,5,'$ Transf.',0,0,'C');
+	$this->Cell(15,5,'$ Venta',0,0,'C');
+	$this->Cell(15,5,'$ Info',0,0,'C');
+	$this->Cell(9,5,'Ubic.',0,0,'C');
 	$this->Cell(6,5,'Canc.',0,0,'C');
-	$this->Cell(26,5,'Cliente',0,0,'C');
+	$this->Cell(20,5,'Cliente',0,0,'C');
 	$this->Cell(17,5,'Asesor',0,0,'C');
 	$this->Cell(14,5,('Fec. Rva.'),0,0,'C');
 	$this->Ln();
@@ -142,6 +144,7 @@ $total_gral_toma=0;
 $total_gral_costo=0;
 $total_gral_p_venta=0;
 $total_gral_p_info=0;
+$total_gral_transferencia=0;
 
 $SQL="SELECT * FROM asignaciones_usados_estados ORDER BY posicion";
 $estado_usado = mysqli_query($con, $SQL);
@@ -157,6 +160,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 	$total_costo=0;
 	$total_p_venta=0;
 	$total_p_info=0;
+	$total_transferencia=0;
 	$nro = 0;
 
 	$SQL="SELECT *, DATEDIFF(DATE(NOW()),fec_recepcion)as ant FROM asignaciones_usados WHERE entregado = 0 AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
@@ -190,10 +194,10 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 				$cortar=$largo-39;
 				$vehiculo=substr($usado['vehiculo'], 0, -$cortar).'[..]';
 			}
-			$pdf->Cell(51,5,($vehiculo),1,0,'L');
+			$pdf->Cell(49,5,($vehiculo),1,0,'L');
 			$pdf->Cell(3,5,$por_a[$usado['por']]['grupo_res'],1,0,'C');
 			$pdf->Cell(8,5,$usado['año'],1,0,'C');
-			$pdf->Cell(11,5,number_format($usado['km'], 0, ',','.'),1,0,'R');
+			$pdf->Cell(10,5,number_format($usado['km'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(13,5,$usado['dominio'],1,0,'C');
 			$pdf->Cell(13,5,$color_a[$usado['color']]['color'],1,0,'C');
 
@@ -203,13 +207,18 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 			$ultimo_dueño=$usado['ultimo_dueño'];
 			if ($largo>19) {
 				$cortar=$largo-19;
-				$ultimo_dueño=substr($usado['ultimo_dueño'], 0, -$cortar).'[..]';
+				$ultimo_dueño=substr($usado['ultimo_dueño'], 0, -$cortar).'..';
+			}
+			$pdf->Cell(30,5,($ultimo_dueño),1,0,'L');
+
+			$asesor_toma=$usuario_a[$usado['asesortoma']]['nombre'];
+			$largo=strlen($usuario_a[$usado['asesortoma']]['nombre']);
+			if ($largo>10) {
+				$cortar=$largo-10;
+				$asesor_toma=substr($usuario_a[$usado['asesortoma']]['nombre'], 0, -$cortar).'..';
 			}
 
-
-
-			$pdf->Cell(33,5,($ultimo_dueño),1,0,'L');
-			$pdf->Cell(15,5,($usuario_a[$usado['asesortoma']]['nombre']),1,0,'C');
+			$pdf->Cell(15,5,($asesor_toma),1,0,'L');
 			$pdf->Cell(12,5,cambiarFormatoFecha($usado['fec_recepcion']),1,0,'C');
 
 			if ($usado['ant']/30>=1) {
@@ -221,18 +230,19 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 			$pdf->Cell(6,5,$antiguedad,1,0,'C');
 
 			if ($es_gerente==1) {
-				$pdf->Cell(17,5,'$ '.number_format($usado['toma_mas_impuesto'], 0, ',','.'),1,0,'R');
-				$pdf->Cell(17,5,'$ '.number_format($usado['costo_contable'], 0, ',','.'),1,0,'R');
-				$pdf->Cell(17,5,'$ '.number_format($usado['costo_reparacion'], 0, ',','.'),1,0,'R');
-				// $pdf->Cell(17,5,'$ '.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,'$ '.number_format($usado['toma_mas_impuesto'], 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,'$ '.number_format($usado['costo_contable'], 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,'$ '.number_format($usado['costo_reparacion'], 0, ',','.'),1,0,'R');
+				// $pdf->Cell(16,5,'$ '.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
 			}else{
-				$pdf->Cell(17,5,'$ -',1,0,'R');
-				$pdf->Cell(17,5,'$ -',1,0,'R');
-				$pdf->Cell(17,5,'$ -',1,0,'R');
-				// $pdf->Cell(17,5,'$ -',1,0,'R');
+				$pdf->Cell(16,5,'$ -',1,0,'R');
+				$pdf->Cell(16,5,'$ -',1,0,'R');
+				$pdf->Cell(16,5,'$ -',1,0,'R');
+				// $pdf->Cell(16,5,'$ -',1,0,'R');
 			}
-			$pdf->Cell(17,5,'$ '.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
-			$pdf->Cell(17,5,'$ '.number_format($usado['precio_info'], 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($usado['transferencia'], 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($usado['precio_info'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(8,5,$sucursal_a[$usado['id_sucursal']]['sucres'],1,0,'C');
 
 			if ($usado['reservada']==1) {
@@ -240,18 +250,28 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 			}else{
 				$canc = '-';
 			}
-			$pdf->Cell(8,5,$canc,1,0,'C');
+			$pdf->Cell(6,5,$canc,1,0,'C');
 
 			$largo=strlen($usado['cliente']);
 			$cliente=$usado['cliente'];
-			if ($largo>19) {
-				$cortar=$largo-19;
-				$cliente=substr($usado['cliente'], 0, -$cortar).'[..]';
+			if ($largo>15) {
+				$cortar=$largo-15;
+				$cliente=substr($usado['cliente'], 0, -$cortar).'..';
 			}
 
-			$pdf->Cell(26,5,($cliente),1,0,'L');
-			$pdf->Cell(17,5,($usuario_a[$usado['id_asesor']]['nombre']),1,0,'C');
-			$pdf->Cell(12,5,cambiarFormatoFecha($usado['fec_reserva']),1,0,'C');
+			$pdf->Cell(23,5,($cliente),1,0,'L');
+
+			$asesor_venta=$usuario_a[$usado['id_asesor']]['nombre'];
+			$largo=strlen($usuario_a[$usado['id_asesor']]['nombre']);
+			if ($largo>10) {
+				$cortar=$largo-10;
+				$asesor_venta=substr($usuario_a[$usado['id_asesor']]['nombre'], 0, -$cortar).'..';
+			}
+
+			$pdf->Cell(15,5,($asesor_venta),1,0,'L');
+
+
+			$pdf->Cell(11,5,cambiarFormatoFecha($usado['fec_reserva']),1,0,'C');
 			$pdf->Ln();
 
 			$total_toma=$total_toma + $usado['toma_mas_impuesto'];
@@ -259,32 +279,35 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 			$total_p_venta= $total_p_venta + $usado['precio_venta'];
 			$total_p_info = $total_p_info + $usado['precio_info'];
 			$total_costo_rep = $total_costo_rep + $usado['costo_reparacion'];
+			$total_transferencia = $total_transferencia + $usado['transferencia'];
 
 			$total_gral_toma = $total_gral_toma + $usado['toma_mas_impuesto'];
 			$total_gral_costo = $total_gral_costo + $usado['costo_contable'];
 			$total_gral_p_venta = $total_gral_p_venta + $usado['precio_venta'];
 			$total_gral_p_info = $total_gral_p_info + $usado['precio_info'];
 			$total_gral_costo_rep = $total_gral_costo_rep + $usado['costo_reparacion'];
+			$total_gral_transferencia = $total_gral_transferencia + $usado['transferencia'];
 
 		}
 
 		$pdf->SetFont('Arial','BI',8);
-		$pdf->Cell(182,5,'Total '.($estado['estado_usado']).'   ',0,0,'R');
+		$pdf->Cell(177,5,'Total '.($estado['estado_usado']).'   ',0,0,'R');
 		$pdf->SetFont('Arial','B',6.5);
 
 		if ($es_gerente==1) {
-			$pdf->Cell(17,5,'$ '.number_format($total_toma, 0, ',','.'),1,0,'R');
-			$pdf->Cell(17,5,'$ '.number_format($total_costo, 0, ',','.'),1,0,'R');
-			$pdf->Cell(17,5,'$ '.number_format($total_costo_rep, 0, ',','.'),1,0,'R');
-			// $pdf->Cell(17,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($total_toma, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($total_costo, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($total_costo_rep, 0, ',','.'),1,0,'R');
+			// $pdf->Cell(16,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
 		}else{
-			$pdf->Cell(17,5,'$ -',1,0,'R');
-			$pdf->Cell(17,5,'$ -',1,0,'R');
-			$pdf->Cell(17,5,'$ -',1,0,'R');
-			// $pdf->Cell(17,5,'$ -',1,0,'R');
+			$pdf->Cell(16,5,'$ -',1,0,'R');
+			$pdf->Cell(16,5,'$ -',1,0,'R');
+			$pdf->Cell(16,5,'$ -',1,0,'R');
+			// $pdf->Cell(16,5,'$ -',1,0,'R');
 		}
-		$pdf->Cell(17,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
-		$pdf->Cell(17,5,'$ '.number_format($total_p_info, 0, ',','.'),1,0,'R');
+		$pdf->Cell(16,5,'$ '.number_format($total_transferencia, 0, ',','.'),1,0,'R');
+		$pdf->Cell(16,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
+		$pdf->Cell(16,5,'$ '.number_format($total_p_info, 0, ',','.'),1,0,'R');
 
 		$pdf->Ln();
 	}
@@ -292,19 +315,20 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 }
 $pdf->Ln();
 $pdf->SetFont('Arial','BI',8);
-$pdf->Cell(182,5,'Total General   ',0,0,'R');
+$pdf->Cell(177,5,'Total General   ',0,0,'R');
 $pdf->SetFont('Arial','B',6.5);
 if ($es_gerente==1) {
-	$pdf->Cell(17,5,'$ '.number_format($total_gral_toma, 0, ',','.'),1,0,'R');
-	$pdf->Cell(17,5,'$ '.number_format($total_gral_costo, 0, ',','.'),1,0,'R');
-	$pdf->Cell(17,5,'$ '.number_format($total_gral_costo_rep, 0, ',','.'),1,0,'R');
+	$pdf->Cell(16,5,'$ '.number_format($total_gral_toma, 0, ',','.'),1,0,'R');
+	$pdf->Cell(16,5,'$ '.number_format($total_gral_costo, 0, ',','.'),1,0,'R');
+	$pdf->Cell(16,5,'$ '.number_format($total_gral_costo_rep, 0, ',','.'),1,0,'R');
 }else{
-	$pdf->Cell(17,5,'$ -',1,0,'R');
-	$pdf->Cell(17,5,'$ -',1,0,'R');
-	$pdf->Cell(17,5,'$ -',1,0,'R');
+	$pdf->Cell(16,5,'$ -',1,0,'R');
+	$pdf->Cell(16,5,'$ -',1,0,'R');
+	$pdf->Cell(16,5,'$ -',1,0,'R');
 }
-$pdf->Cell(17,5,'$ '.number_format($total_gral_p_venta, 0, ',','.'),1,0,'R');
-$pdf->Cell(17,5,'$ '.number_format($total_gral_p_info, 0, ',','.'),1,0,'R');
+$pdf->Cell(16,5,'$ '.number_format($total_gral_transferencia, 0, ',','.'),1,0,'R');
+$pdf->Cell(16,5,'$ '.number_format($total_gral_p_venta, 0, ',','.'),1,0,'R');
+$pdf->Cell(16,5,'$ '.number_format($total_gral_p_info, 0, ',','.'),1,0,'R');
 
 $pdf->Ln();
 

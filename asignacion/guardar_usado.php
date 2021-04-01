@@ -1,4 +1,4 @@
-﻿<?php 
+﻿<?php
 
 include("funciones/func_mysql.php");
 conectar();
@@ -23,6 +23,7 @@ $SQL.=" toma_mas_impuesto = ".$_POST["toma_mas_impuesto"].", ";
 $SQL.=" costo_contable = ".$_POST["costo_contable"].", ";
 $SQL.=" precio_venta = ".$_POST["precio_venta"].", ";
 $SQL.=" precio_info = ".$_POST["precio_info"].", ";
+$SQL.=" transferencia = ".$_POST["transferencia"].", ";
 
 $SQL.=" precio_0km = ".$_POST["precio_0km"].", ";
 
@@ -95,13 +96,13 @@ mysqli_query($con, $SQL);
 
 $cargado="si";
 
-include ('carga_unidades_usados.php');	
+include ('carga_unidades_usados.php');
 
 // if ($text_busqueda!='' AND $text_busqueda!=null ) {
 // 	$abuscar=$text_busqueda;
 // 	include ('busqueda_rapida_unidades_cuerpo.php');
 // }else{
-// 	include ('contenido_relleno.php');	
+// 	include ('contenido_relleno.php');
 // }
 
  ?>
