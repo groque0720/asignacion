@@ -385,7 +385,7 @@ conectar();
 
 			<?php } ?>
 
-			<div style="display: flex; justify-content: center; width: 100%;">
+			<div style="position: fixed; left:0; bottom: 0; display: flex; justify-content: center; width: 100%;">
 				<p
 					style="font-size: 11px; font-style: italic;">
 					Las aplicaciones que faltan fueron pasadas y actulizadas en el sistema CRM.
