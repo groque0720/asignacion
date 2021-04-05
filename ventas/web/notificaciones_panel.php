@@ -388,7 +388,7 @@ conectar();
 			<div style="display: flex; justify-content: center; width: 100%;">
 				<p
 					style="font-size: 11px; font-style: italic;">
-					Las aplicaciones que faltan fueron quitadas, las mismas se encuntran actulizadas en el sistema CRM.
+					Las aplicaciones que faltan fueron pasadas y actulizadas en el sistema CRM.
 				</p>
 				<p
 					style="font-size: 11px; font-style: italic;">
