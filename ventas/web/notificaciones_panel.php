@@ -292,7 +292,7 @@ conectar();
 			</a>
 			</div>
 		</div>
-		<div class="ed-item web-1-6 item">
+<!-- 		<div class="ed-item web-1-6 item">
 			<div class="img">
 			<a href="../../agenda_test_drive">
 				<div class="ed-container">
@@ -307,10 +307,10 @@ conectar();
 				</div>
 			</a>
 			</div>
-		</div>
+		</div> -->
 
 
-		<div class="ed-item web-1-6 item">
+		<!-- <div class="ed-item web-1-6 item">
 			<?php
 				$SQL="SELECT count(visto) as cantidad FROM recepcion WHERE visto = 0 AND id_asesor = ".$_SESSION["id"];
 				$res_cantidad = mysqli_query($con, $SQL);
@@ -339,7 +339,7 @@ conectar();
 				</div>
 			</a>
 			</div>
-		</div>
+		</div> -->
 
 
 
@@ -384,6 +384,18 @@ conectar();
 
 
 			<?php } ?>
+
+			<div style="display: flex; justify-content: center; width: 100%;">
+				<p
+					style="font-size: 11px; font-style: italic;">
+					Las aplicaciones que faltan fueron quitadas, las mismas se encuntran actulizadas en el sistema CRM.
+				</p>
+				<p
+					style="font-size: 11px; font-style: italic;">
+					Cualquier duda a disposición. Equipo ITDYV.
+				</p>
+			</div>
+
 
 	</div>
 
