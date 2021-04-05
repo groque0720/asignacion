@@ -84,7 +84,7 @@ conectar();
 				<a href="../../asignacion"  target="_blank">
 					<div class="ed-container">
 						<div class="ed-item">
-							<img src="../imagenes/asignacion.png" alt="">
+							<img src="../imagenes/asignacion.PNG" alt="">
 						</div>
 					</div>
 					<div class="centrar-texto">
