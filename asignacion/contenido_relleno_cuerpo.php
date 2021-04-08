@@ -321,13 +321,13 @@ if ($_SESSION["id"]==47) {
 
 			$prioridad_entrega = '';
 			if ($unidad['cliente'] == "CRUZ MIGUEL ANGEL" or $unidad['cliente'] == "ALVAREZ CARLOS TOMAS" or $unidad['cliente'] == "VARGAS FAUSTINO RAUL") {
-				$prioridad_entrega = "background:
-					linear-gradient(135deg, #ECEDDC 25%, transparent 25%) -50px 0,
-					linear-gradient(225deg, #ECEDDC 25%, transparent 25%) -50px 0,
-					linear-gradient(315deg, #ECEDDC 25%, transparent 25%),
-					linear-gradient(45deg, #ECEDDC 25%, transparent 25%);
-					background-size: 10px 10px;
-					background-color: rgba(231,149,148,0.5)";
+				$prioridad_entrega = "background: repeating-linear-gradient(
+			      135deg,
+			      rgba(0, 0, 0, 0) 5px,
+			      rgba(0, 0, 0, 0) 10px,
+			      #ABF7C0 10px,
+			      #ABF7C0 15px
+			    )";
 			}
 
 			if ( ($unidad['id_grupo'] == 17 or $unidad['id_grupo']== 7) AND $unidad['estado_reserva']== 0 AND substr($unidad['chasis'], 0, 1) == 'K') {
