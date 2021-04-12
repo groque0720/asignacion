@@ -203,35 +203,35 @@ if ($cant>=1) {
 				<div class="form-linea centrar-texto">
 					<div class="ancho-100 ">
 						<label class="ancho-30" for="">Último Dueño</label>
-						<input class="form-inputs ancho-80" type="text" size="10" id="ultimo_dueño" name="ultimo_dueño" value="<?php echo $unidad['ultimo_dueño']; ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs ancho-80" type="text" size="10" id="ultimo_dueño" name="ultimo_dueño" value="<?php echo $unidad['ultimo_dueño']; ?>" <?php echo $lectura; ?> autocomplete="off">
 					</div>
 				</div>
 				<div class="form-linea centrar-texto">
 					<div class="ancho-25 ">
 					<?php if ($es_gerente==1) { ?>
 						<div class="centrar-texto"><label class="ancho-30" for="">Toma + Imp. $</label></div>
-						<input class="form-inputs centrar-texto ancho-90" type="text" size="10" id="toma_mas_impuesto_z" name="toma_mas_impuesto_z" value="<?php echo number_format($unidad['toma_mas_impuesto'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="toma_mas_impuesto_z" name="toma_mas_impuesto_z" value="<?php echo number_format($unidad['toma_mas_impuesto'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
 					<?php } ?>
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="toma_mas_impuesto" name="toma_mas_impuesto" value="<?php echo $unidad['toma_mas_impuesto']; ?>" <?php echo $lectura; ?>>
 					</div>
 					<div class="ancho-25 ">
 					<?php if ($es_gerente==1) { ?>
 						<div class="centrar-texto"><label class="ancho-30" for="">Costo Contable $</label></div>
-						<input class="form-inputs centrar-texto ancho-90" type="text" size="10" id="costo_contable_z" name="costo_contable_z" value="<?php echo number_format( $unidad['costo_contable'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="costo_contable_z" name="costo_contable_z" value="<?php echo number_format( $unidad['costo_contable'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
 						<?php } ?>
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="costo_contable" name="costo_contable" value="<?php echo $unidad['costo_contable']; ?>" <?php echo $lectura; ?>>
 					</div>
 					<div class="ancho-25 ">
 						<?php // if ($id_perfil!=3 OR $es_gerente==1) { ?>
 						<div class="centrar-texto"><label class="ancho-30" for="">Precio Venta $</label></div>
-						<input class="form-inputs centrar-texto ancho-90" type="text" size="10" id="precio_venta_z" name="precio_venta_z" value="<?php echo number_format($unidad['precio_venta'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="precio_venta_z" name="precio_venta_z" value="<?php echo number_format($unidad['precio_venta'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
 						<?php // } ?>
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="precio_venta" name="precio_venta" value="<?php echo $unidad['precio_venta']; ?>" <?php echo $lectura; ?>>
 					</div>
 					<div class="ancho-25 ">
 
 						<div class="centrar-texto"><label class="ancho-30" for="">Precio Info $</label></div>
-						<input class="form-inputs centrar-texto ancho-90" type="text" size="10" id="precio_info_z" name="precio_info_z" value="<?php echo number_format($unidad['precio_info'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="precio_info_z" name="precio_info_z" value="<?php echo number_format($unidad['precio_info'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
 
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="precio_info" name="precio_info" value="<?php echo $unidad['precio_info'];?>" <?php echo $lectura; ?>>
 					</div>
@@ -242,7 +242,7 @@ if ($cant>=1) {
 					<div class="ancho-25 ">
 					<?php if ($id_perfil!=3 OR $es_gerente==1) { ?>
 						<div class="centrar-texto"><label class="ancho-30" for="">Costo Reparación</label></div>
-						<input class="form-inputs centrar-texto ancho-90" type="text" size="10" id="costo_reparacion_z" name="costo_reparacion_z" value="<?php echo number_format($unidad['costo_reparacion'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="costo_reparacion_z" name="costo_reparacion_z" value="<?php echo number_format($unidad['costo_reparacion'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
 					<?php } ?>
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="costo_reparacion" name="costo_reparacion" value="<?php echo $unidad['costo_reparacion']; ?>" <?php echo $lectura; ?>>
 					</div>
@@ -250,7 +250,7 @@ if ($cant>=1) {
 					<div class="ancho-25 ">
 					<?php if ($id_perfil!=3 OR $es_gerente==1) { ?>
 						<div class="centrar-texto"><label class="ancho-30" for="">Costo Transferencia</label></div>
-						<input class="form-inputs centrar-texto ancho-90" type="text" size="10" id="transferencia_z" name="transferencia_z" value="<?php echo number_format($unidad['transferencia'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="transferencia_z" name="transferencia_z" value="<?php echo number_format($unidad['transferencia'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
 
 					<?php } ?>
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="transferencia" name="transferencia" value="<?php echo $unidad['transferencia']; ?>" <?php echo $lectura; ?>>
@@ -263,17 +263,13 @@ if ($cant>=1) {
 					<div class="ancho-25 ">
 					<?php if ($id_perfil!=3 OR $es_gerente==1) { ?>
 						<div class="centrar-texto"><label class="ancho-30" for="">Precio 0km</label></div>
-						<input class="form-inputs centrar-texto ancho-90" type="text" size="10" id="precio_0km_z" name="precio_0km_z" value="<?php echo number_format($unidad['precio_0km'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="precio_0km_z" name="precio_0km_z" value="<?php echo number_format($unidad['precio_0km'], 2, ',','.'); ?>" <?php echo $lectura; ?> >
 
 					<?php } ?>
-						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="precio_0km" name="precio_0km" value="<?php echo $unidad['precio_0km']; ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="precio_0km" name="precio_0km" value="<?php echo $unidad['precio_0km']; ?>"autocomplete="off" <?php echo $lectura; ?>>
 
 					</div>
 				</div>
-
-
-
-
 			</div>
 
 			<div class="lado unidad-derecho cuadro">
@@ -440,7 +436,6 @@ if ($cant>=1) {
 			</div>
 		</div>
 		<div id="mensajes_unidad"></div>
-
 	</form>
 </div>
 

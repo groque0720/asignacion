@@ -50,10 +50,11 @@
 	    return numero;
 	}
 
-$("#costo_reparacion_z").focusout(function() {
+$("#costo_reparacion_z").change(function() {
 	valor=$(this).val();
 	var str = valor;
 	var res1= str.replace(".","");
+	var res1= res1.replace(".","");
 	var res2= res1.replace(",",".");
 	$("#costo_reparacion_z").keypress(function(event) {
 		var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -72,7 +73,7 @@ $("#costo_reparacion_z").focusout(function() {
 
 });
 
-$("#toma_mas_impuesto_z").focusout(function() {
+$("#toma_mas_impuesto_z").change(function() {
 	valor=$(this).val();
 	var str = valor;
 	var res1= str.replace(".","");
@@ -94,10 +95,11 @@ $("#toma_mas_impuesto_z").focusout(function() {
 
 });
 //---------------------------------------------
-$("#costo_contable_z").focusout(function() {
+$("#costo_contable_z").change(function() {
 	valor=$(this).val();
 	var str = valor;
 	var res1= str.replace(".","");
+	var res1= res1.replace(".","");
 	var res2= res1.replace(",",".");
 	$("#costo_contable_z").keypress(function(event) {
 		var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -116,10 +118,11 @@ $("#costo_contable_z").focusout(function() {
 
 });
 
-$("#transferencia_z").focusout(function() {
+$("#transferencia_z").change(function() {
 	valor=$(this).val();
 	var str = valor;
 	var res1= str.replace(".","");
+	var res1= res1.replace(".","");
 	var res2= res1.replace(",",".");
 	$("#transferencia_z").keypress(function(event) {
 		var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -138,12 +141,28 @@ $("#transferencia_z").focusout(function() {
 
 });
 
-
 //---------------------------------------------
 $("#precio_venta_z").focusout(function() {
 	valor=$(this).val();
+	var valor_transferencia = ($("#precio_venta").val() * 4) / 100;
+
+	if (valor=='' || valor==null) {
+		// ("#precio_venta").val(0);
+		$("#transferencia").val(0);
+	}else{
+		// $("#precio_venta").val(res2);
+		$("#transferencia").val(valor_transferencia);
+	}
+
+	$("#transferencia_z").val(formatoNumero(valor_transferencia, 2, ",", "."));
+
+});
+//---------------------------------------------
+$("#precio_venta_z").change(function() {
+	valor=$(this).val();
 	var str = valor;
 	var res1= str.replace(".","");
+	var res1= res1.replace(".","");
 	var res2= res1.replace(",",".");
 	$("#precio_venta_z").keypress(function(event) {
 		var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -154,19 +173,26 @@ $("#precio_venta_z").focusout(function() {
 
 	$("#precio_venta_z").val(formatoNumero(res2, 2, ",", "."));
 
+	var valor_transferencia = (res2 * 4) / 100;
+
 	if (valor=='' || valor==null) {
 		("#precio_venta").val(0);
+		$("#transferencia").val(0);
 	}else{
 		$("#precio_venta").val(res2);
+		$("#transferencia").val(valor_transferencia);
 	}
+
+	$("#transferencia_z").val(formatoNumero(valor_transferencia, 2, ",", "."));
 
 });
 
 //---------------------------------------------
-$("#precio_0km_z").focusout(function() {
+$("#precio_0km_z").change(function() {
 	valor=$(this).val();
 	var str = valor;
 	var res1= str.replace(".","");
+	var res1= res1.replace(".","");
 	var res2= res1.replace(",",".");
 	$("#precio_0km_z").keypress(function(event) {
 		var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -185,11 +211,13 @@ $("#precio_0km_z").focusout(function() {
 
 });
 
+
 //---------------------------------------------
-$("#precio_info_z").focusout(function() {
+$("#precio_info_z").change(function() {
 	valor=$(this).val();
 	var str = valor;
 	var res1= str.replace(".","");
+	var res1= res1.replace(".","");
 	var res2= res1.replace(",",".");
 	$("#precio_info_z").keypress(function(event) {
 		var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -209,10 +237,11 @@ $("#precio_info_z").focusout(function() {
 });
 
 //---------------------------------------------
-$("#km_z").focusout(function() {
+$("#km_z").change(function() {
 	valor=$(this).val();
 	var str = valor;
 	var res1= str.replace(".","");
+	var res1= res1.replace(".","");
 	var res2= res1.replace(",",".");
 	$("#km_z").keypress(function(event) {
 		var keycode = (event.keyCode ? event.keyCode : event.which);
