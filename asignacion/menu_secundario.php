@@ -67,6 +67,7 @@
 
 					<li><a href="falta_cancelacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar</a></li>
 					<li><a href="falta_cancelacion_mas_diez_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 10 dias</a></li>
+					<li><a href="planilla_asignacion_tpa_60_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>TPA + 60 días</a></li>
 					<li><a href="stock_por_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock x Suc.</a></li>
 					<li><a href="stock_traslado_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Traslados x Suc.</a></li>
 					<li><a href="en_viaje_pdf.php" target="_blank" target="_blank" class="icon-file-pdf-o" > <span></span>En Viaje</a></li>

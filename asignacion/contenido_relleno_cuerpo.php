@@ -155,8 +155,17 @@ if ($_SESSION["id"]==47) {
 
 		<?php
 			$atp = '';
+			$atp_60_dias = '';
 			if ($unidad['id_negocio']==2) {
 				$atp='unidad-atp';
+
+				if ($unidad['fec_arribo']<>'') {
+					$fecha_a=$unidad['fec_arribo'];
+					$dias_de_llegada=(strtotime('now')-strtotime($fecha_a))/86400;
+					if ($dias_de_llegada >= 60) {
+						$atp_60_dias='background: red; color: white';
+					}
+				}
 			}
 
 			$entregada='';
@@ -370,7 +379,7 @@ if ($_SESSION["id"]==47) {
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_orden']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['interno']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_despacho']); ?></td>
-			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_arribo']); ?></td>
+			<td class="centrar-texto celda" style="<?php echo $atp_60_dias ?>"data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_arribo']); ?></td>
 			<td class="centrar-texto celda fila-grupo fila-oculto" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $grupo_a[$unidad['id_grupo']]['grupo']; ?></td>
 			<td class="centrar-texto celda fila-modelo fila-oculto" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $modelo_a[$unidad['id_modelo']]['modelo']; ?></td>
 			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
