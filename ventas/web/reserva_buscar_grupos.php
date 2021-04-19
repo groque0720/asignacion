@@ -8,7 +8,7 @@ conectar();
 
         $SQL="SELECT grupos.idgrupo as idgrupo, grupos.grupo as grupo, tipos.idtipo
         FROM (grupos INNER JOIN modelos ON grupos.idgrupo = modelos.idgrupo) INNER JOIN tipos ON modelos.idtipo = tipos.idtipo
-        GROUP BY grupos.grupo, tipos.idtipo
+        WHERE modelos.activo = 1 and modelos.idgrupo <> 14 GROUP BY idgrupo, grupo, tipos.idtipo
         HAVING (((tipos.idtipo)=".$_POST["elegido"]."))";
 
 

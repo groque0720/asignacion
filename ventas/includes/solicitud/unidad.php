@@ -57,9 +57,10 @@
 									INNER JOIN modelos ON grupos.idgrupo = modelos.idgrupo
 									)
 									INNER JOIN tipos ON modelos.idtipo = tipos.idtipo
-									GROUP BY grupos.grupo, tipos.idtipo
+									GROUP BY idgrupo, grupo, tipos.idtipo
 									HAVING (((tipos.idtipo)=".$reserva["idtipo"]."))";
 								$grupos=mysqli_query($con, $SQL);
+
 								 while ($grup=mysqli_fetch_array($grupos)) { ?>
 										<option value="<?php echo $grup["idgrupo"]; ?>"  <?php  if ($reserva["idgrupo"] == $grup["idgrupo"]) { echo "selected"; } ?> ><?php echo $grup["grupo"];?> </option>
 							<?php }  ?>

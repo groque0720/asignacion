@@ -56,6 +56,7 @@ $SQL .="  observacion ='".$_POST["observacion"]."', ";
 $SQL .="  compra='".$_POST["compra"]."', ";
 $SQL .="  nrounidad='".$_POST["nrounidad"]."', ";
 // $SQL .="  fecres='".$_POST["fecres"]."', ";
+$SQL .="  canal_acercamiento ='".$_POST["canal_acercamiento"]."', ";
 $SQL .="  lugarventa ='".$_POST["lugarventa"]."', ";
 $SQL .="  factura='".$_POST["factura"]."', ";
 $SQL .="  fecult='".date("Y-m-d")."', ";

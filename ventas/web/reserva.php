@@ -650,7 +650,6 @@
 
 					<?php include("../includes/solicitud/cliente.php") ?>
 
-
 					<?php include("../includes/solicitud/encuesta.php") ?>
 
 					<?php include("../includes/solicitud/usado.php") ?>

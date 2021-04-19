@@ -1,11 +1,16 @@
 <fieldset>
 
-	<div id="cabecera" >
-		<div id="asesor" style="width:35%; float: left;">
-			<label style="margin: 2px;">Nro: </label><span style="font-weight: bold; margin: 0 10px 0 0;"><?php echo $reserva["idreserva"]; ?></span>
-			Asesor: <spam style="font-size: 1.3em; font-style:italic; font-weight: bold;">
-			<?php echo $usuario['nombre']; ?>
-						 </spam>
+	<div id="cabecera" style="display: flex; justify-content: space-between;" >
+
+		<div id="asesor" style="width:35%;display: flex; flex-direction: column">
+			<div>
+				<label style="margin: 2px;">Nro: </label><span style="font-weight: bold; margin: 0 10px 0 0;"><?php echo $reserva["idreserva"]; ?></span>
+			</div>
+			<div>
+				Asesor: <spam style="font-size: 1.3em; font-style:italic; font-weight: bold;">
+				<?php echo $usuario['nombre']; ?>
+							 </spam>
+			</div>
 		</div>
 
 		<div style="width: 20%; float: left; text-align: center;" >
@@ -27,17 +32,32 @@
 			</div>
 		</div>
 
-		<div style="width: 40%; float:right; text-align: right; margin-left:15px;">
-			<label>Fecha:</label>
-			<input type="date" id="fecres" name="fecres" size="10" value="<?php echo $reserva["fecres"]; ?>" required disabled>
-			<input type="time" id="fectime" name="fectime" step="1" value="<?php echo $reserva["hora"]; ?>" required disabled>
+		<div style="width: 20%; float: left; text-align: center;" >
+			<div id="asesor">
+				<label>Canal Acercamiento:</label>
+				<select id="canal_acercamiento" name="canal_acercamiento" required>
+					<option value=""></option>
+					<option value="Cuenta Propia" <?php  if ($reserva["canal_acercamiento"] == "Cuenta Propia") { echo "selected"; } ?>>Cuenta Propia</option>
+					<option value="Diario" <?php  if ($reserva["canal_acercamiento"] == "Diario") { echo "selected"; } ?>>Diario</option>
+					<option value="Facebook" <?php  if ($reserva["canal_acercamiento"] == "Facebook") { echo "selected"; } ?>>Facebook</option>
+					<option value="Pagina Web" <?php  if ($reserva['canal_acercamiento'] == "Pagina Web") { echo "selected"; } ?>>Pagina Web</option>
+					<option value="Referido" <?php  if ($reserva['canal_acercamiento'] == "Referido") { echo "selected"; } ?>>Referido</option>
+				</select>
+			</div>
 		</div>
 
-		<div style="width: 35%; float:right;; text-align: right; margin: 5px;">
-			<?php if ($reserva['fecult']!="") { ?>Ult. Act. <?php echo cambiarformatofecha($reserva['fecult']);} ?>
-			<?php if ($reserva['horault']!="") { ?><?php echo ' - '.cambiarformatohora($reserva['horault']);} ?>
-			<input type="date" id="fecult" name="fecult" style="display: none;" value="<?php echo $reserva["fecult"]; ?>" >
 
+		<div style="width: 35%; text-align: right; margin-left:15px; display: flex; flex-direction: column;">
+			<div>
+				<label>Fecha:</label>
+				<input type="date" id="fecres" name="fecres" size="10" value="<?php echo $reserva["fecres"]; ?>" required disabled>
+				<input type="time" id="fectime" name="fectime" step="1" value="<?php echo $reserva["hora"]; ?>" required disabled>
+			</div>
+			<div>
+				<?php if ($reserva['fecult']!="") { ?>Ult. Act. <?php echo cambiarformatofecha($reserva['fecult']);} ?>
+				<?php if ($reserva['horault']!="") { ?><?php echo ' - '.cambiarformatohora($reserva['horault']);} ?>
+				<input type="date" id="fecult" name="fecult" style="display: none;" value="<?php echo $reserva["fecult"]; ?>" >
+			</div>
 		</div>
 
 	</div>

@@ -64,7 +64,7 @@
 						</div>
 
 					</div> -->
-					<div class="fila" style="margin: 3px;">
+					<div class="fila" style="margin: 3px; display: none;">
 
 							<div style="width: 15%; text-align: center;">
 							<label>Confort</label>
