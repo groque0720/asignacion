@@ -95,6 +95,8 @@ $SQL .="  fecest='".$_POST["fecest"]."', ";
 $SQL .="  venta='".$_POST["venta"]."', ";
 $SQL .="  ofreciotd='".$_POST["ofreciotd"]."', ";
 $SQL .="  realizotd='".$_POST["realizotd"]."', ";
+$SQL .="  ofreciosg='".$_POST["ofreciosg"]."', ";
+$SQL .="  tomarasg='".$_POST["tomarasg"]."', ";
 $SQL .="  enviada=".$_POST["enviado"].", ";
 
 if ($_POST["enviado"]>1) {
