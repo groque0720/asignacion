@@ -33,14 +33,14 @@
 	//fin de carga de sucursales
 	//
 	//
-	$SQL="SELECT * FROM usuarios WHERE idperfil = 3";
-	$usuarios=mysqli_query($con, $SQL);
-	$usuario_a[1]['nombre']= '-';
-	$i=1;
-	while ($usuario=mysqli_fetch_array($usuarios)) {
-		$usuario_a[$usuario['idusuario']]['nombre']= $usuario['nombre'];
-		$i++;
-	}
+	// $SQL="SELECT * FROM usuarios WHERE idperfil = 3";
+	// $usuarios=mysqli_query($con, $SQL);
+	// $usuario_a[1]['nombre']= '-';
+	// $i=1;
+	// while ($usuario=mysqli_fetch_array($usuarios)) {
+	// 	$usuario_a[$usuario['idusuario']]['nombre']= $usuario['nombre'];
+	// 	$i++;
+	// }
 
 	$SQL="SELECT * FROM grupos";
 	// $SQL="SELECT * FROM grupos WHERE activo = 1";
@@ -125,7 +125,7 @@
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['cancelada']==1) { echo 'Si';}else{echo '-';} ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['patentada']==1) { echo 'Si';}else{echo '-';} ?></td>
 				<td style="page-break-inside: always;" class="celda-espacio-left celda celda_cliente" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['cliente']; ?></td>
-				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $usuario_a[$unidad['id_asesor']]['nombre']; ?></td>
+				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['asesor']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_entrega']); ?></td>
 			</tr>
 
