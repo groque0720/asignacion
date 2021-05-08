@@ -27,7 +27,7 @@
 	$cadena .= " fec_entrega >= '$fec_ini' AND fec_entrega <= '$fec_fin' ";
 
 
-$SQL="SELECT * FROM asignaciones WHERE entregada = 1 AND".$cadena." ORDER BY fec_entrega DESC";
+$SQL="SELECT * FROM view_asignaciones_entregadas WHERE entregada = 1 AND".$cadena." ORDER BY fec_entrega DESC";
 $unidades = mysqli_query($con, $SQL);
 include('contenido_relleno_entregadas_cuerpo.php');
  ?>
