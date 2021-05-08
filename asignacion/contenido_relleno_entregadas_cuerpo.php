@@ -42,7 +42,8 @@
 		$i++;
 	}
 
-	$SQL="SELECT * FROM grupos WHERE activo = 1";
+	$SQL="SELECT * FROM grupos";
+	// $SQL="SELECT * FROM grupos WHERE activo = 1";
 	$grupos=mysqli_query($con, $SQL);
 	$grupo_a[]['grupo']= '-';
 	$i=1;
@@ -51,7 +52,8 @@
 		$i++;
 	}
 
-	$SQL="SELECT * FROM modelos WHERE activo = 1";
+	$SQL="SELECT * FROM modelos";
+	// $SQL="SELECT * FROM modelos WHERE activo = 1";
 	$modelos=mysqli_query($con, $SQL);
 	$modelos_a[]['modelo']= '-';
 	$i=1;
