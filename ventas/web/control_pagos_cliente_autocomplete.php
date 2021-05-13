@@ -10,14 +10,24 @@ conectar();
 //busco un valor aproximado al dato escrito
 // $ssql = "SELECT * FROM codigos WHERE idcodigo <> 1 AND idcodigo <> 2 AND  idcodigo <> 3 AND detalle LIKE '%" . $datoBuscar . "%'";
 
-$ssql="SELECT
-			nombre AS cliente
-			FROM
-			 clientes
-			WHERE
-			nombre LIKE '%" . $datoBuscar . "%' ORDER BY cliente ASC LIMIT 15";
-//$ssql = "SELECT * FROM codigos WHERE  detalle LIKE '%" . $datoBuscar . "%'";
-//echo $ssql;
+// $ssql="SELECT
+// 			nombre AS cliente
+// 			FROM
+// 			 clientes
+// 			WHERE
+// 			nombre LIKE '%" . $datoBuscar . "%' ORDER BY cliente ASC LIMIT 15";
+
+
+$ssql = "SELECT
+CONCAT_WS(' - ',clientes.nombre, facturas.nombre) as cliente
+FROM
+reservas
+INNER JOIN clientes ON reservas.idcliente = clientes.idcliente
+INNER JOIN facturas ON reservas.idfactura = facturas.idfactura
+WHERE
+clientes.nombre LIKE '%" . $datoBuscar . "%' OR
+facturas.nombre LIKE '%" . $datoBuscar . "%' ORDER BY cliente ASC LIMIT 15";
+
 $rs = mysqli_query($con, $ssql);
 
 

@@ -38,6 +38,11 @@ $FIL="";
 	// if ($_POST["est"]==4) {
 	// 	$FIL =" AND reservas.cancelada = 0 AND not isnull(reservas.llego) AND reservas.llego <> 0 AND (datediff (curdate(), reservas.fechacanc ) > 0 OR reservas.fechacanc = 0 or reservas.fechacanc ='' )" ; // cancelaciones vencidas
 	// }
+	//
+	//
+
+$datoBuscar = explode(" - ", $datoBuscar);
+$datoBuscar = $datoBuscar[0];
 
 $SQL="SELECT
 reservas.idreserva AS idreserva,
@@ -64,6 +69,7 @@ FROM
 clientes
 Inner Join reservas ON clientes.idcliente = reservas.idcliente
 Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
+Inner Join facturas ON reservas.idfactura = facturas.idfactura
 WHERE reservas.entregada < 3
 AND reservas.enviada >= '1' AND
 ( clientes.nombre LIKE '%" . $datoBuscar . "%' OR
@@ -74,7 +80,8 @@ clientes.tcelu LIKE '%" . $datoBuscar . "%' OR
  reservas.idreserva LIKE '%" . $datoBuscar . "%' OR
  reservas.nroorden LIKE '%" . $datoBuscar . "%' OR
  reservas.nrounidad LIKE '%" . $datoBuscar . "%' OR
- reservas.interno LIKE '%" . $datoBuscar . "%' )";
+ reservas.interno LIKE '%" . $datoBuscar . "%' OR
+facturas.nombre LIKE '%" . $datoBuscar . "%' )";
 $SQL .= $FIL." ORDER BY usuarios.nombre, clientes.nombre";
 
 $res = mysqli_query($con, $SQL);
