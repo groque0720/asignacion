@@ -113,7 +113,6 @@ $SQL .=" WHERE idcliente =".$idcliente;
 mysqli_query($con, $SQL);
 
 
-
 $SQL="UPDATE reservas SET";
 $SQL .="  observacion ='".$_POST["observacion"]."', ";
 $SQL .="  compra='".$_POST["compra"]."', ";
@@ -121,6 +120,8 @@ $SQL .="  hora='".date("H:i:s")."', ";
 $SQL .="  nrounidad='-', ";
 $SQL .="  fecres='".date("Y-m-d")."', ";
 $SQL .="  lugarventa ='".$_POST["lugarventa"]."', ";
+$SQL .="  canal_acercamiento ='".$_POST["canal_acercamiento"]."', ";
+$SQL .="  fecest='".$_POST["fecest"]."', ";
 $SQL .="  factura='".$_POST["factura"]."', ";
 $SQL .="  fecult='".date("Y-m-d")."', ";
 $SQL .="  tipoprecio='".$_POST["tipoprecio"]."', ";
