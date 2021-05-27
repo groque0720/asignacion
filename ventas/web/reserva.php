@@ -627,9 +627,9 @@
 
 					<fieldset>
 
-						<div id="ingreso_codigo"  style="margin-bottom: 30px;" >
+						<div id="ingreso_codigo"  style="margin-bottom: 30px; display: flex" >
 
-							<div id="cargar_det" style="width:75%; float:left; margin-left:5px;">
+							<div id="cargar_det" style="width:75%; float:left; margin-left:5px; display: flex;">
 								<input id="detalle_l" name="detalle_l" type="text" value="" placeholder="C&oacute;digo" style="width:35%; float:left;"/>
 								<input id="detalle_ad" name="detalle_ad" type="text" value="" placeholder="Detalle" style="width:35%; float:left; margin-left: 5px;"/>
 							</div>
