@@ -627,14 +627,14 @@
 
 					<fieldset>
 
-						<div id="ingreso_codigo"  style="margin-bottom: 30px; display: flex" >
+						<div id="ingreso_codigo"  style="margin-bottom: 30px;" >
 
-							<div id="cargar_det" style="width:75%; float:left; margin-left:5px; display: flex;">
+							<div id="cargar_det" style="width:75%; float:left; margin-left:10px;">
 								<input id="detalle_l" name="detalle_l" type="text" value="" placeholder="C&oacute;digo" style="width:45%; float:left;"/>
 								<input id="detalle_ad" name="detalle_ad" type="text" value="" placeholder="Detalle" style="width:45%; float:left; margin-left: 5px;"/>
 							</div>
-							<div style="width:13%; float:left; text-align:left; display: flex;">
-								<input type="text" id="monto" name="monto" placeholder="Monto" width="100%" style="text-align: right;">
+							<div style="width:13%; float:left; text-align:left;">
+								<input type="text" id="monto" name="monto" placeholder="Monto" size="10" style="text-align: right;">
 							</div>
 							<div id="agregar_l"><img style="width:15px; margin: 3px auto;"src="../imagenes/guardar.png" width="15px"></div>
 
