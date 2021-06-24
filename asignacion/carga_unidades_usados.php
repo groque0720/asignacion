@@ -201,6 +201,18 @@ $es_gerente = $_SESSION["es_gerente"];
 				} ?>
 
 				<?php
+					$sin_cancelar = '';
+					$dias = 0; ?>
+
+				<?php if ($usado['reservada']==1 AND $usado['estado_reserva']==1) {
+					$fecha_res=$usado['fec_reserva'];
+					$dias=(strtotime($fecha_res)-strtotime('now'))/86400;
+					$dias = abs(floor($dias));
+					if ($dias>=10) {
+						$sin_cancelar='background:#8E8EF7; ';
+					}
+				}?>
+				<?php
 
 					if ($usado['ant']>=50) {
 						$antiguedad = number_format(((int)$usado['ant']), 0, ',','.');
@@ -214,7 +226,7 @@ $es_gerente = $_SESSION["es_gerente"];
 
 				 ?>
 
-					<tr class="<?php echo 'fila_'.$estado['id_estado_usado'].'_'.$fila.' '.$libre. ' '.$nc ?>" style="<?php echo $antiguedad_color;  ?>">
+					<tr class="<?php echo 'fila_'.$estado['id_estado_usado'].'_'.$fila.' '.$libre. ' '.$nc ?>" style="<?php echo $antiguedad_color.' '.$sin_cancelar;  ?>">
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $fila; ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['interno']; ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['vehiculo']; ?> <span style="color: #f0f0f0;background: #efb810;"><?php if($usado['id_estado_certificado'] == 2) { echo '(**UCT**)'; } ?></span> </td>
