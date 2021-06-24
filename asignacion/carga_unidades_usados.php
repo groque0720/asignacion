@@ -204,7 +204,7 @@ $es_gerente = $_SESSION["es_gerente"];
 					$sin_cancelar = '';
 					$dias = 0; ?>
 
-				<?php if ($usado['reservada']==1 AND $usado['estado_reserva']==1) {
+				<?php if ($usado['reservada']==1 AND $usado['estado_reserva']==1 and $usado['fecha_cancelacion'] == null) {
 					$fecha_res=$usado['fec_reserva'];
 					$dias=(strtotime($fecha_res)-strtotime('now'))/86400;
 					$dias = abs(floor($dias));
