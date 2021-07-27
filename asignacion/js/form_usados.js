@@ -142,21 +142,21 @@ $("#transferencia_z").change(function() {
 });
 
 //---------------------------------------------
-$("#precio_venta_z").focusout(function() {
-	valor=$(this).val();
-	var valor_transferencia = ($("#precio_venta").val() * 4) / 100;
+		// $("#precio_venta_z").focusout(function() {
+		// 	valor=$(this).val();
+		// 	var valor_transferencia = ($("#precio_venta").val() * 4) / 100;
 
-	if (valor=='' || valor==null) {
-		// ("#precio_venta").val(0);
-		$("#transferencia").val(0);
-	}else{
-		// $("#precio_venta").val(res2);
-		$("#transferencia").val(valor_transferencia);
-	}
+		// 	if (valor=='' || valor==null) {
+		// 		// ("#precio_venta").val(0);
+		// 		$("#transferencia").val(0);
+		// 	}else{
+		// 		// $("#precio_venta").val(res2);
+		// 		$("#transferencia").val(valor_transferencia);
+		// 	}
 
-	$("#transferencia_z").val(formatoNumero(valor_transferencia, 2, ",", "."));
+		// 	$("#transferencia_z").val(formatoNumero(valor_transferencia, 2, ",", "."));
 
-});
+		// });
 //---------------------------------------------
 $("#precio_venta_z").change(function() {
 	valor=$(this).val();
