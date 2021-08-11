@@ -137,15 +137,15 @@ $(document).ready(function(){
 		$("#carga").show();
 
          abuscar = $("#texto_busqueda").val();
+         tipo_venta = $("#tipo_venta").val();
 		$("#sucursal").val(0);
 
 		estado=$("#estado").val();
 
-		$.ajax({url:"control_pagos_cliente_buscar.php",cache:false,type:"POST",data:{abuscar:abuscar, est:estado},success:function(result){
+		$.ajax({url:"control_pagos_cliente_buscar.php",cache:false,type:"POST",data:{abuscar:abuscar, tipo_venta:tipo_venta, est:estado},success:function(result){
 	      	$("#actualizar").html(result);
 	      	$("#carga").hide();
 	    	}});
-
       }
  });
 
@@ -155,12 +155,13 @@ $(document).ready(function(){
 		$("#carga").show();
 
          abuscar = $("#texto_busqueda").val();
+         tipo_venta = $("#tipo_venta").val();
 		$("#sucursal").val(0);
 
 
 		estado=$("#estado").val();
 
-		$.ajax({url:"control_pagos_cliente_buscar.php",cache:false,type:"POST",data:{abuscar:abuscar, est:estado},success:function(result){
+		$.ajax({url:"control_pagos_cliente_buscar.php",cache:false,type:"POST",data:{abuscar:abuscar, tipo_venta:tipo_venta, est:estado},success:function(result){
 	      	$("#actualizar").html(result);
 	      	$("#carga").hide();
 	    	}});

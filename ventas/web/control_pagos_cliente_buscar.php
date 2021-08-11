@@ -1,7 +1,7 @@
 <?php
 //recibo el dato que deseo buscar sugerencias
 $datoBuscar = $_POST["abuscar"];
-
+$tipo_venta = $_POST["tipo_venta"];
 //conecto con una base de datos
 include("../funciones/func_mysql.php");
 conectar();
@@ -11,6 +11,7 @@ conectar();
 // $ssql = "SELECT * FROM codigos WHERE idcodigo <> 1 AND idcodigo <> 2 AND  idcodigo <> 3 AND detalle LIKE '%" . $datoBuscar . "%'";
 
 $FIL="";
+$LIMIT = "";
 
 	// if ($_POST["est"]==1) {
 	// 	$FIL =" AND not isnull(reservas.llego) AND reservas.llego <> 0" ; // llegadas todas
@@ -40,49 +41,96 @@ $FIL="";
 	// }
 	//
 	//
+	//
 
 $datoBuscar = explode(" - ", $datoBuscar);
 $datoBuscar = $datoBuscar[0];
 
-$SQL="SELECT
-reservas.idreserva AS idreserva,
-reservas.nrounidad AS nrounidad,
-reservas.interno AS interno,
-clientes.nombre AS cliente,
-usuarios.nombre AS asesor,
-reservas.idgrupo AS idgrupo,
-reservas.fecres AS fecres,
-reservas.idmodelo AS idmodelo,
-reservas.nroorden AS nroorden,
-reservas.llego AS llego,
-reservas.compra AS compra,
-reservas.detalleu AS detalleu,
-reservas.obscanc as obs,
-reservas.fechacanc as fechacanc,
-reservas.enviada as enviada,
-reservas.idfactura as idfactura,
-reservas.idcredito as idcredito,
-reservas.estadopago as estadopago,
-reservas.cancelada as cancelada,
-reservas.idcliente as idcliente
-FROM
-clientes
-Inner Join reservas ON clientes.idcliente = reservas.idcliente
-Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
-Inner Join facturas ON reservas.idfactura = facturas.idfactura
-WHERE reservas.entregada < 3
-AND reservas.enviada >= '1' AND
-( clientes.nombre LIKE '%" . $datoBuscar . "%' OR
-clientes.nrodoc LIKE '%" . $datoBuscar . "%' OR
-clientes.tfijo LIKE '%" . $datoBuscar . "%' OR
-clientes.tcelu LIKE '%" . $datoBuscar . "%' OR
- clientes.nombre LIKE '%" . $datoBuscar . "%' OR
- reservas.idreserva LIKE '%" . $datoBuscar . "%' OR
- reservas.nroorden LIKE '%" . $datoBuscar . "%' OR
- reservas.nrounidad LIKE '%" . $datoBuscar . "%' OR
- reservas.interno LIKE '%" . $datoBuscar . "%' OR
-facturas.nombre LIKE '%" . $datoBuscar . "%' )";
-$SQL .= $FIL." ORDER BY usuarios.nombre, clientes.nombre";
+if ($tipo_venta=="") {
+		$SQL="SELECT
+		reservas.idreserva AS idreserva,
+		reservas.nrounidad AS nrounidad,
+		reservas.interno AS interno,
+		clientes.nombre AS cliente,
+		usuarios.nombre AS asesor,
+		reservas.idgrupo AS idgrupo,
+		reservas.fecres AS fecres,
+		reservas.idmodelo AS idmodelo,
+		reservas.nroorden AS nroorden,
+		reservas.llego AS llego,
+		reservas.compra AS compra,
+		reservas.detalleu AS detalleu,
+		reservas.obscanc as obs,
+		reservas.fechacanc as fechacanc,
+		reservas.enviada as enviada,
+		reservas.idfactura as idfactura,
+		reservas.idcredito as idcredito,
+		reservas.estadopago as estadopago,
+		reservas.cancelada as cancelada,
+		reservas.idcliente as idcliente
+		FROM
+		clientes
+		Inner Join reservas ON clientes.idcliente = reservas.idcliente
+		Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
+		Inner Join facturas ON reservas.idfactura = facturas.idfactura
+		WHERE reservas.entregada < 3
+		AND reservas.enviada >= '1' AND
+		( clientes.nombre LIKE '%" . $datoBuscar . "%' OR
+		clientes.nrodoc LIKE '%" . $datoBuscar . "%' OR
+		clientes.tfijo LIKE '%" . $datoBuscar . "%' OR
+		clientes.tcelu LIKE '%" . $datoBuscar . "%' OR
+		 clientes.nombre LIKE '%" . $datoBuscar . "%' OR
+		 reservas.idreserva LIKE '%" . $datoBuscar . "%' OR
+		 reservas.nroorden LIKE '%" . $datoBuscar . "%' OR
+		 reservas.nrounidad LIKE '%" . $datoBuscar . "%' OR
+		 reservas.interno LIKE '%" . $datoBuscar . "%' OR
+		facturas.nombre LIKE '%" . $datoBuscar . "%' )";
+		$SQL .= $FIL." ORDER BY usuarios.nombre, clientes.nombre ".$LIMIT;
+}else{
+
+	$FIL = " AND reservas.venta = '".$tipo_venta."' ";
+	$LIMIT = " LIMIT 30";
+
+	$SQL="SELECT
+		reservas.idreserva AS idreserva,
+		reservas.nrounidad AS nrounidad,
+		reservas.interno AS interno,
+		clientes.nombre AS cliente,
+		usuarios.nombre AS asesor,
+		reservas.idgrupo AS idgrupo,
+		reservas.fecres AS fecres,
+		reservas.idmodelo AS idmodelo,
+		reservas.nroorden AS nroorden,
+		reservas.llego AS llego,
+		reservas.compra AS compra,
+		reservas.detalleu AS detalleu,
+		reservas.obscanc as obs,
+		reservas.fechacanc as fechacanc,
+		reservas.enviada as enviada,
+		reservas.idfactura as idfactura,
+		reservas.idcredito as idcredito,
+		reservas.estadopago as estadopago,
+		reservas.cancelada as cancelada,
+		reservas.idcliente as idcliente
+		FROM
+		clientes
+		Inner Join reservas ON clientes.idcliente = reservas.idcliente
+		Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
+		Inner Join facturas ON reservas.idfactura = facturas.idfactura
+		WHERE reservas.entregada < 3
+		AND reservas.enviada >= '1' AND
+		( clientes.nombre LIKE '%" . $datoBuscar . "%' OR
+		clientes.nrodoc LIKE '%" . $datoBuscar . "%' OR
+		clientes.tfijo LIKE '%" . $datoBuscar . "%' OR
+		clientes.tcelu LIKE '%" . $datoBuscar . "%' OR
+		 clientes.nombre LIKE '%" . $datoBuscar . "%' OR
+		 reservas.idreserva LIKE '%" . $datoBuscar . "%' OR
+		 reservas.nroorden LIKE '%" . $datoBuscar . "%' OR
+		 reservas.nrounidad LIKE '%" . $datoBuscar . "%' OR
+		 reservas.interno LIKE '%" . $datoBuscar . "%' OR
+		facturas.nombre LIKE '%" . $datoBuscar . "%' )";
+		$SQL .= $FIL." ORDER BY reservas.fecres DESC  ".$LIMIT;
+}
 
 $res = mysqli_query($con, $SQL);
 include('control_pagos_cliente_cuerpo.php');

@@ -116,9 +116,27 @@ $(document).ready(function(){
 
 
 		</ul>
-		<div class="busqueda">
-			<input type="text" id="texto_busqueda" name="texto_busqueda">
-			<a href="#" class="buscar" id="buscar">Buscar</a>
+		<div class="busqueda" style="width: 50%; display: flex; justify-content: space-between;">
+			<div style="width: 35%;">
+				<label>Venta:</label>
+				<select id="tipo_venta" name="tipo_venta" required>
+					<option value=""></option>
+					<option value="Convencional">Convencional</option>
+					<option value="Usado Certificado">Usado Certificado</option>
+					<option value="Reventa">Reventa</option>
+					<option value="Plan Dueño">Plan Dueño</option>
+					<option value="Plan Empleado">Plan Empleado</option>
+					<option value="Especial">Especial</option>
+					<option value="Plan de Ahorro">Plan de Ahorro</option>
+					<option value="Plan Adjudicado">Plan Adjudicado</option>
+					<option value="Reg. Discapacidad">Reg. Discapacidad</option>
+				</select>
+			</div>
+			<div style="width: 65%;">
+				<input type="text" id="texto_busqueda" name="texto_busqueda">
+				<a href="#" class="buscar" id="buscar">Buscar</a>
+			</div>
+
 		</div>
 	</nav>
 

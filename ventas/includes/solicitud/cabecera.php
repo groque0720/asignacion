@@ -27,7 +27,6 @@
 					<option value="Plan de Ahorro" <?php  if ($reserva['venta'] == "Plan de Ahorro") { echo "selected"; } ?>>Plan de Ahorro</option>
 					<option value="Plan Adjudicado" <?php  if ($reserva['venta'] == "Plan Adjudicado") { echo "selected"; } ?>>Plan Adjudicado</option>
 					<option value="Reg. Discapacidad" <?php  if ($reserva['venta'] == "Reg. Discapacidad") { echo "selected"; } ?>>Reg. Discapacidad</option>
-
 				</select>
 			</div>
 		</div>
