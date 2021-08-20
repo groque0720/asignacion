@@ -11,6 +11,10 @@ $id_usuario = $_SESSION["id"];
 $nom_asesor=$_SESSION["usuario"];
 $es_gerente=$_SESSION["es_gerente"];
 
+if ($id_usuario == 94) {
+	$id_perfil = 14;
+}
+
 $lectura='';
 $deshabilitado='';
 $asesor_class='';
@@ -292,10 +296,15 @@ if ($cant>=1) {
 					<div class="centrar-texto ancho-100 subtitulo">
 						DATOS DE RESERVA
 					</div>
-
-
 				</div>
 
+				<?php
+					if ($id_usuario == 94) {
+						$lectura="readonly='readonly'";
+						$deshabilitado="disabled";
+						$asesor_class='input-asesor';
+					}
+				 ?>
 				<div class="form-linea centrar-texto">
 					<div class="ancho-1-3 ">
 						<label class="ancho-1-3" for="">Fecha</label>
@@ -322,19 +331,16 @@ if ($cant>=1) {
 							<?php } ?>
 						<?php }else{?>
 							<input class="form-inputs input-fecha <?php echo $asesor_class; ?>" type="time" id="hora" name="hora" placeholder="HH:mm:ss" value="<?php echo $unidad['hora']; ?>" >
-
 						<?php } ?>
-
 					</div>
 					<div class="ancho-1-3">
 						<div class="ancho-45">
-							<?php if ($id_perfil==14  AND $unidad['reservada']==1) {?>
+							<?php if ($id_perfil==14  AND $unidad['reservada']==1 AND $id_usuario != 94) {?>
 							<input style="cursor:pointer;background: #D0D0D0" class="form-inputs centrar-texto" id="levantar_reserva" type="texto" size="5" value="Levantar">
 							<?php } ?>
 						</div>
 					</div>
 				</div>
-
 				<div class="form-linea centrar-texto">
 					<div class="ancho-100 ">
 						<label class="ancho-15" for="">Cliente</label>
