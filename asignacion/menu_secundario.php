@@ -113,6 +113,9 @@
 					<li><a href="usados_certificados_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Planilla Físico</a></li>
 				</ul>
 			</li>
+			<li style="background: #E3EAFB;">
+				<a target="_blank" href="/mistery" class="item_links" style="color: indigo;">Misterys</a>
+			</li>
 	</ul>
 		<!-- <div class="clearfix"></div> -->
 	<div>

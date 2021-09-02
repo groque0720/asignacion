@@ -97,7 +97,23 @@ conectar();
 
 		</div>
 
+		<div class="ed-item web-1-6 item">
+			<div class="img">
+				<a href="../../mistery"  target="_blank">
+					<div class="ed-container">
+						<div class="ed-item">
+							<img src="../imagenes/mistery.jpg" alt="">
+						</div>
+					</div>
+					<div class="centrar-texto">
+						<span class="titulo">
+							Atención Misterys
+						</span>
+					</div>
+				</a>
+			</div>
 
+		</div>
 
 
 
