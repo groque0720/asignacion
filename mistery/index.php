@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Atención al CLiente</title>
+	<title>Atención al Cliente</title>
 	<meta charset="UTF-8" />
   	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
   	<link rel="shortcut icon" type="image/x-icon" href="../asignacion/imagenes/favicon.ico" />
@@ -15,17 +15,35 @@
 		</div>
 		<div class="flex flex-col gap-2 md:flex-row  justify-between">
 			<div class="w-full bg-indigo-50 p-2">
-				<div class="">
-					<span class="text-red-600 font-bold">&#x23;</span>
-					<span class="text-lg"></span>
+				<div class="flex justify-center mb-2">
+					<span class="text-red-600 font-bold">&#x23; </span>
+					<span class="text-lg">No dar el precio, sin antes realizar la indagación de necesidades</span>
+					<span class="text-red-600 font-bold"> &#x23; </span>
 				</div>
 				<div class="p-2">
 					<div class="mb-3">
 						<span class="text-red-600 font-bold">1 -</span>
 						<span class="text-lg font-bold">Atención Inicial</span>
-						<div class="pl-6 text-gray-600">
+						<div class="pl-6 text-gray-600 mb-2">
 							<p>Saludo inicial, identificación del concesionario y de la persona que atiende y oración de enlace orientada a la asistencia.</p>
 							<p class="text-sm text-gray-600 italic">Por Ejemplo: Buenos días/tardes/noches, Derka y Vargas, mi nombre es "nombre asesor", en que lo puedo ayudar/asesorar.</p>
+						</div>
+						<div class="pl-6 text-gray-600">
+							<div>
+								<span class="font-extrabold">Atención digital (Whatsapp, web, redes sociales, e-toyota, etc.)</span>
+							</div>
+							<ul class="p-2">
+								<li><span class="text-red-600 font-bold"> &#x23; </span>El tiempo de respuesta a las consultas por los canales digitales es <b>3 horas hábiles como máximo</b>. (En caso de misterys, pasado ese tiempo, no se obtienen puntos.)</li>
+								<li><span class="text-red-600 font-bold"> &#x23;</span> En lo posible respetar el canal de contacto del cliente.</li>
+								<li class="p-2">En caso de contacto por Pagina Web:
+									<ul class="p-2">
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Enviar material digital del producto de interes (Link Web, Ficha Técnica / Catálogo (Pdf) - WhatsApp Video - YouTube Video)</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Mencionar que hay disponibilidad de realizar un Test Drive o ofrecer alguna alternativa de demostración de producto (fotos, videos llamadas, etc.)</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>En caso de consulta por Usados, <span class="text-red-500">MENCIONAR Y EXPLICAR EL PROGRAMA DE USADOS CERTIFICADOS.</span></li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Invitar al cliente a acercarse al concesionario o concretar una cita.</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Detallar los datos comerciales del asesor. (Nombre, Telefono, e-mail, etc.)</li>
+									</ul></li>
+							</ul>
 						</div>
 					</div>
 					<div class="mb-3">
@@ -33,19 +51,17 @@
 						<span class="text-lg font-bold">Detección de uso y necesidades</span>
 						<div class="pl-6 text-gray-600">
 							<p><span class="font-bold">a) - </span>El vendedor realiza una detección de uso y necesidades para poder ofrecer el producto y canal de ventas (convencional, usados, plan de ahorro) que mejor satisface al cliente.</p>
-							<p><span class="font-bold">b) - </span>Como resultado de una correcta detección de uso y necesidades, debemos conocer: uso del vehículo y vehículo actual del cliente.</p>
-							<p><span class="font-bold">c) - </span>Se deja registro de toda información adicional del cliente (familia, ocupación, preferencias, etc).</p>
+							<p><span class="font-bold">b) - </span>Se deja registro de toda información adicional del cliente (familia, ocupación, preferencias, etc).</p>
 						</div>
-							<div class="flex justify-center mt-3">
-									<ul>
-										<li><span class="text-red-600 font-bold">&#x2a; </span>Uso el vehiculo</li>
-										<li><span class="text-red-600 font-bold">&#x2a; </span>Grupo familiar</li>
-										<li><span class="text-red-600 font-bold">&#x2a; </span>Actividad</li>
-										<li><span class="text-red-600 font-bold">&#x2a; </span>Mascotas</li>
-										<li><span class="text-red-600 font-bold">&#x2a; </span>Vehículo Actual (cambio o renovación)</li>
-										<li><span class="text-red-600 font-bold">&#x2a; </span>Etc.</li>
-									</ul>
-							</div>
+						<div class="flex justify-center mt-3">
+							<ul>
+								<li><span class="text-red-600 font-bold">&#x2a; </span>Uso el vehiculo</li>
+								<li><span class="text-red-600 font-bold">&#x2a; </span>Grupo familiar (niños, mascotas, etc.)</li>
+								<li><span class="text-red-600 font-bold">&#x2a; </span>Actividad</li>
+								<li><span class="text-red-600 font-bold">&#x2a; </span>Vehículo Actual (cambio o renovación)</li>
+								<li><span class="text-red-600 font-bold">&#x2a; </span>Etc.</li>
+							</ul>
+						</div>
 					</div>
 					<div class="mb-3">
 						<span class="text-red-600 font-bold">3 -</span>
@@ -57,28 +73,34 @@
 								<p>Al 100% de los prospectos que ingresan por el canal digital y telefónico, se les ofrece material adicional del vehículo elegido.</p>
 								<p class="text-sm text-gray-600 italic">Ejemplos: Link web, ficha técnica / catálogo (Pdf) - Whatsapp video - Youtube video - envio de correo electrónico.</p>
 							</div>
+							<div>
+								<div class="flex justify-center my-2 border-b border-gray-400">
+									<span>Fichas Técnicas</span>
+								</div>
+								<?php
+									include('fichas_tecnicas.php');
+								 ?>
+							</div>
 						</div>
-						<div class="grid grid-cols-6 md:grid-cols-3">
 
-						</div>
 					</div>
 					<div class="mb-3">
 						<span class="text-red-600 font-bold">4 -</span>
 						<span class="text-lg font-bold">Valor de la Marca</span>
 						<div class="pl-6 text-gray-600">
 							<p><span class="font-bold">a) - </span>En algún momento de la presentación del vehículo, se resaltan los principales atributos de la marca Toyota:</p>
-							<div class="flex justify-center">
+							<div class="flex justify-center my-2">
 									<ul>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Garantía</li>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Servicio de posventa</li>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Valor de reventa de los usados</li>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Usados certificados</li>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Fábrica en el país</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Financiación TASA</li>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Etc.</li>
 									</ul>
 							</div>
-
-							<p class="text-sm text-gray-600 italic">Sugerencia: a los nuevos clientes se les muestra físicamente las instalaciones del serviciode posventa del concesionario.</p>
+							<p class="text-sm text-gray-600 italic">Sugerencia: a los nuevos clientes se les muestra físicamente las instalaciones del servicio de posventa del concesionario.</p>
 						</div>
 					</div>
 					<div class="mb-3">
@@ -92,18 +114,7 @@
 						</div>
 					</div>
 					<div class="mb-3">
-						<span class="text-red-600 font-bold">6 -</span>
-						<span class="text-lg font-bold">Realización de Presupuesto</span>
-						<div class="pl-6 text-gray-600">
-							<p><span class="font-bold">a) - </span>Se confecciona un presupuesto de compra al 100% de los clientes interesados.</p>
-							<p class="text-sm text-gray-600 italic">Enviar por correo electrónico, whatsapp, etc. el presupuesto realizado.</p>
-						</div>
-						<div class="pl-6 text-gray-600">
-							<p><span class="font-bold">b) - </span>Cierre de operación con prospecto digital o telefónico. El vendedor invita al prospecto digital al concesionario para intentar cerrar la operación.</p>
-						</div>
-					</div>
-					<div class="mb-3">
-						<span class="text-red-600 font-bold">7 -</span>
+						<span class="text-red-600 font-bold">6 - a</span>
 						<span class="text-lg font-bold">Disponibilidad y Plazo de Entrega</span>
 						<div class="pl-6 text-gray-600">
 							<p><span class="font-bold">a) - </span>El vendedor informa una fecha estimada de entrega al 100% de los prospectos</p>
@@ -113,7 +124,29 @@
 						</div>
 					</div>
 					<div class="mb-3">
-						<span class="text-red-600 font-bold">8 -</span>
+						<span class="text-red-600 font-bold">6 - b</span>
+						<span class="text-lg font-bold">Realización de Presupuesto</span>
+						<div class="pl-6 text-gray-600">
+							<p><span class="font-bold">a) - </span>Se confecciona un presupuesto de compra al 100% de los clientes interesados.</p>
+							<p class="text-sm text-gray-600 italic">Enviar por correo electrónico, whatsapp, etc. el presupuesto realizado.</p>
+						</div>
+						<div class="pl-6 text-gray-600">
+							<p><span class="font-bold">b) - </span>Cierre de operación con prospecto digital o telefónico. El vendedor invita al prospecto digital al concesionario para intentar cerrar la operación.</p>
+						</div>
+						<div class="flex justify-center my-2">
+							<div>
+								<div>Recordar al cliente:</div>
+								<ul>
+									<li><span class="text-red-600 font-bold">&#x2a; </span>Toma de Usado como parte de pago</li>
+									<li><span class="text-red-600 font-bold">&#x2a; </span>Financiación de su compra (Opciones y entidades financieras)</li>
+									<li><span class="text-red-600 font-bold">&#x2a; </span>Seguros para su vehículo (Entidades de seguros)</li>
+								</ul>
+							</div>
+
+						</div>
+					</div>
+					<div class="mb-3">
+						<span class="text-red-600 font-bold">7 -</span>
 						<span class="text-lg font-bold">Llamado de Seguimiento</span>
 						<div class="pl-6 text-gray-600">
 							<p><span class="font-bold">a) - </span>El vendedor contacta al cliente para cerrar la operación dentro de las 24 horas hábiles de realizado el presupuesto.</p>
