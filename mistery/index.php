@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>GUIA MISTERY</title>
+	<title>Atención al CLiente</title>
 	<meta charset="UTF-8" />
   	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
   	<link rel="shortcut icon" type="image/x-icon" href="../asignacion/imagenes/favicon.ico" />
@@ -11,13 +11,13 @@
 <body>
 	<div class="container m-auto">
 		<div class="flex items-center justify-center p-2 border-b">
-			<span class="text-xl text-indigo-400">GUIA ATENCION - PROCESO ESTILO COMERCIAL TOYOTA</span>
+			<span class="text-xl text-indigo-400">PROCESO ATENCION - ESTILO COMERCIAL TOYOTA</span>
 		</div>
 		<div class="flex flex-col gap-2 md:flex-row  justify-between">
-			<div class="w-full bg-indigo-100 p-2">
+			<div class="w-full bg-indigo-50 p-2">
 				<div class="">
 					<span class="text-red-600 font-bold">&#x23;</span>
-					<span class="text-lg">GUIA 0KM</span>
+					<span class="text-lg"></span>
 				</div>
 				<div class="p-2">
 					<div class="mb-3">
@@ -36,6 +36,16 @@
 							<p><span class="font-bold">b) - </span>Como resultado de una correcta detección de uso y necesidades, debemos conocer: uso del vehículo y vehículo actual del cliente.</p>
 							<p><span class="font-bold">c) - </span>Se deja registro de toda información adicional del cliente (familia, ocupación, preferencias, etc).</p>
 						</div>
+							<div class="flex justify-center mt-3">
+									<ul>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Uso el vehiculo</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Grupo familiar</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Actividad</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Mascotas</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Vehículo Actual (cambio o renovación)</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Etc.</li>
+									</ul>
+							</div>
 					</div>
 					<div class="mb-3">
 						<span class="text-red-600 font-bold">3 -</span>
@@ -44,21 +54,35 @@
 							<p><span class="font-bold">a) - </span>(Presencial) La presentación de producto se realiza invitando al cliente a acercarse al vehículo en cuestión.</p>
 							<p><span class="font-bold">b) - </span>Se resaltan las características del vehículo de mayor interés para el cliente en función a las necesidades previamente indagadas.</p>
 							<div class="mt-2 p-1 border  border-red-500 flex flex-col items-center justify-center">
-								<p>Al 100% de los prospectos que ingresan por el canal digital, se les ofrece material adicional del vehículo elegido.</p>
-								<p class="text-sm text-gray-600 italic">Ejemplos: Link web, ficha técnica / catálogo (Pdf) - Whatsapp video - Youtube video</p>
+								<p>Al 100% de los prospectos que ingresan por el canal digital y telefónico, se les ofrece material adicional del vehículo elegido.</p>
+								<p class="text-sm text-gray-600 italic">Ejemplos: Link web, ficha técnica / catálogo (Pdf) - Whatsapp video - Youtube video - envio de correo electrónico.</p>
 							</div>
+						</div>
+						<div class="grid grid-cols-6 md:grid-cols-3">
+
 						</div>
 					</div>
 					<div class="mb-3">
 						<span class="text-red-600 font-bold">4 -</span>
 						<span class="text-lg font-bold">Valor de la Marca</span>
 						<div class="pl-6 text-gray-600">
-							<p><span class="font-bold">a) - </span>En algún momento de la presentación del vehículo, se resaltan los principales atributos de la marca Toyota: Garantía, respaldo de marca, calidad, servicio de posventa, valor de reventa de los usados, usados certificados, tecnología, fábrica en el país, etc.</p>
+							<p><span class="font-bold">a) - </span>En algún momento de la presentación del vehículo, se resaltan los principales atributos de la marca Toyota:</p>
+							<div class="flex justify-center">
+									<ul>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Garantía</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Servicio de posventa</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Valor de reventa de los usados</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Usados certificados</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Fábrica en el país</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>Etc.</li>
+									</ul>
+							</div>
+
 							<p class="text-sm text-gray-600 italic">Sugerencia: a los nuevos clientes se les muestra físicamente las instalaciones del serviciode posventa del concesionario.</p>
 						</div>
 					</div>
 					<div class="mb-3">
-						<span class="text-red-600 font-bold">4 -</span>
+						<span class="text-red-600 font-bold">5 -</span>
 						<span class="text-lg font-bold">Ofrecimiento prueba de manejo</span>
 						<div class="pl-6 text-gray-600">
 							<p><span class="font-bold">a) - </span>Ofrecemos un test drive para demostrar las características relevantes a las necesidades detectadas en los interesados</p>
@@ -68,13 +92,31 @@
 						</div>
 					</div>
 					<div class="mb-3">
-						<span class="text-red-600 font-bold">5 -</span>
+						<span class="text-red-600 font-bold">6 -</span>
 						<span class="text-lg font-bold">Realización de Presupuesto</span>
 						<div class="pl-6 text-gray-600">
 							<p><span class="font-bold">a) - </span>Se confecciona un presupuesto de compra al 100% de los clientes interesados.</p>
+							<p class="text-sm text-gray-600 italic">Enviar por correo electrónico, whatsapp, etc. el presupuesto realizado.</p>
 						</div>
 						<div class="pl-6 text-gray-600">
 							<p><span class="font-bold">b) - </span>Cierre de operación con prospecto digital o telefónico. El vendedor invita al prospecto digital al concesionario para intentar cerrar la operación.</p>
+						</div>
+					</div>
+					<div class="mb-3">
+						<span class="text-red-600 font-bold">7 -</span>
+						<span class="text-lg font-bold">Disponibilidad y Plazo de Entrega</span>
+						<div class="pl-6 text-gray-600">
+							<p><span class="font-bold">a) - </span>El vendedor informa una fecha estimada de entrega al 100% de los prospectos</p>
+						</div>
+						<div class="pl-6 text-gray-600">
+							<p><span class="font-bold">b) - </span>Se debe explicar al cliente <span class="font-bold">en detalle todo el proceso de venta</span>, desde el inicio o creación del boleto a la entrega del vehiculo.</p>
+						</div>
+					</div>
+					<div class="mb-3">
+						<span class="text-red-600 font-bold">8 -</span>
+						<span class="text-lg font-bold">Llamado de Seguimiento</span>
+						<div class="pl-6 text-gray-600">
+							<p><span class="font-bold">a) - </span>El vendedor contacta al cliente para cerrar la operación dentro de las 24 horas hábiles de realizado el presupuesto.</p>
 						</div>
 					</div>
 				</div>
