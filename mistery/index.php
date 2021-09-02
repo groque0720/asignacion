@@ -8,7 +8,7 @@
   	<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 
 </head>
-<body>
+<body class="mb-28">
 	<div class="container m-auto ">
 		<div class="flex items-center justify-center p-2 border-b p-5">
 			<span class="text-xl text-indigo-400">PROCESO ATENCION - ESTILO COMERCIAL TOYOTA</span>
