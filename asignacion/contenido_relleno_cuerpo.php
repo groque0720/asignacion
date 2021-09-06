@@ -1,5 +1,10 @@
 ﻿<?php
 @session_start();
+
+// script para cuando esta bloqueada la planilla
+include('aa_cerrar_sesiones.php');
+
+
 $p=$_SESSION["idperfil"]; //id perfil
 // 3 = asesores;
 $clase_don_vargas = '';

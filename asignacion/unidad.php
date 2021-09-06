@@ -6,6 +6,10 @@ mysqli_query($con,"SET NAMES 'utf8'");
 extract($_POST);
 
 @session_start();
+
+// script para cuando esta bloqueada la planilla
+include('aa_cerrar_sesiones.php');
+
 $id_perfil=$_SESSION["idperfil"];
 $id_sucursal=$_SESSION["idsuc"];
 $id_usuario = $_SESSION["id"];
