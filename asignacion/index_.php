@@ -24,6 +24,21 @@
 
 </head>
 <body>
+<?php
+	include("funciones/func_mysql.php");
+	conectar();
+	mysqli_query($con,"SET NAMES 'utf8'");
+
+	$SQL = "SELECT estado FROM asignacion_estado WHERE id = 1";
+	$result=mysqli_query($con, $SQL);
+	$habilitado=mysqli_fetch_array($result);
+
+	if ($habilitado['estado'] == 1) {
+		echo '<script>	window.location.href = "../asignacion/";</script>';
+	}
+
+ ?>
+
 <h1><center>Realizando Asignación <?php echo date('m')." - ".date('Y') ?> </center></h1>
 
 	<div class="cuerpo">
