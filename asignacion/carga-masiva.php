@@ -15,7 +15,7 @@ mysqli_query($con,"SET NAMES 'utf8'");
 
 			<div class="form-linea ancho-35">
 				<label class="ancho-45" for="">Cantidad</label>
-				<input class="form-inputs" type="text" size="5" name="cantidad" value="" required>
+				<input class="form-inputs" type="text" size="5" name="cantidad" value="" autocomplete="off" required>
 			</div>
 
 			<div class="form-linea ancho-50">
@@ -42,12 +42,12 @@ mysqli_query($con,"SET NAMES 'utf8'");
 
 			<div class="form-linea ancho-30">
 				<label class="an" for="">Año</label>
-				<input class="form-inputs" type="text" size="5" name="año" value="" required>
+				<input class="form-inputs" type="text" size="5" name="año" value="" autocomplete="off" required>
 			</div>
 		</div>
 
-		<div class="lado inputs-masivo">
-			<div class="ancho-2-6">
+		<div class="lado inputs-masivo" style="display: flex; justify-content: space-between;">
+			<div class="ancho-2-6" style="width: 35%;">
 				<label class="ancho-20" for="">Modelo</label>
 				<select class="form-inputs ancho-2-3" name="id_grupo" id="grupo" required>
 				<option value="0"></option>
@@ -59,9 +59,9 @@ mysqli_query($con,"SET NAMES 'utf8'");
 					<?php } ?>
 				</select>
 			</div>
-			<div class="ancho-4-6">
+			<div class="ancho-4-6" style="width: 65%;">
 				<label class="ancho-20" for="">Versión</label>
-				<select class="form-inputs ancho-80" name="id_modelo" id="id_modelo" required>
+				<select class="form-inputs ancho-100" name="id_modelo" id="id_modelo" required>
 				<option value="0"></option>
 				<?php
 					$SQL="SELECT * FROM modelos WHERE idgrupo = ".$unidad['id_grupo']." ORDER BY posicion";
@@ -73,7 +73,30 @@ mysqli_query($con,"SET NAMES 'utf8'");
 			</div>
 		</div>
 		<div class="lado inputs-masivo">
-
+			<div class="form-linea ancho-100" style="display: flex; align-items: center; margin-top: 3px;">
+				<label class="ancho-30" for="">Cliente</label>
+				<div class="ancho-70">
+					<input class="form-inputs ancho-100" style="padding: 6px;"  type="text"  autocomplete="off" name="reserva_cliente">
+				</div>
+			</div>
+		</div>
+		<div class="lado inputs-masivo">
+			<div class="ancho-100 " style="display: flex; align-items: center; justify-content: space-between;">
+				<label class="ancho-30" style="width: 50px;" for="">Asesor</label>
+				<div class="ancho-70">
+					<select class="form-inputs ancho-100" name="id_asesor" id="id_asesor">
+							<option value="1"></option>
+							<?php
+								$SQL="SELECT * FROM usuarios WHERE idperfil = 3 AND activo = 1 ORDER BY nombre";
+								$usuarios = mysqli_query($con, $SQL);
+								while ($usuario=mysqli_fetch_array($usuarios)) { ?>
+									<option value="<?php echo $usuario['idusuario']; ?>"><?php echo $usuario['nombre']; ?></option>
+								<?php } ?>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="lado inputs-masivo">
 			<div class="form-linea ancho-80">
 				<label class="ancho-80" for="">Reservada Gerencia (EFV)</label>
 				<input class="form-inputs" type="checkbox" size="5" name="reserva_gerencia">

@@ -4,13 +4,14 @@ conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
 extract($_POST);
 
-if ($estado_tasa) {
+
+if (isset($estado_tasa)) {
 	$estado=1;
 }else{
 	$estado=0;
 }
 
-if ($no_disponible) {
+if (isset($no_disponible)) {
 	$no_disponible_=1;
 }else{
 	$no_disponible_=0;
@@ -22,7 +23,7 @@ $unidades=mysqli_query($con, $SQL);
 $unidad=mysqli_fetch_array($unidades);
 $nro = (int)$unidad['nro_unidad'] + 1;
 
-if ($reserva_gerencia) {
+if (isset($reserva_gerencia)) {
 
 	for ($i=0; $i < $cantidad; $i++) {
 
@@ -33,11 +34,15 @@ if ($reserva_gerencia) {
 	}
 
 } else {
-
+	if (trim($reserva_cliente) != '') {
+		$reservada = 1;
+	}else{
+		$reservada = 0;
+	}
 	for ($i=0; $i < $cantidad; $i++) {
 
-		$SQL="INSERT INTO asignaciones (nro_unidad, id_negocio, id_mes, año, id_grupo, id_modelo, estado_tasa, guardado, no_disponible)
-		 VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1, $no_disponible_)";
+		$SQL="INSERT INTO asignaciones (nro_unidad, id_negocio, id_mes, año, id_grupo, id_modelo, estado_tasa, guardado, no_disponible,id_asesor,cliente, fec_reserva, reservada)
+		 VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1, $no_disponible_, $id_asesor, '$reserva_cliente','".date("Y-m-d")."',$reservada)";
 		mysqli_query($con, $SQL);
 		$nro++;
 	}
