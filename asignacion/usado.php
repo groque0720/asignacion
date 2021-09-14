@@ -15,9 +15,9 @@ $id_usuario = $_SESSION["id"];
 $nom_asesor=$_SESSION["usuario"];
 $es_gerente=$_SESSION["es_gerente"];
 
-if ($id_usuario == 94) {
-	$id_perfil = 14;
-}
+// if ($id_usuario == 94) {
+// 	$id_perfil = 14;
+// }
 
 $lectura='';
 $deshabilitado='';
@@ -302,13 +302,7 @@ if ($cant>=1) {
 					</div>
 				</div>
 
-				<?php
-					if ($id_usuario == 94) {
-						$lectura="readonly='readonly'";
-						$deshabilitado="disabled";
-						$asesor_class='input-asesor';
-					}
-				 ?>
+
 				<div class="form-linea centrar-texto">
 					<div class="ancho-1-3 ">
 						<label class="ancho-1-3" for="">Fecha</label>
@@ -348,9 +342,17 @@ if ($cant>=1) {
 				<div class="form-linea centrar-texto">
 					<div class="ancho-100 ">
 						<label class="ancho-15" for="">Cliente</label>
-						<input class="form-inputs ancho-85 <?php echo $asesor_class; ?>" type="text" size="5" id="cliente" name="cliente" value="<?php echo $unidad['cliente']; ?> ">
+						<input class="form-inputs ancho-85 <?php echo $asesor_class; ?>" type="text" size="5" id="cliente" name="cliente" value="<?php echo $unidad['cliente']; ?> " autocomplete="off">
 					</div>
 				</div>
+
+				<?php
+					// if ($id_usuario == 94) {
+					// 	$lectura="readonly='readonly'";
+					// 	$deshabilitado="disabled";
+					// 	$asesor_class='input-asesor';
+					// }
+				 ?>
 				<div class="form-linea centrar-texto">
 					<div class="ancho-100 ">
 						<label class="ancho-15" for="">Asesor</label>
@@ -360,13 +362,14 @@ if ($cant>=1) {
 										$SQL="SELECT * FROM usuarios WHERE idperfil = 3 ORDER BY nombre";
 										$usuarios = mysqli_query($con, $SQL);
 										while ($usuario=mysqli_fetch_array($usuarios)) { ?>
-											<option value="<?php echo $usuario['idusuario']; ?>" <?php if ($usuario['idusuario']==$unidad['id_asesor']) { echo 'selected';	} ?>><?php echo $usuario['nombre']; ?></option>
+												<option value="<?php echo $usuario['idusuario']; ?>"
+												<?php if ($usuario['idusuario']==$unidad['id_asesor']) { echo 'selected';} ?>>
+													<?php echo $usuario['nombre']; ?>
+											</option>
 										<?php } ?>
 							</select>
 					</div>
 				</div>
-
-
 				<div class="form-linea">
 					<div class="centrar-texto ancho-100 subtitulo">
 						CANCELACION
@@ -427,6 +430,14 @@ if ($cant>=1) {
 				</div>
 			</div>
 		</div>
+
+
+<?php
+	 if ($id_usuario == 94) {
+		$id_perfil = 14;
+		}
+ ?>
+
 		<div class="zona-botones">
 			<div class="form-linea">
 				<div class="ancho-20">
