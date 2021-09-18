@@ -45,7 +45,7 @@
 
 			<li><a href="#" class="item_link"><span class="icon-car">  </span>Excel</a>
 				<ul>
-					<li class=""><a href="excel_planilla_asignacion.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Asiganción</a></li>
+					<li class=""><a href="excel_planilla_asignacion.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Asignación</a></li>
 					<li class=""><a href="excel_planilla_asignacion_rosadas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Rosadas</a></li>
 					<li class=""><a href="excel_planilla_asignacion_verdes.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Verdes</a></li>
 					<li class=""><a href="excel_planilla_asignacion_amarillas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Precio Julio 2020 (Amarillas Rayas)</a></li>
@@ -84,7 +84,8 @@
 
 					<!-- <li><a href="stock_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM</a></li> -->
 					<li><a href="stock_real_sin_vender_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender</a></li>
-					<li><a href="stock_real_sin_vender_mes_sig_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender (a 12 meses)</a></li>
+					<li><a href="stock_real_sin_vender_mes_sig_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender (12 meses)</a></li>
+					<li><a href="stock_real_sin_vender_mas_12_meses.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender (mas 12 meses)</a></li>
 					<li><a href="stock_llegadas_sin_confirmar_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Físico Sin Vender</a></li>
 					<li><a href="stock_real_sin_vender_con_interno.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Sin Vender con interno</a></li>
 					<li><a href="stock_real_sin_vender_mes_ant_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM (Mes Ant.)</a></li>
