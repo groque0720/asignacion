@@ -137,7 +137,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$m_a = (int)date("n");
 		$a_a = (int)date("Y");
 
-		$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE reservada = 1 AND estado_reserva = 0 AND entregada = 0 AND borrar = 0 AND id_modelo = ". $modelo['idmodelo'];
+		$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE id_negocio = 1 AND reservada = 1 AND estado_reserva = 0 AND entregada = 0 AND borrar = 0 AND id_modelo = ". $modelo['idmodelo'];
 		$pisadas=mysqli_query($con, $SQL);
 		$cant_pisada=mysqli_fetch_array($pisadas);
 		// $pisadas_modelos[$modelo['idmodelo']]['cantidad'] = $cant_pisada['cantidad'];
@@ -160,7 +160,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$acum_cant_pisadas = $acum_cant_pisadas + $cant_pisada['cantidad'];
 
 		// cantidad total de asignadas TASA ------------
-		$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE estado_tasa = 1 AND borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND ((id_mes >= $m_a AND año = $a_a) OR año > $a_a)";
+		$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE id_negocio = 1 AND estado_tasa = 1 AND borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND ((id_mes >= $m_a AND año = $a_a) OR año > $a_a)";
 		$result_asig_tasa=mysqli_query($con, $SQL);
 		$asig_tasa=mysqli_fetch_array($result_asig_tasa);
 		$tot_asig_tasa = $asig_tasa['cantidad'];
@@ -171,12 +171,12 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		//cantidad total de reservadas DYV ------------------
 
 
-		$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE estado_tasa = 1 AND estado_reserva = 0 AND entregada = 0 AND  borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND ((id_mes < $m_a AND año = $a_a) OR año < $a_a)";
+		$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE id_negocio = 1 AND estado_tasa = 1 AND estado_reserva = 0 AND entregada = 0 AND  borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND ((id_mes < $m_a AND año = $a_a) OR año < $a_a)";
 		$result_stock_ant=mysqli_query($con, $SQL);
 		$stock_ant=mysqli_fetch_array($result_stock_ant);
 
 
-		$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE reservada = 1 AND estado_reserva = 1 AND borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND ((id_mes >= $m_a AND año = $a_a) OR año > $a_a)";
+		$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE id_negocio = 1 AND reservada = 1 AND estado_reserva = 1 AND borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND ((id_mes >= $m_a AND año = $a_a) OR año > $a_a)";
 		$result_reserva_dyv=mysqli_query($con, $SQL);
 		$reserva_dyv=mysqli_fetch_array($result_reserva_dyv);
 		$tot_reserva_dyv = $reserva_dyv['cantidad']-$stock_ant['cantidad'];
@@ -193,7 +193,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 				$a_a++;
 			}
 
-			$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE estado_tasa = 1 AND borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND id_mes =".$m_a." AND año = ".$a_a;
+			$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE id_negocio = 1 AND estado_tasa = 1 AND borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND id_mes =".$m_a." AND año = ".$a_a;
 			$result_asig_tasa=mysqli_query($con, $SQL);
 			$asig_tasa=mysqli_fetch_array($result_asig_tasa);
 			$tot_asig_tasa_meses = $tot_asig_tasa_meses - $asig_tasa['cantidad'];
@@ -206,7 +206,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 			}
 
 
-			$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE reservada = 1 AND estado_reserva = 1 AND  borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND id_mes =".$m_a." AND año = ".$a_a;
+			$SQL = "SELECT count(id_unidad) as cantidad FROM asignaciones WHERE id_negocio = 1 AND reservada = 1 AND estado_reserva = 1 AND  borrar = 0 AND id_modelo = ". $modelo['idmodelo']." AND id_mes =".$m_a." AND año = ".$a_a;
 			$result_result_dyv=mysqli_query($con, $SQL);
 			$reservas_dyv=mysqli_fetch_array($result_result_dyv);
 			$tot_reserva_dyv_meses = $tot_reserva_dyv_meses - $reservas_dyv['cantidad'];
