@@ -33,16 +33,20 @@ if (isset($reserva_gerencia)) {
 		$nro++;
 	}
 
-} else {
+}else {
 	if (trim($reserva_cliente) != '') {
 		$reservada = 1;
+		$fec_reserva =  ', fec_reserva';
+		$fecha = ", '".date("Y-m-d")."'";
 	}else{
 		$reservada = 0;
+		$fec_reserva =  '';
+		$fecha = '';
 	}
 	for ($i=0; $i < $cantidad; $i++) {
 
-		$SQL="INSERT INTO asignaciones (nro_unidad, id_negocio, id_mes, año, id_grupo, id_modelo, estado_tasa, guardado, no_disponible,id_asesor,cliente, fec_reserva, reservada)
-		 VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1, $no_disponible_, $id_asesor, '$reserva_cliente','".date("Y-m-d")."',$reservada)";
+		$SQL="INSERT INTO asignaciones (nro_unidad, id_negocio, id_mes, año, id_grupo, id_modelo, estado_tasa, guardado, no_disponible,id_asesor,cliente, reservada ".$fec_reserva.")
+		 VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1, $no_disponible_, $id_asesor, '$reserva_cliente',$reservada ".$fecha.")";
 		mysqli_query($con, $SQL);
 		$nro++;
 	}
