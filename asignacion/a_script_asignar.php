@@ -38,7 +38,7 @@ $total_asignaciones=0;
 
 				if ($color_asignado==0) {
 
-					$SQL="SELECT * FROM hoja1 WHERE id_modelo = '".$unidad['id_modelo']."' AND id_color = '".$color_unidad[$i]['color']."' ORDER BY nro_orden";
+					$SQL="SELECT * FROM hoja1 WHERE id_modelo = '".$unidad['id_modelo']."' AND id_color = '".$color_unidad[$i]['color'];
 					$unidades_tasa=mysqli_query($con, $SQL);
 					$cant_color=mysqli_num_rows($unidades_tasa);
 
@@ -84,7 +84,7 @@ $total_asignaciones=0;
 
 		while ($unidad=mysqli_fetch_array($unidades)) {
 
-			$SQL="SELECT * FROM hoja1 WHERE id_modelo = '".$unidad['id_modelo']."' ORDER BY nro_orden";
+			$SQL="SELECT * FROM hoja1 WHERE id_modelo = '".$unidad['id_modelo'];
 			$unidades_tasa=mysqli_query($con, $SQL);
 
 			$unidad_tasa=mysqli_fetch_array($unidades_tasa);
