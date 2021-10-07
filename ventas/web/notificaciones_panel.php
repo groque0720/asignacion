@@ -117,6 +117,8 @@ conectar();
 
 
 
+
+
 		<div class="ed-item web-1-6 item">
 			<div class="img">
 			<a href="asesores.php" target="_blank">
@@ -136,6 +138,23 @@ conectar();
 		</div>
 
 		<?php if ($_SESSION["id"]==94 OR $_SESSION["id"]==96) { ?>
+
+		<div class="ed-item web-1-6 item">
+			<div class="img">
+				<a href="https://cms.derkayvargas.com/infoauto"  target="_blank">
+					<div class="ed-container">
+						<div class="ed-item">
+							<img src="https://i.pinimg.com/280x280_RS/2a/f9/3e/2af93ee5076e04395b5e9c8657adff7c.jpg" alt="">
+						</div>
+					</div>
+					<div class="centrar-texto">
+						<span class="titulo">
+							InfoAuto
+						</span>
+					</div>
+				</a>
+			</div>
+		</div>
 
 			<div class="ed-item web-1-6 item">
 				<div class="img">
