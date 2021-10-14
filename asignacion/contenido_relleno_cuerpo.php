@@ -285,20 +285,20 @@ if ($_SESSION["id"]==47) {
 				$corolla_dic2020 = "background: #72C6FA;";
 			}
 
-			$preventa_sep20 = '';
-			if ($unidad['preventa_sep20']==1) {
-				$preventa_sep20 = "background: repeating-linear-gradient(
-			      45deg,
-			      rgba(0, 0, 0, 0) 5px,
-			      rgba(0, 0, 0, 0) 10px,
-			      rgba(169	,102, 62, 0.7) 10px,
-			      rgba(169	,102, 62, 0.7) 15px
-			    )";
-			}
+			// $preventa_hilux_oct = '';
+			// if ($unidad['preventa_hilux_oct']==1) {
+			// 	$preventa_hilux_oct = "background: repeating-linear-gradient(
+			//       45deg,
+			//       rgba(0, 0, 0, 0) 5px,
+			//       rgba(0, 0, 0, 0) 10px,
+			//       rgba(169	,102, 62, 0.7) 10px,
+			//       rgba(169	,102, 62, 0.7) 15px
+			//     )";
+			// }
 
 			$preventa_oct20 = '';
 			if ($unidad['preventa_oct20']==1) {
-				$preventa_sep20 = "background: repeating-linear-gradient(
+				$preventa_oct20 = "background: repeating-linear-gradient(
 			      45deg,
 			      rgba(0, 0, 0, 0) 5px,
 			      rgba(0, 0, 0, 0) 10px,
@@ -331,6 +331,17 @@ if ($_SESSION["id"]==47) {
 
 			}
 
+
+			$preventa_hilux_oct = '';
+			if ($unidad['preventa_hilux_oct']==1) {
+				$preventa_hilux_oct = "background:
+					linear-gradient(135deg, #8DBCFB 25%, transparent 25%) -50px 0,
+					linear-gradient(225deg, #8DBCFB 25%, transparent 25%) -50px 0,
+					linear-gradient(315deg, #8DBCFB 25%, transparent 25%),
+					linear-gradient(45deg, #8DBCFB 25%, transparent 25%);
+					background-size: 10px 10px;
+					background-color: rgba(231,149,148,0.5)";
+			}
 
 
 			$prioridad_entrega = '';
@@ -374,7 +385,7 @@ if ($_SESSION["id"]==47) {
 
 		 ?>
 
-		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_sep20.' '.$preventa_oct20.' '.$preventa_hilux20.' '.$prioridad_entrega ?>">
+		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_hilux_oct.' '.$preventa_oct20.' '.$preventa_hilux20.' '.$prioridad_entrega ?>">
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
 
