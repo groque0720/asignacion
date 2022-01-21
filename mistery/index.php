@@ -103,6 +103,7 @@
 									<ul>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Garantía</li>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Servicio de posventa</li>
+										<li><span class="text-red-600 font-bold">&#x2a; </span>CLUB TOYOTA</li>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Valor de reventa de los usados</li>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Usados certificados</li>
 										<li><span class="text-red-600 font-bold">&#x2a; </span>Fábrica en el país</li>
