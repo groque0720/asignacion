@@ -73,7 +73,7 @@ if ($_SESSION["autentificado"] != "SI") {
 	<input type="hidden" id="es_tpa" value="es_tpa" >
 		<div class="contenido-principal">
 
-			<?php include('plan_ahorro_contenido_relleno_total.php'); ?>
+			<!-- <?php include('plan_ahorro_contenido_relleno_total.php'); ?> -->
 		</div>
 	</div>
 
