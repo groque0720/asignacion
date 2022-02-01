@@ -600,7 +600,7 @@ if ($cant>=1) {
 				</div>
 						<?php if ($unidad['no_disponible'] != 1 or $id_usuario == 11 or $id_usuario == 56 OR $id_usuario == 16): ?>
 							<div class="ancho-20 derecha-texto">
-								<?php if ($id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94 OR $id_usuario == 31 OR $id_usuario == 50) { ?>
+								<?php if ($id_usuario==136 OR $id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94 OR $id_usuario == 31 OR $id_usuario == 50) { ?>
 									<input type="submit" class="botones btn-aceptar" value="Guardar">
 								<?php }else { ?>
 									<?php if ($id_perfil==3 AND $unidad['reservada']==0 AND $cant<=0) {?>
