@@ -14,6 +14,7 @@ if ($_SESSION["autentificado"] != "SI") {
 
 $p=$_SESSION["idperfil"];
 $es_gerente=$_SESSION["es_gerente"];
+$id_usuario = $_SESSION["id"];
 
 //cargo en arreglo los colores de la tabla
 	$SQL="SELECT * FROM asignaciones_usados_colores ORDER BY color";
@@ -155,6 +156,11 @@ $total_costo_rep = 0;
 $total_gral_costo_rep=0;
 
 while ($estado=mysqli_fetch_array($estado_usado)) {
+
+   // usuarios permitidos a ver otros estados de los usados
+  $user_permitidos = [1, 2, 11, 16, 27, 36, 41, 45, 46, 49, 56, 89, 103, 106, 124];
+   // condicional para mostrar otros estados segun usuarios permitidos.
+  if ( $estado['id_estado_usado'] == 1 or in_array($id_usuario,$user_permitidos) ) {
 
 	$total_toma=0;
 	$total_costo=0;
@@ -312,6 +318,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 		$pdf->Ln();
 	}
 
+  } // cierre de condicional de otras vistas
 }
 $pdf->Ln();
 $pdf->SetFont('Arial','BI',8);
