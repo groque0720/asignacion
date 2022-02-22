@@ -14,6 +14,7 @@
 @session_start();
 $p=$_SESSION["idperfil"];
 $es_gerente = $_SESSION["es_gerente"];
+$id_usuario = $_SESSION["id"];
 //cargo en arreglo los colores de la tabla
 	$SQL="SELECT * FROM asignaciones_usados_colores ORDER BY color";
 	$colores=mysqli_query($con, $SQL);
@@ -136,6 +137,10 @@ $es_gerente = $_SESSION["es_gerente"];
 			$estado_usado = mysqli_query($con, $SQL);
 
 			while ($estado=mysqli_fetch_array($estado_usado)) {
+				// usuarios permitidos a ver otros estados de los usados
+			  $user_permitidos = [1, 2, 11, 16, 27, 36, 41, 45, 46, 49, 56, 89, 103, 106, 124];
+				// condicional para mostrar otros estados segun usuarios permitidos.
+			  if ( $estado['id_estado_usado'] == 1 or in_array($id_usuario,$user_permitidos) ) {
 
 				$SQL="SELECT *, DATEDIFF(DATE(NOW()),fec_recepcion)as ant FROM asignaciones_usados WHERE entregado = 0 AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
 				$usados=mysqli_query($con, $SQL);
@@ -271,7 +276,9 @@ $es_gerente = $_SESSION["es_gerente"];
 					<td colspan="5"><?php if($cant>0) { echo 'Promedio de Precio de Venta:   $ '. number_format($sumatoria_precio_venta/$cant, 2, ',','.');} ?></td>
 				</tr>
 				<tr class="titulo-estado-usado"><td colspan="17"></td></tr>
-			<?php } ?>
+			<?php
+				}
+			} ?>
 
 	</tbody>
 </table>
