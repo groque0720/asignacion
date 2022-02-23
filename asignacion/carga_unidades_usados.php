@@ -138,7 +138,7 @@ $id_usuario = $_SESSION["id"];
 
 			while ($estado=mysqli_fetch_array($estado_usado)) {
 				// usuarios permitidos a ver otros estados de los usados
-			  $user_permitidos = [1, 2, 11, 16, 27, 36, 41, 45, 46, 49, 56, 89, 94, 103, 106, 124];
+			  $user_permitidos = [1, 2, 11, 16, 27, 36, 41, 45, 46, 47, 49, 56, 89, 94, 103, 106, 124];
 				// condicional para mostrar otros estados segun usuarios permitidos.
 			  if ( $estado['id_estado_usado'] == 1 or in_array($id_usuario,$user_permitidos) ) {
 
