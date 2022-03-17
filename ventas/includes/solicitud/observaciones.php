@@ -20,7 +20,7 @@
 			<label>Entrega mes:</label>
 			<select name="mesentrega" id="mesentrega" required>
 				<option value=""></option>
-				<option value="P.A." <?php  if ($reserva['mesentrega'] == "P.A.") { echo "selected"; } ?>>P.A.</opcion>
+				<option value="T.P.A." <?php  if ($reserva['mesentrega'] == "P.A." || $reserva['mesentrega'] == "T.P.A.") { echo "selected"; } ?>>T.P.A.</opcion>
 				<option value="Enero" <?php  if ($reserva['mesentrega'] == "Enero" ) { echo "selected"; } ?>>Enero</opcion>
 				<option value="Enero/Febrero" <?php  if ($reserva['mesentrega'] == "Enero/Febrero") { echo "selected"; } ?>>Enero/Febrero</opcion>
 				<option value="Febrero" <?php  if ($reserva['mesentrega'] == "Febrero" ) { echo "selected"; } ?>>Febrero</opcion>
@@ -49,7 +49,7 @@
 
 			<span>del</span>
 			<select name="anoentrega" id="anoentrega" required>
-				<option value="P.A." <?php  if ($reserva['anoentrega'] == "P.A.") { echo "selected"; } ?>>P.A.</opcion>
+				<option value="T.P.A." <?php  if ($reserva['anoentrega'] == "P.A." || $reserva['anoentrega'] == "T.P.A." ) { echo "selected"; } ?>>T.P.A.</opcion>
 				<option value=""></option>
 					<?php if ($reserva['enviada']>=1 and false) { ?>
 						<option value="2015" <?php  if ($reserva['anoentrega'] == "2015") { echo "selected"; } ?>>2015</opcion>
