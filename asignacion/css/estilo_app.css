@@ -256,12 +256,12 @@ table td {
 
 .unidad-falta-cancelar {
 	background: rgba(24,31,124, .8);
-	color: black;
+	color: white !important;
 }
 
 .unidad-falta-cancelar:hover {
 	background: rgba(24,31,124, .8);
-	color:black;
+	color:white !important;
 }
 
 .unidad-atp {
