@@ -101,6 +101,7 @@
 				<ul>
 					<li><a href="plan_ahorro.php" target="_blank" class="icon-outdent"><span> </span>Aplicación</a></li>
 					<li><a href="plan_ahorro_planilla_asignacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Asignación</a></li>
+					<li><a href="plan_ahorro_llegadas_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Asignación Llegadas</a></li>
 					<li><a href="plan_ahorro_stock_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Stock</a></li>
 				</ul>
 			</li>
