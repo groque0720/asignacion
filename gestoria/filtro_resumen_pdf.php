@@ -220,7 +220,7 @@ for ($i=0; $i <= $cant_grupo; $i++) {
 }
 
 
-$pdf->Output('Stock.pdf','I');
+$pdf->Output('Patentamientos.pdf','I');
 $pdf->close();
 
  ?>
