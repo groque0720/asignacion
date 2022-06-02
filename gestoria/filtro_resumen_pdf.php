@@ -103,7 +103,7 @@ while ($grupo_dos=mysqli_fetch_array($grupos_dos)) {
 $pdf = new PDF();
 $pdf->AliasNbPages();
 // $pdf->SetTitle($grupos);
-$pdf->AddPage('P','A4');
+$pdf->AddPage('L','A4');
 $pdf->SetLineWidth(0.1);
 $pdf->SetDrawColor(184, 184, 184);
 $pdf->SetAutoPageBreak(1,6);
