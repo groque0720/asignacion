@@ -22,10 +22,10 @@ class PDF extends FPDF
 						$sucursal='Saenz Peña';
 						break;
 					case 3:
-						$sucursal='Charata';
+						$sucursal='Villa Angela';
 						break;
 					case 4:
-						$sucursal='Villa Angela';
+						$sucursal='Charata';
 						break;
 				}
 			}
