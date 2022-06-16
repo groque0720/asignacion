@@ -32,7 +32,7 @@ if ($_SESSION["autentificado"] != "SI") {
 	<link rel="stylesheet" href="css/estilo_app.css">
 	<script scr="js/plan_ahorro_menu-secundario.js"></script>
 	<link rel="stylesheet" href="alertas_query/sweetalert.css">
-	<link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico" />
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico" /> -->
 	<link rel="stylesheet" type="text/css" media="print" href="css/stock_p.css">
 
 </head>
