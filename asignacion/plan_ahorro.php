@@ -63,9 +63,9 @@ if ($_SESSION["autentificado"] != "SI") {
 		</div>
 
 	</div>
-<!-- 	<div class="menu-lateral menu-lateral-scroll">
-			<?php //include('menu-lateral.php'); ?>
-	</div> -->
+	<div class="menu-lateral menu-lateral-scroll">
+			<?php include('menu-lateral.php'); ?>
+	</div>
 	<div class="zona-menu-secundario">
 		<?php include('plan_ahorro_menu_secundario.php'); ?>
 	</div>
