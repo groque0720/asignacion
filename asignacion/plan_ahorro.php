@@ -20,7 +20,7 @@ if ($_SESSION["autentificado"] != "SI") {
 	<title>Asignación TPA</title>
 
 <!-- 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> -->
-	<link rel="shortcut icon" type="image/x-icon" href="../imagenes/favicon.ico" />
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="../imagenes/favicon.ico" /> -->
 	<link rel="stylesheet" href="css/roquesystem.css">
 	<link rel="stylesheet" href="css/menu-secundario-dos.css">
 	<!-- <link href="https://file.myfontastic.com/6CRLECjnYdYKU5BvcK7cQA/icons.css" rel="stylesheet"> -->
@@ -32,7 +32,7 @@ if ($_SESSION["autentificado"] != "SI") {
 	<link rel="stylesheet" href="css/estilo_app.css">
 	<script scr="js/plan_ahorro_menu-secundario.js"></script>
 	<link rel="stylesheet" href="alertas_query/sweetalert.css">
-	<!-- <link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico" /> -->
+	<link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico" />
 	<link rel="stylesheet" type="text/css" media="print" href="css/stock_p.css">
 
 </head>
