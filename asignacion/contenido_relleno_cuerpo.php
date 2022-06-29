@@ -138,7 +138,7 @@ if ($_SESSION["id"]==47) {
 			$libre = '';
 		} ?>
 
-		<?php if ($unidad['reservada']==1 AND $unidad['estado_reserva']==0) {
+		<?php if ($unidad['reservada']==1 AND ( $unidad['estado_reserva']==0 OR  $unidad['reserva']==0 )) {
 			$nc = 'unidad-reservada-nc';
 		}else{
 			$nc = '';
@@ -411,8 +411,8 @@ if ($_SESSION["id"]==47) {
 					echo "<span style='font-weight: bold; font-size: 12px;'>// Precio Junio//</span>";
 					}
 				 ?>
-				 <?php if ($unidad['precio_agosto'] == 1 ) {
-					echo "<span style='font-weight: bold; font-size: 12px;'>// Precio Agosto//</span>";
+				 <?php if ($unidad['reserva'] == 0 ) {
+					echo "<span style='font-weight: bold; font-size: 12px;'>// SIN RESERVA //</span>";
 					}
 				 ?>
 

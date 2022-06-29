@@ -273,10 +273,17 @@ if ($cant>=1) {
 					</div>
 				</div>
 				<div class="form-linea">
-					<div class="ancho-100 centrar-texto ">
-						<select class="form-inputs ancho-50" name="estado_reserva" id="estado_reserva" <?php echo $lectura; ?>>
+					<div class="ancho-50 centrar-texto ">
+						<select class="form-inputs ancho-100" name="estado_reserva" id="estado_reserva" <?php echo $lectura; ?>>
 							<option value="0" <?php if ($unidad['estado_reserva']==0) { echo 'selected';	} ?>>No Confirmada</option>
 							<option value="1" <?php if ($unidad['estado_reserva']==1) { echo 'selected';	} ?>>Confirmada</option>
+						</select>
+					</div>
+					<div class="ancho-50 centrar-texto ">
+						<label class="ancho-50" for="">Reserva</label>
+						<select class="form-inputs ancho-40" name="reserva" id="reserva" <?php echo $lectura; ?>>
+							<option value="0" <?php if ($unidad['reserva']==0) { echo 'selected';	} ?>>No</option>
+							<option value="1" <?php if ($unidad['reserva']==1) { echo 'selected';	} ?>>Si</option>
 						</select>
 					</div>
 				</div>

@@ -106,6 +106,8 @@ if ($estaba_pisada==false) {
 
 	$SQL.=" estado_reserva = ".$_POST["estado_reserva"].",";
 
+	$SQL.=" reserva = ".$_POST["reserva"].",";
+
 
 	if ($_POST["fec_reserva"]!='') {
 		$SQL.=" fec_reserva = '".$_POST["fec_reserva"]."', ";
