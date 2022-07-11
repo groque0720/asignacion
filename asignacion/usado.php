@@ -15,15 +15,15 @@ $id_usuario = $_SESSION["id"];
 $nom_asesor=$_SESSION["usuario"];
 $es_gerente=$_SESSION["es_gerente"];
 
-// if ($id_usuario == 94) {
-// 	$id_perfil = 14;
-// }
+if ($id_usuario == 94) {
+	$id_perfil = 14;
+}
 
 $lectura='';
 $deshabilitado='';
 $asesor_class='';
 
-if ($id_perfil<>14 or $id_usuario <> 94) {
+if ($id_perfil<>14) {
 	$lectura="readonly='readonly'";
 	$deshabilitado="disabled";
 	$asesor_class='input-asesor';
