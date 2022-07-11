@@ -23,7 +23,7 @@ $lectura='';
 $deshabilitado='';
 $asesor_class='';
 
-if ($id_perfil<>14) {
+if ($id_perfil<>14 or $id_usuario == 94) {
 	$lectura="readonly='readonly'";
 	$deshabilitado="disabled";
 	$asesor_class='input-asesor';
@@ -248,7 +248,7 @@ if ($cant>=1) {
 
 				<div class="form-linea centrar-texto">
 					<div class="ancho-25 ">
-					<?php if ($id_perfil!=3 OR $es_gerente==1 OR $id_usuario == 94 ) { ?>
+					<?php if ($id_perfil!=3 OR $es_gerente==1 ) { ?>
 						<div class="centrar-texto"><label class="ancho-30" for="">Costo Reparación</label></div>
 						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="costo_reparacion_z" name="costo_reparacion_z" value="<?php echo number_format($unidad['costo_reparacion'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
 					<?php } ?>
@@ -259,14 +259,9 @@ if ($cant>=1) {
 					<?php if ($id_perfil!=3 OR $es_gerente==1) { ?>
 						<div class="centrar-texto"><label class="ancho-30" for="">Costo Transferencia</label></div>
 						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="transferencia_z" name="transferencia_z" value="<?php echo number_format($unidad['transferencia'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
-
 					<?php } ?>
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="transferencia" name="transferencia" value="<?php echo $unidad['transferencia']; ?>" <?php echo $lectura; ?>>
-
 					</div>
-
-
-
 
 					<div class="ancho-25 ">
 					<?php if ($id_perfil!=3 OR $es_gerente==1) { ?>
