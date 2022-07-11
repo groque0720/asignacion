@@ -23,7 +23,7 @@ $lectura='';
 $deshabilitado='';
 $asesor_class='';
 
-if ($id_perfil<>14 or $id_usuario == 94) {
+if ($id_perfil<>14 or $id_usuario <> 94) {
 	$lectura="readonly='readonly'";
 	$deshabilitado="disabled";
 	$asesor_class='input-asesor';
