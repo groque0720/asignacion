@@ -70,7 +70,7 @@ header('Cache-Control: max-age=0');
                 <td style="text-align: center;"><?php echo cambiarFormatoFecha($registro['fec_reserva']) ?></td>
                 <td><?php echo $registro['cliente'] ?></td>
                 <td style="text-align: center;"><?php echo $registro['detalle'] ?></td>
-                <td style="text-align: center;"><?php echo $registro['monto'] ?></td>
+                <td style="text-align: center;"><?php echo number_format( $registro['monto'], 2, ',','.') ?></td>
             </tr>
         <?php } ?>
     </tbody>
