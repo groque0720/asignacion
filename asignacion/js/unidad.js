@@ -111,7 +111,7 @@ $(".form-unidad").submit(function(event) {
 
 		$ano=parseInt($fecha[0]);
 		$mes=parseInt($fecha[1]);
-		$dia=parseInt($fecha[2])+10;
+		$dia=parseInt($fecha[2])+5;
 
 
 		if ($dia>30) { $dia=parseInt($dia)-30;  $mes++;}
@@ -303,7 +303,7 @@ $("#fec_arribo").focusout(function(event) {
 		$fecha=$(this).val().split('-');
 		$ano=parseInt($fecha[0]);
 		$mes=parseInt($fecha[1]);
-		$dia=parseInt($fecha[2])+10;
+		$dia=parseInt($fecha[2])+5;
 
 
 		if ($dia>30) { $dia=parseInt($dia)-30;  $mes++;}
@@ -329,7 +329,7 @@ $("#fec_reserva").focusout(function(event) {
 		$fecha=$(this).val().split('-');
 		$ano=parseInt($fecha[0]);
 		$mes=parseInt($fecha[1]);
-		$dia=parseInt($fecha[2])+10;
+		$dia=parseInt($fecha[2])+5;
 
 
 		if ($dia>30) { $dia=parseInt($dia)-30;  $mes++;}

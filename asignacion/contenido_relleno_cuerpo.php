@@ -148,10 +148,10 @@ if ($_SESSION["id"]==47) {
 		$dias='';
 		$por_caer_fc='';
 			if ($unidad['estado_reserva']==1 AND $unidad['cancelada']==0 AND $unidad['fec_limite']!='' AND $unidad['fec_limite']!= null) {
-				$fecha=$unidad['fec_limite'];
+				$fecha=$unidad['fec_arribo'];
 				$dias=(strtotime($fecha) - strtotime('now'))/86400;
-				// $dias = floor($dias);
-				if ($dias<=0) {
+				$dias = floor($dias);
+				if ($dias<= -5) {
 					$por_caer_fc='unidad-falta-cancelar ';
 				}
 			}
