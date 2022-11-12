@@ -1,15 +1,9 @@
 ﻿<?php
 
-
-
-
-
-	include_once("funciones/func_mysql.php");
-	conectar();
-	mysqli_query($con,"SET NAMES 'utf8'");
-	extract($_POST);
-
-
+include_once("funciones/func_mysql.php");
+conectar();
+mysqli_query($con,"SET NAMES 'utf8'");
+extract($_POST);
 
 @session_start();
 $p=$_SESSION["idperfil"];
@@ -113,6 +107,7 @@ $id_usuario = $_SESSION["id"];
 				<col width="2%">
 				<col width="2%">
 				<col width="2%">
+				<col width="2%">
 			<?php } ?>
 			<col width="2%">
 			<col width="2%">
@@ -162,12 +157,12 @@ $id_usuario = $_SESSION["id"];
 							<td>Ult. Dueño</td>
 							<td>Asesor T.</td>
 							<td>Recep / Ant.</td>
-
 							<?php if ($es_gerente == 1) {?>
 								<td>Toma + Imp</td>
 								<td>Costo Cont.</td>
 								<td>Costo Rep.</td>
 								<td>$ Info</td>
+								<td>$ Contado</td>
 							<?php } ?>
 							<td>$ Transf.</td>
 							<td>$ Venta</td>
@@ -247,6 +242,7 @@ $id_usuario = $_SESSION["id"];
 						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['costo_contable'], 0, ',','.'); ?></td>
 						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['costo_reparacion'], 0, ',','.'); ?></td>
 						<td class="centrar-texto celda-usado <?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['precio_info'], 0, ',','.'); ?></td>
+						<td class="centrar-texto celda-usado <?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['precio_contado'], 0, ',','.'); ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['transferencia'], 0, ',','.'); ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>" style="font-weight: bold; color: black;"><?php echo '$'.number_format($usado['precio_venta'], 0, ',','.'); ?></td>
 

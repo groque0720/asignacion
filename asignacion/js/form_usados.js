@@ -213,6 +213,30 @@ $("#precio_0km_z").change(function() {
 
 
 //---------------------------------------------
+$("#precio_contado_z").change(function() {
+	valor=$(this).val();
+	var str = valor;
+	var res1= str.replace(".","");
+	var res1= res1.replace(".","");
+	var res2= res1.replace(",",".");
+	$("#precio_contado_z").keypress(function(event) {
+		var keycode = (event.keyCode ? event.keyCode : event.which);
+		if(keycode == '13'){
+			event.preventDefault();
+		}
+	});
+
+	$("#precio_contado_z").val(formatoNumero(res2, 2, ",", "."));
+
+	if (valor=='' || valor==null) {
+		("#precio_contado").val(0);
+	}else{
+		$("#precio_contado").val(res2);
+	}
+
+});
+
+//---------------------------------------------
 $("#precio_info_z").change(function() {
 	valor=$(this).val();
 	var str = valor;

@@ -237,7 +237,6 @@ if ($cant>=1) {
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="precio_venta" name="precio_venta" value="<?php echo $unidad['precio_venta']; ?>" <?php echo $lectura; ?>>
 					</div>
 					<div class="ancho-25 ">
-
 						<div class="centrar-texto"><label class="ancho-30" for="">Precio Info $</label></div>
 						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="precio_info_z" name="precio_info_z" value="<?php echo number_format($unidad['precio_info'], 2, ',','.'); ?>" <?php echo $lectura; ?>>
 
@@ -270,6 +269,15 @@ if ($cant>=1) {
 
 					<?php } ?>
 						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="precio_0km" name="precio_0km" value="<?php echo $unidad['precio_0km']; ?>"autocomplete="off" <?php echo $lectura; ?>>
+
+					</div>
+					<div class="ancho-25 ">
+					<?php if ($id_perfil!=3 OR $es_gerente==1) { ?>
+						<div class="centrar-texto"><label class="ancho-30" for="">Precio Contado</label></div>
+						<input class="form-inputs centrar-texto ancho-90" autocomplete="off" type="text" size="10" id="precio_contado_z" name="precio_contado_z" value="<?php echo number_format($unidad['precio_contado'], 2, ',','.'); ?>" <?php echo $lectura; ?> >
+
+					<?php } ?>
+						<input class="form-inputs centrar-texto ancho-90" type="hidden" size="10" id="precio_contado" name="precio_contado" value="<?php echo $unidad['precio_contado']; ?>"autocomplete="off" <?php echo $lectura; ?>>
 
 					</div>
 				</div>

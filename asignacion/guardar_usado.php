@@ -4,6 +4,7 @@ include("funciones/func_mysql.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
 extract($_POST);
+// var_dump($_POST);
 
 $SQL="UPDATE asignaciones_usados SET ";
 $SQL.=" id_estado = ".$_POST["id_estado"].", ";
@@ -25,7 +26,9 @@ $SQL.=" precio_venta = ".$_POST["precio_venta"].", ";
 $SQL.=" precio_info = ".$_POST["precio_info"].", ";
 $SQL.=" transferencia = ".$_POST["transferencia"].", ";
 
+$SQL.=" precio_contado = ".$_POST["precio_contado"].", ";
 $SQL.=" precio_0km = ".$_POST["precio_0km"].", ";
+
 
 $SQL.=" ultimo_dueño = '".$_POST["ultimo_dueño"]."', ";
 $SQL.=" asesortoma = ".$_POST["asesortoma"].", ";
@@ -86,6 +89,7 @@ $SQL.=" id_asesor = ".$_POST["id_asesor"].",";
 $SQL.=" observacion = '".$_POST["observacion"]."',";
 $SQL.=" guardado = 1 ";
 $SQL.=" WHERE id_unidad =".$_POST['id_unidad'];
+
 mysqli_query($con, $SQL);
 
 
