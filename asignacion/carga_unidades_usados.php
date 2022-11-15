@@ -107,10 +107,12 @@ $id_usuario = $_SESSION["id"];
 				<col width="2%">
 				<col width="2%">
 				<col width="2%">
-				<col width="2%">
+
 			<?php } ?>
 			<col width="2%">
 			<col width="2%">
+			<col width="2%">
+
 			<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
 				<col width="2%">
 			<?php endif ?>
@@ -162,10 +164,10 @@ $id_usuario = $_SESSION["id"];
 								<td>Costo Cont.</td>
 								<td>Costo Rep.</td>
 								<td>$ Info</td>
-								<td>$ Contado</td>
 							<?php } ?>
 							<td>$ Transf.</td>
 							<td>$ Venta</td>
+							<td>$ Contado</td>
 
 							<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
 								<td>$ 0km</td>
@@ -242,9 +244,10 @@ $id_usuario = $_SESSION["id"];
 						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['costo_contable'], 0, ',','.'); ?></td>
 						<td class="<?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['costo_reparacion'], 0, ',','.'); ?></td>
 						<td class="centrar-texto celda-usado <?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['precio_info'], 0, ',','.'); ?></td>
-						<td class="centrar-texto celda-usado <?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['precio_contado'], 0, ',','.'); ?></td>
+
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['transferencia'], 0, ',','.'); ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>" style="font-weight: bold; color: black;"><?php echo '$'.number_format($usado['precio_venta'], 0, ',','.'); ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['precio_contado'], 0, ',','.'); ?></td>
 
 							<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
 								<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>" style="font-weight: bold; color: black;"><?php echo '$'.number_format($usado['precio_0km'], 0, ',','.'); ?></td>
