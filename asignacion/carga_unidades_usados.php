@@ -137,7 +137,7 @@ $id_usuario = $_SESSION["id"];
 				// usuarios permitidos a ver otros estados de los usados
 			  $user_permitidos = [1, 2, 11, 16, 27, 36, 41, 45, 46, 47, 49, 56, 72, 89, 94, 103, 106, 124];
 				// condicional para mostrar otros estados segun usuarios permitidos.
-			  if ( $estado['id_estado_usado'] == 1 or in_array($id_usuario,$user_permitidos) ) {
+			  if ( $estado['id_estado_usado'] == 1 or $estado['id_estado_usado'] == 4  or in_array($id_usuario,$user_permitidos) ) {
 
 				$SQL="SELECT *, DATEDIFF(DATE(NOW()),fec_recepcion)as ant FROM asignaciones_usados WHERE entregado = 0 AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
 				$usados=mysqli_query($con, $SQL);
