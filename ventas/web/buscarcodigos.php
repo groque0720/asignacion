@@ -11,7 +11,7 @@ conectar();
 
 //busco un valor aproximado al dato escrito
 // $ssql = "SELECT * FROM codigos WHERE idcodigo <> 1 AND idcodigo <> 2 AND  idcodigo <> 3 AND detalle LIKE '%" . $datoBuscar . "%'";
-$ssql = "SELECT * FROM codigos WHERE  detalle LIKE '%" . $datoBuscar . "%'";
+$ssql = "SELECT * FROM codigos WHERE  detalle LIKE '%" . $datoBuscar . "%' AND activo = 1";
 //echo $ssql;
 $rs = mysqli_query($con, $ssql);
 
