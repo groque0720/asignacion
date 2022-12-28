@@ -379,7 +379,7 @@ if ($_SESSION["id"]==47) {
 				$dias = '-';
 			}
 
-			$chasis = ['P8192264']
+			$chasis = ['P8192264'];
 			if(in_array($unidad['chasis'], $chasis)) {
 				$modelo_2023 = 'background: #80F4A7';
 			}
