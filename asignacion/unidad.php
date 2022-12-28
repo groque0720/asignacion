@@ -372,8 +372,8 @@ if ($cant>=1) {
 				</div>
 
 				<?php
-					// $SQL="SELECT * FROM colores ORDER BY color";
-					// $colores=mysqli_query($con, $SQL);
+					$SQL="SELECT * FROM colores ORDER BY color";
+					$colores=mysqli_query($con, $SQL);
 					$i=1;
 					while ($color=mysqli_fetch_array($colores)) {
 						$color_a[$color['idcolor']]['color']= $color['color'];
