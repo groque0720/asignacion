@@ -378,7 +378,7 @@ if ($_SESSION["id"]==47) {
 			$chasis_2023 = ['P8192264', 'P8192264', 'P0051888', 'P8200673', 'P0059326', 'P0068289', 'P0068229', 'P0068166', 'P0068647', 'P0068666', 'P0067908', 'P8203082', 'P0067290', 'P0066372', 'P0068064', 'P0065401', 'P0234694', 'P2280945', 'P8214328', 'P2128569', 'P8214221', 'P0234529', 'P8215215', 'P2128854', 'P8215801', 'P0234231', 'P2281193'];
 			if(in_array($unidad['chasis'], $chasis_2023)) {
 				$modelo_2023 = 'color: orange !important; text-shadow: .5px .5px 2px orange;';
-				$modelo_text_2023 = "text-decoration: line-through solid rgb(68, 68, 68)";
+				$modelo_text_2023 = "text-decoration: line-through solid red";
 			}else{
 				$modelo_2023 = '';
 				$modelo_text_2023 = '';
