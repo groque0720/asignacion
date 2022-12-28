@@ -361,12 +361,8 @@ if ($_SESSION["id"]==47) {
 				$chasis_k = 'background: linear-gradient(to right, rgba(145,232,66,1) 0%, rgba(232,235,221,1) 100%)';
 
 			}else{
-
 				$chasis_k = '';
-
 			}
-
-
 
 			$dias = '';
 
@@ -379,16 +375,11 @@ if ($_SESSION["id"]==47) {
 				$dias = '-';
 			}
 
-			$chasis = ['P8192264'];
-			if(in_array($unidad['chasis'], $chasis)) {
-				$modelo_2023 = 'background: #80F4A7';
+			$chasis_2023 = ['P8192264', 'P8192264', 'P0051888', 'P8200673', 'P0059326', 'P0068289', 'P0068229', 'P0068166', 'P0068647', 'P0068666', 'P0067908', 'P8203082', 'P0067290', 'P0066372', 'P0068064', 'P0065401', 'P0234694', 'P2280945', 'P8214328', 'P2128569', 'P8214221', 'P0234529', 'P8215215', 'P2128854', 'P8215801', 'P0234231', 'P2281193'];
+			if(in_array($unidad['chasis'], $chasis_2023)) {
+				$modelo_2023 = 'color: orange';
 			}
-
-
 			//$dias = $unidad['fec_arribo']->diff(date("Y/m/d"));
-
-
-
 		 ?>
 
 
