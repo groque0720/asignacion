@@ -378,8 +378,10 @@ if ($_SESSION["id"]==47) {
 			$chasis_2023 = ['P8192264', 'P8192264', 'P0051888', 'P8200673', 'P0059326', 'P0068289', 'P0068229', 'P0068166', 'P0068647', 'P0068666', 'P0067908', 'P8203082', 'P0067290', 'P0066372', 'P0068064', 'P0065401', 'P0234694', 'P2280945', 'P8214328', 'P2128569', 'P8214221', 'P0234529', 'P8215215', 'P2128854', 'P8215801', 'P0234231', 'P2281193'];
 			if(in_array($unidad['chasis'], $chasis_2023)) {
 				$modelo_2023 = 'color: orange !important; text-shadow: .5px .5px 2px orange;';
+				$modelo_text_2023 = "text-decoration: line-through solid rgb(68, 68, 68);"
 			}else{
 				$modelo_2023 = '';
+				$modelo_text_2023 = '';
 			}
 			//$dias = $unidad['fec_arribo']->diff(date("Y/m/d"));
 		 ?>
@@ -390,13 +392,13 @@ if ($_SESSION["id"]==47) {
 			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
 
-			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['año']; ?></td>
+			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" style="<?php echo $modelo_text_2023 ?>"  data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['año']; ?></td>
 
 
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_orden']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['interno']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_despacho']); ?></td>
-			<td class="centrar-texto celda" style="<?php echo $atp_60_dias ?>"data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_arribo']); ?></td>
+			<td class="centrar-texto celda" style="<?php echo $atp_60_dias ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_arribo']); ?></td>
 			<td class="centrar-texto celda fila-grupo fila-oculto" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $grupo_a[$unidad['id_grupo']]['grupo']; ?></td>
 			<td class="centrar-texto celda fila-modelo fila-oculto" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $modelo_a[$unidad['id_modelo']]['modelo']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
