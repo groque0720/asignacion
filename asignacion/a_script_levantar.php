@@ -14,7 +14,7 @@
 	$SQL="INSERT INTO sesiones (id_usuario, nombre, fecha, hora, latitud, longitud, ip) VALUES (1,'proceso_levantar','".date("Y-m-d")."','".date( 'H:i:s')."','','',5)";
 	mysqli_query($con, $SQL);
 
-	if ($nro_dia!=0) {
+	if ($nro_dia!=6 AND $nro_dia!=0) {
 
 		$hora12 = date('11:59:00a');
 		$hora22 = date('21:59:00a');
@@ -91,7 +91,7 @@
 
 			}// fin If 12:00
 
-				if ($nro_dia!=6 AND $nro_dia!=0) {
+				if ($nro_dia!=5 AND $nro_dia!=6 AND $nro_dia!=0) {
 
 						if ($hora_actual>$hora22) {
 
