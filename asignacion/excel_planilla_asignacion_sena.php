@@ -56,6 +56,8 @@ header('Cache-Control: max-age=0');
             <!-- <td style="text-align: center;">Asesor</td> -->
             <td style="text-align: center;">Detalle</td>
             <td style="text-align: center;">Monto Seña</td>
+            <td style="text-align: center;">Cancelada</td>
+            <td style="text-align: center;">Fec.  Canc.</td>
         </tr>
     </thead>
     <tbody>
@@ -71,6 +73,8 @@ header('Cache-Control: max-age=0');
                 <td><?php echo $registro['cliente'] ?></td>
                 <td style="text-align: center;"><?php echo $registro['detalle'] ?></td>
                 <td style="text-align: center;"><?php echo number_format( $registro['monto'], 2, ',','.') ?></td>
+                <td style="text-align: center;"><?php echo $registro['cancelada'] ?></td>
+                <td style="text-align: center;"><?php echo cambiarFormatoFecha($registro['fec_cancelacion']) ?></td>
             </tr>
         <?php } ?>
     </tbody>
