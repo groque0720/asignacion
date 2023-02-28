@@ -320,16 +320,9 @@ if ($_SESSION["id"]==47) {
 			// 		background-size: 15px 30px;";
 			// }
 
-			$preventa_hilux20 = '';
-			if ($unidad['preventa_hilux20']==1) {
-				$preventa_hilux20 = "background:
-					linear-gradient(135deg, #ECEDDC 25%, transparent 25%) -50px 0,
-					linear-gradient(225deg, #ECEDDC 25%, transparent 25%) -50px 0,
-					linear-gradient(315deg, #ECEDDC 25%, transparent 25%),
-					linear-gradient(45deg, #ECEDDC 25%, transparent 25%);
-					background-size: 10px 10px;
-					background-color: rgba(231,149,148,0.5)";
-
+			$seAdelanto = '';
+			if (strpos($unidad['cliente'], '*')==true) {
+				$seAdelanto = "background: #CCDFF7";
 			}
 
 
@@ -388,7 +381,7 @@ if ($_SESSION["id"]==47) {
 
 
 
-		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_hilux_oct.' '.$preventa_oct20.' '.$preventa_hilux20.' '.$prioridad_entrega.' '.$por_caer_fc.' '.$modelo_2023 ?>">
+		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_hilux_oct.' '.$preventa_oct20.' '.$prioridad_entrega.' '.$por_caer_fc.' '.$modelo_2023.' '.$seAdelanto ?>">
 			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
 
