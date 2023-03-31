@@ -39,7 +39,11 @@ include ("../includes/security.php");?>
 
 		<article id="contenido">
 
-			<a href="precio_agregar.php">Nuevo Precio</a>
+
+			<div style="display:flex; justify-content: space-between">
+				<a href="precio_agregar.php">Nuevo Precio</a>
+				<a href="precios_actualizar_reservas.php">Actualizar Precios en Reservas</a>
+			</div>
 			<hr>
 
 			<?php
