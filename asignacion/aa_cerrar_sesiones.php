@@ -10,8 +10,11 @@
 
 	if ($habilitado['estado'] == 0) {
 
-		if ($_SESSION["idperfil"] != 14 or $_SESSION["id"] == 14) {
-			echo '<script>	window.location.href = "../asignacion/index_.php";</script>';
+		if($_SESSION["id"] != 71)
+		{
+			if ($_SESSION["idperfil"] != 14 or $_SESSION["id"] == 14) {
+				echo '<script>	window.location.href = "../asignacion/index_.php";</script>';
+			}
 		}
 
 	}
