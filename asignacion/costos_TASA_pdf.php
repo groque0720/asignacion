@@ -1,6 +1,6 @@
 
 <?php
-set_time_limit(300);
+set_time_limit(600);
 require('fpdf/fpdf.php');
 
 	include("funciones/func_mysql.php");
