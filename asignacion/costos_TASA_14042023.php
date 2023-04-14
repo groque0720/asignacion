@@ -1,6 +1,6 @@
 
 <?php
-set_time_limit(300);
+set_time_limit(600);
 require('fpdf/fpdf.php');
 
 	include("funciones/func_mysql.php");
@@ -38,16 +38,6 @@ require('fpdf/fpdf.php');
 		$sucursal_a[$i]['sucres']= $sucursal['sucres'];
 		$i++;
 	}
-
-
-	// $SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida";
-	// $reservas=mysqli_query($con, $SQL);
-	// $sucursal_a[0]['sucres']= '-';
-	// $i=1;
-	// while ($sucursal=mysqli_fetch_array($sucursales)) {
-	// 	$sucursal_a[$i]['sucres']= $sucursal['sucres'];
-	// 	$i++;
-	// }
 	//fin de carga de sucursales
 	//
 	//
@@ -136,7 +126,7 @@ $pdf->SetDrawColor(184, 184, 184);
 $pdf->SetAutoPageBreak(true,5);
 $cant = 0;
 
-	$SQL="SELECT * FROM view_asignaciones_saldo_CostosTASA";
+	$SQL="SELECT * FROM view_asignaciones_costos";
 	// $SQL="SELECT * FROM view_asignaciones_costos_con_tpa";
 	$unidades = mysqli_query($con, $SQL);
 
@@ -204,31 +194,29 @@ $cant = 0;
 		$pdf->Cell(47,5,($grupo_a[$unidad['id_grupo']]['grupo']." ".$modelo_a[$unidad['id_modelo']]['modelo']),1,0,'C');
 		$pdf->Cell(27,5,'$ '.number_format($unidad['costo'], 2, ',','.'),1,0,'R');
 
-		// $SQL="SELECT * FROM reservas_suma_montos WHERE nrounidad = ".$unidad['nro_unidad'];
-		// $montos=mysqli_query($con, $SQL);
+		$SQL="SELECT * FROM reservas_suma_montos WHERE nrounidad = ".$unidad['nro_unidad'];
+		$montos=mysqli_query($con, $SQL);
 
-		// $cant_monto=mysqli_num_rows($montos)+1;
+		$cant_monto=mysqli_num_rows($montos)+1;
 
-		// if ($cant_monto>0) {
-		// 	$monto=mysqli_fetch_array($montos);
-		// 	$monto_res=(int)$monto['monto'];
-		// }else{
-		// 	$monto_res=0;
-		// }
-		$monto_res=$unidad['monto_reserva'];
-		// $SQL="SELECT * FROM reservas_suma_pagos WHERE nrounidad = ".$unidad['nro_unidad'];
-		// $montos=mysqli_query($con, $SQL);
+		if ($cant_monto>0) {
+			$monto=mysqli_fetch_array($montos);
+			$monto_res=(int)$monto['monto'];
+		}else{
+			$monto_res=0;
+		}
 
-		// $cant_monto=mysqli_num_rows($montos);
+		$SQL="SELECT * FROM reservas_suma_pagos WHERE nrounidad = ".$unidad['nro_unidad'];
+		$montos=mysqli_query($con, $SQL);
 
-		// if ($cant_monto>0) {
-		// 	$monto=mysqli_fetch_array($montos);
-		// 	$monto_pago=(int)$monto['pagos'];
-		// }else{
-		// 	$monto_pago=0;
-		// }
+		$cant_monto=mysqli_num_rows($montos);
 
-		$monto_pago=$unidad['monto_pagos'];
+		if ($cant_monto>0) {
+			$monto=mysqli_fetch_array($montos);
+			$monto_pago=(int)$monto['pagos'];
+		}else{
+			$monto_pago=0;
+		}
 
 		$parcial_r=$parcial_r+($monto_res-$monto_pago);
 		$acum_r=$acum_r+($monto_res-$monto_pago);
