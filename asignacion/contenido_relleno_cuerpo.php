@@ -392,9 +392,23 @@ if ($_SESSION["id"]==47) {
 
 			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" style="<?php echo $modelo_text_2023 ?>"  data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['año']; ?></td>
 
+			<?php
+			$precio_fijo ='';
+			  $tienePrecioFijo = strpos($unidad['nro_orden'], '$') ? true : false;
+			  if($tienePrecioFijo == false) {
+			  	$nro_orden = $unidad['nro_orden'];
+			  }else{
+			  	$nro_orden_precio_fijo = explode('$', $unidad['nro_orden']);
+			  	$nro_orden = $nro_orden_precio_fijo[0];
+			  	$precio_fijo = '$'.$nro_orden_precio_fijo[1];
+			  }
+			 ?>
+			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>">
+				<?php echo $nro_orden; ?>
+				<span style="background-color: tomato; color:white;font-size: 11px;"><?php echo $precio_fijo; ?></span>
+				</td>
 
-			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_orden']; ?></td>
-			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['interno']; ?></td>
+			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['interno']?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_despacho']); ?></td>
 			<td class="centrar-texto celda" style="<?php echo $atp_60_dias ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_arribo']); ?></td>
 			<td class="centrar-texto celda fila-grupo fila-oculto" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $grupo_a[$unidad['id_grupo']]['grupo']; ?></td>
