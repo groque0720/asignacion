@@ -112,7 +112,7 @@ class PDF extends FPDF
 	$this->Cell(13,5,'Dominio',0,0,'C');
 	$this->Cell(13,5,'Color',0,0,'C');
 	$this->Cell(29,5,('Ult. Dueno'),0,0,'C');
-	$this->Cell(15,5,('Tomo'),0,0,'C');
+	// $this->Cell(15,5,('Tomo'),0,0,'C');
 	$this->Cell(13,5,('Fec. Rec.'),0,0,'C');
 	$this->Cell(6,5,('Ant.'),0,0,'C');
 	$this->Cell(17,5,'Toma+Imp.',0,0,'C');
@@ -120,6 +120,7 @@ class PDF extends FPDF
 	$this->Cell(15,5,'Costo Rep.',0,0,'C');
 	$this->Cell(17,5,'$ Transf.',0,0,'C');
 	$this->Cell(15,5,'$ Venta',0,0,'C');
+	$this->Cell(15,5,'$ Contado',0,0,'C');
 	$this->Cell(15,5,'$ Info',0,0,'C');
 	$this->Cell(9,5,'Ubic.',0,0,'C');
 	$this->Cell(6,5,'Canc.',0,0,'C');
@@ -217,14 +218,14 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 			}
 			$pdf->Cell(30,5,($ultimo_dueño),1,0,'L');
 
-			$asesor_toma=$usuario_a[$usado['asesortoma']]['nombre'];
-			$largo=strlen($usuario_a[$usado['asesortoma']]['nombre']);
-			if ($largo>10) {
-				$cortar=$largo-10;
-				$asesor_toma=substr($usuario_a[$usado['asesortoma']]['nombre'], 0, -$cortar).'..';
-			}
+			// $asesor_toma=$usuario_a[$usado['asesortoma']]['nombre'];
+			// $largo=strlen($usuario_a[$usado['asesortoma']]['nombre']);
+			// if ($largo>10) {
+			// 	$cortar=$largo-10;
+			// 	$asesor_toma=substr($usuario_a[$usado['asesortoma']]['nombre'], 0, -$cortar).'..';
+			// }
 
-			$pdf->Cell(15,5,($asesor_toma),1,0,'L');
+			// $pdf->Cell(15,5,($asesor_toma),1,0,'L');
 			$pdf->Cell(12,5,cambiarFormatoFecha($usado['fec_recepcion']),1,0,'C');
 
 			if ($usado['ant']/30>=1) {
@@ -248,6 +249,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 			}
 			$pdf->Cell(16,5,'$ '.number_format($usado['transferencia'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(16,5,'$ '.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($usado['precio_contado'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(16,5,'$ '.number_format($usado['precio_info'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(8,5,$sucursal_a[$usado['id_sucursal']]['sucres'],1,0,'C');
 
