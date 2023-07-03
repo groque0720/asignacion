@@ -110,7 +110,7 @@ header('Cache-Control: max-age=0');
                 <td style="text-align: center;"><?php echo $ubicacion ?></td>
                 <td style="text-align: center;"><?php echo $cancelado ?></td>
                 <td style="text-align: center;"><?php echo $dias ?></td>
-                <td><?php echo $registro['cliente'] ?><span style="<?php echo ($unidad['reventa'] == 1) ? 'color:red; text-decoration: underline;' :''; ?>"><?php echo ($unidad['reventa'] == 1) ? '(revta)' : ''; ?></span></td>
+                <td><?php echo $registro['cliente'] ?><?php echo ($registro['reventa'] == 1) ? '(revta)' : ''; ?></td>
                 <td><?php echo $registro['asesor'] ?></td>
                 <td style="text-align: center;"><?php echo cambiarFormatoFecha($registro['fec_reserva']) ?></td>
                 <td style="text-align: center;"><?php echo $estado_reserva ?></td>
