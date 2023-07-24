@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include("funciones/func_mysql.php");
 conectar();
@@ -23,6 +23,7 @@ $unidad_a['reservada']=$uni_uno['reservada'];
 $unidad_a['fec_cancelacion']=$uni_uno['fec_cancelacion'];
 $unidad_a['cancelada']=$uni_uno['cancelada'];
 $unidad_a['id_sucursal']=$uni_uno['id_sucursal'];
+$unidad_a['reventa']=$uni_uno['reventa'];
 
 
 $SQL="SELECT * FROM asignaciones WHERE nro_unidad = ".$id_nro_dos;
@@ -32,6 +33,8 @@ $uni_dos=mysqli_fetch_array($unidades_dos);
 $SQL="UPDATE asignaciones SET ";
 
 //$SQL.=" pagado = ".$uni_dos["pagado"].", ";
+
+$SQL.=" reventa = ".$uni_dos["reventa"].", ";
 
 if ($uni_dos["estado_reserva"]!=0 AND $uni_dos["estado_reserva"]!='' AND $uni_dos["estado_reserva"]!=null) {
 	$SQL.=" estado_reserva = ".$uni_dos["estado_reserva"].", ";
@@ -118,6 +121,8 @@ $SQL="UPDATE asignaciones SET ";
 //$SQL.=" pagado = ".$unidad_a["pagado"].", ";
 
 $SQL.=" estado_reserva = ".$unidad_a["estado_reserva"].",";
+
+$SQL.=" reventa = ".$unidad_a["reventa"].",";
 
 if ($unidad_a["fec_reserva"]!='' AND $unidad_a["fec_reserva"]!=null) {
 	$SQL.=" fec_reserva = '".$unidad_a["fec_reserva"]."', ";
