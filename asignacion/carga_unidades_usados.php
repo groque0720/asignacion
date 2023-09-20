@@ -246,7 +246,16 @@ $id_usuario = $_SESSION["id"];
 						<td class="centrar-texto celda-usado <?php echo $ocultar; ?>" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['precio_info'], 0, ',','.'); ?></td>
 
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['transferencia'], 0, ',','.'); ?></td>
-						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>" style="font-weight: bold; color: black;"><?php echo '$'.number_format($usado['precio_venta'], 0, ',','.'); ?></td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>" style="font-weight: bold; color: black;">
+							<?php 
+							$moneda = '$ ';
+							if (stripos($usado['vehiculo'], '(USD)') !== true) {
+								$moneda = "U$D ";
+							}
+				
+							 ?>
+							<?php echo $moneda.number_format($usado['precio_venta'], 0, ',','.'); ?>
+							</td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo '$'.number_format($usado['precio_contado'], 0, ',','.'); ?></td>
 
 							<?php if ($_SESSION['id']==47 || $_SESSION['id']==89): ?>
