@@ -197,6 +197,12 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 			$pdf->Cell(7,5,$usado['interno'],1,0,'C');
 			$largo=strlen($usado['vehiculo']);
 			$vehiculo=$usado['vehiculo'];
+
+			$moneda = '$ ';
+			if (strpos(strtolower($usado['vehiculo']), 'usd') !== false) {
+				$moneda = 'U$D ';
+			}
+			
 			if ($largo>39) {
 				$cortar=$largo-39;
 				$vehiculo=substr($usado['vehiculo'], 0, -$cortar).'[..]';
@@ -248,7 +254,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 				// $pdf->Cell(16,5,'$ -',1,0,'R');
 			}
 			$pdf->Cell(16,5,'$ '.number_format($usado['transferencia'], 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,'$ '.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,$moneda.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(16,5,'$ '.number_format($usado['precio_contado'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(16,5,'$ '.number_format($usado['precio_info'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(8,5,$sucursal_a[$usado['id_sucursal']]['sucres'],1,0,'C');
@@ -301,6 +307,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 		$pdf->SetFont('Arial','BI',8);
 		$pdf->Cell(177,5,'Total '.($estado['estado_usado']).'   ',0,0,'R');
 		$pdf->SetFont('Arial','B',6.5);
+
 
 		if ($es_gerente==1) {
 			$pdf->Cell(16,5,'$ '.number_format($total_toma, 0, ',','.'),1,0,'R');
