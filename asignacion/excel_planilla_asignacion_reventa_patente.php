@@ -26,6 +26,7 @@ header('Cache-Control: max-age=0');
             <td style="text-align: center;">Mes</td>
             <td style="text-align: center;">Año</td>
             <td style="text-align: center;">Interno</td>
+            <td style="text-align: center;">Chasis</td>
             <td style="text-align: center;">Fec. Arribo</td>
             <td style="text-align: center;">Modelo</td>
             <td style="text-align: center;">Versión</td>
@@ -61,6 +62,7 @@ header('Cache-Control: max-age=0');
                 <td><?php echo $registro['mes'] ?></td>
                 <td style="text-align: center;"><?php echo $registro['año'] ?></td>
                 <td style="text-align: center;"><?php echo $registro['interno'] ?></td>
+                <td style="text-align: center;"><?php echo $registro['chasis'] ?></td>
                 <td style="text-align: center;"><?php echo cambiarFormatoFecha($registro['fec_arribo']) ?></td>
                 <td style="text-align: center;"><?php echo $registro['grupo'] ?></td>
                 <td><?php echo $registro['modelo'] ?></td>
