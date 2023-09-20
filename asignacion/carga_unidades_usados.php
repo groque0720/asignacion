@@ -249,7 +249,7 @@ $id_usuario = $_SESSION["id"];
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>" style="font-weight: bold; color: black;">
 							<?php 
 							$moneda = '$ ';
-							if (stripos($usado['vehiculo'], '(USD)') === true) {
+							if (strpos(strtolower($usado['vehiculo']), 'usd') !== false) {
 								$moneda = 'U$D ';
 							}
 				
