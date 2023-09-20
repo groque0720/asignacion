@@ -1,5 +1,5 @@
 <?php
-	//servidor
+	// // servidor
 	// define('HOST','localhost');
 	// //usuario bd
 	// define('USER','root');
@@ -17,7 +17,7 @@
 	// //base de datos
 	// define('DB','asignacion');
 
-	//servidor
+	// servidor
 	define('HOST','localhost');
 	//usuario bd
 	define('USER','usernavicat');
