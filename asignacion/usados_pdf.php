@@ -255,7 +255,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 			}
 			$pdf->Cell(16,5,'$ '.number_format($usado['transferencia'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(16,5,$moneda.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,'$ '.number_format($usado['precio_contado'], 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,$moneda.number_format($usado['precio_contado'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(16,5,'$ '.number_format($usado['precio_info'], 0, ',','.'),1,0,'R');
 			$pdf->Cell(8,5,$sucursal_a[$usado['id_sucursal']]['sucres'],1,0,'C');
 
