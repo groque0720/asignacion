@@ -47,6 +47,7 @@
 				<ul>
 					<li class=""><a href="excel_planilla_asignacion.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Asignación</a></li>
 					<li class=""><a href="excel_planilla_asignacion_sena.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Asignación Seña</a></li>
+					<li class=""><a href="excel_planilla_asignacion_reventa_patente.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Estado Rvta Patente</a></li>
 <!-- 					<li class=""><a href="excel_planilla_asignacion_rosadas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Rosadas</a></li>
 					<li class=""><a href="excel_planilla_asignacion_verdes.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Verdes</a></li>
 					<li class=""><a href="excel_planilla_asignacion_amarillas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Precio Julio 2020 (Amarillas Rayas)</a></li>
