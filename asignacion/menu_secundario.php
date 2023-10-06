@@ -48,6 +48,7 @@
 					<li class=""><a href="excel_planilla_asignacion.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Asignación</a></li>
 					<li class=""><a href="excel_planilla_asignacion_sena.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Asignación Seña</a></li>
 					<li class=""><a href="excel_planilla_asignacion_reventa_patente.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Estado Rvta Patente</a></li>
+					<li class=""><a href="excel_planilla_asignacion_llegadas_saldo.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Llegadas Saldo</a></li>
 <!-- 					<li class=""><a href="excel_planilla_asignacion_rosadas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Rosadas</a></li>
 					<li class=""><a href="excel_planilla_asignacion_verdes.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Verdes</a></li>
 					<li class=""><a href="excel_planilla_asignacion_amarillas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Precio Julio 2020 (Amarillas Rayas)</a></li>
@@ -55,8 +56,8 @@
 					<li class=""><a href="excel_planilla_asignacion_preventa_sep20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Sep 2020 (Marron Rayas)</a></li>
 					<li class=""><a href="excel_planilla_asignacion_preventa_oct20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Oct 2020 (Gris Rayas)</a></li>
 					<li class=""><a href="excel_planilla_asignacion_corollas_celeste.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Corolla Dic 2020 (Celeste)</a></li> -->
-					<li class=""><a href="excel_planilla_asignacion_preventa_hilux20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Hilux 2000 (Rosado Cuadros)</a></li>
-					<li class=""><a href="excel_planilla_asignacion_sininterno_sincolor_concostos.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Unidades Sin Interno y Colores</a></li>
+<!-- 					<li class=""><a href="excel_planilla_asignacion_preventa_hilux20.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Preventa Hilux 2000 (Rosado Cuadros)</a></li>
+					<li class=""><a href="excel_planilla_asignacion_sininterno_sincolor_concostos.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Unidades Sin Interno y Colores</a></li> -->
 				</ul>
 			</li>
 
