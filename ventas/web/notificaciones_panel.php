@@ -137,7 +137,7 @@ conectar();
 				<a href="/uif/Manual-UIF-DyV.pdf"  target="_blank">
 					<div class="ed-container">
 						<div class="ed-item" style="display: flex; justify-content: center;" >
-							<img style="width: 80px;" src="/dashboard/imagenes/uif.png" alt="">
+							<img style="width: 80px;" src="/dashboard/imagenes/uif.PNG" alt="">
 						</div>
 					</div>
 					<div class="centrar-texto">
