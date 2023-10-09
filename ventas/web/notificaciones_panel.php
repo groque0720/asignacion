@@ -83,11 +83,11 @@ conectar();
 			<div class="img">
 				<a href="../../asignacion"  target="_blank">
 					<div class="ed-container">
-						<div class="ed-item">
-							<img src="../imagenes/asignacion.PNG" alt="">
+						<div class="ed-item" style="display: flex; justify-content: center;">
+							<img style="width: 80px;" src="../imagenes/asignacion.PNG" alt="">
 						</div>
 					</div>
-					<div class="centrar-texto">
+					<div class="centrar-texto" style="padding-top: 10px">
 						<span class="titulo">
 							Planilla Asignación
 						</span>
@@ -101,8 +101,8 @@ conectar();
 			<div class="img">
 				<a href="../../mistery"  target="_blank">
 					<div class="ed-container">
-						<div class="ed-item">
-							<img src="../imagenes/mistery.jpg" alt="">
+						<div class="ed-item" style="display: flex; justify-content: center;">
+							<img style="width: 80px;" src="../imagenes/mistery.jpg" alt="">
 						</div>
 					</div>
 					<div class="centrar-texto">
@@ -115,19 +115,15 @@ conectar();
 
 		</div>
 
-
-
-
-
 		<div class="ed-item web-1-6 item">
 			<div class="img">
 			<a href="asesores.php" target="_blank">
 				<div class="ed-container">
-					<div class="ed-item">
-						<img src="../imagenes/reservas.png" alt="">
+					<div class="ed-item" style="display: flex; justify-content: center;">
+						<img style="width: 80px;" src="../imagenes/reservas.png" alt="">
 					</div>
 				</div>
-				<div class="centrar-texto">
+				<div class="centrar-texto" style="padding-top: 10px">
 					<span class="titulo">
 						Operaciones
 					</span>
@@ -138,10 +134,27 @@ conectar();
 
 		<div class="ed-item web-1-6 item">
 			<div class="img">
+				<a href="/uif/Manual-UIF-DyV.pdf"  target="_blank">
+					<div class="ed-container">
+						<div class="ed-item" style="display: flex; justify-content: center;" >
+							<img style="width: 80px;" src="/dashboard/imagenes/uif.png" alt="">
+						</div>
+					</div>
+					<div class="centrar-texto">
+						<span class="titulo" >
+							Manual UIF
+						</span>
+					</div>
+				</a>
+			</div>
+		</div>
+
+		<div class="ed-item web-1-6 item">
+			<div class="img">
 				<a href="https://cms.derkayvargas.com/infoauto"  target="_blank">
 					<div class="ed-container">
-						<div class="ed-item">
-							<img src="https://i.pinimg.com/280x280_RS/2a/f9/3e/2af93ee5076e04395b5e9c8657adff7c.jpg" alt="">
+						<div class="ed-item" style="display: flex; justify-content: center;">
+							<img style="width: 80px;" src="https://i.pinimg.com/280x280_RS/2a/f9/3e/2af93ee5076e04395b5e9c8657adff7c.jpg" alt="">
 						</div>
 					</div>
 					<div class="centrar-texto">
@@ -158,8 +171,8 @@ conectar();
 				<div class="img">
 				<a href="pagos_clientes.php">
 					<div class="ed-container">
-						<div class="ed-item">
-							<img src="../imagenes/pagos.png" alt="">
+						<div class="ed-item" style="display: flex; justify-content: center;">
+							<img style="width: 80px;" src="../imagenes/pagos.png" alt="">
 						</div>
 					</div>
 					<div class="centrar-texto">
@@ -175,8 +188,8 @@ conectar();
 				<div class="img">
 				<a href="/gestoria">
 					<div class="ed-container">
-						<div class="ed-item">
-							<img src="../../dashboard/imagenes/gestoria.png" alt="">
+						<div class="ed-item" style="display: flex; justify-content: center;">
+							<img style="width: 80px;" src="../../dashboard/imagenes/gestoria.png" alt="">
 						</div>
 					</div>
 					<div class="centrar-texto">
@@ -194,8 +207,8 @@ conectar();
 				<div class="img">
 				<a href="/ect">
 					<div class="ed-container">
-						<div class="ed-item">
-							<img src="../../dashboard/imagenes/confencuestas.jpg" alt="">
+						<div class="ed-item" style="display: flex; justify-content: center;">
+							<img style="width: 80px;" src="../../dashboard/imagenes/confencuestas.jpg" alt="">
 						</div>
 					</div>
 					<div class="centrar-texto">
@@ -220,8 +233,8 @@ conectar();
 				<div class="img">
 				<a href="/ect">
 					<div class="ed-container">
-						<div class="ed-item">
-							<img src="../../dashboard/imagenes/confencuestas.jpg" alt="">
+						<div class="ed-item" style="display: flex; justify-content: center;">
+							<img style="width: 80px;" src="../../dashboard/imagenes/confencuestas.jpg" alt="">
 						</div>
 					</div>
 					<div class="centrar-texto">
@@ -256,11 +269,11 @@ conectar();
 			<?php } ?>
 
 				<div class="ed-container">
-					<div class="ed-item">
-						<img src="../imagenes/tcfa.png" alt="">
+					<div class="ed-item" style="display: flex; justify-content: center;">
+						<img style="width: 80px;" src="../imagenes/tcfa.png" alt="">
 					</div>
 				</div>
-				<div class="centrar-texto">
+				<div class="centrar-texto" style="padding-top: 10px">
 					<span class="titulo">
 						Simulación Crédito TCFA
 					</span>
@@ -273,11 +286,11 @@ conectar();
 			<div class="img">
 			<a href="http://crm.derkayvargas.com" target="_blank">
 				<div class="ed-container">
-					<div class="ed-item">
-						<img src="../imagenes/crm.jpg" alt="">
+					<div class="ed-item" style="display: flex; justify-content: center;">
+						<img style="width: 80px;" src="../imagenes/crm.jpg" alt="">
 					</div>
 				</div>
-				<div class="centrar-texto">
+				<div class="centrar-texto" style="padding-top: 10px">
 					<span class="titulo">
 						CRM
 					</span>
@@ -313,11 +326,11 @@ conectar();
 			<div class="img">
 			<a href="noticias.php">
 				<div class="ed-container">
-					<div class="ed-item">
-						<img src="../imagenes/notificaciones.png" alt="">
+					<div class="ed-item" style="display: flex; justify-content: center;">
+						<img style="width: 80px;" src="../imagenes/notificaciones.png" alt="">
 					</div>
 				</div>
-				<div class="centrar-texto">
+				<div class="centrar-texto" style="padding-top: 10px">
 					<span class="titulo">
 						Notificaciones Reservas
 					</span>
@@ -329,11 +342,11 @@ conectar();
 			<div class="img">
 			<a href="../../agenda_test_drive">
 				<div class="ed-container">
-					<div class="ed-item">
-						<img src="../imagenes/agenda_td.png" alt="">
+					<div class="ed-item" style="display: flex; justify-content: center;">
+						<img style="width: 80px;" src="../imagenes/agenda_td.png" alt="">
 					</div>
 				</div>
-				<div class="centrar-texto">
+				<div class="centrar-texto" style="padding-top: 10px">
 					<span class="titulo">
 						Agenda Test Drive
 					</span>
@@ -361,11 +374,11 @@ conectar();
 			<a href="../../recepcion/recepcion_asesores.php" target="_blank">
 			<?php } ?>
 				<div class="ed-container">
-					<div class="ed-item">
-						<img src="../imagenes/contacto_rc.png" alt="">
+					<div class="ed-item" style="display: flex; justify-content: center;">
+						<img style="width: 80px;" src="../imagenes/contacto_rc.png" alt="">
 					</div>
 				</div>
-				<div class="centrar-texto">
+				<div class="centrar-texto" style="padding-top: 10px">
 					<span class="titulo">
 						Contactos Recepción
 					</span>
@@ -402,8 +415,8 @@ conectar();
 					<div class="img">
 						<a href="<?php echo "notificaciones_lista_asesores.php?id_tema=$tema_sel&id=$usu"; ?>">
 							<div class="ed-container">
-								<div class="ed-item">
-									<img src="<?php echo $tema['imagen']; ?>" alt="">
+								<div class="ed-item" style="display: flex; justify-content: center;">
+									<img style="width: 80px;" src="<?php echo $tema['imagen']; ?>" alt="">
 								</div>
 							</div>
 							<div class="centrar-texto">

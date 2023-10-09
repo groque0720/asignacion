@@ -126,7 +126,7 @@ if ($_SESSION["autentificado"] != "SI") {
 						<a  target="_blank" href="<?php echo $aplicacion['url']; ?>">
 							<div class="ed-container" style="height: 80px;">
 								<div class="ed-item centrar-texto">
-									<img src="<?php echo $aplicacion['imagen']; ?>" alt="<?php echo $aplicacion['aplicacion']; ?>">
+									<img style="width: 80px" src="<?php echo $aplicacion['imagen']; ?>" alt="<?php echo $aplicacion['aplicacion']; ?>">
 								</div>
 							</div>
 							<div class="centrar-texto" style="font-size:14px;">
@@ -138,6 +138,24 @@ if ($_SESSION["autentificado"] != "SI") {
 					</div>
 				</div>
 			<?php } ?>
+
+
+<!-- 					<div class="ed-item web-1-6 item">
+			<div class="img">
+				<a href="/uif/Manual-UIF-DyV.pdf"  target="_blank">
+					<div class="ed-container">
+						<div class="ed-item" style="display: flex; justify-content: center;" >
+							<img style="width: 80px;" src="/dashboard/imagenes/uif.png" alt="">
+						</div>
+					</div>
+					<div class="centrar-texto">
+						<span class="titulo" >
+							Manual UIF
+						</span>
+					</div>
+				</a>
+			</div>
+		</div> -->
 
 			<?php if ($_SESSION["idperfil"] == 3): ?>
 
