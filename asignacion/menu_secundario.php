@@ -47,7 +47,8 @@
 				<ul>
 					<li class=""><a href="excel_planilla_asignacion.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Asignación</a></li>
 					<li class=""><a href="excel_planilla_asignacion_sena.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Asignación Seña</a></li>
-					<li class=""><a href="excel_planilla_asignacion_reventa_patente.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Estado Rvta Patente</a></li>
+					<li class=""><a href="excel_planilla_asignacion_reventa_patente.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Estado Patente Reventa </a></li>
+					<li class=""><a href="excel_planilla_asignacion_convecional_patente.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Estado Patente Convencional </a></li>
 					<li class=""><a href="excel_planilla_asignacion_llegadas_saldo.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Llegadas Saldo</a></li>
 <!-- 					<li class=""><a href="excel_planilla_asignacion_rosadas.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Rosadas</a></li>
 					<li class=""><a href="excel_planilla_asignacion_verdes.php" class="" data-id=""><span class="icon-download">  </span>En Excel - Verdes</a></li>
