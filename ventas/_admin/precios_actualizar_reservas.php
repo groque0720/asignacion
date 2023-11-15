@@ -9,7 +9,7 @@ include ("../includes/security.php");?>
 	$SQL = "SELECT * FROM modelos WHERE activo = 1";
 	$modelos=mysqli_query($con, $SQL); 
 
-	$codigo=$_GET["codigo"];
+	$codigo = isset($_GET["codigo"]) ? $_GET["codigo"] : 1;
 
 
 
