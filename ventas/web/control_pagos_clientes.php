@@ -129,6 +129,7 @@ $(document).ready(function(){
 					<option value="Especial">Especial</option>
 					<option value="Plan de Ahorro">Plan de Ahorro</option>
 					<option value="Plan Adjudicado">Plan Adjudicado</option>
+					<option value="Plan Avanzado">Plan Avanzado</option>
 					<option value="Reg. Discapacidad">Reg. Discapacidad</option>
 				</select>
 			</div>
