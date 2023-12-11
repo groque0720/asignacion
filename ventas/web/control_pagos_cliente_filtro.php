@@ -111,6 +111,8 @@ if ($_POST["id"] == 0) {
 	$SQL .= $fil_venta.$FIL." ORDER BY usuarios.nombre, clientes.nombre";
 	}
 
+	echo $SQL;
+
 	$res=mysqli_query($con, $SQL);
 
 
