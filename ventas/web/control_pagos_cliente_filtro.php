@@ -113,7 +113,7 @@ if ($_POST["id"] == 0) {
 
 	echo $SQL;
 
-	// $res=mysqli_query($con, $SQL);
+	$res=mysqli_query($con, $SQL);
 
 
  include('control_pagos_cliente_cuerpo.php');
