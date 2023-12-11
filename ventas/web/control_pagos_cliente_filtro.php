@@ -12,7 +12,7 @@ conectar();
 
 
 	if ($_POST["tipo_venta"] != '') {
-		$fil_venta = $fil_venta + ' OR reservas.venta = '. $_POST["tipo_venta"].' ';
+		$fil_venta = $fil_venta + " OR reservas.venta = '". $_POST["tipo_venta"]."' ";
 
 	}
 
