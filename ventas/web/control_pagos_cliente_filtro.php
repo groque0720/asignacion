@@ -7,8 +7,13 @@ conectar();
 
 	$fil_venta = "";
 
+
+	echo $_POST["tipo_venta"];
+
+
 	if ($_POST["tipo_venta"] != '') {
 		$fil_venta = $fil_venta + ' AND reservas.venta = '. $_POST["tipo_venta"].' ';
+
 	}
 
 
