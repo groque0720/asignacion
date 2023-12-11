@@ -130,6 +130,7 @@ $(document).ready(function(){
 //---------------------------------------------
 
 		$("#tipo_venta").change(function(){
+			alert('tipo_venta');
 		$("#carga").show();
 		$("#texto_busqueda").val('');
 
