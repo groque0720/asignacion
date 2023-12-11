@@ -8,7 +8,7 @@ conectar();
 	$fil_venta = "";
 
 	if ($_POST["tipo_venta"] != '') {
-		$fil_venta = $fil_venta + ' AND venta = '. $_POST["tipo_venta"].' ';
+		$fil_venta = $fil_venta + ' AND reservas.venta = '. $_POST["tipo_venta"].' ';
 	}
 
 
