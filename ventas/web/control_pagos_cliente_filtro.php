@@ -5,6 +5,13 @@ conectar();
 
 	ini_set('max_execution_time', 300);
 
+	$fil_venta = "";
+
+	if ($_POST["tipo_venta"] != '') {
+		$fil_venta = $fil_venta + ' AND venta = '. $_POST["tipo_venta"].' ';
+	}
+
+
 $FIL="";
 
 	if ($_POST["est"]==1) {
@@ -35,6 +42,8 @@ $FIL="";
 	}
 
 
+
+
 if ($_POST["id"] == 0) {
 		$SQL="SELECT
 	reservas.idreserva AS idreserva,
@@ -63,7 +72,7 @@ if ($_POST["id"] == 0) {
 	Inner Join reservas ON clientes.idcliente = reservas.idcliente
 	Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
 	WHERE reservas.anulada <> 1 AND reservas.entregada < 3 AND 	reservas.enviada >= '1'  ";
-	$SQL .= $FIL." ORDER BY usuarios.nombre, clientes.nombre";
+	$SQL .= $fil_venta.$FIL." ORDER BY usuarios.nombre, clientes.nombre";
 }else{
 
 	$SQL="SELECT
@@ -94,7 +103,7 @@ if ($_POST["id"] == 0) {
 	Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
 	WHERE reservas.anulada <> 1  AND reservas.entregada < 3 AND reservas.enviada >= '1' AND usuarios.idsucursal = ".$_POST["id"];
 
-	$SQL .= $FIL." ORDER BY usuarios.nombre, clientes.nombre";
+	$SQL .= $fil_venta.$FIL." ORDER BY usuarios.nombre, clientes.nombre";
 	}
 
 	$res=mysqli_query($con, $SQL);

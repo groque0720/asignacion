@@ -119,8 +119,9 @@ $(document).ready(function(){
 
 		idsuc=$("#sucursal").val();
 		est=$("#estado").val();
+		tipo_venta=$("#tipo_venta").val();
 
-		$.ajax({url:"control_pagos_cliente_filtro.php",cache:false,type:"POST",data:{id:idsuc, est:est},success:function(result){
+		$.ajax({url:"control_pagos_cliente_filtro.php",cache:false,type:"POST",data:{id:idsuc, est:est, tipo_venta:tipo_venta},success:function(result){
 	      	$("#actualizar").html(result);
 	      	$("#carga").hide();
 	    	}});
