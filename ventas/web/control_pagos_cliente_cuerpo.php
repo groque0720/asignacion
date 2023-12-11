@@ -249,7 +249,11 @@
 					echo "background:#FDBA99; font-weight:bold;font-style: italic;";
 					}
 				}?>"><?php if ($reg['fechacanc']!="" && $reg['fechacanc']!=0 && $reg['fechacanc']!=null) { echo cambiarformatofecha($reg['fechacanc']);} ?></td>
-			<td class="ld"><?php echo $reg['obs']; ?></td>
+			<td class="ld">
+				<?php if ($reg['tipo_venta']) {
+				echo "(".$reg['tipo_venta'].")";
+			} ?>
+			<?php echo $reg['obs']; ?></td>
 			<td class="control">
 
 				<a href="reserva.php?IDrecord=<?php echo $reg['idreserva']; ?>" style="style" target="_blank">
@@ -384,9 +388,7 @@
 			<td ></td>
 			<td ></td>
 			<td ></td>
-			<td ><?php if ($reg['tipo_venta']) {
-				echo "(".$reg['tipo_venta'].")";
-			} ?></td>
+			<td ></td>
 			<td class="admin"></td>
 		</tr>
 
