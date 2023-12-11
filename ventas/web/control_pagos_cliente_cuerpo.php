@@ -384,7 +384,9 @@
 			<td ></td>
 			<td ></td>
 			<td ></td>
-			<td ></td>
+			<td ><?php if ($reg['tipo_venta']) {
+				echo "(".$reg['tipo_venta'].")";
+			} ?></td>
 			<td class="admin"></td>
 		</tr>
 

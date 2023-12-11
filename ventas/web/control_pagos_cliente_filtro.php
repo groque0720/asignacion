@@ -5,18 +5,6 @@ conectar();
 
 	ini_set('max_execution_time', 300);
 
-	$fil_venta = "";
-
-
-	echo $_POST["tipo_venta"];
-
-
-	if ($_POST["tipo_venta"] != '') {
-		$fil_venta = $fil_venta . " OR reservas.venta = '". $_POST["tipo_venta"]."' ";
-
-	}
-
-
 $FIL="";
 
 	if ($_POST["est"]==1) {
@@ -47,8 +35,6 @@ $FIL="";
 	}
 
 
-
-
 if ($_POST["id"] == 0) {
 		$SQL="SELECT
 	reservas.idreserva AS idreserva,
@@ -71,13 +57,14 @@ if ($_POST["id"] == 0) {
 	reservas.idcredito as idcredito,
 	reservas.estadopago as estadopago,
 	reservas.cancelada as cancelada,
-	reservas.idcliente as idcliente
+	reservas.idcliente as idcliente,
+	reservas.venta AS tipo_venta
 	FROM
 	clientes
 	Inner Join reservas ON clientes.idcliente = reservas.idcliente
 	Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
 	WHERE reservas.anulada <> 1 AND reservas.entregada < 3 AND 	reservas.enviada >= '1'  ";
-	$SQL .= $fil_venta.$FIL." ORDER BY usuarios.nombre, clientes.nombre";
+	$SQL .= $FIL." ORDER BY reservas.venta, usuarios.nombre, clientes.nombre";
 }else{
 
 	$SQL="SELECT
@@ -101,17 +88,16 @@ if ($_POST["id"] == 0) {
 	reservas.idcredito as idcredito,
 	reservas.estadopago as estadopago,
 	reservas.cancelada as cancelada,
-	reservas.idcliente as idcliente
+	reservas.idcliente as idcliente,
+	reservas.venta AS tipo_venta
 	FROM
 	clientes
 	Inner Join reservas ON clientes.idcliente = reservas.idcliente
 	Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
 	WHERE reservas.anulada <> 1  AND reservas.entregada < 3 AND reservas.enviada >= '1' AND usuarios.idsucursal = ".$_POST["id"];
 
-	$SQL .= $fil_venta.$FIL." ORDER BY usuarios.nombre, clientes.nombre";
+	$SQL .= $FIL." ORDER BY reservas.venta, usuarios.nombre, clientes.nombre";
 	}
-
-	echo $SQL;
 
 	$res=mysqli_query($con, $SQL);
 

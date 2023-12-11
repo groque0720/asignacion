@@ -95,8 +95,7 @@ $(document).ready(function(){
 
 		est=$("#estado").val();
 		idsuc=$("#sucursal").val();
-		tipo_venta=$("#tipo_venta").val();
-		$.ajax({url:"control_pagos_cliente_filtro.php",cache:false,type:"POST",data:{id:idsuc, est:est, tipo_venta:tipo_venta},success:function(result){
+		$.ajax({url:"control_pagos_cliente_filtro.php",cache:false,type:"POST",data:{id:idsuc, est:est},success:function(result){
 	      	$("#actualizar").html(result);
 	      	$("#carga").hide();
 
@@ -120,41 +119,12 @@ $(document).ready(function(){
 
 		idsuc=$("#sucursal").val();
 		est=$("#estado").val();
-		tipo_venta=$("#tipo_venta").val();
 
-		$.ajax({url:"control_pagos_cliente_filtro.php",cache:false,type:"POST",data:{id:idsuc, est:est, tipo_venta:tipo_venta},success:function(result){
+		$.ajax({url:"control_pagos_cliente_filtro.php",cache:false,type:"POST",data:{id:idsuc, est:est},success:function(result){
 	      	$("#actualizar").html(result);
 	      	$("#carga").hide();
 	    	}});
 	});
-//---------------------------------------------
-
-		$("#tipo_venta").change(function(){
-
-		$("#carga").show();
-		$("#texto_busqueda").val('');
-
-		var myDate = new Date();
-		var displayDate = (myDate.getDate()) + '-' + (myDate.getMonth()+1) + '-' + myDate.getFullYear();
-
-		suc=$("#sucursal option:selected").text();
-		estado=$("#estado option:selected").text()
-		leyenda = "<h1> Sucursal: <strong style='font-style:italic;'>"+suc+"</strong> - Estado: <strong style='font-style: italic;'>"+estado+"</strong>  - Fecha: <strong style='font-style: italic;'>"+displayDate+"</strong> </h1> ";
-		$("#titulo").html(leyenda);
-
-
-		idsuc=$("#sucursal").val();
-		est=$("#estado").val();
-		tipo_venta=$("#tipo_venta").val();
-
-		$.ajax({url:"control_pagos_cliente_filtro.php",cache:false,type:"POST",data:{id:idsuc, est:est, tipo_venta:tipo_venta},success:function(result){
-	      	$("#actualizar").html(result);
-	      	$("#carga").hide();
-	    	}});
-	});
-
-
-
 	//-----------------------------------------------------------------------------------------------------
 	$('#texto_busqueda').autocomplete({
 		source: "control_pagos_cliente_autocomplete.php"
