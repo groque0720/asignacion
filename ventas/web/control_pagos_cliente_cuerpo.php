@@ -250,10 +250,11 @@
 					}
 				}?>"><?php if ($reg['fechacanc']!="" && $reg['fechacanc']!=0 && $reg['fechacanc']!=null) { echo cambiarformatofecha($reg['fechacanc']);} ?></td>
 			<td class="ld">
-				<b><?php if ($reg['tipo_venta']) {
-				echo "(".$reg['tipo_venta'].") ";
-			} ?></b>
-			<?php echo $reg['obs']; ?></td>
+				<b style="color: blue;">
+					<?php if ($reg['tipo_venta']) {
+						echo "(".$reg['tipo_venta'].") ";
+					} ?></b>
+					<?php echo $reg['obs']; ?></td>
 			<td class="control">
 
 				<a href="reserva.php?IDrecord=<?php echo $reg['idreserva']; ?>" style="style" target="_blank">
