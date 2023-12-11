@@ -250,9 +250,9 @@
 					}
 				}?>"><?php if ($reg['fechacanc']!="" && $reg['fechacanc']!=0 && $reg['fechacanc']!=null) { echo cambiarformatofecha($reg['fechacanc']);} ?></td>
 			<td class="ld">
-				<?php if ($reg['tipo_venta']) {
-				echo "(".$reg['tipo_venta'].")";
-			} ?>
+				<br><?php if ($reg['tipo_venta']) {
+				echo "(".$reg['tipo_venta'].") ";
+			} ?></br>
 			<?php echo $reg['obs']; ?></td>
 			<td class="control">
 
