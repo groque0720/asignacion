@@ -249,19 +249,16 @@
 					echo "background:#FDBA99; font-weight:bold;font-style: italic;";
 					}
 				}?>"><?php if ($reg['fechacanc']!="" && $reg['fechacanc']!=0 && $reg['fechacanc']!=null) { echo cambiarformatofecha($reg['fechacanc']);} ?></td>
-			<td class="ldx">
+			<td class="ld">
 
 					<span>
 						<?php echo "<b style='color: blue;'>(".$reg['tipo_venta'].") </b> "; ?>
 					</span>
-					<span class="ld">
+					<span>
 						<?php echo $reg['obs']; ?>
-						
 					</span>
-	
-
-
-			</td>
+					
+					</td>
 			<td class="control">
 
 				<a href="reserva.php?IDrecord=<?php echo $reg['idreserva']; ?>" style="style" target="_blank">
