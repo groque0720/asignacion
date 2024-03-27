@@ -17,7 +17,7 @@ if ($_SESSION["id"]==47) {
 
 <table class="listado_gestoria">
 	<colgroup>
-			<col width="2.5%" class="<?php echo $clase_don_vargas; ?>">
+			<col width="2.5%">
 			<col width="3.5%">
 			<col  width="2%" class="<?php echo $clase_don_vargas; ?>">
 			<col width="3.3%">
@@ -43,7 +43,7 @@ if ($_SESSION["id"]==47) {
 	</colgroup>
 	<thead>
 		<tr>
-			<td class="<?php echo $clase_don_vargas; ?>">Nro Un.</td>
+			<td>Nro Un.</td>
 			<td>Mes</td>
 			<td class="<?php echo $clase_don_vargas; ?>" >Año</td>
 			<td>Nro Orden</td>
@@ -387,7 +387,8 @@ if ($_SESSION["id"]==47) {
 
 
 		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_hilux_oct.' '.$preventa_oct20.' '.$prioridad_entrega.' '.$por_caer_fc.' '.$modelo_2023.' '.$seAdelanto.' '.$condicionNecesaria ?>">
-			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
+
+			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
 
 			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" style="<?php echo $modelo_text_2023 ?>"  data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['año']; ?></td>
