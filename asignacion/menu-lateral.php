@@ -15,9 +15,12 @@ $cont_modelo = 1;
 			<?php 
 				$id_usado='';
 				if ($grupo['grupo']=='USADOS') {
-					$id_usado='link_usado';
+					// $id_usado='link_usado';
+					$id_usado='bloqueado';
+
 				}
 			 ?>
+			 <?php  ?>
 			<div class="link" <?php echo "id='".$id_usado."'"; ?> data-grupo="<?php echo $grupo['idgrupo']; ?>">
 				<i class="icon-user fa" ></i>
 					<?php echo $grupo['grupo']; ?>
