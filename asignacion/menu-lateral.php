@@ -15,8 +15,8 @@ $cont_modelo = 1;
 			<?php 
 				$id_usado='';
 				if ($grupo['grupo']=='USADOS') {
-					$id_usado='link_usado';
-					// $id_usado='bloqueado';
+					// $id_usado='link_usado';
+					$id_usado='bloqueado';
 
 				}
 			 ?>
