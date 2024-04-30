@@ -15,8 +15,15 @@ $cont_modelo = 1;
 			<?php 
 				$id_usado='';
 				if ($grupo['grupo']=='USADOS') {
+
+					// BLOQUE SOLO VISTO POR USARIOS ESPECIFICOS (Mauro vargas, Nicolas Burgos(89) )
+					if($_SESSION["id"] == 56 || $_SESSION["id"] == 103 || $_SESSION["id"] == 89 ) {
+						$id_usado='link_usado';
+					}else{
+						$id_usado='bloqueado';
+					}
+					// HABILITADOS PARA TODOS
 					// $id_usado='link_usado';
-					$id_usado='bloqueado';
 
 				}
 			 ?>
@@ -24,6 +31,11 @@ $cont_modelo = 1;
 			<div class="link" <?php echo "id='".$id_usado."'"; ?> data-grupo="<?php echo $grupo['idgrupo']; ?>">
 				<i class="icon-user fa" ></i>
 					<?php echo $grupo['grupo']; ?>
+
+					<?php if($id_usado=='bloqueado') {  ?>
+						🔐  ⚙️
+					<?php } ?>
+
 				<i class="fa icon-chevron-down"></i>
 			</div>
 			<ul class="submenu">
