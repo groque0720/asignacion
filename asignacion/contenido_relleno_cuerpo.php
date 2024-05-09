@@ -421,7 +421,7 @@ if ($_SESSION["id"]==47) {
 						echo "<span style='color: red;font-weight: bold; font-size: 12px;'>// No Disponible//</span>";
 					}
 				 ?>
-				 <?php if ($unidad['nro_unidad'] == 36710 ) {
+				 <?php if ($unidad['nro_unidad'] == 37627 ) {
 					echo "<span style='font-weight: bold; font-size: 12px;'>//🔴Cesión de Factura VICTOR HUGO ABBRUZZESE🔴//</span>";
 					}
 				 ?>
