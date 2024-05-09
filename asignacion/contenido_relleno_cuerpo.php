@@ -421,8 +421,8 @@ if ($_SESSION["id"]==47) {
 						echo "<span style='color: red;font-weight: bold; font-size: 12px;'>// No Disponible//</span>";
 					}
 				 ?>
-				 <?php if ($unidad['precio_junio'] == 1 ) {
-					echo "<span style='font-weight: bold; font-size: 12px;'>// Precio Junio//</span>";
+				 <?php if ($unidad['nro_unidad'] == '36710' ) {
+					echo "<span style='font-weight: bold; font-size: 12px;'>//🔴Cesión de Factura VICTOR HUGO ABBRUZZESE🔴//</span>";
 					}
 				 ?>
 				 <?php if ($unidad['reserva'] == 0 ) {
