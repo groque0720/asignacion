@@ -425,6 +425,10 @@ if ($_SESSION["id"]==47) {
 					echo "<span style='font-weight: bold; font-size: 12px;'>//🔴Cesión de Factura VICTOR HUGO ABBRUZZESE🔴//</span>";
 					}
 				 ?>
+				<?php if ($unidad['nro_unidad'] == 37931 ) {
+					echo "<span style='font-weight: bold; font-size: 12px;'>//🔴Cesión de Factura DAVIÑA MARIA GRACIELA🔴//</span>";
+					}
+				 ?>
 				 <?php if ($unidad['reserva'] == 0 ) {
 					echo "<span style='font-weight: bold; font-size: 12px;'>// SIN RESERVA //</span>";
 					}
