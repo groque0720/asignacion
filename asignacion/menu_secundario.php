@@ -44,6 +44,8 @@
 				</ul>
 			</li>
 		<?php } ?>
+
+		<!-- FIN AUTORIZACION LUIS GUTIERREZ -->
 			<li><a href="#" class="item_link"><span class="icon-calendar">  </span>Agendas</a>
 				<ul>
 					<li><a href="" class="item_link icon-calendar" data-id="agenda_entregas"> <span></span>Agenda de Entrega</a></li>
