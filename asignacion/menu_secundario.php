@@ -36,6 +36,14 @@
 			<!-- <li class=""><a href="../ventas/web/recursos_dyv_toyota.php" target="_blank"><span class="icon-usd">  </span>Costos / Recursos</a></li> -->
 
 		<?php } ?>
+		<!-- idusuario = 94 es LUIS GUTIERREZ carga los usados -->
+		<?php if ($_SESSION["id"]==94) {?>
+			<li><a href="#" class="item_link"><span class="icon-car">  </span>Asignación</a>
+				<ul>
+					<li class=""><a href="#" class="item_link" data-id="1"><span class="icon-carga-uno"> </span>Nuevo</a></li>
+				</ul>
+			</li>
+		<?php } ?>
 			<li><a href="#" class="item_link"><span class="icon-calendar">  </span>Agendas</a>
 				<ul>
 					<li><a href="" class="item_link icon-calendar" data-id="agenda_entregas"> <span></span>Agenda de Entrega</a></li>
@@ -116,7 +124,6 @@
 	<?php endif ?>
 			<li><a href="#" class="item_link">USADOS</a>
 				<ul>
-
 					<li><a href="usados_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Planilla Gral.</a></li>
 					<li><a href="usados_certificados_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Planilla Físico</a></li>
 				</ul>
