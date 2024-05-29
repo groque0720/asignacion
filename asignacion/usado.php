@@ -15,7 +15,7 @@ $id_usuario = $_SESSION["id"];
 $nom_asesor=$_SESSION["usuario"];
 $es_gerente=$_SESSION["es_gerente"];
 
-if ($id_usuario == 94) {
+if ($id_usuario == 94 or $id_usuario == 124) {
 	$id_perfil = 14;
 }
 
