@@ -21,13 +21,17 @@
 
 
 	$ultimo_dia_mes_hasta = cal_days_in_month(CAL_GREGORIAN, $mes_hasta, $año_hasta);
-	$fec_ini = $año_desde.'/'.$mes_desde.'/01';
-	$fec_fin = $año_hasta.'/'.$mes_hasta.'/'.$ultimo_dia_mes_hasta;
+	// $fec_ini = $año_desde.'/'.$mes_desde.'/01';
+	// $fec_fin = $año_hasta.'/'.$mes_hasta.'/'.$ultimo_dia_mes_hasta;
 
+	
+	$fec_ini = sprintf('%04d-%02d-01', $año_desde, $mes_desde);
+    $fec_fin = sprintf('%04d-%02d-%02d', $año_hasta, $mes_hasta, $ultimo_dia_mes_hasta);
+	
 	$cadena .= " fec_entrega >= '$fec_ini' AND fec_entrega <= '$fec_fin' ";
 
-
-$SQL="SELECT * FROM view_asignaciones_entregadas WHERE entregada = 1 AND".$cadena." ORDER BY fec_entrega DESC";
+$SQL="SELECT * FROM view_asignaciones_entregadas WHERE entregada = 1 AND ".$cadena." ORDER BY fec_entrega DESC";
+// $query = "SELECT * FROM view_asignaciones_entregadas WHERE entregada = 1 AND fec_entrega BETWEEN ".$fec_ini." AND ".$fec_fin." ORDER BY fec_entrega DESC";
 $unidades = mysqli_query($con, $SQL);
 include('contenido_relleno_entregadas_cuerpo.php');
  ?>
