@@ -31,8 +31,39 @@
 	
 	$cadena .= " fec_entrega >= '$fec_ini' AND fec_entrega <= '$fec_fin' ";
 
-$SQL="SELECT * FROM view_asignaciones_entregadas WHERE entregada = 1 AND ".$cadena." ORDER BY fec_entrega DESC";
-// $query = "SELECT * FROM view_asignaciones_entregadas WHERE entregada = 1 AND fec_entrega BETWEEN ".$fec_ini." AND ".$fec_fin." ORDER BY fec_entrega DESC";
+// $SQL="SELECT * FROM view_asignaciones_entregadas WHERE ".$cadena." ORDER BY fec_entrega DESC";
+
+
+$SQL = "SELECT
+asignaciones.id_unidad AS id_unidad,
+asignaciones.`año` AS `año`,
+asignaciones.nro_orden AS nro_orden,
+asignaciones.interno AS interno,
+asignaciones.chasis AS chasis,
+asignaciones.cliente AS cliente,
+usuarios.nombre AS asesor,
+asignaciones.id_mes AS id_mes,
+asignaciones.id_sucursal AS id_sucursal,
+asignaciones.fec_reserva AS fec_reserva,
+asignaciones.id_asesor AS id_asesor,
+asignaciones.cancelada AS cancelada,
+asignaciones.nro_unidad AS nro_unidad,
+asignaciones.fec_arribo AS fec_arribo,
+asignaciones.fec_despacho AS fec_despacho,
+asignaciones.patentada AS patentada,
+asignaciones.id_ubicacion AS id_ubicacion,
+asignaciones.pagado AS pagado,
+asignaciones.fec_entrega AS fec_entrega,
+asignaciones.id_grupo,
+asignaciones.id_modelo,
+asignaciones.id_color,
+asignaciones.entregada
+FROM
+((((asignaciones))
+JOIN usuarios ON ((asignaciones.id_asesor = usuarios.idusuario))))
+where ((`asignaciones`.`entregada` = 1) and (`asignaciones`.`borrar` = 0) and (`asignaciones`.`guardado` = 1) and (`asignaciones`.`fec_entrega` >= '".$fec_ini."') and (`asignaciones`.`fec_entrega` <= '".$fec_fin."') )
+order by `asignaciones`.`fec_entrega` desc";
+
 $unidades = mysqli_query($con, $SQL);
 include('contenido_relleno_entregadas_cuerpo.php');
  ?>
