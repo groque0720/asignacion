@@ -67,7 +67,8 @@ if ($tipo_venta=="") {
 		reservas.idcredito as idcredito,
 		reservas.estadopago as estadopago,
 		reservas.cancelada as cancelada,
-		reservas.idcliente as idcliente
+		reservas.idcliente as idcliente,
+		reservas.venta as tipo_venta
 		FROM
 		clientes
 		Inner Join reservas ON clientes.idcliente = reservas.idcliente
@@ -112,6 +113,7 @@ if ($tipo_venta=="") {
 		reservas.estadopago as estadopago,
 		reservas.cancelada as cancelada,
 		reservas.idcliente as idcliente
+		reservas.venta as tipo_venta
 		FROM
 		clientes
 		Inner Join reservas ON clientes.idcliente = reservas.idcliente
