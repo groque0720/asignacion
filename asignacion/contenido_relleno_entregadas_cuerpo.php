@@ -77,10 +77,8 @@
 					<col width="3%">
 					<col width="2%">
 					<col width="2%">
-					<col width="2%">
-					<col width="2%">
-					<col width="7%">
-					<col width="4%">
+					<col width="10%">
+					<col width="1%">
 					<col width="3.5%">
 		</colgroup>
 		<thead>
@@ -96,8 +94,8 @@
 				<td>Chasis</td>
 				<td>Asignado</td>
 				<td>Destino</td>
-				<!-- <td>Canc.</td>
-				<td>Pte.</td> -->
+				<td>Canc.</td>
+				<td>Pte.</td>
 				<td>Cliente</td>
 				<td>Asesor</td>
 				<td>Fec. Ent.</td>
@@ -122,7 +120,6 @@
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $color_a[$unidad['id_color']]['color']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $sucursal_a[$unidad['id_sucursal']]['sucres']; ?></td>
-
 				<td style="page-break-inside: always;" class="celda-espacio-left celda celda_cliente" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['cliente']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['asesor']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_entrega']); ?></td>
