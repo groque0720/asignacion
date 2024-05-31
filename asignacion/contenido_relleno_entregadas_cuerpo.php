@@ -1,5 +1,5 @@
 <?php
-
+  set_time_limit(300);
 	//cargo en un arreglo todos los meses que ocuparia en la tabla.
 		$SQL="SELECT * FROM meses";
 		$meses=mysqli_query($con, $SQL);
