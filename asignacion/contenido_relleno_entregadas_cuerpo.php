@@ -94,8 +94,6 @@
 				<td>Chasis</td>
 				<td>Asignado</td>
 				<td>Destino</td>
-				<td>Canc.</td>
-				<td>Pte.</td>
 				<td>Cliente</td>
 				<td>Asesor</td>
 				<td>Fec. Ent.</td>
