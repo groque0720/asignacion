@@ -104,7 +104,23 @@
 
 
 
-		while ($unidad=mysqli_fetch_array($unidades)) { ?>
+		while ($unidad=mysqli_fetch_array($unidades)) { 
+			// Formatear la fecha de despacho
+				$fec_despacho = new DateTime($unidad['fec_despacho']);
+				$formatted_fec_despacho = $fec_despacho->format('d-m-Y');
+
+				// Formatear la fecha de arribo (si existe)
+				$fec_arribo = !empty($unidad['fec_arribo']) ? new DateTime($unidad['fec_arribo']) : null;
+				$formatted_fec_arribo = $fec_arribo ? $fec_arribo->format('d-m-Y') : '';
+
+				// Formatear la fecha de entrega (si existe)
+				$fec_entrega = !empty($unidad['fec_entrega']) ? new DateTime($unidad['fec_entrega']) : null;
+				$formatted_fec_entrega = $fec_entrega ? $fec_entrega->format('d-m-Y') : '';			
+			?>
+
+		
+
+
 		<tbody  style="page-break-inside: always;" class="lista-unidades listado_asignacion">
 			<tr style="page-break-inside: always;" class="<?php echo 'fila_'.$fila.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>">
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
@@ -112,15 +128,15 @@
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['año']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_orden']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['interno']; ?></td>
-				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_despacho']); ?></td>
-				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_arribo']); ?></td>
+				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $formatted_fec_despacho ?></td>
+				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo ($unidad['fec_arribo']); ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda fila-grupo " data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $grupo_a[$unidad['id_grupo']]['grupo'].' '.$modelo_a[$unidad['id_modelo']]['modelo']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $color_a[$unidad['id_color']]['color']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $sucursal_a[$unidad['id_sucursal']]; ?></td>
 				<td style="page-break-inside: always;" class="celda-espacio-left celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['cliente']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['asesor']; ?></td>
-				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_entrega']); ?></td>
+				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo ($unidad['fec_entrega']); ?></td>
 			</tr>
 
 	<?php } ?>
