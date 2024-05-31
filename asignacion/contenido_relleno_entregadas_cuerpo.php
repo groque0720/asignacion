@@ -11,13 +11,23 @@
 	//fin de carga de meses.
 	//
 	//cargo en arreglo los colores de la tabla
-	$SQL="SELECT * FROM colores ORDER BY color";
-	$colores=mysqli_query($con, $SQL);
-	$color_a[0]['color']= '-';
-	$i=1;
-	while ($color=mysqli_fetch_array($colores)) {
-		$color_a[$color['idcolor']]['color']= $color['color'];
-		$i++;
+			// $SQL="SELECT * FROM colores ORDER BY color";
+			// $colores=mysqli_query($con, $SQL);
+			// $color_a[0]['color']= '-';
+			// $i=1;
+			// while ($color=mysqli_fetch_array($colores)) {
+			// 	$color_a[$color['idcolor']]['color']= $color['color'];
+			// 	$i++;
+			// }
+
+			$SQL="SELECT * FROM colores ORDER BY color";
+			$colores=mysqli_query($con, $SQL);
+
+	$color_a = [];
+	$color_a[0]['color'] = '-';
+
+	while ($color = mysqli_fetch_assoc($colores)) {
+		$color_a[$color['idcolor']]['color'] = $color['color'];
 	}
 	//fin de carga de colores
 	//
@@ -129,7 +139,8 @@
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $formatted_fec_despacho; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $formatted_fec_arribo; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda fila-grupo " data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $grupo_a[$unidad['id_grupo']]['grupo'].' '.$modelo_a[$unidad['id_modelo']]['modelo']; ?></td>
-
+				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
+				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $color_a[$unidad['id_color']]['color']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $sucursal_a[$unidad['id_sucursal']]; ?></td>
 				<td style="page-break-inside: always;" class="celda-espacio-left celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['cliente']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['asesor']; ?></td>
