@@ -96,8 +96,8 @@
 				<td>Chasis</td>
 				<td>Asignado</td>
 				<td>Destino</td>
-				<td>Canc.</td>
-				<td>Pte.</td>
+				<!-- <td>Canc.</td>
+				<td>Pte.</td> -->
 				<td>Cliente</td>
 				<td>Asesor</td>
 				<td>Fec. Ent.</td>
@@ -122,8 +122,7 @@
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $color_a[$unidad['id_color']]['color']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $sucursal_a[$unidad['id_sucursal']]['sucres']; ?></td>
-				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['cancelada']==1) { echo 'Si';}else{echo '-';} ?></td>
-				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['patentada']==1) { echo 'Si';}else{echo '-';} ?></td>
+
 				<td style="page-break-inside: always;" class="celda-espacio-left celda celda_cliente" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['cliente']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['asesor']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_entrega']); ?></td>
