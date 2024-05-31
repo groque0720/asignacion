@@ -121,6 +121,9 @@
 				<td style="page-break-inside: always;" class="centrar-texto celda fila-grupo " data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $grupo_a[$unidad['id_grupo']]['grupo'].' '.$modelo_a[$unidad['id_modelo']]['modelo']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $color_a[$unidad['id_color']]['color']; ?></td>
+				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $sucursal_a[$unidad['id_sucursal']]['sucres']; ?></td>
+				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['cancelada']==1) { echo 'Si';}else{echo '-';} ?></td>
+				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php if ($unidad['patentada']==1) { echo 'Si';}else{echo '-';} ?></td>
 
 			</tr>
 
