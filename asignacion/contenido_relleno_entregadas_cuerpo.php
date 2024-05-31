@@ -118,8 +118,6 @@
 				$formatted_fec_entrega = $fec_entrega ? $fec_entrega->format('d-m-y') : '';			
 			?>
 
-		
-
 
 		<tbody  style="page-break-inside: always;" class="lista-unidades listado_asignacion">
 			<tr style="page-break-inside: always;" class="<?php echo 'fila_'.$fila.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>">
