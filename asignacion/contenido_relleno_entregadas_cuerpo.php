@@ -24,11 +24,11 @@
 	//	cargo los destinos de unidad
 	$SQL="SELECT * FROM sucursales";
 	$sucursales=mysqli_query($con, $SQL);
-	$sucursal_a[0]['sucres']= '-';
-	$i=1;
+	// $sucursal_a[0]['sucres']= '-';
+	// $i=0;
 	while ($sucursal=mysqli_fetch_array($sucursales)) {
-		$sucursal_a[$i]['sucres']= $sucursal['sucres'];
-		$i++;
+		$sucursal_a[$sucursal['idsucursal']]= $sucursal['sucres'];
+		// $i++;
 	}
 	//fin de carga de sucursales
 	//
@@ -117,7 +117,7 @@
 				<td style="page-break-inside: always;" class="centrar-texto celda fila-grupo " data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $grupo_a[$unidad['id_grupo']]['grupo'].' '.$modelo_a[$unidad['id_modelo']]['modelo']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $color_a[$unidad['id_color']]['color']; ?></td>
-
+				<td style="page-break-inside: always;" class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $sucursal_a[$unidad['id_sucursal']]; ?></td>
 				<td style="page-break-inside: always;" class="celda-espacio-left celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['cliente']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['asesor']; ?></td>
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_entrega']); ?></td>
