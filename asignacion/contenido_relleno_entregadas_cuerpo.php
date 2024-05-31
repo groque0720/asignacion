@@ -73,12 +73,12 @@
 					<col width="3%">
 					<col width="3.5%">
 					<col width="3.5%">
-					<col class="fila-grupo " width="14%">
+					<col class="fila-grupo " width="12%">
 					<col width="3%">
 					<col width="2%">
 					<col width="2%">
 					<col width="10%">
-					<col width="1%">
+					<col width="6%">
 					<col width="3.5%">
 		</colgroup>
 		<thead>
