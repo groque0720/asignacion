@@ -34,7 +34,7 @@ $cont_modelo = 1;
 					<?php echo $grupo['grupo']; ?>
 
 					<?php if($id_usado=='bloqueado') {  ?>
-						🔐  ⚙️
+						🔐  ⚙️ <span style="color:red">Bloqueado</span>
 					<?php } ?>
 
 				<i class="fa icon-chevron-down"></i>
