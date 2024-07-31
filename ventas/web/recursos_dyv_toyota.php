@@ -38,6 +38,9 @@ $(document).ready(function(){
 		if ($("#informe").val()==1) {
 			window.open('../../asignacion/costos_TASA_pdf.php','_blank');
 		}
+		if ($("#informe").val()==10) {
+			window.open('../../asignacion/costos_TASA_pdf_STPA.php','_blank');
+		}
 
 		if ($("#informe").val()==3) {
 			window.open('../../asignacion/planilla_asignacion_stock_pdf.php','_blank');
@@ -75,7 +78,8 @@ $(document).ready(function(){
 				<label for="">Informe Seg&uacute;n:</label>
 				<select name="informe" id="informe">
 					<option value="0"></option>
-					<option value="1">Costos TASA</option>
+					<option value="1">Costos TASA </option>
+					<option value="10">Costos TASA (STPA)</option>
 					<option value="2">Recurso Cliente</option>
 					<option value="3">Stock Asignación</option>
 					<!-- <option value="3">Fecha de Arribo</option> -->
