@@ -134,7 +134,7 @@ conectar();
 
 		<div class="ed-item web-1-6 item">
 				<div class="img">
-				<a href="/ect">
+				<a href="/planes_avanzados/">
 					<div class="ed-container">
 						<div class="ed-item" style="display: flex; justify-content: center;">
 							<img style="width: 80px;" src="/dashboard/imagenes/logo-tpa.png" alt="">
