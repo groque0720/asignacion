@@ -55,8 +55,8 @@ if (isset($_GET['id'])) {
         <form class=" mx-auto p-5 border rounded" autocomplete="off" action="actions/reservar_plan_avanzado.php" method="POST" >
 
         <input type="text" id="planUuId" class="p-2 text-right pr-4" name="planUuId" value="<?php echo $planUuId ? $plan['uuid']:'';  ?>" hidden  />
-        <input type="date" id="planUuId" class="p-2 text-right pr-4" name="fecha_reserva" value="<?php echo date("Y-m-d");  ?>"   />
-        <input type="time" id="planUuId" class="p-2 text-right pr-4" name="hora_reserva" value="<?php echo date("H:i");  ?>"   />
+        <input type="date" id="planUuId" class="p-2 text-right pr-4" name="fecha_reserva" value="<?php echo date("Y-m-d");  ?>"  hidden  />
+        <input type="time" id="planUuId" class="p-2 text-right pr-4" name="hora_reserva" value="<?php echo date("H:i");  ?>"  hidden  />
         <!-- <input type="text" id="planUuId" class="p-2 text-right pr-4" name="planUuId" value="" hidden  /> -->
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
