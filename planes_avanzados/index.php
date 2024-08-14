@@ -49,7 +49,7 @@ $isAdmin = in_array($userId, $usersAdmin);
         </div>
         <?php } ?>
 
-        <div class="zona-tabla m-auto ">
+        <div class="zona-tabla m-auto mb-64">
                       
             <table class="table_tpa w-full text-xs ">
                 <thead class="thead_tpa">
