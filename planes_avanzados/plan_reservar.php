@@ -1,0 +1,153 @@
+<?php
+include("funciones/func_mysql.php");
+conectar();
+mysqli_query($con,"SET NAMES 'utf8'");
+@session_start();
+//COMPRUEBA QUE EL USUARIO ESTA AUTENTIFICADO
+if ($_SESSION["autentificado"] != "SI") {
+	//si no existe, envio a la página de autentificacion
+	header("Location: ../login");
+	//ademas salgo de este script
+	exit();
+}
+$userId = $_SESSION["id"];
+$planUuId = '';
+
+if (isset($_GET['id'])) {
+    $planUuId = $_GET['id']; 
+    $SQL = "SELECT
+                tpa_planes_avanzados.*, 
+                tpa_modalidades.modalidad, 
+                tpa_modelos.modelo
+            FROM
+                tpa_modelos
+                INNER JOIN
+                tpa_planes_avanzados
+                ON 
+                    tpa_modelos.id = tpa_planes_avanzados.modelo_id
+                INNER JOIN
+                tpa_modalidades
+                ON 
+                    tpa_planes_avanzados.modalidad_id = tpa_modalidades.id
+            WHERE
+                tpa_planes_avanzados.uuid =  '$planUuId'";
+    $result = mysqli_query($con, $SQL);
+    $plan = mysqli_fetch_array($result);
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <?php
+        $title = "Reserva Plan Avanzado";
+        include("components/header.php");
+    ?>
+</head>
+<body>
+    <div class="container m-auto ">
+        <?php
+            $titulo = "Reserva Plan Avanzado";
+            include("components/cabecera.php");
+        ?>
+
+        <form class=" mx-auto p-5 border rounded" autocomplete="off" action="actions/reservar_plan_avanzado.php" method="POST" >
+
+        <input type="text" id="planUuId" class="p-2 text-right pr-4" name="planUuId" value="<?php echo $planUuId ? $plan['uuid']:'';  ?>" hidden  />
+        <input type="date" id="planUuId" class="p-2 text-right pr-4" name="fecha_reserva" value="<?php echo date("Y-m-d");  ?>"   />
+        <input type="time" id="planUuId" class="p-2 text-right pr-4" name="hora_reserva" value="<?php echo date("H:i");  ?>"   />
+        <!-- <input type="text" id="planUuId" class="p-2 text-right pr-4" name="planUuId" value="" hidden  /> -->
+
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
+
+                <div class="mb-5">
+                    <label for="modelo">Modelo - Versión</label>
+                    <div class="input_info"><?php echo $plan['modelo'] ?></div>
+                </div>
+
+
+                <div class="mb-5">
+                    <label for="modalidad">Modalidad - Plazo</label>
+                    <div class="input_info"><?php echo $plan['modalidad'] ?></div>
+                </div>
+                
+                <div class="mb-5">
+                    <label for="grupo_orden" >Grupo - Orden</label>
+                    <div class="input_info text-right"><?php echo $plan['grupo_orden'] ?></div>
+                </div>
+
+                <div class="mb-5">
+                    <label for="cuotas_pagadas_cantidad" >Cantidad Cuotas Pagadas </label>
+                    <div class="input_info text-right"><?php echo $plan['cuotas_pagadas_cantidad'] ?></div>
+                </div>
+
+
+                <div class="mb-5">
+                    <label for="venta" >Precio Venta</label>
+                    <div class="input_info text-right"><?php echo '$ '.number_format($plan['venta'], 2, ',', '.'); ?></div>
+                </div>
+
+                <div class="mb-5">
+                    <label for="cuota_promedio" >Cuota Promedio</label>
+                    <div class="input_info text-right"><?php echo '$ '.number_format($plan['cuota_promedio'], 2, ',', '.'); ?></div>
+                </div>
+
+                <div class="mb-5">
+                    <label for="valor_unidad" >Valor Unidad</label>
+                    <div class="input_info text-right"><?php echo '$ '.number_format($plan['valor_unidad'], 2, ',', '.'); ?></div>
+                </div>
+              
+            </div>
+            <hr class="mb-5">
+            <!-- INformación de la reserva -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <div class="mb-5">
+                    <label for="estado">Estado</label>
+                    <select id="estado" class="p-2" name="estado" required  disabled>
+                        <option value=""></option>
+                        <?php
+                            include("actions/obtener_estados.php");
+                            while ($estado=mysqli_fetch_array($estados)) {
+                                $selected = ($estado['id'] == 2) ? 'selected' : '';
+                                echo "<option value='".$estado['id']."' $selected>".$estado['estado']."</option>";
+                            };  
+                        ?>
+                    </select>
+                </div>
+                <div class="mb-5">
+                    <label for="usuario_venta_id">Asesor Venta</label>
+                    <select id="usuario_venta_id" class="p-2 " name="usuario_venta_id" disabled>
+                        <option value="null"></option>
+                        <?php
+                            include("actions/obtener_usuario_asesores.php");
+                            while ($usuario=mysqli_fetch_array($usuarios)) {
+                                $selected = ($usuario['idusuario'] == $userId) ? 'selected' : '';
+                                echo "<option value='".$usuario['idusuario']."' $selected>".$usuario['nombre']."</option>";
+                            };  
+                        ?>
+                    </select>
+                </div>
+                <div class="mb-5">
+                    <label for="cliente " class="text-red-600" >Cliente <sup>(*)</sup></label>
+                    <input type="text" id="cliente" name="cliente" required value="<?php echo $planUuId ? $plan['cliente']:'';  ?>" class="p-2 text-right pr-4"   />
+                </div>
+                <div class="mb-5">
+                    <label for="monto_reserva" class="text-red-600" >Monto Reserva <sup>(*)</label>
+                    <input type="text" id="monto_reserva" name="monto_reserva" required  value="<?php echo $planUuId ? $plan['monto_reserva']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+
+            </div>
+            <div class="flex justify-end border-t pt-5">
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+<?php
+    mysqli_close($con);
+?>
+</html>
