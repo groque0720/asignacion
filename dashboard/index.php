@@ -176,6 +176,33 @@ if ($_SESSION["autentificado"] != "SI") {
 						</div>
 					</div>
 
+					<?php if($_SESSION["id_negocio"]==2): ?>
+
+					<div class="ed-item web-1-6 item">
+						<div class="img">
+						<a href="/planes_avanzados/">
+							<div class="ed-container">
+								<div class="ed-item" style="display: flex; justify-content: center;">
+									<img style="width: 80px;" src="/dashboard/imagenes/logo-tpa.png" alt="">
+								</div>
+							</div>
+							<div class="centrar-texto">
+								<span class="titulo">
+									Planes Avanzados DYV
+								</span>
+							</div>
+						</a>
+						</div>
+					</div>
+
+					<?php endif ?>
+
+
+
+
+
+					
+
 			<?php endif ?>
 
 
