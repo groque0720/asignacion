@@ -102,7 +102,7 @@ if (isset($_GET['id'])) {
                     <div class="input_info text-right"><?php echo $plan['integracion'] ?></div>
                 </div>
                 <div class="mb-5">
-                    <label for="derecho_adjudicacion" >Valor Unidad</label>
+                    <label for="derecho_adjudicacion" >Derecho Adjudicación</label>
                     <div class="input_info text-right"><?php echo '$ '.number_format($plan['derecho_adjudicacion'], 2, ',', '.'); ?></div>
                 </div>
               
