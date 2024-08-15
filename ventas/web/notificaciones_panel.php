@@ -132,6 +132,8 @@ conectar();
 			</div>
 		</div>
 
+		<?php if($_SESSION["id_negocio"]==2) { ?>
+
 		<div class="ed-item web-1-6 item">
 				<div class="img">
 				<a href="/planes_avanzados/">
@@ -148,7 +150,7 @@ conectar();
 				</a>
 				</div>
 			</div>
-
+			<?php } ?>
 
 
 		<div class="ed-item web-1-6 item">
@@ -168,6 +170,9 @@ conectar();
 			</div>
 		</div>
 
+
+		
+
 		<div class="ed-item web-1-6 item">
 			<div class="img">
 				<a href="https://cms.derkayvargas.com/infoauto"  target="_blank">
@@ -184,6 +189,7 @@ conectar();
 				</a>
 			</div>
 		</div>
+
 
 		<?php if ($_SESSION["id"]==94 OR $_SESSION["id"]==96) { ?>
 			<div class="ed-item web-1-6 item">
