@@ -20,18 +20,43 @@ function convertirNumero($monto) {
 $estado_id = 2;
 $usuario_venta_id = $userId;
 $monto_reserva = convertirNumero($_POST['monto_reserva']);
-$cliente = $_POST['cliente'];
 $fecha_reserva = $_POST['fecha_reserva'];
 $hora_reserva = $_POST['hora_reserva'];
+$cliente = $_POST['cliente'];
+$sexo = $_POST['sexo'];
+$fecha_nacimiento = $_POST['fecha_nacimiento'] ?? null;
+$edad = $_POST['edad'];
+$dni = $_POST['dni'];
+$cuil = $_POST['cuil'];
+$direccion = $_POST['direccion'];
+$localidad = $_POST['localidad'];
+$provincia = $_POST['provincia'];
+$email = $_POST['email'];
+$celular = $_POST['celular'];
 
+if ($fecha_nacimiento) {
+    $fecha_nacimiento = "'".$fecha_nacimiento."'";
+} else {
+    $fecha_nacimiento = "NULL";
+}
 
 $planUuId = $_POST['planUuId'];
 $SQL = "UPDATE tpa_planes_avanzados SET ";
 $SQL .= "usuario_venta_id = $usuario_venta_id, ";
 $SQL .= "monto_reserva = $monto_reserva, ";
-$SQL .= "cliente = '$cliente', ";
 $SQL .= "fecha_reserva = '$fecha_reserva', ";
 $SQL .= "hora_reserva = '$hora_reserva', ";
+$SQL .= "cliente = '$cliente', ";
+$SQL .= "sexo = '$sexo', ";
+$SQL .= "fecha_nacimiento = $fecha_nacimiento, ";
+$SQL .= "edad = '$edad', ";
+$SQL .= "dni = '$dni', ";
+$SQL .= "cuil = '$cuil', ";
+$SQL .= "direccion = '$direccion', ";
+$SQL .= "localidad = '$localidad', ";
+$SQL .= "provincia = '$provincia', ";
+$SQL .= "email = '$email', ";
+$SQL .= "celular = '$celular', ";
 $SQL .= "estado_id = $estado_id ";
 $SQL .= "WHERE uuid = '".$planUuId."'";
 

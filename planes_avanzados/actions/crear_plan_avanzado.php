@@ -33,6 +33,7 @@ function generarUUID() {
 $modelo_id = $_POST['modelo'];
 $modalidad_id = $_POST['modalidad'];
 $grupo_orden = $_POST['grupo_orden'];
+$situacion_id = $_POST['situacion_id'];
 $cuotas_pagadas_cantidad = $_POST['cuotas_pagadas_cantidad'];
 $cuotas_pagadas_monto = convertirNumero($_POST['cuotas_pagadas_monto']);
 $costo = convertirNumero($_POST['costo']);
@@ -43,7 +44,26 @@ $valor_unidad = convertirNumero($_POST['valor_unidad']);
 $estado_id = $_POST['estado'];
 $usuario_venta_id = $_POST['usuario_venta_id'];
 $monto_reserva = convertirNumero($_POST['monto_reserva']);
+$derecho_adjudicacion = convertirNumero($_POST['derecho_adjudicacion']);
+$integracion = $_POST['integracion'];
+$situacionIdActual = $_POST['situacionIdActual'];
 $cliente = $_POST['cliente'];
+$sexo = $_POST['sexo'];
+$fecha_nacimiento = $_POST['fecha_nacimiento'] ?? null;
+$edad = $_POST['edad'];
+$dni = $_POST['dni'];
+$cuil = $_POST['cuil'];
+$direccion = $_POST['direccion'];
+$localidad = $_POST['localidad'];
+$provincia = $_POST['provincia'];
+$email = $_POST['email'];
+$celular = $_POST['celular'];
+
+if ($fecha_nacimiento) {
+    $fecha_nacimiento = "'".$fecha_nacimiento."'";
+} else {
+    $fecha_nacimiento = "NULL";
+}
 
 
 if ($_POST['planUuId']!='') {
@@ -52,7 +72,10 @@ if ($_POST['planUuId']!='') {
     $SQL .= "modelo_id = '$modelo', ";
     $SQL .= "modalidad_id = '$modalidad', ";
     $SQL .= "grupo_orden = '$grupo_orden', ";
+    $SQL .= "situacion_id = $situacion_id, ";
     $SQL .= "cuotas_pagadas_cantidad = '$cuotas_pagadas_cantidad', ";
+    $SQL .= "integracion = '$integracion', ";
+    $SQL .= "derecho_adjudicacion = '$derecho_adjudicacion', ";
     $SQL .= "cuotas_pagadas_monto = $cuotas_pagadas_monto, ";
     $SQL .= "costo = $costo, ";
     $SQL .= "plus = $plus, ";
@@ -62,15 +85,25 @@ if ($_POST['planUuId']!='') {
     $SQL .= "usuario_venta_id = $usuario_venta_id, ";
     $SQL .= "monto_reserva = $monto_reserva, ";
     $SQL .= "cliente = '$cliente', ";
+    $SQL .= "sexo = '$sexo', ";
+    $SQL .= "fecha_nacimiento = $fecha_nacimiento, ";
+    $SQL .= "edad = '$edad', ";
+    $SQL .= "dni = '$dni', ";
+    $SQL .= "cuil = '$cuil', ";
+    $SQL .= "direccion = '$direccion', ";
+    $SQL .= "localidad = '$localidad', ";
+    $SQL .= "provincia = '$provincia', ";
+    $SQL .= "email = '$email', ";
+    $SQL .= "celular = '$celular', ";
     $SQL .= "estado_id = $estado_id ";
     $SQL .= "WHERE uuid = '".$planUuId."'";
 } else {
     $uuid = generarUUID();
     $SQL = "INSERT INTO tpa_planes_avanzados ( ";
-    $SQL .= "uuid, modelo_id, modalidad_id, grupo_orden, cuotas_pagadas_cantidad, cuotas_pagadas_monto, ";
+    $SQL .= "uuid, modelo_id, modalidad_id,  grupo_orden, situacion_id, cuotas_pagadas_cantidad, cuotas_pagadas_monto, ";
     $SQL .= "costo, plus, venta, cuota_promedio, valor_unidad ";
     $SQL .= ") VALUES ( ";
-    $SQL .= " '$uuid', '$modelo', '$modalidad', '$grupo_orden', '$cuotas_pagadas_cantidad', $cuotas_pagadas_monto, ";
+    $SQL .= " '$uuid', '$modelo', '$modalidad', '$grupo_orden', $situacion_id, '$cuotas_pagadas_cantidad', $cuotas_pagadas_monto, ";
     $SQL .= " $costo, $plus, $venta, $cuota_promedio, $valor_unidad";
     $SQL .= ")";
 }
@@ -86,7 +119,7 @@ if (!$result) {
 
 
 mysqli_close($con);
-header("Location: ../");
+header("Location: ../?situacionId=$situacionIdActual");
 
 
 

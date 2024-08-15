@@ -14,6 +14,7 @@ if ($_SESSION["autentificado"] != "SI") {
 $userId = $_SESSION["id"];
 $usersAdmin = ['56','81','11'];
 $isAdmin = in_array($userId, $usersAdmin);
+$situacionId = $_GET['situacionId'] ?? 1;
 // 56 Mauro Vargas
 // 81 Santiago Galiano
 // 11 Admin
@@ -26,7 +27,7 @@ $isAdmin = in_array($userId, $usersAdmin);
 <html lang="es">
 <head>
     <?php
-        $title = "Planes Avanzados";
+        $title = $situacionId ==1 ? "Planes Avanzados" : "Planes Adjudicados" ;
         include("components/header.php");
     ?>
 </head>
@@ -35,21 +36,42 @@ $isAdmin = in_array($userId, $usersAdmin);
     <div class="container m-auto ">
 
         <?php
-            $titulo = "Listado de planes avanzados";
+            $titulo = $situacionId == 1 ? "Listado de planes avanzados" : "Listado de planes adjudicados" ;
             include("components/cabecera.php");
         ?>
 
-        <?php if($isAdmin) { ?>
-        <div class="flex justify-end mb-5">
-            <a
-            href="/planes_avanzados/plan_view.php" 
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Nuevo
-            </a>
+        
+        <div class="flex justify-between mb-5">
+            <?php 
+                $situ1="bg-gray-500 text-white p-2 px-5 rounded";
+                $situ2="bg-gray-100 text-gray-400 p-2 px-5 rounded";
+                if($situacionId == 2) {
+                    $situ1="bg-gray-100 text-gray-400 p-2 px-5 rounded";
+                    $situ2="bg-gray-500 text-white p-2 px-5 rounded";
+                }
+            ?>
+
+            <div class="flex gap-2">
+                <a href="?situacionId=1">
+                    <Button class="<?php echo $situ1 ?>">Avanzados</Button>
+                </a>
+                <a href="?situacionId=2">
+                    <button class="<?php echo $situ2 ?>">Adjudicados</button>
+                </a>
+            </div>
+            <?php if($isAdmin) { ?>
+                <a
+                href="/planes_avanzados/plan_view.php" 
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Nuevo
+                </a>
+            <?php } ?>
         </div>
-        <?php } ?>
+        
 
         <div class="zona-tabla m-auto mb-64">
+
+
                       
             <table class="table_tpa w-full text-xs ">
                 <thead class="thead_tpa">

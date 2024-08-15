@@ -97,6 +97,14 @@ if (isset($_GET['id'])) {
                     <label for="valor_unidad" >Valor Unidad</label>
                     <div class="input_info text-right"><?php echo '$ '.number_format($plan['valor_unidad'], 2, ',', '.'); ?></div>
                 </div>
+                <div class="mb-5">
+                    <label for="integracion" >Integración</label>
+                    <div class="input_info text-right"><?php echo $plan['integracion'] ?></div>
+                </div>
+                <div class="mb-5">
+                    <label for="derecho_adjudicacion" >Valor Unidad</label>
+                    <div class="input_info text-right"><?php echo '$ '.number_format($plan['derecho_adjudicacion'], 2, ',', '.'); ?></div>
+                </div>
               
             </div>
             <hr class="mb-5">
@@ -117,7 +125,7 @@ if (isset($_GET['id'])) {
                 </div>
                 <div class="mb-5">
                     <label for="usuario_venta_id">Asesor Venta</label>
-                    <select id="usuario_venta_id" class="p-2 " name="usuario_venta_id" disabled>
+                    <select id="usuario_venta_id" class="p-2 " name="usuario_venta_id" disabled required>
                         <option value="null"></option>
                         <?php
                             include("actions/obtener_usuario_asesores.php");
@@ -129,12 +137,59 @@ if (isset($_GET['id'])) {
                     </select>
                 </div>
                 <div class="mb-5">
+                    <label for="monto_reserva" class="text-red-600" >Monto Reserva <sup>(*)</label>
+                    <input type="text" id="monto_reserva" name="monto_reserva" required  value="<?php echo $planUuId ? $plan['monto_reserva']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+ 
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
+            <div class="mb-5">
                     <label for="cliente " class="text-red-600" >Cliente <sup>(*)</sup></label>
                     <input type="text" id="cliente" name="cliente" required value="<?php echo $planUuId ? $plan['cliente']:'';  ?>" class="p-2 text-right pr-4"   />
                 </div>
                 <div class="mb-5">
-                    <label for="monto_reserva" class="text-red-600" >Monto Reserva <sup>(*)</label>
-                    <input type="text" id="monto_reserva" name="monto_reserva" required  value="<?php echo $planUuId ? $plan['monto_reserva']:'';  ?>" class="p-2 text-right pr-4"  />
+                    <label for="sexo">Sexo</label>
+                    <select id="sexo" class="p-2 " name="sexo" required>
+                        <option value=""></option>
+                        <option value="M" <?php echo $planUuId && $plan['sexo'] == 'M' ? 'selected' : ''; ?>>Masculino</option>
+                        <option value="F" <?php echo $planUuId && $plan['sexo'] == 'F' ? 'selected' : ''; ?>>Femenino</option>
+                    </select>
+                </div>
+                <div class="mb-5">
+                    <label for="fecha_nacimiento" >Fecha Nacimiento</label>
+                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required value="<?php echo $planUuId ? $plan['fecha_nacimiento']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="mb-5">
+                    <label for="edad" >Edad</label>
+                    <input type="text" id="edad" name="edad" required value="<?php echo $planUuId ? $plan['edad']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="mb-5">
+                    <label for="dni" >DNI</label>
+                    <input type="text" id="dni" name="dni" required value="<?php echo $planUuId ? $plan['dni']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="mb-5">
+                    <label for="cuil" >CUIL / CUIT</label>
+                    <input type="text" id="cuil" name="cuil" required value="<?php echo $planUuId ? $plan['cuil']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="mb-5">
+                    <label for="direccion" >Dirección</label>
+                    <input type="text" id="direccion" name="direccion" required value="<?php echo $planUuId ? $plan['direccion']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="mb-5">
+                    <label for="localidad" >Localidad</label>
+                    <input type="text" id="localidad" name="localidad" required value="<?php echo $planUuId ? $plan['localidad']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="mb-5">
+                    <label for="provincia" >Provincia</label>
+                    <input type="text" id="provincia" name="provincia" required value="<?php echo $planUuId ? $plan['provincia']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="mb-5">
+                    <label for="email" >Email</label>
+                    <input type="text" id="email" name="email" required value="<?php echo $planUuId ? $plan['email']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="mb-5">
+                    <label for="celular" >Celular</label>
+                    <input type="text" id="celular" name="celular" required value="<?php echo $planUuId ? $plan['celular']:'';  ?>" class="p-2 text-right pr-4"  />
                 </div>
 
             </div>
