@@ -86,6 +86,17 @@ input:focus {
 }
 
 
+textarea {
+    width: 100%;
+    display: block;
+    background-color: rgb(249 250 251);
+    border: 1px solid rgb(209 213 219);
+    color: rgb(17 24 39);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    /* padding: 0.5rem 1rem; */
+}
+
 select {
     width: 100%;
     display: block;

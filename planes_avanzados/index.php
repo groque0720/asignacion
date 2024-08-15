@@ -13,12 +13,16 @@ if ($_SESSION["autentificado"] != "SI") {
 }
 $userId = $_SESSION["id"];
 $usersAdmin = ['56','81','11'];
-$isAdmin = in_array($userId, $usersAdmin);
-$situacionId = $_GET['situacionId'] ?? 1;
 // 56 Mauro Vargas
 // 81 Santiago Galiano
 // 11 Admin
+$isAdmin = in_array($userId, $usersAdmin);
 
+
+include("actions/obtener_modelos_activos_en_planes.php");
+
+$modelo_activo_id=$_GET['modelo_activo'] ?? 1;
+$situacionId = $_GET['situacionId'] ?? 1;
 
 
 ?>
@@ -27,7 +31,7 @@ $situacionId = $_GET['situacionId'] ?? 1;
 <html lang="es">
 <head>
     <?php
-        $title = $situacionId ==1 ? "Planes Avanzados" : "Planes Adjudicados" ;
+        $title = $situacionId ==1 ? "Planes Avanzados ".$modelo_nombre : "Planes Adjudicados ".$modelo_nombre ;
         include("components/header.php");
     ?>
 </head>
@@ -36,12 +40,12 @@ $situacionId = $_GET['situacionId'] ?? 1;
     <div class="container m-auto ">
 
         <?php
-            $titulo = $situacionId == 1 ? "Listado de planes avanzados" : "Listado de planes adjudicados" ;
+            $titulo = $situacionId == 1 ? "Listado de planes avanzados ".$modelo_nombre : "Listado de planes adjudicados ".$modelo_nombre ;
             include("components/cabecera.php");
         ?>
 
-        
-        <div class="flex justify-between mb-5">
+        <!-- Botonera seleccion de situacion -->
+        <div class="flex justify-between mb-3">
             <?php 
                 $situ1="bg-gray-500 text-white p-2 px-5 rounded";
                 $situ2="bg-gray-100 text-gray-400 p-2 px-5 rounded";
@@ -50,12 +54,11 @@ $situacionId = $_GET['situacionId'] ?? 1;
                     $situ2="bg-gray-500 text-white p-2 px-5 rounded";
                 }
             ?>
-
             <div class="flex gap-2">
-                <a href="?situacionId=1">
+                <a href="?situacionId=1&modelo_activo=<?php echo $modelo_activo_id; ?>">
                     <Button class="<?php echo $situ1 ?>">Avanzados</Button>
                 </a>
-                <a href="?situacionId=2">
+                <a href="?situacionId=2&modelo_activo=<?php echo $modelo_activo_id; ?>">
                     <button class="<?php echo $situ2 ?>">Adjudicados</button>
                 </a>
             </div>
@@ -64,6 +67,20 @@ $situacionId = $_GET['situacionId'] ?? 1;
                 href="/planes_avanzados/plan_view.php" 
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Nuevo
+                </a>
+            <?php } ?>
+        </div>
+
+        <!-- Botonera Seleccion de Modelos -->
+        <div class="flex mb-3 gap-3">
+            <?php
+                $mod_active="bg-blue-500 text-white p-2 px-5 rounded";
+                $mod_inactive="bg-blue-100 text-blue-400 p-2 px-5 rounded";
+            ?>
+
+            <?php while($modelo=mysqli_fetch_array($modelos_activos) ) { ?>
+                <a href="?situacionId=<?php echo $situacionId;  ?>&modelo_activo=<?php echo $modelo['modelo_id']; ?>">
+                    <Button class="<?php echo $modelo_activo_id == $modelo['modelo_id'] ? $mod_active : $mod_inactive ?>"><?php echo $modelo['modelo']  ?></Button>
                 </a>
             <?php } ?>
         </div>
@@ -111,7 +128,7 @@ $situacionId = $_GET['situacionId'] ?? 1;
                     include("actions/obtener_planes_avanzados.php");
                     while($plan=mysqli_fetch_array($planes_avanzados)  ) { ?>
                     <tr>
-                        <td class="td_bold"><?php echo $plan['modelo']; ?></td>
+                        <td class="td_bold"><?php echo $plan['modelo'].' '.$plan['version']; ?></td>
                         <td class="td_center td_bold"><?php echo $plan['modalidad']; ?></td>
                         <td class="td_center  td_blue" >
                             <?php if($isAdmin) { ?>

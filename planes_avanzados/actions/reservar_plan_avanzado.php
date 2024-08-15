@@ -21,6 +21,7 @@ $estado_id = 2;
 $usuario_venta_id = $userId;
 $monto_reserva = convertirNumero($_POST['monto_reserva']);
 $fecha_reserva = $_POST['fecha_reserva'];
+$modelo_version_retirar = $_POST['modelo_version_retirar'];
 $hora_reserva = $_POST['hora_reserva'];
 $cliente = $_POST['cliente'];
 $sexo = $_POST['sexo'];
@@ -46,6 +47,7 @@ $SQL .= "usuario_venta_id = $usuario_venta_id, ";
 $SQL .= "monto_reserva = $monto_reserva, ";
 $SQL .= "fecha_reserva = '$fecha_reserva', ";
 $SQL .= "hora_reserva = '$hora_reserva', ";
+$SQL .= "modelo_version_retirar = '$modelo_version_retirar', ";
 $SQL .= "cliente = '$cliente', ";
 $SQL .= "sexo = '$sexo', ";
 $SQL .= "fecha_nacimiento = $fecha_nacimiento, ";
@@ -59,7 +61,6 @@ $SQL .= "email = '$email', ";
 $SQL .= "celular = '$celular', ";
 $SQL .= "estado_id = $estado_id ";
 $SQL .= "WHERE uuid = '".$planUuId."'";
-
 
 $result = mysqli_query($con, $SQL);
 

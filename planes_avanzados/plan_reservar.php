@@ -16,21 +16,27 @@ $planUuId = '';
 if (isset($_GET['id'])) {
     $planUuId = $_GET['id']; 
     $SQL = "SELECT
-                tpa_planes_avanzados.*, 
-                tpa_modalidades.modalidad, 
-                tpa_modelos.modelo
-            FROM
-                tpa_modelos
-                INNER JOIN
-                tpa_planes_avanzados
-                ON 
-                    tpa_modelos.id = tpa_planes_avanzados.modelo_id
-                INNER JOIN
-                tpa_modalidades
-                ON 
-                    tpa_planes_avanzados.modalidad_id = tpa_modalidades.id
-            WHERE
-                tpa_planes_avanzados.uuid =  '$planUuId'";
+            tpa_planes_avanzados.*, 
+            tpa_modalidades.modalidad, 
+            tpa_planes_versiones.version, 
+            tpa_planes_modelos.modelo
+        FROM
+            tpa_planes_avanzados
+            INNER JOIN
+            tpa_planes_versiones
+            ON 
+                tpa_planes_avanzados.version_id = tpa_planes_versiones.id
+            INNER JOIN
+            tpa_planes_modelos
+            ON 
+                tpa_planes_versiones.modelo_id = tpa_planes_modelos.id
+            INNER JOIN
+            tpa_modalidades
+            ON 
+                tpa_planes_avanzados.modalidad_id = tpa_modalidades.id
+        WHERE
+            tpa_planes_avanzados.uuid = '$planUuId'";
+
     $result = mysqli_query($con, $SQL);
     $plan = mysqli_fetch_array($result);
 }
@@ -82,12 +88,6 @@ if (isset($_GET['id'])) {
                     <div class="input_info text-right"><?php echo $plan['cuotas_pagadas_cantidad'] ?></div>
                 </div>
 
-
-                <div class="mb-5">
-                    <label for="venta" >Precio Venta</label>
-                    <div class="input_info text-right"><?php echo '$ '.number_format($plan['venta'], 2, ',', '.'); ?></div>
-                </div>
-
                 <div class="mb-5">
                     <label for="cuota_promedio" >Cuota Promedio</label>
                     <div class="input_info text-right"><?php echo '$ '.number_format($plan['cuota_promedio'], 2, ',', '.'); ?></div>
@@ -99,11 +99,16 @@ if (isset($_GET['id'])) {
                 </div>
                 <div class="mb-5">
                     <label for="integracion" >Integración</label>
-                    <div class="input_info text-right"><?php echo $plan['integracion'] ?></div>
+                    <div class="input_info text-right"><?php echo '$ '.number_format($plan['integracion'], 2, ',', '.'); ?> </div>
                 </div>
                 <div class="mb-5">
                     <label for="derecho_adjudicacion" >Derecho Adjudicación</label>
                     <div class="input_info text-right"><?php echo '$ '.number_format($plan['derecho_adjudicacion'], 2, ',', '.'); ?></div>
+                </div>
+
+                <div class="mb-5">
+                    <label for="venta" >Precio Venta</label>
+                    <div class="input_info text-right"><?php echo '$ '.number_format($plan['venta'], 2, ',', '.'); ?></div>
                 </div>
               
             </div>
@@ -139,6 +144,10 @@ if (isset($_GET['id'])) {
                 <div class="mb-5">
                     <label for="monto_reserva" class="text-red-600" >Monto Reserva <sup>(*)</label>
                     <input type="text" id="monto_reserva" name="monto_reserva" required  value="<?php echo $planUuId ? $plan['monto_reserva']:'';  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="mb-5">
+                    <label for="modelo_version_retirar" class="text-red-600" >Modelo Versión Final <sup>(*)</label>
+                    <input type="text" id="modelo_version_retirar" name="modelo_version_retirar" required  value="<?php echo $plan['modelo_version_retirar'];  ?>" class="p-2 text-right pr-4"  />
                 </div>
  
             </div>
@@ -194,7 +203,7 @@ if (isset($_GET['id'])) {
 
             </div>
             <div class="flex justify-end border-t pt-5">
-                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Reservar</button>
             </div>
 
         </form>

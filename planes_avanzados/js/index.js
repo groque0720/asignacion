@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Selecciona todos los inputs que necesitan formateo de moneda
-    const currencyInputs = document.querySelectorAll("#plus, #venta, #cuota_promedio, #costo, #cuotas_pagadas_monto, #valor_unidad, #monto_reserva, #derecho_adjudicacion");
+    const currencyInputs = document.querySelectorAll("#plus, #venta, #cuota_promedio, #costo, #cuotas_pagadas_monto, #valor_unidad, #monto_reserva, #derecho_adjudicacion, #integracion");
 
     // Función para formatear el valor como moneda
     function formatCurrency(value) {

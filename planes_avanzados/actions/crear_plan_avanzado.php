@@ -30,7 +30,7 @@ function generarUUID() {
     return $uuid;
 }
 
-$modelo_id = $_POST['modelo'];
+$version_id = $_POST['version_id'];
 $modalidad_id = $_POST['modalidad'];
 $grupo_orden = $_POST['grupo_orden'];
 $situacion_id = $_POST['situacion_id'];
@@ -45,7 +45,7 @@ $estado_id = $_POST['estado'];
 $usuario_venta_id = $_POST['usuario_venta_id'];
 $monto_reserva = convertirNumero($_POST['monto_reserva']);
 $derecho_adjudicacion = convertirNumero($_POST['derecho_adjudicacion']);
-$integracion = $_POST['integracion'];
+$integracion = convertirNumero($_POST['integracion']);
 $situacionIdActual = $_POST['situacionIdActual'];
 $cliente = $_POST['cliente'];
 $sexo = $_POST['sexo'];
@@ -58,6 +58,7 @@ $localidad = $_POST['localidad'];
 $provincia = $_POST['provincia'];
 $email = $_POST['email'];
 $celular = $_POST['celular'];
+$observaciones = $_POST['observaciones'];
 
 if ($fecha_nacimiento) {
     $fecha_nacimiento = "'".$fecha_nacimiento."'";
@@ -69,14 +70,14 @@ if ($fecha_nacimiento) {
 if ($_POST['planUuId']!='') {
     $planUuId = $_POST['planUuId'];
     $SQL = "UPDATE tpa_planes_avanzados SET ";
-    $SQL .= "modelo_id = '$modelo', ";
+    $SQL .= "version_id = '$version_id', ";
     $SQL .= "modalidad_id = '$modalidad', ";
     $SQL .= "grupo_orden = '$grupo_orden', ";
     $SQL .= "situacion_id = $situacion_id, ";
     $SQL .= "cuotas_pagadas_cantidad = '$cuotas_pagadas_cantidad', ";
-    $SQL .= "integracion = '$integracion', ";
-    $SQL .= "derecho_adjudicacion = '$derecho_adjudicacion', ";
     $SQL .= "cuotas_pagadas_monto = $cuotas_pagadas_monto, ";
+    $SQL .= "integracion = $integracion, ";
+    $SQL .= "derecho_adjudicacion = $derecho_adjudicacion, ";
     $SQL .= "costo = $costo, ";
     $SQL .= "plus = $plus, ";
     $SQL .= "venta = $venta, ";
@@ -84,6 +85,7 @@ if ($_POST['planUuId']!='') {
     $SQL .= "valor_unidad = $valor_unidad, ";
     $SQL .= "usuario_venta_id = $usuario_venta_id, ";
     $SQL .= "monto_reserva = $monto_reserva, ";
+    $SQL .= "observaciones = '$observaciones', ";
     $SQL .= "cliente = '$cliente', ";
     $SQL .= "sexo = '$sexo', ";
     $SQL .= "fecha_nacimiento = $fecha_nacimiento, ";
