@@ -102,10 +102,10 @@ if ($_POST['planUuId']!='') {
 } else {
     $uuid = generarUUID();
     $SQL = "INSERT INTO tpa_planes_avanzados ( ";
-    $SQL .= "uuid, modelo_id, modalidad_id,  grupo_orden, situacion_id, cuotas_pagadas_cantidad, cuotas_pagadas_monto, ";
+    $SQL .= "uuid, version_id, modalidad_id,  grupo_orden, situacion_id, cuotas_pagadas_cantidad, cuotas_pagadas_monto, ";
     $SQL .= "costo, plus, venta, cuota_promedio, valor_unidad ";
     $SQL .= ") VALUES ( ";
-    $SQL .= " '$uuid', '$modelo', '$modalidad', '$grupo_orden', $situacion_id, '$cuotas_pagadas_cantidad', $cuotas_pagadas_monto, ";
+    $SQL .= " '$uuid', '$version_id', '$modalidad', '$grupo_orden', $situacion_id, '$cuotas_pagadas_cantidad', $cuotas_pagadas_monto, ";
     $SQL .= " $costo, $plus, $venta, $cuota_promedio, $valor_unidad";
     $SQL .= ")";
 }
