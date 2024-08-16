@@ -45,7 +45,7 @@ if (isset($_GET['id'])) {
         die();
     }
 
-    if($plan['estado_id'] != 1) {
+    if($plan['estado_id'] != 1 AND $plan['usuario_venta_id'] != $userId) {
         $grupo_orden = $plan['grupo_orden'];
         include("layouts/error_plan_ya_reservado.php");
         die();

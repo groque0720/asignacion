@@ -20,7 +20,8 @@ function convertirNumero($monto) {
 
 $SQL = "SELECT
             tpa_planes_avanzados.grupo_orden,
-            tpa_planes_avanzados.estado_id
+            tpa_planes_avanzados.estado_id,
+            tpa_planes_avanzados.usuario_venta_id
         FROM
             tpa_planes_avanzados
         WHERE
@@ -33,7 +34,8 @@ $SQL = "SELECT
 
 
 
-if ($plan_reservado_first) {
+
+if ($plan_reservado_first AND $plan_reservado_first['usuario_venta_id'] != $userId  ) {
     $grupo_orden = $plan_reservado_first['grupo_orden'];
     include("../layouts/error_plan_ya_reservado.php");
     die();

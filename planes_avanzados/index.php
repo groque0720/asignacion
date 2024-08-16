@@ -174,8 +174,19 @@
                                     <circle cx="12" cy="12" r="12" fill="<?php echo $color; ?>"/>
                                 </svg>
 
-                                <?php if($plan['estado_id'] == 1) {  ?>
-                                    <a href="plan_reservar.php?id=<?php echo $plan['uuid'] ?>" class="text-green-500">reservar</a>
+                                <?php if($plan['estado_id'] == 1 OR $userId == $plan['usuario_venta_id']) {  ?>
+                                    <!-- Si es el mismo usuario que lo reservo puede ir a editar el plan -->
+                                    <?php if($userId == $plan['usuario_venta_id']) { ?>
+                                        <a href="plan_reservar.php?id=<?php echo $plan['uuid'] ?>">
+                                            <div class="flex w-full">
+                                                <span class="text-left"><?php echo $plan['cliente']. ' / '  ?></span>
+                                                <span class="text-left text-blue-600"><?php echo $plan['usuario_venta']  ?></span>
+                                            </div>
+                                        </a>
+                                    <?php }else { ?> 
+                                        <!-- si el plan esta libre -->
+                                        <a href="plan_reservar.php?id=<?php echo $plan['uuid'] ?>" class="text-green-500">reservar</a>
+                                    <?php } ?>
                                 <?php } else { ?>
                                     <div class="flex w-full">
                                         <span class="text-left"><?php echo $plan['cliente']. ' / '  ?></span>
