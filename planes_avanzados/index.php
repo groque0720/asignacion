@@ -1,29 +1,30 @@
 <?php
 
-include("funciones/func_mysql.php");
-conectar();
-mysqli_query($con,"SET NAMES 'utf8'");
-@session_start();
-//COMPRUEBA QUE EL USUARIO ESTA AUTENTIFICADO
-if ($_SESSION["autentificado"] != "SI") {
-	//si no existe, envio a la página de autentificacion
-	header("Location: ../login");
-	//ademas salgo de este script
-	exit();
-}
-$userId = $_SESSION["id"];
-$usersAdmin = ['56','81','11'];
-// 56 Mauro Vargas
-// 81 Santiago Galiano
-// 11 Admin
-$isAdmin = in_array($userId, $usersAdmin);
+    include("funciones/func_mysql.php");
+    conectar();
+    mysqli_query($con,"SET NAMES 'utf8'");
+    @session_start();
+    //COMPRUEBA QUE EL USUARIO ESTA AUTENTIFICADO
+    if ($_SESSION["autentificado"] != "SI") {
+        //si no existe, envio a la página de autentificacion
+        header("Location: ../login");
+        //ademas salgo de este script
+        exit();
+    }
+    $userId = $_SESSION["id"];
+    $usersAdmin = ['56','81','11'];
+    // 56 Mauro Vargas
+    // 81 Santiago Galiano
+    // 11 Admin
+    $isAdmin = in_array($userId, $usersAdmin);
 
 
-include("actions/obtener_modelos_activos_en_planes.php");
+    include("actions/obtener_modelos_activos_en_planes.php");
 
-$modelo_activo_id=$_GET['modelo_activo'] ?? 1;
-$situacionId = $_GET['situacionId'] ?? 1;
+    $modelo_activo_id=$_GET['modelo_activo'] ?? 1;
+    $situacionId = $_GET['situacionId'] ?? 1;
 
+    include("actions/obtener_modelo_activo.php");
 
 ?>
 
@@ -31,7 +32,7 @@ $situacionId = $_GET['situacionId'] ?? 1;
 <html lang="es">
 <head>
     <?php
-        $title = $situacionId ==1 ? "Planes Avanzados ".$modelo_nombre : "Planes Adjudicados ".$modelo_nombre ;
+        $title = $situacionId ==1 ? "Avanzados - ".$modelo_activo_nombre : "Adjudicados - ".$modelo_activo_nombre ;
         include("components/header.php");
     ?>
 </head>
@@ -40,7 +41,7 @@ $situacionId = $_GET['situacionId'] ?? 1;
     <div class="container m-auto ">
 
         <?php
-            $titulo = $situacionId == 1 ? "Listado de planes avanzados ".$modelo_nombre : "Listado de planes adjudicados ".$modelo_nombre ;
+            $titulo = $situacionId == 1 ? "Listado de planes - avanzados - ".$modelo_activo_nombre : "Listado de planes - adjudicados - ".$modelo_activo_nombre ;
             include("components/cabecera.php");
         ?>
 
@@ -128,7 +129,7 @@ $situacionId = $_GET['situacionId'] ?? 1;
                     include("actions/obtener_planes_avanzados.php");
                     while($plan=mysqli_fetch_array($planes_avanzados)  ) { ?>
                     <tr>
-                        <td class="td_bold"><?php echo $plan['modelo'].' '.$plan['version']; ?></td>
+                        <td class="td_bold"><?php echo $plan['modelo'].' '.$plan['modelo']; ?></td>
                         <td class="td_center td_bold"><?php echo $plan['modalidad']; ?></td>
                         <td class="td_center  td_blue" >
                             <?php if($isAdmin) { ?>

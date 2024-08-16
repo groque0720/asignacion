@@ -1,6 +1,8 @@
 <div class="flex justify-between  items-center p-3 border-b mb-5">
     <div>
-        <img width="100" src="https://toyotaplan.com.ar/img/logo-tpa.jpeg" alt="">
+        <a href="/planes_avanzados">
+            <img width="100" src="https://toyotaplan.com.ar/img/logo-tpa.jpeg" alt="">
+        </a>
     </div>
     <span class="font-medium uppercase"><?php echo $titulo ?></span>
     <!-- <div class="flex justify-center items-center ">

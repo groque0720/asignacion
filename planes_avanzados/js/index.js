@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
+
+    setInterval(function(){
+        location.reload();
+    }, 300000);
+
     // Selecciona todos los inputs que necesitan formateo de moneda
     const currencyInputs = document.querySelectorAll("#plus, #venta, #cuota_promedio, #costo, #cuotas_pagadas_monto, #valor_unidad, #monto_reserva, #derecho_adjudicacion, #integracion");
 

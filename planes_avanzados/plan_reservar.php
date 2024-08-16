@@ -39,7 +39,25 @@ if (isset($_GET['id'])) {
 
     $result = mysqli_query($con, $SQL);
     $plan = mysqli_fetch_array($result);
+
+    if (!$plan) {
+        include("layouts/error_plan_no_encontrado.php");
+        die();
+    }
+
+    if($plan['estado_id'] != 1) {
+        $grupo_orden = $plan['grupo_orden'];
+        include("layouts/error_plan_ya_reservado.php");
+        die();
+    }
+
 }
+
+
+
+
+
+
 
 ?>
 

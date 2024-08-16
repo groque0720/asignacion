@@ -17,6 +17,31 @@ function convertirNumero($monto) {
     return (float)preg_replace('/[^0-9.]/', '', $monto);
 }
 
+
+$SQL = "SELECT
+            tpa_planes_avanzados.grupo_orden,
+            tpa_planes_avanzados.estado_id
+        FROM
+            tpa_planes_avanzados
+        WHERE
+            tpa_planes_avanzados.uuid = '".$planId."' AND
+            tpa_planes_avanzados.estado_id <> 1        
+    ";
+
+    $plan_reservado = mysqli_query($con, $SQL);
+    $plan_reservado_first = mysqli_fetch_assoc($plan_reservado);
+
+
+
+if ($plan_reservado_first) {
+    $grupo_orden = $plan_reservado_first['grupo_orden'];
+    include("../layouts/error_plan_ya_reservado.php");
+    die();
+} 
+
+// die("El plan no esta reservado por otro asesor.");
+
+
 $estado_id = 2;
 $usuario_venta_id = $userId;
 $monto_reserva = convertirNumero($_POST['monto_reserva']);
