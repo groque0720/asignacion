@@ -132,7 +132,7 @@ conectar();
 			</div>
 		</div>
 
-		<!-- <?php if($_SESSION["id_negocio"]==2) { ?> -->
+
 
 		<div class="ed-item web-1-6 item">
 				<div class="img">
@@ -150,7 +150,7 @@ conectar();
 				</a>
 				</div>
 			</div>
-			<!-- <?php } ?> -->
+
 
 
 		<div class="ed-item web-1-6 item">
