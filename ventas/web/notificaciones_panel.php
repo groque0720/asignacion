@@ -144,7 +144,7 @@ conectar();
 					</div>
 					<div class="centrar-texto">
 						<span class="titulo">
-							Planes Avanzados DYV
+							Avanzados y Adjudicados DYV
 						</span>
 					</div>
 				</a>

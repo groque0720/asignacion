@@ -176,7 +176,7 @@ if ($_SESSION["autentificado"] != "SI") {
 						</div>
 					</div>
 
-					<?php if($_SESSION["id_negocio"]==2): ?>
+					<?php if($_SESSION["id_negocio"]==2 and $_SESSION["es_gerente"]==0): ?>
 
 					<div class="ed-item web-1-6 item">
 						<div class="img">
@@ -188,7 +188,7 @@ if ($_SESSION["autentificado"] != "SI") {
 							</div>
 							<div class="centrar-texto">
 								<span class="titulo">
-									Planes Avanzados DYV
+									Avanzados y Adjudicados DYV
 								</span>
 							</div>
 						</a>
@@ -196,10 +196,6 @@ if ($_SESSION["autentificado"] != "SI") {
 					</div>
 
 					<?php endif ?>
-
-
-
-
 
 					
 
