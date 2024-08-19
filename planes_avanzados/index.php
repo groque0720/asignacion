@@ -106,7 +106,7 @@
                         <th rowspan="2">Valor Unidad</th>
                         <th rowspan="2">Venta</th>
                         <th rowspan="2">Integración</th>
-                        <th rowspan="2">Derecho de Adjudicación</th>
+                        <th rowspan="2">Derecho de <br> Adjudicación</th>
                         <th rowspan="2" > <span class="text-red-600 font-bold">Total</span></th>
                         <?php if($isAdmin) { ?>
                             <th rowspan="2">Reserva</th>  
