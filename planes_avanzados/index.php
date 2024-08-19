@@ -129,7 +129,7 @@
                     include("actions/obtener_planes_avanzados.php");
                     while($plan=mysqli_fetch_array($planes_avanzados)  ) { ?>
                     <tr>
-                        <td class="td_bold"><?php echo $plan['modelo'].' '.$plan['modelo']; ?></td>
+                        <td class="td_bold"><?php echo $plan['modelo'].' '.$plan['version']; ?></td>
                         <td class="td_center td_bold"><?php echo $plan['modalidad']; ?></td>
                         <td class="td_center  td_blue" >
                             <?php if($isAdmin) { ?>
