@@ -102,9 +102,12 @@
                             <th rowspan="2">Costo <sup>(*)</sup></th>
                             <th rowspan="2" ><span class="td_red">Plus <sup>(*)</sup></span></th>
                         <?php } ?>
-                        <th rowspan="2">$ Venta</th>
                         <th rowspan="2">Cuota Promedio</th>
                         <th rowspan="2">Valor Unidad</th>
+                        <th rowspan="2">Venta</th>
+                        <th rowspan="2">Integracion</th>
+                        <th rowspan="2">Adjudicación</th>
+                        <th rowspan="2" > <span class="text-red-600 font-bold">Total</span></th>
                         <?php if($isAdmin) { ?>
                             <th rowspan="2">Reserva</th>  
                         <?php } ?>
@@ -142,15 +145,18 @@
                         </td>
                         <td class="td_center"><?php echo $plan['cuotas_pagadas_cantidad']; ?></td>
                         <?php if($isAdmin) { ?>
-                            <td class="td_right"> <?php echo '$ '.number_format($plan['cuotas_pagadas_monto'], 2, ',', '.'); ?></td>
-                            <td class="td_right"> <?php echo '$ '.number_format($plan['costo'], 2, ',', '.'); ?></td>
-                            <td class="td_right td_red"> <?php echo '$ '.number_format($plan['plus'], 2, ',', '.'); ?></td>
+                            <td class="td_right"> <?php echo ''.number_format($plan['cuotas_pagadas_monto'], 2, ',', '.'); ?></td>
+                            <td class="td_right"> <?php echo ''.number_format($plan['costo'], 2, ',', '.'); ?></td>
+                            <td class="td_right td_red"> <?php echo ''.number_format($plan['plus'], 2, ',', '.'); ?></td>
                         <?php } ?>
-                        <td class="td_right "> <?php echo '$ '.number_format($plan['venta'], 2, ',', '.'); ?></td>
-                        <td class="td_right"> <?php echo '$ '.number_format($plan['cuota_promedio'], 2, ',', '.'); ?></td>
-                        <td class="td_right"> <?php echo '$ '.number_format($plan['valor_unidad'], 2, ',', '.'); ?></td>
+                        <td class="td_right"> <?php echo ''.number_format($plan['cuota_promedio'], 2, ',', '.'); ?></td>
+                        <td class="td_right"> <?php echo ''.number_format($plan['valor_unidad'], 2, ',', '.'); ?></td>
+                        <td class="td_right "> <?php echo ''.number_format($plan['venta'], 2, ',', '.'); ?></td>
+                        <td class="td_right "> <?php echo ''.number_format($plan['integracion'], 2, ',', '.'); ?></td>
+                        <td class="td_right "> <?php echo ''.number_format($plan['derecho_adjudicacion'], 2, ',', '.'); ?></td>
+                        <td class="td_right text-red-600 font-bold"> <?php echo ''.number_format($plan['precio_final'], 2, ',', '.'); ?></td>
                         <?php if($isAdmin) { ?>
-                            <td class="td_right"> <?php echo '$ '.number_format($plan['monto_reserva'], 2, ',', '.'); ?></td>
+                            <td class="td_right"> <?php echo ''.number_format($plan['monto_reserva'], 2, ',', '.'); ?></td>
                         <?php } ?>
                         <td class="td_right">
                             <div class="flex items-center pl-3 gap-5">
