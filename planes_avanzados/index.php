@@ -105,7 +105,7 @@
                         <th rowspan="2">Cuota Promedio</th>
                         <th rowspan="2">Valor Unidad</th>
                         <th rowspan="2">Venta</th>
-                        <th rowspan="2">Integracion</th>
+                        <th rowspan="2">Integración</th>
                         <th rowspan="2">Adjudicación</th>
                         <th rowspan="2" > <span class="text-red-600 font-bold">Total</span></th>
                         <?php if($isAdmin) { ?>
