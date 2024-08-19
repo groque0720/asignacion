@@ -151,10 +151,10 @@ if (isset($_GET['id'])) {
                 
             </div>
             <div class=" w-full mb-5">
-                    <label for="observaciones" >Observación</label>
-                    <textarea class="p-2" id="observaciones" name="observaciones" rows="5"><?php echo $planUuId  ? $plan['observaciones'] : '';  ?></textarea>
-                    <!-- <input type="text" id="observacion" name="observacion"  value="<?php echo $plan['observacion'];  ?>" class="p-2 text-right pr-4"  /> -->
-                </div>
+                <label for="observaciones" >Observación</label>
+                <textarea class="p-2" id="observaciones" name="observaciones" rows="5"><?php echo $planUuId  ? $plan['observaciones'] : '';  ?></textarea>
+                <!-- <input type="text" id="observacion" name="observacion"  value="<?php echo $plan['observacion'];  ?>" class="p-2 text-right pr-4"  /> -->
+            </div>
             <hr class="mb-5">
             <!-- INformación de la reserva -->
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-5">
