@@ -191,6 +191,10 @@ if (isset($_GET['id'])) {
                     <input type="text" id="monto_reserva" name="monto_reserva"  value="<?php echo $planUuId ? $plan['monto_reserva']:'';  ?>" class="p-2 text-right pr-4" value=""  />
                 </div>
                 <div class="">
+                    <label for="modelo_version_retirar" class="text-red-600" >Modelo Versión Final </label>
+                    <input type="text" id="modelo_version_retirar" name="modelo_version_retirar" required  value="<?php echo $plan['modelo_version_retirar'];  ?>" class="p-2 text-right pr-4"  />
+                </div>
+                <div class="">
                     <label for="cliente" >Cliente</label>
                     <input type="text" id="cliente" name="cliente" value="<?php echo $planUuId ? $plan['cliente']:'';  ?>" class="p-2 text-right pr-4" value=""  />
                 </div>
