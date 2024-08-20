@@ -171,8 +171,6 @@ if (isset($_GET['id'])) {
                         ?>
                     </select>
                 </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 <div class="">
                     <label for="usuario_venta_id">Usuario Venta</label>
                     <select id="usuario_venta_id" class="p-2 " name="usuario_venta_id" >
@@ -194,6 +192,9 @@ if (isset($_GET['id'])) {
                     <label for="modelo_version_retirar" class="text-red-600" >Modelo Versión Final </label>
                     <input type="text" id="modelo_version_retirar" name="modelo_version_retirar" required  value="<?php echo $plan['modelo_version_retirar'];  ?>" class="p-2 text-right pr-4"  />
                 </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
+
                 <div class="">
                     <label for="cliente" >Cliente</label>
                     <input type="text" id="cliente" name="cliente" value="<?php echo $planUuId ? $plan['cliente']:'';  ?>" class="p-2 text-right pr-4" value=""  />
