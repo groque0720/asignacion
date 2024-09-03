@@ -133,6 +133,8 @@
                                     <!-- <div class="flex-1 border-l p-1 text-right pr-2"></div> -->
                                </div>
                                <div class="w-full p-1 bg-white"></div>
+                               
+                               <?php if($isAdmin) { ?>
 
                                <div class="flex border-b border-t w-full">
                                     <div class="w-7/12  p-1 pl-2">Cuotas Pagas <span class="text-red-600 font-bold">(<?php echo $plan['cuotas_pagadas_cantidad']; ?>)</span></div>
@@ -146,6 +148,7 @@
                                     <div class="w-7/12  p-1 pl-2"><span class="text-red-600">Plus</span></div>
                                     <div class="flex-1 border-l p-1 text-right pr-2 text-red-600"><?php echo ''.number_format($plan['plus'], 2, ',', '.'); ?></div>
                                </div>
+                               <?php } ?>
                                <div class="flex border-b w-full">
                                     <div class="w-7/12  p-1 pl-2 font-bold">Precio Venta </div>
                                     <div class="flex-1 border-l p-1 text-right pr-2 font-bold"><?php echo ''.number_format($plan['venta'], 2, ',', '.'); ?></div>
