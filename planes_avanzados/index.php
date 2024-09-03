@@ -63,13 +63,22 @@
                     <button class="<?php echo $situ2 ?>">Adjudicados</button>
                 </a>
             </div>
-            <?php if($isAdmin) { ?>
+            <div class="flex gap-3">
+
                 <a
-                href="/planes_avanzados/plan_view.php" 
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Nuevo
+                href="/planes_avanzados/cards.php?situacionId=<?php echo $situacionId;  ?>&modelo_activo=<?php echo $modelo_activo_id; ?>" 
+                class="">
+                    <svg width="40px" height="40px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2420f3"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 9.96997H2" stroke="#1e1bda" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 18.9199H11" stroke="#1e1bda" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 3.91992H6C3.79086 3.91992 2 5.71078 2 7.91992V17.9199C2 20.1291 3.79086 21.9199 6 21.9199H18C20.2091 21.9199 22 20.1291 22 17.9199V7.91992C22 5.71078 20.2091 3.91992 18 3.91992Z" stroke="#656ef1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                 </a>
-            <?php } ?>
+                <?php if($isAdmin) { ?>
+                    <a
+                    href="/planes_avanzados/plan_view.php" 
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Nuevo
+                    </a>
+                <?php } ?>                
+            </div>
+
         </div>
 
         <!-- Botonera Seleccion de Modelos -->
@@ -86,20 +95,7 @@
             <?php } ?>
         </div>
 
-        <div class="flex gap-3 mb-3 justify-end -mt-6">
-            <div class="flex items-center gap-1">
-                <svg width="18" height="18" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="12" fill="#abebc6"/>
-                </svg>
-                <span class="text-xs">Libre</span>
-            </div>
-            <div class="flex items-center gap-1">
-                <svg width="18" height="18" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="12" fill="#fad7a0"/>
-                </svg>
-                <span class="text-xs">Reservado</span>
-            </div>    
-        </div>
+        <?php include("components/marcador_estado.php"); ?>
         
 
         <div class="zona-tabla m-auto mb-64">
@@ -144,7 +140,7 @@
 
 
                     <?php
-                    include("actions/obtener_planes_avanzados.php");
+                    include("actions/obtener_planes_avanzados_x_sit_mod.php");
                     while($plan=mysqli_fetch_array($planes_avanzados)  ) { ?>
                     <tr class="<?php echo $plan['estado_id'] == 1 ?  'bg-green-50' : ''?>">
                         <td class="td_bold"><?php echo $plan['modelo'].' '.$plan['version']; ?></td>
