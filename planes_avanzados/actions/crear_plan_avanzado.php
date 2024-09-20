@@ -108,7 +108,7 @@ if ($_POST['planUuId']!='') {
     $SQL .= "costo, plus, venta, cuota_promedio, valor_unidad, precio_final, derecho_adjudicacion, integracion, observaciones ";
     $SQL .= ") VALUES ( ";
     $SQL .= " '$uuid', '$version_id', '$modalidad', '$grupo_orden', $situacion_id, '$cuotas_pagadas_cantidad', $cuotas_pagadas_monto, ";
-    $SQL .= " $costo, $plus, $venta, $cuota_promedio, $valor_unidad, $precio_final, $derecho_adjudicacion, $integracion, $observaciones ";
+    $SQL .= " $costo, $plus, $venta, $cuota_promedio, $valor_unidad, $precio_final, $derecho_adjudicacion, $integracion, '$observaciones' ";
     $SQL .= ")";
 }
 
