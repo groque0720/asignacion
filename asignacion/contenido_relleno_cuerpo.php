@@ -308,17 +308,19 @@ if ($_SESSION["id"]==47) {
 			    )";
 			}
 
-			// $preventa_hilux20 = '';
-			// if ($unidad['preventa_hilux20']==1) {
-			// 	$preventa_hilux20 = "background: #36c;
-			// 		background:
-			// 		linear-gradient(115deg, transparent 50%, rgba(255,255,255,.75) 50%) 0 0,
-			// 		linear-gradient(245deg, transparent 50%, rgba(255,255,255,.75) 50%) 0 0,
-			// 		linear-gradient(115deg, transparent 50%, rgba(255,255,255,.75) 50%) 7px -15px,
-			// 		linear-gradient(245deg, transparent 50%, rgba(255,255,255,.75) 50%) 7px -15px,
-			// 		#36c;
-			// 		background-size: 15px 30px;";
-			// }
+			$chasis_con_r = '';
+
+			// condicion que se dio para vender las unidades con chasis con R
+			if (isset($unidad['chasis']) && strpos($unidad['chasis'], 'R') !== false && $unidad['reservada'] == 0) {
+				$chasis_con_r = "background: repeating-linear-gradient(
+					 45deg,                      
+					 white 0px,                   
+					 white 5px,                   
+					 rgb(213,255,211) 5px,        
+					 rgb(213,255,211) 10px        
+					);";
+			}
+
 
 			$seAdelanto = '';
 			if (strpos($unidad['cliente'], '*')==true) {
@@ -386,7 +388,7 @@ if ($_SESSION["id"]==47) {
 
 
 
-		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_hilux_oct.' '.$preventa_oct20.' '.$prioridad_entrega.' '.$por_caer_fc.' '.$modelo_2023.' '.$seAdelanto.' '.$condicionNecesaria ?>">
+		<tr class="<?php echo 'fila_'.$fila.' '.$entregada.' '.$libre. ' '.$nc.' '.$por_caer_fc.' '.$atp; ?>" style="<?php echo $pago_tasa.' '.$tasa_cero.' '.$sinestrada.' '.$chasis_k.' '.$color_no_disponible.' '.$libre_condicionada.' '.$rosada_precio_junio.' '.$amarillo_junio.' '.$naranja_agosto.' '.$corolla_dic2020.' '.$preventa_hilux_oct.' '.$preventa_oct20.' '.$prioridad_entrega.' '.$por_caer_fc.' '.$modelo_2023.' '.$seAdelanto.' '.$condicionNecesaria.' '.$chasis_con_r ?>">
 
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['nro_unidad']; ?></td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $mes_a[$unidad['id_mes']]['mes']; ?></td>
