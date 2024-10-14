@@ -317,7 +317,7 @@ if ($_SESSION["id"]==47) {
 					 white 0px,                   
 					 white 5px,                   
 					 rgb(213,255,211) 5px,        
-					 rgb(213,255,211) 10px        
+					 rgb(213,255,211) 20px        
 					);";
 			}
 
