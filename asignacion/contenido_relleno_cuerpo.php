@@ -309,7 +309,7 @@ if ($_SESSION["id"]==47) {
 			}
 
 
-			$numero_unidad_con_r =['39172','39170','39283','39526','39524','39515','39520','39530','39514','39519'];
+			$numero_unidad_con_r =['39172','39170','34283','39526','39524','39515','39520','39530','39514','39519'];
 			$chasis_con_r = '';
 			// condicion que se dio para vender las unidades con chasis con R
 			if (
