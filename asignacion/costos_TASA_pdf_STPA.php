@@ -281,7 +281,7 @@ $cant = 0;
 
 	$pdf->Ln(2);
 
-$pdf->Output('Costos_TASA_'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
+$pdf->Output('Costos_TASA_STPA'.cambiarFormatoFecha(date('Y-m-d')).'Hs'. strftime("%H:%M").'.pdf','I');
 $pdf->close();
 
 ?>

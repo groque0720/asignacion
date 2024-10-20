@@ -56,15 +56,27 @@ $(document).ready(function(){
 
 	<header>
 		
-		<?php @session_start();
-
-		//COMPRUEBA QUE EL USUARIO ESTA AUTENTIFICADO
+		<?php
+		include("../funciones/func_mysql.php");
+		conectar();
+		mysqli_query($con,"SET NAMES 'utf8'");
+		@session_start();
 		if ($_SESSION["autentificado"] != "SI") {
 			//si no existe, envio a la página de autentificacion
-			header("Location: ../index.php");
+			header("Location: ../login");
 			//ademas salgo de este script
 			exit();
-		}?>
+		}
+
+		//  @session_start();
+		// //COMPRUEBA QUE EL USUARIO ESTA AUTENTIFICADO
+		// if ($_SESSION["autentificado"] != "SI") {
+		// 	//si no existe, envio a la página de autentificacion
+		// 	header("Location: ../index.php");
+		// 	//ademas salgo de este script
+		// 	exit();
+		// }
+		?>
 
 	<input type="hidden" id="perfil" value="<?php echo $_SESSION["idperfil"]; ?>">
 		<div id="titulo">
@@ -80,7 +92,7 @@ $(document).ready(function(){
 					<option value="0"></option>
 					<option value="1">Costos TASA </option>
 					<option value="10">Costos TASA (STPA)</option>
-					<option value="2">Recurso Cliente</option>
+					<!-- <option value="2">Recurso Cliente</option> -->
 					<option value="3">Stock Asignación</option>
 					<!-- <option value="3">Fecha de Arribo</option> -->
 					<!-- <option value="4">Operaciones Activas (Por fecha de Arribo)</option> -->
@@ -102,16 +114,128 @@ $(document).ready(function(){
 	</nav>
 
 	<section>
+		<?php	
+				$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida_no_llegadas";
+				$suc_no_lLegadas = mysqli_query($con, $SQL);
 
+				$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida_llegadas";
+				$suc_lLegadas = mysqli_query($con, $SQL);
 
-			<article class="tabla">
+				$total_sucursal=[];
 
-				<div id="actualizar">
-				
-				
+		?>
 
-				</div>
-			</article>
+		<div class="zone-table">
+			<div>
+				<table>
+					<thead>
+						<tr>
+							<th colspan="2">Sin Arribo</th>
+						</tr>
+						<tr>
+							<th>Sucursal</th>
+							<th>Saldo</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$total_no_llegadas = 0;
+						$fila=0;
+						while ($suc_no_lLegada=mysqli_fetch_array($suc_no_lLegadas)) {
+								$total_no_llegadas += $suc_no_lLegada['Saldo'];	?>
+						<tr>
+							<td> <?php echo $suc_no_lLegada['Sucursal'] ?></td>
+							<td style="text-align: right; padding-right:20px;">
+								<?php echo  number_format($suc_no_lLegada['Saldo'], 0, ',','.') ?></td>
+								<?php
+									$total_sucursal[$fila]['IdSucursal']=$suc_no_lLegada['IdSucursal'];
+									$total_sucursal[$fila]['Saldo']=$suc_no_lLegada['Saldo'];
+									$total_sucursal[$fila]['Sucursal']=$suc_no_lLegada['Sucursal'];
+									$fila++; ?>
+						</tr>	<?php } ?>
+						<tr class="total">
+							<td>Derka y Vargas</td>
+							<td style="text-align: right; padding-right:20px;">
+								<?php echo  number_format($total_no_llegadas, 0, ',','.') ?></td>	
+						</tr>
+					</tbody>
+				</table>				
+			</div>
+			<div>
+			<table>
+					<thead>
+						<tr>
+							<th colspan="2">Llegadas</th>
+						</tr>
+						<tr>
+							<th>Sucursal</th>
+							<th>Saldo</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$total_llegadas = 0;
+						$fila=0;
+						while ($suc_lLegada=mysqli_fetch_array($suc_lLegadas)) {
+								$total_llegadas += $suc_lLegada['Saldo'];	?>
+						<tr>
+							<td> <?php echo $suc_lLegada['Sucursal'] ?></td>
+							<td style="text-align: right; padding-right:20px;">  <?php echo  number_format($suc_lLegada['Saldo'], 0, ',','.') ?></td>
+							<?php $total_sucursal[$fila]['Saldo']=$total_sucursal[$fila]['Saldo'] + $suc_lLegada['Saldo']; $fila++; ?>
+						</tr>	<?php } ?>
+						<tr class="total">
+							<td>Derka y Vargas</td>
+							<td style="text-align: right; padding-right:20px;">
+								<?php echo  number_format($total_llegadas, 0, ',','.') ?></td>	
+						</tr>
+					</tbody>
+				</table>			
+			</div>
+			<div>
+				<table>
+					<thead>
+						<tr>
+							<th colspan="2">Todas</th>
+						</tr>
+						<tr>
+							<th>Sucursal</th>
+							<th>Saldo</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$total_llegadas = 0;
+						$fila=1;
+						for ($i=0; $i < count($total_sucursal); $i++) {
+							$total_llegadas += $total_sucursal[$i]['Saldo'];
+							?>
+							<tr>
+								<td> 
+									<a href="/asignacion/costos_recursos_completa.php?sucursalId=<?php echo $total_sucursal[$i]['IdSucursal']; ?>" target="_blank">
+										<?php echo $total_sucursal[$i]['Sucursal'].' ' ?> 🖨️
+									</a>	
+								</td>
+								<td style="text-align: right; padding-right:20px;">
+									<?php echo  number_format($total_sucursal[$i]['Saldo'], 0, ',','.') ?></td>
+							</tr>
+							<?php } ?>
+						<tr class="total">
+							<td>
+								<a href="/asignacion/costos_recursos_completa.php" target="_blank">
+									Derka y Vargas  🖨️
+								</a>
+							</td>
+							<td style="text-align: right; padding-right:20px;">
+								<?php echo  number_format($total_llegadas, 0, ',','.') ?></td>	
+						</tr>
+					</tbody>
+				</table>				
+			</div>
+
+		</div>
 	</section>
 
 	
