@@ -130,7 +130,7 @@ $(document).ready(function(){
 				<table>
 					<thead>
 						<tr>
-							<th colspan="2">Sin Arribo</th>
+							<th colspan="2">Pendiente Pago TASA</th>
 						</tr>
 						<tr>
 							<th>Sucursal</th>
@@ -166,7 +166,7 @@ $(document).ready(function(){
 			<table>
 					<thead>
 						<tr>
-							<th colspan="2">Llegadas</th>
+							<th colspan="2">Con Arribo</th>
 						</tr>
 						<tr>
 							<th>Sucursal</th>
