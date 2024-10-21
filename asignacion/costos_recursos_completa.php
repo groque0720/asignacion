@@ -138,10 +138,10 @@ while ($unidad=mysqli_fetch_array($unidades)) {
 	$pdf->Cell(15,5,(cambiarFormatoFecha($unidad['Despacho'])),1,0,'C');
 
 	$pdf->Cell(5,5,$unidad['Pagado TASA']?'Si':'-',1,0,'C');
-	$pdf->Cell(20,5,'$ '.number_format($unidad['Costo TASA'], 0, ',','.'),1,0,'C');
-	$pdf->Cell(20,5,'$ '.number_format($unidad['Operacion'], 0, ',','.'),1,0,'C');
-	$pdf->Cell(20,5,'$ '.number_format($unidad['Pagos'], 0, ',','.'),1,0,'C');
-	$pdf->Cell(20,5,'$ '.number_format($unidad['Saldo'], 0, ',','.'),1,0,'C');
+	$pdf->Cell(20,5,'$ '.number_format($unidad['Costo TASA'], 0, ',','.'),1,0,'R');
+	$pdf->Cell(20,5,'$ '.number_format($unidad['Operacion'], 0, ',','.'),1,0,'R');
+	$pdf->Cell(20,5,'$ '.number_format($unidad['Pagos'], 0, ',','.'),1,0,'R');
+	$pdf->Cell(20,5,'$ '.number_format($unidad['Saldo'], 0, ',','.'),1,0,'R');
 
 
 
