@@ -64,12 +64,93 @@ $suc_no_lLegadas = mysqli_query($con, $SQL);
 $SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida_llegadas";
 $suc_lLegadas = mysqli_query($con, $SQL);
 
-$nro = 0;
 
-$total_costo_tasa = 0;
-$total_reservas=0;
-$total_pagos=0;
-$saldo=0;
+$matriz_total = [];
+$matriz_1 = [];
+$matriz_2 = [];
+$matriz_1['Total'] = 0;
+$matriz_2['Total'] = 0;
+$matriz_total['Saldo_Sucursal'] = 0;
+$matriz_total['Total'] = 0;
+
+$fila = 0;
+while($sucursal=mysqli_fetch_array($suc_no_lLegadas)) {
+
+	$matriz_1[$fila]['Sucursal'] = $sucursal['Sucursal'];
+	$matriz_1[$fila]['Saldo'] = $sucursal['Saldo'];
+	$matriz_1['IdSucursal'] = $sucursal['IdSucursal'];
+	$matriz_1['Total'] += $sucursal['Saldo'];
+	
+	$matriz_total[$fila]['Saldo_Sucursal'] = $sucursal['Saldo'];
+	$matriz_total['Total'] += $sucursal['Saldo'];
+	$fila++;
+}
+
+$fila = 0;
+while($sucursal=mysqli_fetch_array($suc_lLegadas)) {
+
+	$matriz_2[$fila]['Sucursal'] = $sucursal['Sucursal'];
+	$matriz_2[$fila]['Saldo'] = $sucursal['Saldo'];
+	$matriz_2['IdSucursal'] = $sucursal['IdSucursal'];
+	$matriz_2['Total'] += $sucursal['Saldo'];
+	
+	$matriz_total[$fila]['Saldo_Sucursal'] += $sucursal['Saldo'];
+	$matriz_total['Total'] += $sucursal['Saldo'];
+	$fila++;
+}
+
+
+	// if ($fila == 0) {
+		$pdf->SetFont('Arial','B',6.5);
+
+		$pdf->Cell(52,5,'Pendiente Pago TASA',1,0,'C');
+		$pdf->Cell(16,5,'',0,0,'C');
+		$pdf->Cell(52,5,'LLegadas',1,0,'C');
+		$pdf->Cell(16,5,'',0,0,'C');
+		$pdf->Cell(52,5,'General',1,0,'C');
+		$pdf->Ln();
+
+		$pdf->Cell(30,5,'Sucursal',1,0,'C');
+		$pdf->Cell(22,5,'$ Saldo',1,0,'C');
+		$pdf->Cell(16,5,'',0,0,'C');
+		$pdf->Cell(30,5,'Sucursal',1,0,'C');
+		$pdf->Cell(22,5,'$ Saldo',1,0,'C');
+		$pdf->Cell(16,5,'',0,0,'C');
+		$pdf->Cell(30,5,'Sucursal',1,0,'C');
+		$pdf->Cell(22,5,'$ Saldo',1,0,'C');
+		$pdf->Ln();
+		$pdf->SetFont('Arial','',6.5);
+
+
+
+	for ($i=0; $i < $fila; $i++) { 
+
+		$pdf->Cell(30,5,utf8_decode($matriz_1[$i]['Sucursal']),1,0,'L');
+		$pdf->Cell(22,5,number_format($matriz_1[$i]['Saldo'], 0, ',','.'),1,0,'R');
+		$pdf->Cell(16,5,'',0,0,'C');
+		$pdf->Cell(30,5,utf8_decode($matriz_2[$i]['Sucursal']),1,0,'L');
+		$pdf->Cell(22,5,number_format($matriz_2[$i]['Saldo'], 0, ',','.'),1,0,'R');
+		$pdf->Cell(16,5,'',0,0,'C');
+		$pdf->Cell(30,5,utf8_decode($matriz_2[$i]['Sucursal']),1,0,'L');
+		$pdf->Cell(22,5,number_format($matriz_total[$i]['Saldo_Sucursal'], 0, ',','.'),1,0,'R');
+		$pdf->Ln();
+	}
+
+	$pdf->SetFont('Arial','B',6.5);
+	$pdf->Cell(30,5,'Derka y Vargas',1,0,'C');
+	$pdf->Cell(22,5,number_format($matriz_1['Total'], 0, ',','.'),1,0,'R');
+	$pdf->Cell(16,5,'',0,0,'C');
+	$pdf->Cell(30,5,'Derka y Vargas',1,0,'C');
+	$pdf->Cell(22,5,number_format($matriz_2['Total'], 0, ',','.'),1,0,'R');
+	$pdf->Cell(16,5,'',0,0,'C');
+	$pdf->Cell(30,5,'Derka y Vargas',1,0,'C');
+	$pdf->Cell(22,5,number_format($matriz_total['Total'], 0, ',','.'),1,0,'R');
+	$pdf->Ln();
+
+
+	// }
+
+
 
 // while ($unidad=mysqli_fetch_array($unidades)) {
 

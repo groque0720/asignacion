@@ -124,6 +124,14 @@ $(document).ready(function(){
 				$total_sucursal=[];
 
 		?>
+		<div >
+			<h4 style="text-align: center;">
+				<span>Recursos Derka y Vargas 📅 <?php echo date('d-m-Y'); ?></span>
+			</h4>
+		</div>
+		<div class="top-manu-table">
+			<a href="/asignacion/costos_recursos_completa_resumen.php" target="_blank">Imprimir Resumen 🖨️</a>
+		</div>
 
 		<div class="zone-table">
 			<div>
