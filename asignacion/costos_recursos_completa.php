@@ -52,17 +52,17 @@ class PDF extends FPDF
 	$this->Cell(10,5,utf8_decode('Año'),0,0,'C');
 	$this->Cell(35,5,('Modelo - Version'),0,0,'C');
 	$this->Cell(16,5,'Nro Orden',0,0,'C');
-	// $this->Cell(10,5,'Interno',0,0,'C');
-	$this->Cell(16,5,('Chasis'),0,0,'C');
+	$this->Cell(10,5,'Interno',0,0,'C');
+	// $this->Cell(16,5,('Chasis'),0,0,'C');
 	// $this->Cell(15,5,('Tomo'),0,0,'C');
 	$this->Cell(30,5,('Cliente'),0,0,'C');
 	$this->Cell(15,5,('Asesor'),0,0,'C');
 	$this->Cell(18,5,'Sucursal',0,0,'C');
 	$this->Cell(15,5,'Reserva',0,0,'C');
 	$this->Cell(15,5,'Arribo',0,0,'C');
-	$this->Cell(17,5,'Despacho.',0,0,'C');
+	$this->Cell(15,5,'Despacho.',0,0,'C');
 	// $this->Cell(15,5,'Canc.',0,0,'C');
-	// $this->Cell(15,5,'TASA',0,0,'C');
+	$this->Cell(5,5,'$T',0,0,'C');
 	$this->Cell(20,5,'Costo TASA',0,0,'C');
 	$this->Cell(20,5,'Total Reserva',0,0,'C');
 	$this->Cell(20,5,'Total Pagos',0,0,'C');
@@ -112,8 +112,8 @@ while ($unidad=mysqli_fetch_array($unidades)) {
 	}
 	$pdf->Cell(35,5,($modelo_version),1,0,'L');
 	$pdf->Cell(16,5,($unidad['NroOrden']),1,0,'C');
-	// $pdf->Cell(10,5,($unidad['Interno']),1,0,'C');
-	$pdf->Cell(16,5,($unidad['Chasis']),1,0,'C');
+	$pdf->Cell(10,5,($unidad['Interno']),1,0,'C');
+	// $pdf->Cell(16,5,($unidad['Chasis']),1,0,'C');
 
 	// --- Cliente
 	$largo=strlen($unidad['Cliente']);
@@ -137,6 +137,7 @@ while ($unidad=mysqli_fetch_array($unidades)) {
 	$pdf->Cell(15,5,(cambiarFormatoFecha($unidad['Arribo'])),1,0,'C');
 	$pdf->Cell(15,5,(cambiarFormatoFecha($unidad['Despacho'])),1,0,'C');
 
+	$pdf->Cell(5,5,$unidad['Pagado TASA']?'Si':'-',1,0,'C');
 	$pdf->Cell(20,5,'$ '.number_format($unidad['Costo TASA'], 0, ',','.'),1,0,'C');
 	$pdf->Cell(20,5,'$ '.number_format($unidad['Operacion'], 0, ',','.'),1,0,'C');
 	$pdf->Cell(20,5,'$ '.number_format($unidad['Pagos'], 0, ',','.'),1,0,'C');
