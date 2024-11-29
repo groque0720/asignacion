@@ -26,6 +26,7 @@ if ($_SESSION["id"]==47) {
 			<col width="3.5%">
 			<col class="fila-grupo fila-oculto" width="4%">
 			<col class="fila-modelo fila-oculto" width="10%">
+			<col width="2%">
 			<col width="3%">
 			<col class="<?php echo $clase_don_vargas; ?>" width="9%">
 			<col width="2%">
@@ -52,6 +53,7 @@ if ($_SESSION["id"]==47) {
 			<td>Fec. Arribo</td>
 			<td class="fila-grupo fila-oculto">Modelo</td>
 			<td class="fila-modelo fila-oculto">Versión</td>
+			<td>SC</td>
 			<td>Chasis</td>
 			<td class="<?php echo $clase_don_vargas; ?>">Colores</td>
 			<td>Asignado</td>
@@ -420,6 +422,12 @@ if ($_SESSION["id"]==47) {
 			<td class="centrar-texto celda" style="<?php echo $atp_60_dias ?>" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo cambiarFormatoFecha($unidad['fec_arribo']); ?></td>
 			<td class="centrar-texto celda fila-grupo fila-oculto" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $grupo_a[$unidad['id_grupo']]['grupo']; ?></td>
 			<td class="centrar-texto celda fila-modelo fila-oculto" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $modelo_a[$unidad['id_modelo']]['modelo']; ?></td>
+			
+			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>">
+				<?php if ($unidad['servicio_conectado']) { ?>
+					<img src="imagenes/servicio_conectado.png" alt="servicio_conectado" width="10px">
+				<?php } ?>
+			</td>
 			<td class="centrar-texto celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $unidad['chasis']; ?></td>
 			<td class="centrar-texto celda <?php echo $clase_don_vargas; ?>" data-id="<?php echo $unidad['id_unidad']; ?>">
 				<?php

@@ -123,8 +123,8 @@ if ($cant>=1) {
 						<input class="form-inputs" type="text" size="5" name="año" id="año" value="<?php echo $unidad['año']; ?>" <?php echo $lectura; ?>>
 					</div>
 				</div>
-				<div class="form-linea">
-					<div class="ancho-2-6">
+				<div class="form-linea" style="display: flex; justify-content: space-between; gap: 5px;">
+					<div  style="display: flex; flex-direction: column;">
 						<label class="ancho-20" for="">Modelo</label>
 						<select class="form-inputs ancho-2-3" name="id_grupo" id="grupo" <?php echo $lectura; ?>>
 						<option value="0"></option>
@@ -136,9 +136,9 @@ if ($cant>=1) {
 							<?php } ?>
 						</select>
 					</div>
-					<div class="ancho-4-6">
+					<div  style="display: flex; flex-direction: column;">
 						<label class="ancho-20" for="">Versión</label>
-						<select class="form-inputs ancho-80" name="id_modelo" id="id_modelo" <?php echo $lectura; ?>>
+						<select class="form-inputs ancho-full" name="id_modelo" id="id_modelo" <?php echo $lectura; ?>>
 						<option value="0"></option>
 						<?php
 							$SQL="SELECT * FROM modelos WHERE idgrupo = ".$unidad['id_grupo']." ORDER BY posicion";
@@ -147,6 +147,13 @@ if ($cant>=1) {
 								<option value="<?php echo $version['idmodelo']; ?>" <?php if ($version['idmodelo']==$unidad['id_modelo']) { echo 'selected'; } ?>><?php echo $version['modelo']; ?></option>
 							<?php }	?>
 						</select>
+					</div>
+					<div style="display: flex; flex-direction: column;">
+						<label style="width: 100%; margin-bottom: 5px; color:red"  for="">Serv. Conectado</label>
+						<div style="display: flex; justify-content: center; gap: 5px;">
+							<input class="form-inputs input-fecha" type="checkbox" size="5" name="servicio_conectado" <?php if ($unidad['servicio_conectado']==1) { echo 'checked';} ?> <?php echo $deshabilitado; ?>>
+							<img src="imagenes/servicio_conectado.png" alt="" width="15px" style="display: <?php if ($deshabilitado == 'disabled') { echo 'none'; } ?>"  >
+						</div>
 					</div>
 				</div>
 				<div class="form-linea centrar-texto">

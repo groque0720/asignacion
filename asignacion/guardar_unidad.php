@@ -180,7 +180,11 @@ if ($estaba_pisada==false) {
 			$SQL.=" reventa = 0, ";
 		}
 
-
+		if ( isset($_POST["servicio_conectado"]) AND $_POST["servicio_conectado"]==true) {
+			$SQL.=" servicio_conectado = 1, ";
+		}else{
+			$SQL.=" servicio_conectado = 0, ";
+		}
 
 	// $SQL.=" hora_pedido = '".$_POST["hora_pedido"]."',";
 

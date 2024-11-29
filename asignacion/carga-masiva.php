@@ -110,6 +110,14 @@ mysqli_query($con,"SET NAMES 'utf8'");
 			</div>
 		</div>
 
+		<div class="lado inputs-masivo">
+			<div class="form-linea ancho-80">
+				<label class="ancho-70" for="">Servicio Conectado</label>
+				<img src="imagenes/servicio_conectado.png" alt="servicio_conectado" width="15px">
+				<input class="form-inputs" type="checkbox" size="5" name="servicio_conectado">
+			</div>
+		</div>
+
 		<div class="zona-botones">
 			<div class="form-linea">
 				<div class="ancho-50">
