@@ -168,23 +168,23 @@ if ($estaba_pisada==false) {
 		$SQL.=" hora_pedido = null ,";
 	}
 
-		if ($_POST["no_disponible"]==true) {
-			$SQL.=" no_disponible = 0, ";
-		}else{
-			$SQL.=" no_disponible = 1, ";
-		}
+	if ($_POST["no_disponible"]==true) {
+		$SQL.=" no_disponible = 0, ";
+	}else{
+		$SQL.=" no_disponible = 1, ";
+	}
 
-		if ( isset($_POST["reventa"]) AND $_POST["reventa"]==true) {
-			$SQL.=" reventa = 1, ";
-		}else{
-			$SQL.=" reventa = 0, ";
-		}
+	if ( isset($_POST["reventa"]) AND $_POST["reventa"]==true) {
+		$SQL.=" reventa = 1, ";
+	}else{
+		$SQL.=" reventa = 0, ";
+	}
 
-		if ( isset($_POST["servicio_conectado"]) AND $_POST["servicio_conectado"]==true) {
-			$SQL.=" servicio_conectado = 1, ";
-		}else{
-			$SQL.=" servicio_conectado = 0, ";
-		}
+	if ( isset($_POST["servicio_conectado"]) AND $_POST["servicio_conectado"]==true) {
+		$SQL.=" servicio_conectado = 1, ";
+	}else{
+		$SQL.=" servicio_conectado = 0, ";
+	}
 
 	// $SQL.=" hora_pedido = '".$_POST["hora_pedido"]."',";
 

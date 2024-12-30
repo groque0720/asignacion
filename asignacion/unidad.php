@@ -151,8 +151,17 @@ if ($cant>=1) {
 					<div style="display: flex; flex-direction: column;">
 						<label style="width: 100%; margin-bottom: 5px; color:red"  for="">Serv. Conectado</label>
 						<div style="display: flex; justify-content: center; gap: 5px;">
-							<input class="form-inputs input-fecha" type="checkbox" size="5" name="servicio_conectado" <?php if ($unidad['servicio_conectado']==1) { echo 'checked';} ?> <?php echo $deshabilitado; ?>>
-							<img src="imagenes/servicio_conectado.png" alt="" width="15px" style="display: <?php if ($deshabilitado == 'disabled') { echo 'none'; } ?>"  >
+
+							<input class="form-inputs input-fecha" type="checkbox" size="5" name="servicio_conectado" <?php if ($unidad['servicio_conectado']==1) { echo 'checked';} ?> <?php if($deshabilitado) { echo 'hidden'; } ?>>
+							<!-- <img src="imagenes/servicio_conectado.png" alt="" width="15px" style="display: <?php if ($deshabilitado == 'disabled') { echo 'none'; } ?>"  > -->
+							<?php if($unidad['servicio_conectado']==1) { ?> 
+								<img src="imagenes/servicio_conectado.png" alt="" width="15px"  >
+							<?php } else { ?>
+								<div style="display: flex;">
+									<!-- <label style="width: 100%; margin-bottom: 5px; color:red; margin-left: 2px;"  for="">No</label> -->
+									<img src="imagenes/servicio_no_conectado.png" alt="" width="15px"  >
+								</div>
+							<?php }  ?> 
 						</div>
 					</div>
 				</div>
