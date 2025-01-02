@@ -359,7 +359,7 @@ while ($grupo=mysqli_fetch_array($grupos)) {
 		$pdf->Ln();
 		$pdf->Ln(3);
 
-$pdf->Output('Stock.pdf','I');
+$pdf->Output('Stock_libre_sin_reservas.pdf','I');
 $pdf->close();
 
  ?>
