@@ -11,7 +11,7 @@ $es_gerente = $_SESSION["es_gerente"];
 $id_usuario = $_SESSION["id"];
 
 // !se habilita a los usuarios de villa angela a ver los estados de los usados
-$es_gerente = in_array($id_usuario, [18, 107, ]) or $_SESSION["es_gerente"];
+$es_gerente = in_array($id_usuario, [18, 107]) or $_SESSION["es_gerente"];
 
 
 //cargo en arreglo los colores de la tabla
