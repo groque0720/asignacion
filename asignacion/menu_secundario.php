@@ -102,7 +102,8 @@
 					<li><a href="stock_real_sin_vender_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender</a></li>
 					<li><a href="stock_real_sin_vender_mes_sig_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender (12 meses)</a></li>
 					<li><a href="stock_real_sin_vender_mas_12_meses.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender (más 12 meses)</a></li>
-					<li><a href="stock_llegadas_sin_confirmar_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Físico Sin Vender</a></li>
+					<!-- <li><a href="stock_llegadas_sin_confirmar_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Físico Sin Vender</a></li> -->
+					<li><a href="stock_libres_confirmada_tasa.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Libres sin reservas</a></li>
 					<li><a href="stock_real_sin_vender_con_interno.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Sin Vender con interno</a></li>
 					<li><a href="stock_real_sin_vender_mes_ant_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM (Mes Ant.)</a></li>
 					<!-- <li><a href="stock_gral_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock Gral. (0km+TPA)</a></li> -->
