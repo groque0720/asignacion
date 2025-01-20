@@ -23,6 +23,7 @@
 
     $modelo_activo_id=$_GET['modelo_activo'] ?? 1;
     $situacionId = $_GET['situacionId'] ?? 1;
+    $estadoId = $_GET['estadoId'] ?? null;
 
     include("actions/obtener_modelo_activo.php");
 
@@ -67,9 +68,15 @@
                 <a
                 href="/planes_avanzados/?situacionId=<?php echo $situacionId;  ?>&modelo_activo=<?php echo $modelo_activo_id; ?>" 
                 class="">
-                    <svg fill="#656ef1" height="40px" width="40px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 496 496" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M456,64H40C17.944,64,0,81.944,0,104v288c0,22.056,17.944,40,40,40h416c22.056,0,40-17.944,40-40V104 C496,81.944,478.056,64,456,64z M21.124,406.796C17.919,402.716,16,397.579,16,392v-8h43.117L21.124,406.796z M240,144v32h-64v-32 H240z M320,144v32h-64v-32H320z M400,144v32h-64v-32H400z M480,144v32h-64v-32H480z M80,272H36.883L80,246.13V272z M96,240h64v32 H96V240z M96,288h64v32H96V288z M80,320H36.883L80,294.13V320z M176,288h64v32h-64V288z M176,272v-32h64v32H176z M256,240h64v32 h-64V240z M336,240h64v32h-64V240z M336,224v-32h64v32H336z M320,224h-64v-32h64V224z M240,224h-64v-32h64V224z M160,224H96v-32h64 V224z M80,224H36.883L80,198.13V224z M16,192h43.117L16,217.87V192z M36.883,176L80,150.13V176H36.883z M16,240h43.117L16,265.87 V240z M16,288h43.117L16,313.87V288z M16,336h43.117L16,361.87V336z M80,342.13V368H36.883L80,342.13z M96,336h64v32H96V336z M176,336h64v32h-64V336z M256,336h64v32h-64V336z M256,320v-32h64v32H256z M336,288h64v32h-64V288z M416,288h64v32h-64V288z M416,272v-32h64v32H416z M416,224v-32h64v32H416z M160,176H96v-32h64V176z M16,169.87V144h43.117L16,169.87z M160,384v32H96v-32 H160z M176,384h64v32h-64V384z M256,384h64v32h-64V384z M336,384h64v32h-64V384z M336,368v-32h64v32H336z M416,336h64v32h-64V336z M40,80h416c13.234,0,24,10.766,24,24v24H16v-24C16,90.766,26.766,80,40,80z M37.17,415.828L80,390.129V416H40 C39.042,416,38.099,415.937,37.17,415.828z M456,416h-40v-32h64v8C480,405.234,469.234,416,456,416z"></path> <path d="M40,112h16c4.418,0,8-3.582,8-8s-3.582-8-8-8H40c-4.418,0-8,3.582-8,8S35.582,112,40,112z"></path> <path d="M120,112h16c4.418,0,8-3.582,8-8s-3.582-8-8-8h-16c-4.418,0-8,3.582-8,8S115.582,112,120,112z"></path> <path d="M200,112h16c4.418,0,8-3.582,8-8s-3.582-8-8-8h-16c-4.418,0-8,3.582-8,8S195.582,112,200,112z"></path> <path d="M280,112h16c4.418,0,8-3.582,8-8s-3.582-8-8-8h-16c-4.418,0-8,3.582-8,8S275.582,112,280,112z"></path> <path d="M280,168h16c4.418,0,8-3.582,8-8s-3.582-8-8-8h-16c-4.418,0-8,3.582-8,8S275.582,168,280,168z"></path> <path d="M280,216h16c4.418,0,8-3.582,8-8s-3.582-8-8-8h-16c-4.418,0-8,3.582-8,8S275.582,216,280,216z"></path> <path d="M216,248h-16c-4.418,0-8,3.582-8,8s3.582,8,8,8h16c4.418,0,8-3.582,8-8S220.418,248,216,248z"></path> <path d="M376,296h-16c-4.418,0-8,3.582-8,8s3.582,8,8,8h16c4.418,0,8-3.582,8-8S380.418,296,376,296z"></path> <path d="M136,296h-16c-4.418,0-8,3.582-8,8s3.582,8,8,8h16c4.418,0,8-3.582,8-8S140.418,296,136,296z"></path> <path d="M136,344h-16c-4.418,0-8,3.582-8,8s3.582,8,8,8h16c4.418,0,8-3.582,8-8S140.418,344,136,344z"></path> <path d="M296,344h-16c-4.418,0-8,3.582-8,8s3.582,8,8,8h16c4.418,0,8-3.582,8-8S300.418,344,296,344z"></path> <path d="M456,200h-16c-4.418,0-8,3.582-8,8s3.582,8,8,8h16c4.418,0,8-3.582,8-8S460.418,200,456,200z"></path> <path d="M360,112h16c4.418,0,8-3.582,8-8s-3.582-8-8-8h-16c-4.418,0-8,3.582-8,8S355.582,112,360,112z"></path> <path d="M440,112h16c4.418,0,8-3.582,8-8s-3.582-8-8-8h-16c-4.418,0-8,3.582-8,8S435.582,112,440,112z"></path> </g> </g></svg>
+                    <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke=""><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 6.00067L21 6.00139M8 12.0007L21 12.0015M8 18.0007L21 18.0015M3.5 6H3.51M3.5 12H3.51M3.5 18H3.51M4 6C4 6.27614 3.77614 6.5 3.5 6.5C3.22386 6.5 3 6.27614 3 6C3 5.72386 3.22386 5.5 3.5 5.5C3.77614 5.5 4 5.72386 4 6ZM4 12C4 12.2761 3.77614 12.5 3.5 12.5C3.22386 12.5 3 12.2761 3 12C3 11.7239 3.22386 11.5 3.5 11.5C3.77614 11.5 4 11.7239 4 12ZM4 18C4 18.2761 3.77614 18.5 3.5 18.5C3.22386 18.5 3 18.2761 3 18C3 17.7239 3.22386 17.5 3.5 17.5C3.77614 17.5 4 17.7239 4 18Z" stroke="#628cdf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                 </a>
                 <?php if($isAdmin) { ?>
+                    <select id="exportarExcel" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        <option value="">Exportar en Excel</option>
+                        <option value="todos">Exportar Libres y Reservados</option>
+                        <option value="libres">Exportar Solo Libres</option>
+                        <option value="reservados">Exportar Solo Reservados</option>
+                    </select>
                     <a
                     href="/planes_avanzados/plan_view.php" 
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -231,6 +238,30 @@
 
 
 
-
+    <script>
+        document.getElementById('exportarExcel').addEventListener('change', function() {
+            const tipo = this.value;
+            if (!tipo) return;
+            
+            let url = '';
+            let params = '?situacionId=<?php echo $situacionId; ?>&modelo_activo=<?php echo $modelo_activo_id; ?>';
+            
+            switch(tipo) {
+                case 'todos':
+                    url = '/planes_avanzados/exportar.php' + params;
+                    break;
+                case 'libres':
+                    url = '/planes_avanzados/exportar.php' + params + '&estadoId=1';
+                    break;
+                case 'reservados':
+                    url = '/planes_avanzados/exportar.php' + params + '&estadoId=2';
+                    break;
+            }
+            
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    </script>
 </body>
 </html>

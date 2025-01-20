@@ -1,5 +1,11 @@
 <?php
 
+$cadena = "";
+
+if (isset($estadoId) and $estadoId != null) {
+	$cadena = "AND tpa_planes_avanzados.estado_id = $estadoId";
+}
+
 
 $SQL = "SELECT
 	tpa_planes_avanzados.*, 
@@ -32,7 +38,8 @@ FROM
 		tpa_planes_versiones.modelo_id = tpa_planes_modelos.id
 WHERE
 	tpa_planes_avanzados.situacion_id = $situacionId AND
-	tpa_planes_modelos.id = $modelo_activo_id
+	tpa_planes_modelos.id = $modelo_activo_id 
+	$cadena
 ORDER BY
 	tpa_planes_modelos.posicion ASC, 
 	tpa_planes_versiones.posicion ASC";

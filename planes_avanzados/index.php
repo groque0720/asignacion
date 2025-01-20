@@ -23,6 +23,7 @@
 
     $modelo_activo_id=$_GET['modelo_activo'] ?? 1;
     $situacionId = $_GET['situacionId'] ?? 1;
+    $estadoId = $_GET['estadoId'] ?? null;
 
     include("actions/obtener_modelo_activo.php");
 
@@ -68,9 +69,15 @@
                 <a
                 href="/planes_avanzados/cards.php?situacionId=<?php echo $situacionId;  ?>&modelo_activo=<?php echo $modelo_activo_id; ?>" 
                 class="">
-                    <svg width="40px" height="40px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2420f3"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 9.96997H2" stroke="#1e1bda" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 18.9199H11" stroke="#1e1bda" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 3.91992H6C3.79086 3.91992 2 5.71078 2 7.91992V17.9199C2 20.1291 3.79086 21.9199 6 21.9199H18C20.2091 21.9199 22 20.1291 22 17.9199V7.91992C22 5.71078 20.2091 3.91992 18 3.91992Z" stroke="#656ef1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    <svg width="40px" height="40px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M7 1H1V7H7V1ZM7 9H1V15H7V9ZM9 1H15V7H9V1ZM15 9H9V15H15V9Z" fill="#628cdf"></path> </g></svg>
                 </a>
                 <?php if($isAdmin) { ?>
+                    <select id="exportarExcel" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        <option value="">Exportar en Excel</option>
+                        <option value="todos">Exportar Libres y Reservados</option>
+                        <option value="libres">Exportar Solo Libres</option>
+                        <option value="reservados">Exportar Solo Reservados</option>
+                    </select>
                     <a
                     href="/planes_avanzados/plan_view.php" 
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -227,7 +234,31 @@
     </div>
 
 
-
+    <script>
+         document.getElementById('exportarExcel').addEventListener('change', function() {
+            const tipo = this.value;
+            if (!tipo) return;
+            
+            let url = '';
+            let params = '?situacionId=<?php echo $situacionId; ?>&modelo_activo=<?php echo $modelo_activo_id; ?>';
+            
+            switch(tipo) {
+                case 'todos':
+                    url = '/planes_avanzados/exportar_lista.php' + params;
+                    break;
+                case 'libres':
+                    url = '/planes_avanzados/exportar_lista.php' + params + '&estadoId=1';
+                    break;
+                case 'reservados':
+                    url = '/planes_avanzados/exportar_lista.php' + params + '&estadoId=2';
+                    break;
+            }
+            
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    </script>
 
 </body>
 </html>
