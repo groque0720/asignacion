@@ -52,7 +52,7 @@ if ($usados) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
             'dominio' => $fila['dominio'],
             'interno' => $fila['interno'],
-            'precio' => $fila['precio']
+            'precio' => $fila['precio_venta']
         ]));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
