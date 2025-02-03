@@ -1,30 +1,16 @@
 <?php
-include("../funciones/func_mysql.php");
-conectar();
+// Configurar CORS primero
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Headers: Content-Type');
+
+// Conexión directa a la base de datos sin incluir func_mysql.php
+$con = mysqli_connect('localhost', 'root', '', 'asignacion');
 mysqli_query($con, "SET NAMES 'utf8'");
 
-@session_start();
-//COMPRUEBA QUE EL USUARIO ESTA AUTENTIFICADO
-if ($_SESSION["autentificado"] != "SI") {
-    //si no existe, envio a la página de autentificacion
-    header("Location: /login");
-    //ademas salgo de este script
-    exit();
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error());
 }
-
-// $allowedOrigins = [
-//     'https://derkayvargas.com',
-//     // 'https://otraaplicacion.com'
-//   ];
-  
-//   // Obtener el origen de la solicitud
-//   $origin = $_SERVER['HTTP_ORIGIN'] ?? null;
-  
-//   if ($origin && in_array($origin, $allowedOrigins)) {
-//     header('Access-Control-Allow-Origin: ' . $origin);
-//     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-//     header('Access-Control-Allow-Headers: Content-Type, Authorization');
-//   }
 
 $SQL = "SELECT au.*, e.estado_usado, e.posicion 
         FROM view_asignaciones_usados au 
