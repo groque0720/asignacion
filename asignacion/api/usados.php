@@ -52,7 +52,7 @@ if ($usados) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
             'dominio' => $fila['dominio'],
             'interno' => $fila['interno'],
-            'precio' => $fila['precio_venta']  // Usamos precio_venta que es el campo de la BD externa
+            'precio_venta' => $fila['precio_venta']  // Usamos precio_venta que es el campo de la BD externa
         ]));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
