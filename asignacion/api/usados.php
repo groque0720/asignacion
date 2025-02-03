@@ -45,6 +45,19 @@ $usados = mysqli_query($con, $SQL);
 $resultados = [];
 if ($usados) {
     while ($fila = mysqli_fetch_assoc($usados)) {
+        // Enviar notificación al backend de webdyvsa
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "http://panelweb.derkayvargas.com/api/usados/webhook/update-price");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            'dominio' => $fila['dominio'],
+            'interno' => $fila['interno'],
+            'precio_venta' => $fila['precio_venta']  // Usamos precio_venta que es el campo de la BD externa
+        ]));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        
         $resultados[] = $fila;
     }
 }
