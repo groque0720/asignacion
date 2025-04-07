@@ -23,8 +23,8 @@ if ($resultado) {
 
 
 // Registrar los datos recibidos para depuración
-$log_message = "Datos recibidos: Dominio=".$unidad['dominio'].", Interno=".$unidad['interno'].", ID Unidad=".$unidad['id_unidad']."\n";
-file_put_contents('api_log.txt', $log_message, FILE_APPEND);
+//$log_message = "Datos recibidos: Dominio=".$unidad['dominio'].", Interno=".$unidad['interno'].", ID Unidad=".$unidad['id_unidad']."\n";
+//file_put_contents('api_log.txt', $log_message, FILE_APPEND);
 
 $datosAPI = [
     'dominio' => $unidad['dominio'],
@@ -51,9 +51,9 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 
 // Añadir opciones para depuración
-curl_setopt($ch, CURLOPT_VERBOSE, true);
-$verbose = fopen('curl_log.txt', 'w+');
-curl_setopt($ch, CURLOPT_STDERR, $verbose);
+//curl_setopt($ch, CURLOPT_VERBOSE, true);
+//$verbose = fopen('curl_log.txt', 'w+');
+//curl_setopt($ch, CURLOPT_STDERR, $verbose);
 
 // Ejecutar la solicitud
 $response = curl_exec($ch);
@@ -62,8 +62,8 @@ $info = curl_getinfo($ch);
 curl_close($ch);
 
 // Registrar la respuesta para depuración
-$log_response = "Respuesta API: " . ($error ? "ERROR: $error" : $response) . "\n";
-file_put_contents('api_log.txt', $log_response, FILE_APPEND);
+//$log_response = "Respuesta API: " . ($error ? "ERROR: $error" : $response) . "\n";
+//file_put_contents('api_log.txt', $log_response, FILE_APPEND);
 
 $SQL="DELETE FROM asignaciones_usados WHERE id_unidad = ".$id_unidad;
 mysqli_query($con, $SQL);
