@@ -1,5 +1,5 @@
 <?php
-$title = 'Acerca de Nosotros';
+$title = 'Reservas - Descuentos';
 ob_start();
 include 'config/config_app.php';
 
