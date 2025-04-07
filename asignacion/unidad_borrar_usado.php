@@ -51,9 +51,9 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 
 // Añadir opciones para depuración
-//curl_setopt($ch, CURLOPT_VERBOSE, true);
-//$verbose = fopen('curl_log.txt', 'w+');
-//curl_setopt($ch, CURLOPT_STDERR, $verbose);
+curl_setopt($ch, CURLOPT_VERBOSE, true);
+$verbose = fopen('curl_log.txt', 'w+');
+curl_setopt($ch, CURLOPT_STDERR, $verbose);
 
 // Ejecutar la solicitud
 $response = curl_exec($ch);
