@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'Operaciones' ?></title>
     <!-- <link rel="stylesheet" href="/assets/styles.css"> -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" /> -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Development version -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -18,11 +18,11 @@
 
 </head>
 
-<body>
+<body class="container bg-gray-50 min-h-screen w-full mx-auto">
 
     <?php // include __DIR__ . '../../components/navbar.php'; 
     ?>
-    <main>
+    <main class=" ">
         <?= $content ?? '' ?>
     </main>
     <?php // include __DIR__ . '../../components/footer.php'; 
