@@ -410,7 +410,7 @@ if ($cant>=1) {
 				<div class="form-linea centrar-texto">
 					<div class="ancho-1-3">
 						<label class="ancho-1-3" for="">Entrega</label>
-						<input class="form-inputs input-fecha" type="date" size="5" name="fec_entrega" value="<?php echo $unidad['fec_entrega']; ?>" <?php echo $lectura; ?>>
+						<input class="form-inputs input-fecha" type="date" size="5" name="fec_entrega" id="fec_entrega" value="<?php echo $unidad['fec_entrega']; ?>" <?php echo $lectura; ?>>
 					</div>
 					<div class="ancho-50">
 						<label class="ancho-35" for="">Nro Remito</label>
@@ -464,3 +464,4 @@ if ($cant>=1) {
 </div>
 
 <script src="js/form_usados.js"></script>
+

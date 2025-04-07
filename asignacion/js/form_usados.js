@@ -427,6 +427,30 @@ $(".form-unidad").submit(function(event) {
 
 	if ($band==0) {
 		$(".mod").show();
+		
+		// Guardar los valores originales antes de enviar
+		var originalPrecio = $("#precio_venta").val();
+		var dominio = $("#dominio").val().trim();
+		var interno = $("#interno").val().trim();
+		var vehiculo = $("#vehiculo").val().trim(); //ver
+		var año = $("#año").val()
+		var km = $("#km").val()
+		var color = $("#id_color").val()
+		var id_estado_certificado = $("#id_estado_certificado").val()
+		var estado_reserva = $("#estado_reserva").val()
+		var id_estado = $("#id_estado").val()
+		var borrar = $("#borrar").val()
+		
+		//Ahora guardo el estado de la reserva a "entregado" solo si la fecha de entrega está establecida
+		if ($('#fec_entrega').val() != '') {
+			var entregado = 1;
+		} else {
+			var entregado = 0;
+		}
+		
+		//Guardado
+		//var $guardado = $('#guardado').val();
+
 		$.ajax({
 			url:"guardar_usado.php",
 			cache:false,
@@ -436,8 +460,99 @@ $(".form-unidad").submit(function(event) {
 				$(".mod").hide();
 	 			$(".lienzo-unidad").hide();
 	 			$(".contenido-principal").html(result);
+				
+				// Crear un iframe oculto para hacer la petición de forma independiente
+				if (originalPrecio) { //
+					enviarDatosAPI(dominio, interno, originalPrecio, vehiculo, año, km, color, id_estado_certificado, estado_reserva, entregado, id_estado);
+				}
+
+				/*if ($('#guardado').val()==0) {
+					enviarDatosApiNuevoUsado(dominio, interno, originalPrecio, vehiculo, año, km, color, id_estado_certificado, estado_reserva, entregado, guardado);
+				}*/
 			}
 		});
 	}
-
 });
+
+// Función simple para enviar datos a la API
+function enviarDatosAPI(dominio, interno, precio, vehiculo, año, km, color, id_estado_certificado, estado_reserva, entregado, id_estado) {
+	// Crear un form oculto y enviarlo a un PHP separado que manejará la comunicación con la API
+	var form = document.createElement('form');
+	form.method = 'POST';
+	form.action = 'enviar_api_usados.php';
+	form.style.display = 'none';
+	
+	// Agregar los campos necesarios
+	var dominioInput = document.createElement('input');
+	dominioInput.type = 'hidden';
+	dominioInput.name = 'dominio';
+	dominioInput.value = dominio;
+	form.appendChild(dominioInput);
+	
+	var internoInput = document.createElement('input');
+	internoInput.type = 'hidden';
+	internoInput.name = 'interno';
+	internoInput.value = interno;
+	form.appendChild(internoInput);
+	
+	var precioInput = document.createElement('input');
+	precioInput.type = 'hidden';
+	precioInput.name = 'precio';
+	precioInput.value = precio;
+	form.appendChild(precioInput);
+
+	var vehiculoInput = document.createElement('input');
+	vehiculoInput.type = 'hidden';
+	vehiculoInput.name = 'vehiculo';
+	vehiculoInput.value = vehiculo;
+	form.appendChild(vehiculoInput);
+
+	var añoInput = document.createElement('input');
+	añoInput.type = 'hidden';
+	añoInput.name = 'año';
+	añoInput.value = año;
+	form.appendChild(añoInput);
+
+	var kmInput = document.createElement('input');
+	kmInput.type = 'hidden';
+	kmInput.name = 'km';
+	kmInput.value = km;
+	form.appendChild(kmInput);
+
+	var colorInput = document.createElement('input');
+	colorInput.type = 'hidden';
+	colorInput.name = 'color';
+	colorInput.value = color;
+	form.appendChild(colorInput);
+
+	var id_estado_certificadoInput = document.createElement('input');
+	id_estado_certificadoInput.type = 'hidden';
+	id_estado_certificadoInput.name = 'id_estado_certificado';
+	id_estado_certificadoInput.value = id_estado_certificado;
+	form.appendChild(id_estado_certificadoInput);
+
+	var estado_reservaInput = document.createElement('input');
+	estado_reservaInput.type = 'hidden';
+	estado_reservaInput.name = 'estado_reserva';
+	estado_reservaInput.value = estado_reserva;
+	form.appendChild(estado_reservaInput);
+
+	var entregadoInput = document.createElement('input');
+	entregadoInput.type = 'hidden';
+	entregadoInput.name = 'entregado';
+	entregadoInput.value = entregado;
+	form.appendChild(entregadoInput);
+
+	var id_estadoInput = document.createElement('input');
+	id_estadoInput.type = 'hidden';
+	id_estadoInput.name = 'id_estado';
+	id_estadoInput.value = id_estado;
+	form.appendChild(id_estadoInput);
+
+	
+	// Agregar el formulario al documento y enviarlo
+	document.body.appendChild(form);
+	form.submit();
+	
+	console.log("Enviando datos a API:", dominio, interno, precio);
+}

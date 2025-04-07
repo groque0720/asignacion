@@ -1,19 +1,19 @@
 <?php
 	// // servidor
-	// define('HOST','localhost');
+	 define('HOST','localhost');
 	// //usuario bd
-	// define('USER','root');
+	 define('USER','root');
 	// //pass
-	// define('PASS','');
+	 define('PASS','');
 	// //base de datos
-	// define('DB','asignacion');
+	 define('DB','asignacion');
 
 	// servidor
-	define('HOST','localhost');
+	//define('HOST','localhost');
 	//usuario bd
-	define('USER','usernavicat');
+	//define('USER','usernavicat');
 	//pass
-	define('PASS','Belgrano872!');
+	//define('PASS','Belgrano872!');
 	//base de datos
-	define('DB','asignacion');
+	//define('DB','asignacion');
 ?>
