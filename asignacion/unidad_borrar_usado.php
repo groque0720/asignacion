@@ -52,7 +52,14 @@ $opciones = [
 $contexto = stream_context_create($opciones);
 
 // Realizar la solicitud y obtener la respuesta (silenciamos errores con @)
-@file_get_contents($url, false, $contexto);
+@file_get_contents($url, false, $contexto); // Realiza la solicitud a la API: url, false, contexto. Url: url de la API, false: no se usa el modo de solo lectura, contexto: opciones de la solicitud.
+
+// Verificar si hubo error
+if ($response === false) {
+    // Manejar el error de la solicitud a la API
+    echo "Error: No se pudo conectar a la API.";
+    exit;
+}
 
 // Independientemente de la respuesta de la API, eliminar el registro local
 $SQL="DELETE FROM asignaciones_usados WHERE id_unidad = ".$id_unidad;
