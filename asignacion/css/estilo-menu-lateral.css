@@ -11,6 +11,16 @@ body {
 	font-family: 'Open Sans', Arial, Helvetica, Sans-serif, Verdana, Tahoma;
 }*/
 
+
+.menu-lateral {
+  height: 100vh;         /* Alto de la pantalla */
+  overflow-y: auto;
+  padding-top: 12px;      /* Scroll vertical */
+         /* Ancho del sidebar */
+
+
+}
+
 ul {
 	list-style-type: none;
 }
