@@ -5,8 +5,6 @@ conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
 extract($_POST);
 
-
-
 //Si el vehículo se borra cuando el asesor hace click el icono del basurero, se envian los datos del vehiculo a eliminar a la API de usados de la página web
 // y luego se elimina el registro de la base de datos local.
 
@@ -21,7 +19,7 @@ if ($resultado) {
     exit;
 }
 
-
+// Crear el array de datos para enviar a la API
 $datosAPI = [
     'dominio' => $unidad['dominio'],
     'interno' => $unidad['interno'],
@@ -31,28 +29,32 @@ $datosAPI = [
 // URL de la API
 $url = 'https://panelweb.derkayvargas.com/api/usados/webhook/update-usado';
 
-// Inicializar cURL
-$ch = curl_init($url);
+// Encodificar datos a JSON
+$jsonData = json_encode($datosAPI);
 
-// Configurar opciones de cURL para una solicitud POST
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datosAPI));
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json',
-    'Content-Length: ' . strlen(json_encode($datosAPI)),
-    'Access-Control-Allow-Origin: *',
-    'Access-Control-Allow-Methods: POST, GET, OPTIONS',
-    'Access-Control-Allow-Headers: Content-Type, Authorization'
-]);
+// Configurar el contexto para la solicitud POST
+$opciones = [
+    'http' => [
+        'method' => 'POST',
+        'header' => [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData),
+            'Access-Control-Allow-Origin: *',
+            'Access-Control-Allow-Methods: POST, GET, OPTIONS',
+            'Access-Control-Allow-Headers: Content-Type, Authorization'
+        ],
+        'content' => $jsonData,
+        'ignore_errors' => true // Permitir obtener respuesta incluso con errores HTTP
+    ]
+];
 
-// Ejecutar la solicitud
-$response = curl_exec($ch);
-$error = curl_error($ch);
-$info = curl_getinfo($ch);
-curl_close($ch);
+// Crear el contexto de la solicitud
+$contexto = stream_context_create($opciones);
 
+// Realizar la solicitud y obtener la respuesta (silenciamos errores con @)
+@file_get_contents($url, false, $contexto);
 
+// Independientemente de la respuesta de la API, eliminar el registro local
 $SQL="DELETE FROM asignaciones_usados WHERE id_unidad = ".$id_unidad;
 mysqli_query($con, $SQL);
 
