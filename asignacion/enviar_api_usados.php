@@ -19,7 +19,7 @@ $entregado = isset($_POST['entregado']) ? intval($_POST['entregado']) : 0;
 $id_estado = isset($_POST['id_estado']) ? intval($_POST['id_estado']) : 0;
 
 // Verificar que tenemos datos válidos
-if (empty($dominio) || empty($interno) || $precio <= 0 || empty($vehiculo) || $año <= 0 || $km < 0 || $color <= 0 || $id_estado_certificado < 0 || $estado_reserva < 0 || $id_estado_certificado > 3 || $estado_reserva > 1 || $entregado < 0 || $entregado > 1 || $id_estado < 0 || $id_estado > 5) {
+if (empty($dominio) || empty($interno) || $precio < 0 || empty($vehiculo) || $año <= 0 || $km < 0 || $color <= 0 || $id_estado_certificado < 0 || $estado_reserva < 0 || $id_estado_certificado > 3 || $estado_reserva > 1 || $entregado < 0 || $entregado > 1 || $id_estado < 0 || $id_estado > 5) {
     echo "Error: Datos incompletos o inválidos";
     exit;
 }
