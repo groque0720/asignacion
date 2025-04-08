@@ -1,5 +1,5 @@
 <?php
-// Script simple para manejar la comunicación con la API externa
+// Script simple para manejar la comunicación con la API externa usando file_get_contents() en lugar de cURL
 
 // Habilitar registro de errores para depuración
 error_reporting(E_ALL);
@@ -42,34 +42,55 @@ $datosAPI = [
 // URL de la API
 $url = 'https://panelweb.derkayvargas.com/api/usados/webhook/update-usado';
 
-// Inicializar cURL
-$ch = curl_init($url);
+// Encodificar datos a JSON
+$jsonData = json_encode($datosAPI);
 
-// Configurar opciones de cURL para una solicitud POST
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datosAPI));
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json',
-    'Content-Length: ' . strlen(json_encode($datosAPI)),
-    'Access-Control-Allow-Origin: *',
-    'Access-Control-Allow-Methods: POST, GET, OPTIONS',
-    'Access-Control-Allow-Headers: Content-Type, Authorization'
-]);
+// Configurar el contexto para la solicitud POST
+$opciones = [
+    'http' => [
+        'method' => 'POST',
+        'header' => [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData),
+            'Access-Control-Allow-Origin: *',
+            'Access-Control-Allow-Methods: POST, GET, OPTIONS',
+            'Access-Control-Allow-Headers: Content-Type, Authorization'
+        ],
+        'content' => $jsonData,
+        'ignore_errors' => true // Permitir obtener respuesta incluso con errores HTTP
+    ]
+];
 
-// Ejecutar la solicitud
-$response = curl_exec($ch);
-$error = curl_error($ch);
-$info = curl_getinfo($ch);
-curl_close($ch);
+// Crear el contexto de la solicitud
+$contexto = stream_context_create($opciones);
 
-// Si todo fue exitoso, mostrar un mensaje de éxito o redirigir
-if (!$error) {
-    echo "<script>
-            console.log('Precio actualizado en API: $precio para dominio $dominio');
-            window.history.back();
-          </script>";
-} else {
-    echo "Error al enviar datos a la API: $error";
+try {
+    // Realizar la solicitud y obtener la respuesta
+    $response = @file_get_contents($url, false, $contexto);
+    
+    // Verificar si hubo error
+    if ($response === false) {
+        $error = error_get_last();
+        echo "Error al enviar datos a la API: " . (isset($error['message']) ? $error['message'] : 'Error desconocido');
+    } else {
+        // Si llegamos aquí es que la solicitud se completó (aunque puede haber un error HTTP)
+        // Obtener código de respuesta HTTP
+        $status_line = $http_response_header[0];
+        preg_match('{HTTP\/\S*\s(\d{3})}', $status_line, $match);
+        $status = $match[1];
+        
+        if ($status >= 200 && $status < 300) {
+            // Éxito
+            echo "<script>
+                console.log('Precio actualizado en API: $precio para dominio $dominio');
+                window.history.back();
+            </script>";
+        } else {
+            // Error HTTP
+            echo "Error en la respuesta de la API: Código $status - $response";
+        }
+    }
+} catch (Exception $e) {
+    echo "Excepción: " . $e->getMessage();
 }
 ?>
