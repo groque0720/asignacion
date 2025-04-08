@@ -439,8 +439,7 @@ $(".form-unidad").submit(function(event) {
 		var id_estado_certificado = $("#id_estado_certificado").val()
 		var estado_reserva = $("#estado_reserva").val()
 		var id_estado = $("#id_estado").val()
-		var borrar = $("#borrar").val()
-		
+
 		//Ahora guardo el estado de la reserva a "entregado" solo si la fecha de entrega está establecida
 		if ($('#fec_entrega').val() != '') {
 			var entregado = 1;
@@ -465,10 +464,6 @@ $(".form-unidad").submit(function(event) {
 				if (originalPrecio) { //
 					enviarDatosAPI(dominio, interno, originalPrecio, vehiculo, año, km, color, id_estado_certificado, estado_reserva, entregado, id_estado);
 				}
-
-				/*if ($('#guardado').val()==0) {
-					enviarDatosApiNuevoUsado(dominio, interno, originalPrecio, vehiculo, año, km, color, id_estado_certificado, estado_reserva, entregado, guardado);
-				}*/
 			}
 		});
 	}
