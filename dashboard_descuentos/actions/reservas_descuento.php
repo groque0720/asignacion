@@ -1,5 +1,7 @@
 <?php
 
+// include '../config/config_app.php';
+
 
 $dyv = [];
 $base = [
@@ -29,6 +31,7 @@ while ($sucursal = mysqli_fetch_array($sucursales)) {
 
     $dyv[$sucursal['sucursal']]['año'] = $base;
     $dyv[$sucursal['sucursal']]['mes'] = $base;
+    $dyv[$sucursal['sucursal']]['asesores'] = [];
 
 }
 
@@ -94,7 +97,7 @@ while ($reserva = mysqli_fetch_array($reservas)) {
 
     // Derka y Vargas
     $dyv['dyv']['año']['cantidad_reservas'] += $nueva ? 1 : 0;
-    $dyv['dyv']['año']['monto_reservas'] += abs($reserva['Importe']);
+    $dyv['dyv']['año']['monto_reservas'] += $reserva['Importe'];
     $dyv['dyv']['año']['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
     $dyv['dyv']['año']['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
     
@@ -108,7 +111,7 @@ while ($reserva = mysqli_fetch_array($reservas)) {
 
     // Sucursal
     $dyv[$reserva['Sucursal']]['año']['cantidad_reservas'] += $nueva ? 1 : 0;
-    $dyv[$reserva['Sucursal']]['año']['monto_reservas'] += abs($reserva['Importe']);
+    $dyv[$reserva['Sucursal']]['año']['monto_reservas'] += $reserva['Importe'];
     $dyv[$reserva['Sucursal']]['año']['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
     $dyv[$reserva['Sucursal']]['año']['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
     
@@ -138,11 +141,12 @@ while ($reserva = mysqli_fetch_array($reservas)) {
         $dyv[$sucursal_nombre][$asesor]['año'] = $base;
         $dyv[$sucursal_nombre][$asesor]['mes'] = $base;
         $asesores_pass[] = $asesor;
+        $dyv[$sucursal_nombre]['asesores'][] = $asesor;
     }
     
     // AÑO
     $dyv[$sucursal_nombre][$asesor]['año']['cantidad_reservas'] += $nueva ? 1 : 0;
-    $dyv[$sucursal_nombre][$asesor]['año']['monto_reservas'] += abs($reserva['Importe']);
+    $dyv[$sucursal_nombre][$asesor]['año']['monto_reservas'] += $reserva['Importe'];
     $dyv[$sucursal_nombre][$asesor]['año']['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
     $dyv[$sucursal_nombre][$asesor]['año']['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
 
@@ -156,7 +160,7 @@ while ($reserva = mysqli_fetch_array($reservas)) {
 
     if ($reserva['Mes'] == $mes_actual) {
         $dyv['dyv']['mes']['cantidad_reservas'] += $nueva ? 1 : 0;
-        $dyv['dyv']['mes']['monto_reservas'] += abs($reserva['Importe']);
+        $dyv['dyv']['mes']['monto_reservas'] += ($reserva['Importe']);
         $dyv['dyv']['mes']['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
         $dyv['dyv']['mes']['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
 
@@ -170,7 +174,7 @@ while ($reserva = mysqli_fetch_array($reservas)) {
 
 
         $dyv[$reserva['Sucursal']]['mes']['cantidad_reservas'] += $nueva ? 1 : 0;
-        $dyv[$reserva['Sucursal']]['mes']['monto_reservas'] += abs($reserva['Importe']);    
+        $dyv[$reserva['Sucursal']]['mes']['monto_reservas'] += ($reserva['Importe']);    
         $dyv[$reserva['Sucursal']]['mes']['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
         $dyv[$reserva['Sucursal']]['mes']['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
 
@@ -184,7 +188,7 @@ while ($reserva = mysqli_fetch_array($reservas)) {
 
         //  Asesor
         $dyv[$sucursal_nombre][$asesor]['mes']['cantidad_reservas'] += $nueva ? 1 : 0;
-        $dyv[$sucursal_nombre][$asesor]['mes']['monto_reservas'] += abs($reserva['Importe']);
+        $dyv[$sucursal_nombre][$asesor]['mes']['monto_reservas'] += ($reserva['Importe']);
         $dyv[$sucursal_nombre][$asesor]['mes']['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
         $dyv[$sucursal_nombre][$asesor]['mes']['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
 
@@ -203,7 +207,6 @@ while ($reserva = mysqli_fetch_array($reservas)) {
         $mes_curso = $reserva['Mes'];
 
 
-
         if (!isset($dyv['dyv'][$mes_curso])) {
             $dyv['dyv'][$mes_curso] = $base;
         }
@@ -215,7 +218,7 @@ while ($reserva = mysqli_fetch_array($reservas)) {
         }
 
         $dyv['dyv'][$mes_curso]['cantidad_reservas'] += $nueva ? 1 : 0;
-        $dyv['dyv'][$mes_curso]['monto_reservas'] += abs($reserva['Importe']);
+        $dyv['dyv'][$mes_curso]['monto_reservas'] += $reserva['Importe'];
         $dyv['dyv'][$mes_curso]['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
         $dyv['dyv'][$mes_curso]['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
 
@@ -228,34 +231,33 @@ while ($reserva = mysqli_fetch_array($reservas)) {
         $dyv['dyv'][$mes_curso]['porcentaje_con_descuento'] = ($mont_ > 0) ? round(($mont_descuento * 100) / $mont_, 2) : 0;
 
 
-        $dyv[$reserva['Sucursal']]['mes']['cantidad_reservas'] += $nueva ? 1 : 0;
-        $dyv[$reserva['Sucursal']]['mes']['monto_reservas'] += abs($reserva['Importe']);    
-        $dyv[$reserva['Sucursal']]['mes']['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
-        $dyv[$reserva['Sucursal']]['mes']['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
+        $dyv[$reserva['Sucursal']][$mes_curso]['cantidad_reservas'] += $nueva ? 1 : 0;
+        $dyv[$reserva['Sucursal']][$mes_curso]['monto_reservas'] += $reserva['Importe'];    
+        $dyv[$reserva['Sucursal']][$mes_curso]['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
+        $dyv[$reserva['Sucursal']][$mes_curso]['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
 
-        $cant_ = $dyv[$reserva['Sucursal']]['mes']['cantidad_reservas'];
-        $cant_descuento = $dyv[$reserva['Sucursal']]['mes']['cantidad_reservas_con_descuento'];
-        $dyv[$reserva['Sucursal']]['mes']['porcentaje'] = ($cant_ > 0) ? round(($cant_descuento * 100 / $cant_),2)  : 0;
+        $cant_ = $dyv[$reserva['Sucursal']][$mes_curso]['cantidad_reservas'];
+        $cant_descuento = $dyv[$reserva['Sucursal']][$mes_curso]['cantidad_reservas_con_descuento'];
+        $dyv[$reserva['Sucursal']][$mes_curso]['porcentaje'] = ($cant_ > 0) ? round(($cant_descuento * 100 / $cant_),2)  : 0;
 
-        $mont_= $dyv[$reserva['Sucursal']]['mes']['monto_reservas'];
-        $mont_descuento = $dyv[$reserva['Sucursal']]['mes']['monto_reservas_con_descuento'];
-        $dyv[$reserva['Sucursal']]['mes']['porcentaje_con_descuento'] = ($mont_ > 0) ? round(($mont_descuento * 100) / $mont_, 2) : 0;
+        $mont_= $dyv[$reserva['Sucursal']][$mes_curso]['monto_reservas'];
+        $mont_descuento = $dyv[$reserva['Sucursal']][$mes_curso]['monto_reservas_con_descuento'];
+        $dyv[$reserva['Sucursal']][$mes_curso]['porcentaje_con_descuento'] = ($mont_ > 0) ? round(($mont_descuento * 100) / $mont_, 2) : 0;
 
         //  Asesor
-        $dyv[$sucursal_nombre][$asesor]['mes']['cantidad_reservas'] += $nueva ? 1 : 0;
-        $dyv[$sucursal_nombre][$asesor]['mes']['monto_reservas'] += abs($reserva['Importe']);
-        $dyv[$sucursal_nombre][$asesor]['mes']['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
-        $dyv[$sucursal_nombre][$asesor]['mes']['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
+        $dyv[$sucursal_nombre][$asesor][$mes_curso]['cantidad_reservas'] += $nueva ? 1 : 0;
+        $dyv[$sucursal_nombre][$asesor][$mes_curso]['monto_reservas'] += $reserva['Importe'];
+        $dyv[$sucursal_nombre][$asesor][$mes_curso]['cantidad_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? 1 : 0;
+        $dyv[$sucursal_nombre][$asesor][$mes_curso]['monto_reservas_con_descuento'] += ($reserva['Importe'] < 0) ? abs($reserva['Importe']) : 0;
 
-        $cant_ = $dyv[$sucursal_nombre][$asesor]['mes']['cantidad_reservas'];
-        $cant_descuento = $dyv[$sucursal_nombre][$asesor]['mes']['cantidad_reservas_con_descuento'];
-        $dyv[$sucursal_nombre][$asesor]['mes']['porcentaje'] = ($cant_ > 0) ? round(($cant_descuento * 100 / $cant_),2)  : 0;
+        $cant_ = $dyv[$sucursal_nombre][$asesor][$mes_curso]['cantidad_reservas'];
+        $cant_descuento = $dyv[$sucursal_nombre][$asesor][$mes_curso]['cantidad_reservas_con_descuento'];
+        $dyv[$sucursal_nombre][$asesor][$mes_curso]['porcentaje'] = ($cant_ > 0) ? round(($cant_descuento * 100 / $cant_),2)  : 0;
 
-        $mont_= $dyv[$sucursal_nombre][$asesor]['mes']['monto_reservas'];
-        $mont_descuento = $dyv[$sucursal_nombre][$asesor]['mes']['monto_reservas_con_descuento'];
-        $dyv[$sucursal_nombre][$asesor]['mes']['porcentaje_con_descuento'] = ($mont_ > 0) ? round(($mont_descuento * 100) / $mont_, 2) : 0;
+        $mont_= $dyv[$sucursal_nombre][$asesor][$mes_curso]['monto_reservas'];
+        $mont_descuento = $dyv[$sucursal_nombre][$asesor][$mes_curso]['monto_reservas_con_descuento'];
+        $dyv[$sucursal_nombre][$asesor][$mes_curso]['porcentaje_con_descuento'] = ($mont_ > 0) ? round(($mont_descuento * 100) / $mont_, 2) : 0;
     // --
-
 
 
 
@@ -263,6 +265,8 @@ while ($reserva = mysqli_fetch_array($reservas)) {
 
 
 
-header('Content-Type: application/json');
-echo json_encode($dyv, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+
+// header('Content-Type: application/json');
+// echo json_encode($dyv, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 

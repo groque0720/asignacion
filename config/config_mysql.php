@@ -1,19 +1,19 @@
 <?php
+	//Servidor local ¡¡CUIDADO !! CAMBIAR A SERVIDOR REMOTO EN PRODUCCION!!
+	// define('HOST','localhost');
+	// //usuario bd
+	// define('USER','root');
+	// //pass
+	// define('PASS','');
+	// //base de datos
+	// define('DB','asignacion');
+
 	// servidor
 	define('HOST','localhost');
 	//usuario bd
-	define('USER','root');
+	define('USER','usernavicat');
 	//pass
-	define('PASS','');
+	define('PASS','Belgrano872!');
 	//base de datos
 	define('DB','asignacion');
-
-	// // servidor
-	// define('HOST','localhost');
-	// //usuario bd
-	// define('USER','usernavicat');
-	// //pass
-	// define('PASS','Belgrano872!');
-	// //base de datos
-	// define('DB','asignacion');
 ?>
