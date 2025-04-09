@@ -33,7 +33,7 @@ $SQL.=" precio_0km = ".$_POST["precio_0km"].", ";
 $SQL.=" ultimo_dueño = '".$_POST["ultimo_dueño"]."', ";
 $SQL.=" asesortoma = ".$_POST["asesortoma"].", ";
 
-$SQL.=" dominio = '".$_POST["dominio"]."',";
+$SQL.=" dominio = '".strtoupper($_POST["dominio"])."',";
 
 $SQL.=" interno = ".$_POST["interno"].",";
 $SQL.=" color = ".$_POST["id_color"].",";

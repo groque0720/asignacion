@@ -430,7 +430,7 @@ $(".form-unidad").submit(function(event) {
 		
 		// Guardar los valores originales antes de enviar
 		var originalPrecio = $("#precio_venta").val();
-		var dominio = $("#dominio").val().trim();
+		var dominio = $("#dominio").val().trim().toUpperCase();
 		var interno = $("#interno").val().trim();
 		var vehiculo = $("#vehiculo").val().trim(); //ver
 		var año = $("#año").val()
