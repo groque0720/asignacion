@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 // Recoger los datos enviados por el formulario
 $dominio = isset($_POST['dominio']) ? trim($_POST['dominio']) : '';
 $interno = isset($_POST['interno']) ? trim($_POST['interno']) : '';
-$precio = isset($_POST['precio']) ? floatval($_POST['precio']) : 0;
+$precio = isset($_POST['precio_venta']) ? floatval($_POST['precio_venta']) : 0;
 $vehiculo = isset($_POST['vehiculo']) ? trim($_POST['vehiculo']) : '';
 $año = isset($_POST['año']) ? intval($_POST['año']) : 0;
 $km = isset($_POST['km']) ? intval($_POST['km']) : 0;
@@ -40,7 +40,9 @@ $datosAPI = [
 ];
 
 // URL de la API
-$url = 'https://panelweb.derkayvargas.com/api/usados/webhook/update-usado';
+//$url = 'http://webdyvsa.oo/api/usados/webhook/update-usado'; // URL de la API de desarrollo
+$url = 'https://panelweb.derkayvargas.com/api/usados/webhook/update-usado'; // URL de la API de producción
+
 
 // Encodificar datos a JSON
 $jsonData = json_encode($datosAPI);

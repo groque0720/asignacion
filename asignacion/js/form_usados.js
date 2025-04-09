@@ -492,7 +492,7 @@ function enviarDatosAPI(dominio, interno, precio, vehiculo, año, km, color, id_
 	
 	var precioInput = document.createElement('input');
 	precioInput.type = 'hidden';
-	precioInput.name = 'precio';
+	precioInput.name = 'precio_venta';
 	precioInput.value = precio;
 	form.appendChild(precioInput);
 
