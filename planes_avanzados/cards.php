@@ -78,7 +78,7 @@
                         <option value="reservados">Exportar Solo Reservados</option>
                     </select>
                     <a href="/planes_avanzados/exportar_todo.php?situacionId=<?php echo $situacionId; ?>&formato=cards" 
-                       class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                       class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap">
                         Exportar Todo
                     </a>
                     <a
