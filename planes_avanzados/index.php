@@ -74,9 +74,10 @@
                 <?php if($isAdmin) { ?>
                     <select id="exportarExcel" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                         <option value="">Exportar en Excel</option>
-                        <option value="todos">Exportar Libres y Reservados</option>
+                        <option value="todos">Exportar Libres, Reservados y Vendidos</option>
                         <option value="libres">Exportar Solo Libres</option>
                         <option value="reservados">Exportar Solo Reservados</option>
+                        <option value="vendidos">Exportar Solo Vendidos</option>
                     </select>
                     <a href="/planes_avanzados/exportar_todo.php?situacionId=<?php echo $situacionId; ?>" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap">Exportar Todo</a>
                     <a
@@ -252,6 +253,9 @@
                     break;
                 case 'reservados':
                     url = '/planes_avanzados/exportar_lista.php' + params + '&estadoId=2';
+                    break;
+                case 'vendidos':
+                    url = '/planes_avanzados/exportar_lista.php' + params + '&estadoId=3';
                     break;
             }
             

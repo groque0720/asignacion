@@ -185,9 +185,15 @@ $fecha = date('d-m-Y');
 $nombreBase = 'planes_lista_' . strtolower(str_replace(' ', '_', $modelo_activo_nombre));
 
 if ($estadoId) {
-    $nombreArchivo = $nombreBase . ($estadoId == 1 ? '_libres' : '_reservados');
+    if ($estadoId == 1) {
+        $nombreArchivo = $nombreBase . '_libres';
+    } elseif ($estadoId == 2) {
+        $nombreArchivo = $nombreBase . '_reservados';
+    } elseif ($estadoId == 3) {
+        $nombreArchivo = $nombreBase . '_vendidos';
+    } 
 } else {
-    $nombreArchivo = $nombreBase . '_libres_y_reservados';
+    $nombreArchivo = $nombreBase . '_libres_reservados_vendidos';
 }
 $nombreArchivo .= '_' . $fecha . '.xlsx';
 
