@@ -68,6 +68,10 @@ if (isset($_GET['id'])) {
         $title = "Reserva Plan Avanzado";
         include("components/header.php");
     ?>
+    <!-- Prevent automatic refresh -->
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
 </head>
 <body>
     <div class="container m-auto ">
@@ -235,8 +239,8 @@ if (isset($_GET['id'])) {
                 </div>
 
             </div>
-            <div class="flex justify-end border-t pt-5">
-                <button type="button" id="btn-restore" class="text-gray-700 bg-gray-200 hover:bg-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Restaurar datos guardados</button>
+            <div class="flex justify-between border-t pt-5">
+                <div class="text-gray-500 text-sm italic" id="auto-save-status"></div>
                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Reservar</button>
             </div>
 
@@ -248,59 +252,80 @@ if (isset($_GET['id'])) {
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('reserva-form');
             const formId = '<?php echo $planUuId ? $plan["uuid"] : "new"; ?>';
-            const btnRestore = document.getElementById('btn-restore');
+            const saveStatus = document.getElementById('auto-save-status');
             
-            // Hide restore button initially
-            btnRestore.style.display = 'none';
-            
-            // Check if there's saved data for this form
-            const savedData = localStorage.getItem('reserva_form_' + formId);
-            if (savedData) {
-                btnRestore.style.display = 'block';
-            }
-            
-            // Save form data every 30 seconds and on input changes
+            // Function to save all form data
             function saveFormData() {
-                const formData = new FormData(form);
                 const formDataObj = {};
                 
-                formData.forEach((value, key) => {
-                    // Don't save hidden fields
-                    if (!form.elements[key].hasAttribute('hidden')) {
-                        formDataObj[key] = value;
+                // Get all input, select, and textarea elements
+                const inputs = form.querySelectorAll('input, select, textarea');
+                
+                inputs.forEach(input => {
+                    // Skip hidden inputs and disabled fields
+                    if (input.type !== 'hidden' && !input.disabled) {
+                        formDataObj[input.name] = input.value;
                     }
                 });
                 
-                localStorage.setItem('reserva_form_' + formId, JSON.stringify(formDataObj));
-                console.log('Form data saved automatically');
+                // Save to localStorage if there's data
+                if (Object.keys(formDataObj).length > 0) {
+                    try {
+                        localStorage.setItem('reserva_form_' + formId, JSON.stringify(formDataObj));
+                        
+                        // Update save status message
+                        const now = new Date();
+                        const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                                       now.getMinutes().toString().padStart(2, '0') + ':' + 
+                                       now.getSeconds().toString().padStart(2, '0');
+                        saveStatus.textContent = 'Datos guardados automáticamente a las ' + timeStr;
+                        
+                    } catch (e) {
+                        console.error("Error saving form data:", e);
+                    }
+                }
             }
             
-            // Set up autosave timer
-            const autosaveInterval = setInterval(saveFormData, 30000); // 30 seconds
+            // Restore form data on page load
+            function restoreFormData() {
+                const savedData = localStorage.getItem('reserva_form_' + formId);
+                if (savedData) {
+                    try {
+                        const formDataObj = JSON.parse(savedData);
+                        
+                        // Populate form fields
+                        for (const name in formDataObj) {
+                            const input = form.elements[name];
+                            if (input && !input.disabled) {
+                                input.value = formDataObj[name];
+                            }
+                        }
+                        
+                        saveStatus.textContent = 'Datos restaurados de guardado anterior';
+                    } catch (e) {
+                        console.error('Error restoring data:', e);
+                    }
+                }
+            }
+            
+            // Automatically save data every 5 seconds
+            const autosaveInterval = setInterval(saveFormData, 5000);
             
             // Save on input changes (debounced)
             let debounceTimer;
             form.addEventListener('input', function() {
                 clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(saveFormData, 1000); // 1 second debounce
+                debounceTimer = setTimeout(saveFormData, 500);
             });
             
-            // Restore form data when button is clicked
-            btnRestore.addEventListener('click', function() {
-                const savedData = localStorage.getItem('reserva_form_' + formId);
-                if (savedData) {
-                    const formDataObj = JSON.parse(savedData);
-                    
-                    // Populate form fields
-                    Object.keys(formDataObj).forEach(key => {
-                        if (form.elements[key]) {
-                            form.elements[key].value = formDataObj[key];
-                        }
-                    });
-                    
-                    alert('Los datos guardados han sido restaurados.');
-                }
+            // Also save on change events (for select boxes)
+            form.addEventListener('change', function() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(saveFormData, 500);
             });
+            
+            // Restore data on page load
+            restoreFormData();
             
             // Clear saved data when form is successfully submitted
             form.addEventListener('submit', function() {
@@ -309,27 +334,34 @@ if (isset($_GET['id'])) {
             
             // Show warning when navigating away
             window.addEventListener('beforeunload', function(e) {
-                // Check if form has been modified
+                // Save data before potentially leaving
+                saveFormData();
+                
                 const formData = new FormData(form);
-                let formModified = false;
+                let formHasData = false;
                 
-                formData.forEach((value, key) => {
-                    const input = form.elements[key];
-                    if (!input.hasAttribute('hidden') && input.value && input.value !== input.defaultValue) {
-                        formModified = true;
+                for (const [name, value] of formData.entries()) {
+                    const input = form.elements[name];
+                    if (input && !input.hasAttribute('hidden') && !input.disabled && value) {
+                        formHasData = true;
+                        break;
                     }
-                });
+                }
                 
-                if (formModified) {
-                    // Save one last time before leaving
-                    saveFormData();
-                    
-                    // Show the confirmation dialog
+                if (formHasData) {
                     e.preventDefault();
-                    e.returnValue = '';
-                    return '';
+                    e.returnValue = '¿Estás seguro de abandonar la página? Los datos no se perderán y estarán disponibles cuando vuelvas.';
+                    return e.returnValue;
                 }
             });
+            
+            // Override default browser page session timeout
+            // This is just for additional protection, the iframe is the main solution
+            function resetSessionTimeout() {
+                const img = new Image();
+                img.src = 'session_ping.php?r=' + Math.random();
+            }
+            setInterval(resetSessionTimeout, 60000); // Every minute
         });
     </script>
 </body>
