@@ -123,7 +123,15 @@
                                 <span class="text-sm font-bold"><?php echo $plan['modalidad']; ?></span>
                                 <div class="absolute top-5 right-3">
                                     <svg width="18" height="18" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="12" cy="12" r="12" fill="<?php echo $plan['estado_id'] == 1 ? '#abebc6':'#fad7a0'; ?>"/>
+                                        <circle cx="12" cy="12" r="12" fill="<?php 
+                                            if ($plan['estado_id'] == 1) {
+                                                echo '#abebc6'; // Verde para estado 1
+                                            } elseif ($plan['estado_id'] == 3) {
+                                                echo '#f1948a'; // Rojo para estado 3
+                                            } else {
+                                                echo '#fad7a0'; // Naranja para otros estados
+                                            }
+                                        ?>"/>
                                     </svg>                             
                                 </div>     
                             </div>

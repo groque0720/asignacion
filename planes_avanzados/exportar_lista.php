@@ -157,6 +157,10 @@ while ($plan = mysqli_fetch_array($planes_avanzados)) {
         $sheet->getStyle("A{$fila}:O{$fila}")->getFill()
               ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
               ->getStartColor()->setRGB('FAD7A0');
+    } elseif ($plan['estado_id'] == 3) {
+        $sheet->getStyle("A{$fila}:O{$fila}")->getFill()
+              ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+              ->getStartColor()->setRGB('F1948A');
     }
     
     // Plus y Total en rojo

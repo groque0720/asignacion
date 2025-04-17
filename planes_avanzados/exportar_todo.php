@@ -296,7 +296,14 @@ function exportarEnFormatoCards($sheet, $planes_todos_modelos) {
 
 function generarCardModelo1($sheet, $fila, $columna, $plan) {
     // Estilos base
-    $colorFondo = $plan['estado_id'] == 1 ? 'ABEBC6' : 'FAD7A0';
+    $colorFondo = ''; 
+    if ($plan['estado_id'] == 1) {
+        $colorFondo = 'ABEBC6'; // Verde para Libre
+    } elseif ($plan['estado_id'] == 2) {
+        $colorFondo = 'FAD7A0'; // Naranja para Reservado
+    } elseif ($plan['estado_id'] == 3) {
+        $colorFondo = 'F1948A'; // Rojo para Vendido
+    }
     $estiloBordeCard = [
         'borders' => [
             'outline' => [

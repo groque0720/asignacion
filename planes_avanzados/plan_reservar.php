@@ -76,7 +76,7 @@ if (isset($_GET['id'])) {
             include("components/cabecera.php");
         ?>
 
-        <form class=" mx-auto p-5 border rounded" autocomplete="off" action="actions/reservar_plan_avanzado.php" method="POST" >
+        <form id="reserva-form" class=" mx-auto p-5 border rounded" autocomplete="off" action="actions/reservar_plan_avanzado.php" method="POST" >
 
         <input type="text" id="planUuId" class="p-2 text-right pr-4" name="planUuId" value="<?php echo $planUuId ? $plan['uuid']:'';  ?>" hidden  />
         <input type="date" id="planUuId" class="p-2 text-right pr-4" name="fecha_reserva" value="<?php echo date("Y-m-d");  ?>"  hidden  />
@@ -236,6 +236,7 @@ if (isset($_GET['id'])) {
 
             </div>
             <div class="flex justify-end border-t pt-5">
+                <button type="button" id="btn-restore" class="text-gray-700 bg-gray-200 hover:bg-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Restaurar datos guardados</button>
                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Reservar</button>
             </div>
 
@@ -243,6 +244,94 @@ if (isset($_GET['id'])) {
 
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('reserva-form');
+            const formId = '<?php echo $planUuId ? $plan["uuid"] : "new"; ?>';
+            const btnRestore = document.getElementById('btn-restore');
+            
+            // Hide restore button initially
+            btnRestore.style.display = 'none';
+            
+            // Check if there's saved data for this form
+            const savedData = localStorage.getItem('reserva_form_' + formId);
+            if (savedData) {
+                btnRestore.style.display = 'block';
+            }
+            
+            // Save form data every 30 seconds and on input changes
+            function saveFormData() {
+                const formData = new FormData(form);
+                const formDataObj = {};
+                
+                formData.forEach((value, key) => {
+                    // Don't save hidden fields
+                    if (!form.elements[key].hasAttribute('hidden')) {
+                        formDataObj[key] = value;
+                    }
+                });
+                
+                localStorage.setItem('reserva_form_' + formId, JSON.stringify(formDataObj));
+                console.log('Form data saved automatically');
+            }
+            
+            // Set up autosave timer
+            const autosaveInterval = setInterval(saveFormData, 30000); // 30 seconds
+            
+            // Save on input changes (debounced)
+            let debounceTimer;
+            form.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(saveFormData, 1000); // 1 second debounce
+            });
+            
+            // Restore form data when button is clicked
+            btnRestore.addEventListener('click', function() {
+                const savedData = localStorage.getItem('reserva_form_' + formId);
+                if (savedData) {
+                    const formDataObj = JSON.parse(savedData);
+                    
+                    // Populate form fields
+                    Object.keys(formDataObj).forEach(key => {
+                        if (form.elements[key]) {
+                            form.elements[key].value = formDataObj[key];
+                        }
+                    });
+                    
+                    alert('Los datos guardados han sido restaurados.');
+                }
+            });
+            
+            // Clear saved data when form is successfully submitted
+            form.addEventListener('submit', function() {
+                localStorage.removeItem('reserva_form_' + formId);
+            });
+            
+            // Show warning when navigating away
+            window.addEventListener('beforeunload', function(e) {
+                // Check if form has been modified
+                const formData = new FormData(form);
+                let formModified = false;
+                
+                formData.forEach((value, key) => {
+                    const input = form.elements[key];
+                    if (!input.hasAttribute('hidden') && input.value && input.value !== input.defaultValue) {
+                        formModified = true;
+                    }
+                });
+                
+                if (formModified) {
+                    // Save one last time before leaving
+                    saveFormData();
+                    
+                    // Show the confirmation dialog
+                    e.preventDefault();
+                    e.returnValue = '';
+                    return '';
+                }
+            });
+        });
+    </script>
 </body>
 <?php
     mysqli_close($con);
