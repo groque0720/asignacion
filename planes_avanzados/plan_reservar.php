@@ -72,6 +72,9 @@ if (isset($_GET['id'])) {
     <meta http-equiv="expires" content="0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
+    
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="container m-auto ">
@@ -240,7 +243,12 @@ if (isset($_GET['id'])) {
 
             </div>
             <div class="flex justify-between border-t pt-5">
-                <div class="text-gray-500 text-sm italic" id="auto-save-status"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-gray-500 text-sm italic" id="auto-save-status"></div>
+                    <button type="button" id="btn-reset-form" class="text-red-600 text-sm hover:text-red-800 hover:underline">
+                        Reiniciar formulario
+                    </button>
+                </div>
                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Reservar</button>
             </div>
 
@@ -253,8 +261,73 @@ if (isset($_GET['id'])) {
             const form = document.getElementById('reserva-form');
             const formId = '<?php echo $planUuId ? $plan["uuid"] : "new"; ?>';
             const saveStatus = document.getElementById('auto-save-status');
+            const resetButton = document.getElementById('btn-reset-form');
             
-            // Function to save all form data
+            // Check if we need to clear form data (happens on initial page load)
+            // Always clear localStorage data on page load - we only want data to persist during active session
+            localStorage.removeItem('reserva_form_' + formId);
+            localStorage.removeItem('form_exit_pending_' + formId);
+            
+            // Set a flag to indicate we're in an active session
+            const sessionId = new Date().getTime();
+            localStorage.setItem('active_session_' + formId, sessionId);
+            
+            // Function to reset the form to its initial state
+            function resetForm() {
+                // Clear sessionStorage data
+                sessionStorage.removeItem('reserva_form_' + formId);
+                
+                // Clear localStorage data
+                localStorage.removeItem('reserva_form_' + formId);
+                localStorage.removeItem('form_exit_pending_' + formId);
+                localStorage.removeItem('active_session_' + formId);
+                
+                // Reset all form fields to their default values (from HTML)
+                form.reset();
+                
+                // For fields with PHP values, restore those values
+                <?php if($planUuId) { ?>
+                document.getElementById('venta').value = "<?php echo $plan['venta']; ?>";
+                document.getElementById('integracion').value = "<?php echo $plan['integracion']; ?>";
+                document.getElementById('derecho_adjudicacion').value = "<?php echo $plan['derecho_adjudicacion']; ?>";
+                document.getElementById('precio_final').value = "<?php echo $plan['precio_final']; ?>";
+                document.getElementById('observaciones').value = "<?php echo addslashes($plan['observaciones']); ?>";
+                document.getElementById('monto_reserva').value = "<?php echo $plan['monto_reserva']; ?>";
+                document.getElementById('modelo_version_retirar').value = "<?php echo $plan['modelo_version_retirar']; ?>";
+                <?php } ?>
+                
+                // Update status message
+                saveStatus.textContent = 'Formulario reiniciado';
+                
+                // Show confirmation message with SweetAlert
+                Swal.fire({
+                    title: '¡Formulario reiniciado!',
+                    text: 'Todos los campos han sido restaurados a su valor inicial.',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#3085d6'
+                });
+            }
+            
+            // Add event listener for reset button using SweetAlert
+            resetButton.addEventListener('click', function() {
+                Swal.fire({
+                    title: '¿Reiniciar formulario?',
+                    text: '¿Está seguro que desea reiniciar el formulario? Se perderán todos los datos ingresados.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, reiniciar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        resetForm();
+                    }
+                });
+            });
+            
+            // Function to save form data during the current session
             function saveFormData() {
                 const formDataObj = {};
                 
@@ -268,10 +341,10 @@ if (isset($_GET['id'])) {
                     }
                 });
                 
-                // Save to localStorage if there's data
+                // Save to sessionStorage (will be cleared when browser tab is closed)
                 if (Object.keys(formDataObj).length > 0) {
                     try {
-                        localStorage.setItem('reserva_form_' + formId, JSON.stringify(formDataObj));
+                        sessionStorage.setItem('reserva_form_' + formId, JSON.stringify(formDataObj));
                         
                         // Update save status message
                         const now = new Date();
@@ -286,25 +359,26 @@ if (isset($_GET['id'])) {
                 }
             }
             
-            // Restore form data on page load
+            // Restore form data from sessionStorage (only persists during browser session)
             function restoreFormData() {
-                const savedData = localStorage.getItem('reserva_form_' + formId);
-                if (savedData) {
-                    try {
-                        const formDataObj = JSON.parse(savedData);
-                        
-                        // Populate form fields
-                        for (const name in formDataObj) {
-                            const input = form.elements[name];
-                            if (input && !input.disabled) {
-                                input.value = formDataObj[name];
-                            }
+                try {
+                    const savedDataStr = sessionStorage.getItem('reserva_form_' + formId);
+                    if (!savedDataStr) return;
+                    
+                    const savedData = JSON.parse(savedDataStr);
+                    
+                    // Populate form fields with saved data
+                    for (const name in savedData) {
+                        const input = form.elements[name];
+                        if (input && !input.disabled) {
+                            input.value = savedData[name];
                         }
-                        
-                        saveStatus.textContent = 'Datos restaurados de guardado anterior';
-                    } catch (e) {
-                        console.error('Error restoring data:', e);
                     }
+                    
+                    saveStatus.textContent = 'Datos restaurados de la sesión actual';
+                } catch (e) {
+                    console.error('Error restoring data:', e);
+                    sessionStorage.removeItem('reserva_form_' + formId);
                 }
             }
             
@@ -324,25 +398,32 @@ if (isset($_GET['id'])) {
                 debounceTimer = setTimeout(saveFormData, 500);
             });
             
-            // Restore data on page load
+            // Restore data on page load - only if we have data in current session
             restoreFormData();
             
             // Clear saved data when form is successfully submitted
             form.addEventListener('submit', function() {
-                localStorage.removeItem('reserva_form_' + formId);
+                sessionStorage.removeItem('reserva_form_' + formId);
+                localStorage.removeItem('active_session_' + formId);
             });
             
-            // Show warning when navigating away
+            // Show warning when navigating away and reset session
             window.addEventListener('beforeunload', function(e) {
-                // Save data before potentially leaving
-                saveFormData();
+                // Clear the active session marker when leaving
+                localStorage.removeItem('active_session_' + formId);
                 
+                // Also clear any localStorage data to be safe
+                localStorage.removeItem('reserva_form_' + formId);
+                localStorage.removeItem('form_exit_pending_' + formId);
+                
+                // Check if form has unsaved data
                 const formData = new FormData(form);
                 let formHasData = false;
                 
                 for (const [name, value] of formData.entries()) {
                     const input = form.elements[name];
-                    if (input && !input.hasAttribute('hidden') && !input.disabled && value) {
+                    if (input && !input.hasAttribute('hidden') && !input.disabled && value && 
+                        input.getAttribute('type') !== 'hidden') {
                         formHasData = true;
                         break;
                     }
@@ -350,21 +431,20 @@ if (isset($_GET['id'])) {
                 
                 if (formHasData) {
                     e.preventDefault();
-                    e.returnValue = '¿Estás seguro de abandonar la página? Los datos no se perderán y estarán disponibles cuando vuelvas.';
+                    e.returnValue = '¿Está seguro que desea abandonar la página? Los datos ingresados se perderán.';
                     return e.returnValue;
                 }
             });
             
-            // Override default browser page session timeout
-            // This is just for additional protection, the iframe is the main solution
-            function resetSessionTimeout() {
-                const img = new Image();
-                img.src = 'session_ping.php?r=' + Math.random();
+            // Special handling for when user arrives at page - check if we were leaving previously
+            const wasExiting = localStorage.getItem('form_exit_pending_' + formId);
+            if (wasExiting === 'true') {
+                // Clear the form data since user has navigated away and back
+                localStorage.removeItem('reserva_form_' + formId);
+                localStorage.removeItem('form_exit_pending_' + formId);
             }
-            setInterval(resetSessionTimeout, 60000); // Every minute
         });
     </script>
-</body>
 <?php
     mysqli_close($con);
 ?>
