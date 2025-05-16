@@ -12,7 +12,7 @@
         exit();
     }
     $userId = $_SESSION["id"];
-    $usersAdmin = ['56','81','11'];
+    $usersAdmin = ['56','81','11','144'];
     // 56 Mauro Vargas
     // 81 Santiago Galiano
     // 11 Admin
