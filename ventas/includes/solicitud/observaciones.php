@@ -73,6 +73,12 @@
 						<option value="2024" <?php  if ($reserva['anoentrega'] == "2024") { echo "selected"; } ?>>2024</opcion>
 						<option value="2024/2025" <?php  if ($reserva['anoentrega'] == "2024/2025") { echo "selected"; } ?>>2024/2025</opcion>
 						<option value="2025" <?php  if ($reserva['anoentrega'] == "2025") { echo "selected"; } ?>>2025</opcion>
+						<option value="2025/2026" <?php  if ($reserva['anoentrega'] == "2025/2026") { echo "selected"; } ?>>2025/2026</opcion>
+						<option value="2026" <?php  if ($reserva['anoentrega'] == "2026") { echo "selected"; } ?>>2026</opcion>
+						<option value="2026/2027" <?php  if ($reserva['anoentrega'] == "2026/2027") { echo "selected"; } ?>>2026/2027</opcion>
+						<option value="2027" <?php  if ($reserva['anoentrega'] == "2027") { echo "selected"; } ?>>2027</opcion>
+						<option value="2027/2028" <?php  if ($reserva['anoentrega'] == "2027/2028") { echo "selected"; } ?>>2027/2028</opcion>
+						<option value="2028" <?php  if ($reserva['anoentrega'] == "2028") { echo "selected"; } ?>>2028</opcion>
 			</select>
 		</div>
 		<div style="width: 55%">
