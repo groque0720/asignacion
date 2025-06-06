@@ -27,7 +27,8 @@ $datosAPI = [
 ];
 
 // URL de la API
-$url = 'https://panelweb.derkayvargas.com/api/usados/webhook/update-usado';
+//$url = 'http://webdyvsa.oo/api/usados/webhook/update-usado'; // URL de la API de desarrollo
+$url = 'https://panelweb.derkayvargas.com/api/usados/webhook/update-usado'; // URL de la API de producción
 
 // Encodificar datos a JSON
 $jsonData = json_encode($datosAPI);

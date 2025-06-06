@@ -61,7 +61,6 @@
 						<option value="2018/2019" <?php  if ($reserva['anoentrega'] == "2018/2019") { echo "selected"; } ?>>2018/2019</opcion>
 						<option value="2019" <?php  if ($reserva['anoentrega'] == "2019") { echo "selected"; } ?>>2019</opcion>
 						<option value="2019/2020" <?php  if ($reserva['anoentrega'] == "2019/2020") { echo "selected"; } ?>>2019/2020</opcion>
-					<?php } ?>
 						<option value="2020" <?php  if ($reserva['anoentrega'] == "2020") { echo "selected"; } ?>>2020</opcion>
 						<option value="2020/2021" <?php  if ($reserva['anoentrega'] == "2020/2021") { echo "selected"; } ?>>2020/2021</opcion>
 						<option value="2021" <?php  if ($reserva['anoentrega'] == "2021") { echo "selected"; } ?>>2021</opcion>
@@ -70,9 +69,16 @@
 						<option value="2022/2023" <?php  if ($reserva['anoentrega'] == "2022/2023") { echo "selected"; } ?>>2022/2023</opcion>
 						<option value="2023" <?php  if ($reserva['anoentrega'] == "2023") { echo "selected"; } ?>>2023</opcion>
 						<option value="2023/2024" <?php  if ($reserva['anoentrega'] == "2023/2024") { echo "selected"; } ?>>2023/2024</opcion>
+						<?php } ?>
 						<option value="2024" <?php  if ($reserva['anoentrega'] == "2024") { echo "selected"; } ?>>2024</opcion>
 						<option value="2024/2025" <?php  if ($reserva['anoentrega'] == "2024/2025") { echo "selected"; } ?>>2024/2025</opcion>
 						<option value="2025" <?php  if ($reserva['anoentrega'] == "2025") { echo "selected"; } ?>>2025</opcion>
+						<option value="2025/2026" <?php  if ($reserva['anoentrega'] == "2025/2026") { echo "selected"; } ?>>2025/2026</opcion>
+						<option value="2026" <?php  if ($reserva['anoentrega'] == "2026") { echo "selected"; } ?>>2026</opcion>
+						<option value="2026/2027" <?php  if ($reserva['anoentrega'] == "2026/2027") { echo "selected"; } ?>>2026/2027</opcion>
+						<option value="2027" <?php  if ($reserva['anoentrega'] == "2027") { echo "selected"; } ?>>2027</opcion>
+						<option value="2027/2028" <?php  if ($reserva['anoentrega'] == "2027/2028") { echo "selected"; } ?>>2027/2028</opcion>
+						<option value="2028" <?php  if ($reserva['anoentrega'] == "2028") { echo "selected"; } ?>>2028</opcion>
 			</select>
 		</div>
 		<div style="width: 55%">

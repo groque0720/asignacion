@@ -5,10 +5,13 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Configurar encabezados para devolver JSON
+header('Content-Type: application/json');
+
 // Recoger los datos enviados por el formulario
 $dominio = isset($_POST['dominio']) ? trim($_POST['dominio']) : '';
 $interno = isset($_POST['interno']) ? trim($_POST['interno']) : '';
-$precio = isset($_POST['precio']) ? floatval($_POST['precio']) : 0;
+$precio = isset($_POST['precio_venta']) ? floatval($_POST['precio_venta']) : 0;
 $vehiculo = isset($_POST['vehiculo']) ? trim($_POST['vehiculo']) : '';
 $año = isset($_POST['año']) ? intval($_POST['año']) : 0;
 $km = isset($_POST['km']) ? intval($_POST['km']) : 0;
@@ -20,7 +23,10 @@ $id_estado = isset($_POST['id_estado']) ? intval($_POST['id_estado']) : 0;
 
 // Verificar que tenemos datos válidos
 if (empty($dominio) || empty($interno) || $precio < 0 || empty($vehiculo) || $año <= 0 || $km < 0 || $color <= 0 || $id_estado_certificado < 0 || $estado_reserva < 0 || $id_estado_certificado > 3 || $estado_reserva > 1 || $entregado < 0 || $entregado > 1 || $id_estado < 0 || $id_estado > 5) {
-    echo "Error: Datos incompletos o inválidos";
+    echo json_encode([
+        'success' => false,
+        'message' => 'Datos incompletos o inválidos'
+    ]);
     exit;
 }
 
@@ -40,7 +46,9 @@ $datosAPI = [
 ];
 
 // URL de la API
-$url = 'https://panelweb.derkayvargas.com/api/usados/webhook/update-usado';
+//$url = 'http://webdyvsa.oo/api/usados/webhook/update-usado'; // URL de la API de desarrollo
+$url = 'https://panelweb.derkayvargas.com/api/usados/webhook/update-usado'; // URL de la API de producción
+
 
 // Encodificar datos a JSON
 $jsonData = json_encode($datosAPI);
@@ -71,7 +79,10 @@ try {
     // Verificar si hubo error
     if ($response === false) {
         $error = error_get_last();
-        echo "Error al enviar datos a la API: " . (isset($error['message']) ? $error['message'] : 'Error desconocido');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error al enviar datos a la API: ' . (isset($error['message']) ? $error['message'] : 'Error desconocido')
+        ]);
     } else {
         // Si llegamos aquí es que la solicitud se completó (aunque puede haber un error HTTP)
         // Obtener código de respuesta HTTP
@@ -81,16 +92,22 @@ try {
         
         if ($status >= 200 && $status < 300) {
             // Éxito
-            echo "<script>
-                console.log('Precio actualizado en API: $precio para dominio $dominio');
-                window.history.back();
-            </script>";
+            echo json_encode([
+                'success' => true,
+                'message' => 'Precio actualizado en API: ' . $precio . ' para dominio ' . $dominio
+            ]);
         } else {
             // Error HTTP
-            echo "Error en la respuesta de la API: Código $status - $response";
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error en la respuesta de la API: Código ' . $status . ' - ' . $response
+            ]);
         }
     }
 } catch (Exception $e) {
-    echo "Excepción: " . $e->getMessage();
+    echo json_encode([
+        'success' => false,
+        'message' => 'Excepción: ' . $e->getMessage()
+    ]);
 }
 ?>

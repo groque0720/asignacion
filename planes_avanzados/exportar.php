@@ -70,9 +70,17 @@ $fecha = date('d-m-Y');
 $nombreBase = 'planes_cards_' . strtolower(str_replace(' ', '_', $modelo_activo_nombre));
 
 if ($estadoId) {
-    $nombreArchivo = $nombreBase . ($estadoId == 1 ? '_libres' : '_reservados');
+    if ($estadoId == 1) {
+        $nombreArchivo = $nombreBase . '_libres';
+    } elseif ($estadoId == 2) {
+        $nombreArchivo = $nombreBase . '_reservados';
+    } elseif ($estadoId == 3) {
+        $nombreArchivo = $nombreBase . '_vendidos';
+    } else {
+        $nombreArchivo = $nombreBase . '_otros';
+    }   
 } else {
-    $nombreArchivo = $nombreBase . '_libres_y_reservados';
+    $nombreArchivo = $nombreBase . '_libres_reservados_vendidos';
 }
 $nombreArchivo .= '_' . $fecha . '.xlsx';
 
@@ -89,7 +97,14 @@ exit;
 
 function generarCardModelo1($sheet, $fila, $columna, $plan) {
     // Estilos base
-    $colorFondo = $plan['estado_id'] == 1 ? 'ABEBC6' : 'FAD7A0';
+    $colorFondo = ''; 
+    if ($plan['estado_id'] == 1) {
+        $colorFondo = 'ABEBC6'; // Verde para Libre
+    } elseif ($plan['estado_id'] == 2) {
+        $colorFondo = 'FAD7A0'; // Naranja para Reservado
+    } elseif ($plan['estado_id'] == 3) {
+        $colorFondo = 'F1948A'; // Rojo para Vendido
+    }
     $estiloBordeCard = [
         'borders' => [
             'outline' => [

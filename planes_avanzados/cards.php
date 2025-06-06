@@ -73,10 +73,15 @@
                 <?php if($isAdmin) { ?>
                     <select id="exportarExcel" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                         <option value="">Exportar en Excel</option>
-                        <option value="todos">Exportar Libres y Reservados</option>
+                        <option value="todos">Exportar Libres, Reservados y Vendidos</option>
                         <option value="libres">Exportar Solo Libres</option>
                         <option value="reservados">Exportar Solo Reservados</option>
+                        <option value="vendidos">Exportar Solo Vendidos</option>
                     </select>
+                    <a href="/planes_avanzados/exportar_todo.php?situacionId=<?php echo $situacionId; ?>&formato=cards" 
+                       class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap">
+                        Exportar Todo
+                    </a>
                     <a
                     href="/planes_avanzados/plan_view.php" 
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -119,7 +124,15 @@
                                 <span class="text-sm font-bold"><?php echo $plan['modalidad']; ?></span>
                                 <div class="absolute top-5 right-3">
                                     <svg width="18" height="18" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="12" cy="12" r="12" fill="<?php echo $plan['estado_id'] == 1 ? '#abebc6':'#fad7a0'; ?>"/>
+                                        <circle cx="12" cy="12" r="12" fill="<?php 
+                                            if ($plan['estado_id'] == 1) {
+                                                echo '#abebc6'; // Verde para estado 1
+                                            } elseif ($plan['estado_id'] == 3) {
+                                                echo '#f1948a'; // Rojo para estado 3
+                                            } else {
+                                                echo '#fad7a0'; // Naranja para otros estados
+                                            }
+                                        ?>"/>
                                     </svg>                             
                                 </div>     
                             </div>
@@ -255,6 +268,9 @@
                     break;
                 case 'reservados':
                     url = '/planes_avanzados/exportar.php' + params + '&estadoId=2';
+                    break;
+                case 'vendidos':
+                    url = '/planes_avanzados/exportar.php' + params + '&estadoId=3';
                     break;
             }
             

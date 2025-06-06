@@ -157,7 +157,7 @@ if ($cant>=1) {
 				<div class="form-linea">
 					<div class="ancho-1-3">
 						<label class="ancho-20" for="">Año</label>
-						<input class="form-inputs ancho-80" type="text" size="10" id="año" name="año" value="<?php echo $unidad['año'].' '; ?> " <?php echo $lectura; ?>>
+						<input class="form-inputs centrar-texto ancho-80" type="text" size="10" id="año" name="año" value="<?php echo $unidad['año'];?>" <?php echo $lectura; ?>>
 					</div>
 					<div class="ancho-1-3 centrar-texto">
 						<label class="ancho-20" for="">Km</label>

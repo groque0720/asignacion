@@ -1,5 +1,5 @@
 <?php
-	//Servidor local ¡¡CUIDADO !! CAMBIAR A SERVIDOR REMOTO EN PRODUCCION!!
+	// // servidor
 	// define('HOST','localhost');
 	// //usuario bd
 	// define('USER','root');

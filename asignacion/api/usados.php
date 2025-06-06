@@ -38,7 +38,7 @@ if (!empty($_GET)) {
     }
 }
 
-$SQL .= " ORDER BY e.posicion, au.vehiculo";
+$SQL .= " ORDER BY e.posicion, au.vehiculo, au.interno DESC"; // Ordena por posición y luego por vehículo e interno
 
 $usados = mysqli_query($con, $SQL);
 

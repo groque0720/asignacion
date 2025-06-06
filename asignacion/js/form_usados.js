@@ -430,7 +430,7 @@ $(".form-unidad").submit(function(event) {
 		
 		// Guardar los valores originales antes de enviar
 		var originalPrecio = $("#precio_venta").val();
-		var dominio = $("#dominio").val().trim();
+		var dominio = $("#dominio").val().trim().toUpperCase();
 		var interno = $("#interno").val().trim();
 		var vehiculo = $("#vehiculo").val().trim(); //ver
 		var año = $("#año").val()
@@ -469,85 +469,44 @@ $(".form-unidad").submit(function(event) {
 	}
 });
 
-// Función simple para enviar datos a la API
+// Función para enviar datos a la API usando AJAX
 function enviarDatosAPI(dominio, interno, precio, vehiculo, año, km, color, id_estado_certificado, estado_reserva, entregado, id_estado) {
-	// Crear un form oculto y enviarlo a un PHP separado que manejará la comunicación con la API
-	var form = document.createElement('form');
-	form.method = 'POST';
-	form.action = 'enviar_api_usados.php';
-	form.style.display = 'none';
-	
-	// Agregar los campos necesarios
-	var dominioInput = document.createElement('input');
-	dominioInput.type = 'hidden';
-	dominioInput.name = 'dominio';
-	dominioInput.value = dominio;
-	form.appendChild(dominioInput);
-	
-	var internoInput = document.createElement('input');
-	internoInput.type = 'hidden';
-	internoInput.name = 'interno';
-	internoInput.value = interno;
-	form.appendChild(internoInput);
-	
-	var precioInput = document.createElement('input');
-	precioInput.type = 'hidden';
-	precioInput.name = 'precio';
-	precioInput.value = precio;
-	form.appendChild(precioInput);
-
-	var vehiculoInput = document.createElement('input');
-	vehiculoInput.type = 'hidden';
-	vehiculoInput.name = 'vehiculo';
-	vehiculoInput.value = vehiculo;
-	form.appendChild(vehiculoInput);
-
-	var añoInput = document.createElement('input');
-	añoInput.type = 'hidden';
-	añoInput.name = 'año';
-	añoInput.value = año;
-	form.appendChild(añoInput);
-
-	var kmInput = document.createElement('input');
-	kmInput.type = 'hidden';
-	kmInput.name = 'km';
-	kmInput.value = km;
-	form.appendChild(kmInput);
-
-	var colorInput = document.createElement('input');
-	colorInput.type = 'hidden';
-	colorInput.name = 'color';
-	colorInput.value = color;
-	form.appendChild(colorInput);
-
-	var id_estado_certificadoInput = document.createElement('input');
-	id_estado_certificadoInput.type = 'hidden';
-	id_estado_certificadoInput.name = 'id_estado_certificado';
-	id_estado_certificadoInput.value = id_estado_certificado;
-	form.appendChild(id_estado_certificadoInput);
-
-	var estado_reservaInput = document.createElement('input');
-	estado_reservaInput.type = 'hidden';
-	estado_reservaInput.name = 'estado_reserva';
-	estado_reservaInput.value = estado_reserva;
-	form.appendChild(estado_reservaInput);
-
-	var entregadoInput = document.createElement('input');
-	entregadoInput.type = 'hidden';
-	entregadoInput.name = 'entregado';
-	entregadoInput.value = entregado;
-	form.appendChild(entregadoInput);
-
-	var id_estadoInput = document.createElement('input');
-	id_estadoInput.type = 'hidden';
-	id_estadoInput.name = 'id_estado';
-	id_estadoInput.value = id_estado;
-	form.appendChild(id_estadoInput);
-
-	
-	// Agregar el formulario al documento y enviarlo
-	document.body.appendChild(form);
-	form.submit();
-	
-	console.log("Enviando datos a API:", dominio, interno, precio);
+    // Crear objeto con los datos para enviar a la API
+    var datosAPI = {
+        dominio: dominio,
+        interno: interno,
+        precio_venta: precio,
+        vehiculo: vehiculo,
+        año: año,
+        km: km,
+        color: color,
+        id_estado_certificado: id_estado_certificado,
+        estado_reserva: estado_reserva,
+        entregado: entregado,
+        id_estado: id_estado
+    };
+    
+    // Realizar la petición AJAX
+    $.ajax({
+        url: 'enviar_api_usados.php',
+        type: 'POST',
+        data: datosAPI,
+        dataType: 'json',
+        success: function(response) {
+            // Mostrar mensaje en consola
+            console.log('Precio actualizado en API: ' + precio + ' para dominio ' + dominio);
+            
+            // Si queremos mostrar algún mensaje de éxito, podríamos hacerlo aquí
+            if (response.success) {
+                console.log('Datos enviados correctamente a la API externa');
+            } else {
+                console.error('Error al enviar datos a la API externa: ' + response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error en la solicitud AJAX: ' + error);
+        }
+    });
+    
+    console.log("Enviando datos a API:", dominio, interno, precio);
 }
