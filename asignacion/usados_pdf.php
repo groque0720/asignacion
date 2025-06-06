@@ -144,188 +144,193 @@ $pdf->SetFont('');
 
 $total_gral_toma=0;
 $total_gral_costo=0;
-$total_gral_p_venta=0;
-$total_gral_p_info=0;
+$total_gral_costo_rep=0;
 $total_gral_transferencia=0;
+$total_gral_p_venta=0;
+$total_gral_p_contado = 0;
+$total_gral_p_info=0;
 
 $SQL="SELECT * FROM asignaciones_usados_estados ORDER BY posicion";
 $estado_usado = mysqli_query($con, $SQL);
 
 $nro = 0;
 
-$total_costo_rep = 0;
-$total_gral_costo_rep=0;
 
 while ($estado=mysqli_fetch_array($estado_usado)) {
+	
+	// usuarios permitidos a ver otros estados de los usados
+	$user_permitidos = [1, 2, 11, 16, 17, 27, 36, 41, 45, 46, 47, 49, 56, 72, 89, 94, 103, 106, 124];
+	// condicional para mostrar otros estados segun usuarios permitidos.
+	if ( $estado['id_estado_usado'] == 1 or in_array($id_usuario,$user_permitidos) ) {
+		
+		$total_toma=0;
+		$total_costo=0;
+		$total_costo_rep = 0;
+		$total_transferencia=0;
+		$total_p_venta=0;
+		$total_p_contado = 0;
+		$total_p_info=0;
+		$nro = 0;
 
-   // usuarios permitidos a ver otros estados de los usados
-  $user_permitidos = [1, 2, 11, 16, 17, 27, 36, 41, 45, 46, 47, 49, 56, 72, 89, 94, 103, 106, 124];
-   // condicional para mostrar otros estados segun usuarios permitidos.
-  if ( $estado['id_estado_usado'] == 1 or in_array($id_usuario,$user_permitidos) ) {
+		$SQL="SELECT *, DATEDIFF(DATE(NOW()),fec_recepcion)as ant FROM asignaciones_usados WHERE entregado = 0 AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
+		$usados=mysqli_query($con, $SQL);
+		$cant=mysqli_num_rows($usados);
 
-	$total_toma=0;
-	$total_costo=0;
-	$total_p_venta=0;
-	$total_p_info=0;
-	$total_transferencia=0;
-	$nro = 0;
+		if ($cant>0) {
 
-	$SQL="SELECT *, DATEDIFF(DATE(NOW()),fec_recepcion)as ant FROM asignaciones_usados WHERE entregado = 0 AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
-	$usados=mysqli_query($con, $SQL);
-	$cant=mysqli_num_rows($usados);
+			$pdf->SetFont('Arial','BI',8);
 
-	if ($cant>0) {
-
-		$pdf->SetFont('Arial','BI',8);
-
-		$pdf->Cell(0,5,($estado['estado_usado']),0,0,'L');
-		$pdf->Ln();
+			$pdf->Cell(0,5,($estado['estado_usado']),0,0,'L');
+			$pdf->Ln();
 
 
 
-		while ($usado=mysqli_fetch_array($usados)) {
-			$nro++;
+			while ($usado=mysqli_fetch_array($usados)) {
+				$nro++;
 
-			if ($usado['reservada']==1 AND $usado['estado_reserva']==0) {
-				$pdf->SetFont('Arial','BI',6.5);
-			}else{
-				$pdf->SetFont('Arial','B',6.5);
-				$pdf->SetFont('');
+				if ($usado['reservada']==1 AND $usado['estado_reserva']==0) {
+					$pdf->SetFont('Arial','BI',6.5);
+				}else{
+					$pdf->SetFont('Arial','B',6.5);
+					$pdf->SetFont('');
+				}
+				$pdf->Cell(4,5,$nro ,1,0,'C');
+				$pdf->Cell(7,5,$usado['nro_unidad'],1,0,'C');
+				$pdf->Cell(7,5,$usado['interno'],1,0,'C');
+				$largo=strlen($usado['vehiculo']);
+				$vehiculo=$usado['vehiculo'];
+
+				$moneda = '$ ';
+				if (strpos(strtolower($usado['vehiculo']), 'usd') !== false) {
+					$moneda = 'U$D ';
+				}
+				
+				if ($largo>39) {
+					$cortar=$largo-39;
+					$vehiculo=substr($usado['vehiculo'], 0, -$cortar).'[..]';
+				}
+				$pdf->Cell(49,5,($vehiculo),1,0,'L');
+				$pdf->Cell(3,5,$por_a[$usado['por']]['grupo_res'],1,0,'C');
+				$pdf->Cell(8,5,$usado['año'],1,0,'C');
+				$pdf->Cell(10,5,number_format($usado['km'], 0, ',','.'),1,0,'R');
+				$pdf->Cell(13,5,$usado['dominio'],1,0,'C');
+				$pdf->Cell(13,5,$color_a[$usado['color']]['color'],1,0,'C');
+
+
+
+				$largo=strlen($usado['ultimo_dueño']);
+				$ultimo_dueño=$usado['ultimo_dueño'];
+				if ($largo>19) {
+					$cortar=$largo-19;
+					$ultimo_dueño=substr($usado['ultimo_dueño'], 0, -$cortar).'..';
+				}
+				$pdf->Cell(30,5,($ultimo_dueño),1,0,'L');
+
+				// $asesor_toma=$usuario_a[$usado['asesortoma']]['nombre'];
+				// $largo=strlen($usuario_a[$usado['asesortoma']]['nombre']);
+				// if ($largo>10) {
+				// 	$cortar=$largo-10;
+				// 	$asesor_toma=substr($usuario_a[$usado['asesortoma']]['nombre'], 0, -$cortar).'..';
+				// }
+
+				// $pdf->Cell(15,5,($asesor_toma),1,0,'L');
+				$pdf->Cell(12,5,cambiarFormatoFecha($usado['fec_recepcion']),1,0,'C');
+
+				if ($usado['ant']/30>=1) {
+					$antiguedad = number_format(((int)$usado['ant']/30), 0, ',','.');
+				}else{
+					$antiguedad = '-';
+				}
+
+				$pdf->Cell(6,5,$antiguedad,1,0,'C');
+
+				if ($es_gerente==1) {
+					$pdf->Cell(16,5,'$ '.number_format($usado['toma_mas_impuesto'], 0, ',','.'),1,0,'R');
+					$pdf->Cell(16,5,'$ '.number_format($usado['costo_contable'], 0, ',','.'),1,0,'R');
+					$pdf->Cell(16,5,'$ '.number_format($usado['costo_reparacion'], 0, ',','.'),1,0,'R');
+					// $pdf->Cell(16,5,'$ '.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
+				}else{
+					$pdf->Cell(16,5,'$ -',1,0,'R');
+					$pdf->Cell(16,5,'$ -',1,0,'R');
+					$pdf->Cell(16,5,'$ -',1,0,'R');
+					// $pdf->Cell(16,5,'$ -',1,0,'R');
+				}
+				$pdf->Cell(16,5,'$ '.number_format($usado['transferencia'], 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,$moneda.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,$moneda.number_format($usado['precio_contado'], 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,'$ '.number_format($usado['precio_info'], 0, ',','.'),1,0,'R');
+				$pdf->Cell(8,5,$sucursal_a[$usado['id_sucursal']]['sucres'],1,0,'C');
+
+				if ($usado['reservada']==1) {
+					if ($usado['fecha_cancelacion']==null) { $canc = 'No';}else{ $canc = 'Si';}
+				}else{
+					$canc = '-';
+				}
+				$pdf->Cell(6,5,$canc,1,0,'C');
+
+				$largo=strlen($usado['cliente']);
+				$cliente=$usado['cliente'];
+				if ($largo>15) {
+					$cortar=$largo-15;
+					$cliente=substr($usado['cliente'], 0, -$cortar).'..';
+				}
+
+				$pdf->Cell(23,5,($cliente),1,0,'L');
+
+				$asesor_venta=$usuario_a[$usado['id_asesor']]['nombre'];
+				$largo=strlen($usuario_a[$usado['id_asesor']]['nombre']);
+				if ($largo>10) {
+					$cortar=$largo-10;
+					$asesor_venta=substr($usuario_a[$usado['id_asesor']]['nombre'], 0, -$cortar).'..';
+				}
+
+				$pdf->Cell(15,5,($asesor_venta),1,0,'L');
+
+
+				$pdf->Cell(11,5,cambiarFormatoFecha($usado['fec_reserva']),1,0,'C');
+				$pdf->Ln();
+
+				$total_toma=$total_toma + $usado['toma_mas_impuesto'];
+				$total_costo=$total_costo + $usado['costo_contable'];
+				$total_costo_rep = $total_costo_rep + $usado['costo_reparacion'];
+				$total_transferencia = $total_transferencia + $usado['transferencia'];
+				$total_p_venta= $total_p_venta + $usado['precio_venta'];
+				$total_p_contado= $total_p_venta + $usado['precio_contado'];
+				$total_p_info = $total_p_info + $usado['precio_info'];
+
+				$total_gral_toma = $total_gral_toma + $usado['toma_mas_impuesto'];
+				$total_gral_costo = $total_gral_costo + $usado['costo_contable'];
+				$total_gral_costo_rep = $total_gral_costo_rep + $usado['costo_reparacion'];
+				$total_gral_transferencia = $total_gral_transferencia + $usado['transferencia'];
+				$total_gral_p_venta = $total_gral_p_venta + $usado['precio_venta'];
+				$total_gral_p_contado = $total_gral_p_contado + $usado['precio_contado'];
+				$total_gral_p_info = $total_gral_p_info + $usado['precio_info'];
+
 			}
-			$pdf->Cell(4,5,$nro ,1,0,'C');
-			$pdf->Cell(7,5,$usado['nro_unidad'],1,0,'C');
-			$pdf->Cell(7,5,$usado['interno'],1,0,'C');
-			$largo=strlen($usado['vehiculo']);
-			$vehiculo=$usado['vehiculo'];
 
-			$moneda = '$ ';
-			if (strpos(strtolower($usado['vehiculo']), 'usd') !== false) {
-				$moneda = 'U$D ';
-			}
-			
-			if ($largo>39) {
-				$cortar=$largo-39;
-				$vehiculo=substr($usado['vehiculo'], 0, -$cortar).'[..]';
-			}
-			$pdf->Cell(49,5,($vehiculo),1,0,'L');
-			$pdf->Cell(3,5,$por_a[$usado['por']]['grupo_res'],1,0,'C');
-			$pdf->Cell(8,5,$usado['año'],1,0,'C');
-			$pdf->Cell(10,5,number_format($usado['km'], 0, ',','.'),1,0,'R');
-			$pdf->Cell(13,5,$usado['dominio'],1,0,'C');
-			$pdf->Cell(13,5,$color_a[$usado['color']]['color'],1,0,'C');
+			$pdf->SetFont('Arial','BI',8);
+			$pdf->Cell(177,5,'Total '.($estado['estado_usado']).'   ',0,0,'R');
+			$pdf->SetFont('Arial','B',6.5);
 
-
-
-			$largo=strlen($usado['ultimo_dueño']);
-			$ultimo_dueño=$usado['ultimo_dueño'];
-			if ($largo>19) {
-				$cortar=$largo-19;
-				$ultimo_dueño=substr($usado['ultimo_dueño'], 0, -$cortar).'..';
-			}
-			$pdf->Cell(30,5,($ultimo_dueño),1,0,'L');
-
-			// $asesor_toma=$usuario_a[$usado['asesortoma']]['nombre'];
-			// $largo=strlen($usuario_a[$usado['asesortoma']]['nombre']);
-			// if ($largo>10) {
-			// 	$cortar=$largo-10;
-			// 	$asesor_toma=substr($usuario_a[$usado['asesortoma']]['nombre'], 0, -$cortar).'..';
-			// }
-
-			// $pdf->Cell(15,5,($asesor_toma),1,0,'L');
-			$pdf->Cell(12,5,cambiarFormatoFecha($usado['fec_recepcion']),1,0,'C');
-
-			if ($usado['ant']/30>=1) {
-				$antiguedad = number_format(((int)$usado['ant']/30), 0, ',','.');
-			}else{
-				$antiguedad = '-';
-			}
-
-			$pdf->Cell(6,5,$antiguedad,1,0,'C');
 
 			if ($es_gerente==1) {
-				$pdf->Cell(16,5,'$ '.number_format($usado['toma_mas_impuesto'], 0, ',','.'),1,0,'R');
-				$pdf->Cell(16,5,'$ '.number_format($usado['costo_contable'], 0, ',','.'),1,0,'R');
-				$pdf->Cell(16,5,'$ '.number_format($usado['costo_reparacion'], 0, ',','.'),1,0,'R');
-				// $pdf->Cell(16,5,'$ '.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,'$ '.number_format($total_toma, 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,'$ '.number_format($total_costo, 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,'$ '.number_format($total_costo_rep, 0, ',','.'),1,0,'R');
+				// $pdf->Cell(16,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
 			}else{
 				$pdf->Cell(16,5,'$ -',1,0,'R');
 				$pdf->Cell(16,5,'$ -',1,0,'R');
 				$pdf->Cell(16,5,'$ -',1,0,'R');
 				// $pdf->Cell(16,5,'$ -',1,0,'R');
 			}
-			$pdf->Cell(16,5,'$ '.number_format($usado['transferencia'], 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,$moneda.number_format($usado['precio_venta'], 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,$moneda.number_format($usado['precio_contado'], 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,'$ '.number_format($usado['precio_info'], 0, ',','.'),1,0,'R');
-			$pdf->Cell(8,5,$sucursal_a[$usado['id_sucursal']]['sucres'],1,0,'C');
+			$pdf->Cell(16,5,'$ '.number_format($total_transferencia, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($total_p_contado, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,'$ '.number_format($total_p_info, 0, ',','.'),1,0,'R');
 
-			if ($usado['reservada']==1) {
-				if ($usado['fecha_cancelacion']==null) { $canc = 'No';}else{ $canc = 'Si';}
-			}else{
-				$canc = '-';
-			}
-			$pdf->Cell(6,5,$canc,1,0,'C');
-
-			$largo=strlen($usado['cliente']);
-			$cliente=$usado['cliente'];
-			if ($largo>15) {
-				$cortar=$largo-15;
-				$cliente=substr($usado['cliente'], 0, -$cortar).'..';
-			}
-
-			$pdf->Cell(23,5,($cliente),1,0,'L');
-
-			$asesor_venta=$usuario_a[$usado['id_asesor']]['nombre'];
-			$largo=strlen($usuario_a[$usado['id_asesor']]['nombre']);
-			if ($largo>10) {
-				$cortar=$largo-10;
-				$asesor_venta=substr($usuario_a[$usado['id_asesor']]['nombre'], 0, -$cortar).'..';
-			}
-
-			$pdf->Cell(15,5,($asesor_venta),1,0,'L');
-
-
-			$pdf->Cell(11,5,cambiarFormatoFecha($usado['fec_reserva']),1,0,'C');
 			$pdf->Ln();
-
-			$total_toma=$total_toma + $usado['toma_mas_impuesto'];
-			$total_costo=$total_costo + $usado['costo_contable'];
-			$total_p_venta= $total_p_venta + $usado['precio_venta'];
-			$total_p_info = $total_p_info + $usado['precio_info'];
-			$total_costo_rep = $total_costo_rep + $usado['costo_reparacion'];
-			$total_transferencia = $total_transferencia + $usado['transferencia'];
-
-			$total_gral_toma = $total_gral_toma + $usado['toma_mas_impuesto'];
-			$total_gral_costo = $total_gral_costo + $usado['costo_contable'];
-			$total_gral_p_venta = $total_gral_p_venta + $usado['precio_venta'];
-			$total_gral_p_info = $total_gral_p_info + $usado['precio_info'];
-			$total_gral_costo_rep = $total_gral_costo_rep + $usado['costo_reparacion'];
-			$total_gral_transferencia = $total_gral_transferencia + $usado['transferencia'];
-
 		}
-
-		$pdf->SetFont('Arial','BI',8);
-		$pdf->Cell(177,5,'Total '.($estado['estado_usado']).'   ',0,0,'R');
-		$pdf->SetFont('Arial','B',6.5);
-
-
-		if ($es_gerente==1) {
-			$pdf->Cell(16,5,'$ '.number_format($total_toma, 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,'$ '.number_format($total_costo, 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,'$ '.number_format($total_costo_rep, 0, ',','.'),1,0,'R');
-			// $pdf->Cell(16,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
-		}else{
-			$pdf->Cell(16,5,'$ -',1,0,'R');
-			$pdf->Cell(16,5,'$ -',1,0,'R');
-			$pdf->Cell(16,5,'$ -',1,0,'R');
-			// $pdf->Cell(16,5,'$ -',1,0,'R');
-		}
-		$pdf->Cell(16,5,'$ '.number_format($total_transferencia, 0, ',','.'),1,0,'R');
-		$pdf->Cell(16,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
-		$pdf->Cell(16,5,'$ '.number_format($total_p_info, 0, ',','.'),1,0,'R');
-
-		$pdf->Ln();
-	}
 
   } // cierre de condicional de otras vistas
 }
@@ -344,6 +349,7 @@ if ($es_gerente==1) {
 }
 $pdf->Cell(16,5,'$ '.number_format($total_gral_transferencia, 0, ',','.'),1,0,'R');
 $pdf->Cell(16,5,'$ '.number_format($total_gral_p_venta, 0, ',','.'),1,0,'R');
+$pdf->Cell(16,5,'$ '.number_format($total_gral_p_contado, 0, ',','.'),1,0,'R');
 $pdf->Cell(16,5,'$ '.number_format($total_gral_p_info, 0, ',','.'),1,0,'R');
 
 $pdf->Ln();
