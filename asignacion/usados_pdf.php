@@ -170,6 +170,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 		$total_p_venta=0;
 		$total_p_contado = 0;
 		$total_p_info=0;
+
 		$nro = 0;
 
 		$SQL="SELECT *, DATEDIFF(DATE(NOW()),fec_recepcion)as ant FROM asignaciones_usados WHERE entregado = 0 AND id_estado =".$estado['id_estado_usado']." ORDER BY vehiculo";
@@ -295,7 +296,7 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 				$total_costo_rep = $total_costo_rep + $usado['costo_reparacion'];
 				$total_transferencia = $total_transferencia + $usado['transferencia'];
 				$total_p_venta= $total_p_venta + $usado['precio_venta'];
-				$total_p_contado= $total_p_venta + $usado['precio_contado'];
+				$total_p_contado= $total_p_contado + $usado['precio_contado'];
 				$total_p_info = $total_p_info + $usado['precio_info'];
 
 				$total_gral_toma = $total_gral_toma + $usado['toma_mas_impuesto'];
@@ -309,25 +310,25 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 			}
 
 			$pdf->SetFont('Arial','BI',8);
-			$pdf->Cell(177,5,'Total '.($estado['estado_usado']).'   ',0,0,'R');
+			$pdf->Cell(162,5,'Total '.($estado['estado_usado']).'   ',0,0,'R');
 			$pdf->SetFont('Arial','B',6.5);
 
 
 			if ($es_gerente==1) {
-				$pdf->Cell(16,5,'$ '.number_format($total_toma, 0, ',','.'),1,0,'R');
-				$pdf->Cell(16,5,'$ '.number_format($total_costo, 0, ',','.'),1,0,'R');
-				$pdf->Cell(16,5,'$ '.number_format($total_costo_rep, 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,number_format($total_toma, 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,number_format($total_costo, 0, ',','.'),1,0,'R');
+				$pdf->Cell(16,5,number_format($total_costo_rep, 0, ',','.'),1,0,'R');
 				// $pdf->Cell(16,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
 			}else{
-				$pdf->Cell(16,5,'$ -',1,0,'R');
-				$pdf->Cell(16,5,'$ -',1,0,'R');
-				$pdf->Cell(16,5,'$ -',1,0,'R');
+				$pdf->Cell(16,5,'-',1,0,'R');
+				$pdf->Cell(16,5,'-',1,0,'R');
+				$pdf->Cell(16,5,'-',1,0,'R');
 				// $pdf->Cell(16,5,'$ -',1,0,'R');
 			}
-			$pdf->Cell(16,5,'$ '.number_format($total_transferencia, 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,'$ '.number_format($total_p_venta, 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,'$ '.number_format($total_p_contado, 0, ',','.'),1,0,'R');
-			$pdf->Cell(16,5,'$ '.number_format($total_p_info, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,number_format($total_transferencia, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,number_format($total_p_venta, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,number_format($total_p_contado, 0, ',','.'),1,0,'R');
+			$pdf->Cell(16,5,number_format($total_p_info, 0, ',','.'),1,0,'R');
 
 			$pdf->Ln();
 		}
@@ -336,21 +337,21 @@ while ($estado=mysqli_fetch_array($estado_usado)) {
 }
 $pdf->Ln();
 $pdf->SetFont('Arial','BI',8);
-$pdf->Cell(177,5,'Total General   ',0,0,'R');
+$pdf->Cell(162,5,'Total General   ',0,0,'R');
 $pdf->SetFont('Arial','B',6.5);
 if ($es_gerente==1) {
-	$pdf->Cell(16,5,'$ '.number_format($total_gral_toma, 0, ',','.'),1,0,'R');
-	$pdf->Cell(16,5,'$ '.number_format($total_gral_costo, 0, ',','.'),1,0,'R');
-	$pdf->Cell(16,5,'$ '.number_format($total_gral_costo_rep, 0, ',','.'),1,0,'R');
+	$pdf->Cell(16,5,number_format($total_gral_toma, 0, ',','.'),1,0,'R');
+	$pdf->Cell(16,5,number_format($total_gral_costo, 0, ',','.'),1,0,'R');
+	$pdf->Cell(16,5,number_format($total_gral_costo_rep, 0, ',','.'),1,0,'R');
 }else{
-	$pdf->Cell(16,5,'$ -',1,0,'R');
-	$pdf->Cell(16,5,'$ -',1,0,'R');
-	$pdf->Cell(16,5,'$ -',1,0,'R');
+	$pdf->Cell(16,5,'-',1,0,'R');
+	$pdf->Cell(16,5,'-',1,0,'R');
+	$pdf->Cell(16,5,'-',1,0,'R');
 }
-$pdf->Cell(16,5,'$ '.number_format($total_gral_transferencia, 0, ',','.'),1,0,'R');
-$pdf->Cell(16,5,'$ '.number_format($total_gral_p_venta, 0, ',','.'),1,0,'R');
-$pdf->Cell(16,5,'$ '.number_format($total_gral_p_contado, 0, ',','.'),1,0,'R');
-$pdf->Cell(16,5,'$ '.number_format($total_gral_p_info, 0, ',','.'),1,0,'R');
+$pdf->Cell(16,5,number_format($total_gral_transferencia, 0, ',','.'),1,0,'R');
+$pdf->Cell(16,5,number_format($total_gral_p_venta, 0, ',','.'),1,0,'R');
+$pdf->Cell(16,5,number_format($total_gral_p_contado, 0, ',','.'),1,0,'R');
+$pdf->Cell(16,5,number_format($total_gral_p_info, 0, ',','.'),1,0,'R');
 
 $pdf->Ln();
 
