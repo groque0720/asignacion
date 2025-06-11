@@ -75,11 +75,12 @@ $sheet->getColumnDimension('G')->setWidth(15); // Plus
 $sheet->getColumnDimension('H')->setWidth(15); // Cuota Promedio
 $sheet->getColumnDimension('I')->setWidth(15); // Valor Unidad
 $sheet->getColumnDimension('J')->setWidth(15); // Venta
-$sheet->getColumnDimension('K')->setWidth(15); // Integración
-$sheet->getColumnDimension('L')->setWidth(25); // Derecho Adjudicación
-$sheet->getColumnDimension('M')->setWidth(15); // Total
-$sheet->getColumnDimension('N')->setWidth(15); // Reserva
-$sheet->getColumnDimension('O')->setWidth(80); // Situación
+$sheet->getColumnDimension('K')->setWidth(15); // Bonificación
+$sheet->getColumnDimension('L')->setWidth(15); // Integración
+$sheet->getColumnDimension('M')->setWidth(25); // Derecho Adjudicación
+$sheet->getColumnDimension('N')->setWidth(15); // Total
+$sheet->getColumnDimension('O')->setWidth(15); // Reserva
+$sheet->getColumnDimension('P')->setWidth(80); // Situación
 
 // Encabezados
 $fila = 1;
@@ -106,22 +107,25 @@ $sheet->setCellValue("I{$fila}", "Valor Unidad");
 $sheet->mergeCells("J{$fila}:J" . ($fila + 1));
 $sheet->setCellValue("J{$fila}", "Venta");
 $sheet->mergeCells("K{$fila}:K" . ($fila + 1));
-$sheet->setCellValue("K{$fila}", "Integración");
+$sheet->setCellValue("K{$fila}", "Bonificación");
 $sheet->mergeCells("L{$fila}:L" . ($fila + 1));
-$sheet->setCellValue("L{$fila}", "Derecho de \nAdjudicación");
+$sheet->setCellValue("L{$fila}", "Integración");
 $sheet->mergeCells("M{$fila}:M" . ($fila + 1));
-$sheet->setCellValue("M{$fila}", "Total");
+$sheet->setCellValue("M{$fila}", "Derecho de \nAdjudicación");
 $sheet->mergeCells("N{$fila}:N" . ($fila + 1));
-$sheet->setCellValue("N{$fila}", "Reserva");
+$sheet->setCellValue("N{$fila}", "Total");
 $sheet->mergeCells("O{$fila}:O" . ($fila + 1));
-$sheet->setCellValue("O{$fila}", "Situación \nCliente/asesor");
+$sheet->setCellValue("O{$fila}", "Reserva");
+$sheet->mergeCells("P{$fila}:P" . ($fila + 1));
+$sheet->setCellValue("P{$fila}", "Situación \nCliente/asesor");
 
 // Aplicar estilos especiales
 $sheet->getStyle("G{$fila}")->getFont()->getColor()->setRGB('FF0000'); // Plus en rojo
-$sheet->getStyle("M{$fila}")->getFont()->getColor()->setRGB('FF0000'); // Total en rojo
+$sheet->getStyle("K{$fila}")->getFont()->getColor()->setRGB('0066CC'); // Bonificación en azul
+$sheet->getStyle("N{$fila}")->getFont()->getColor()->setRGB('FF0000'); // Total en rojo
 
 // Aplicar estilos a encabezados
-$sheet->getStyle("A{$fila}:O" . ($fila + 1))->applyFromArray($estiloHeader);
+$sheet->getStyle("A{$fila}:P" . ($fila + 1))->applyFromArray($estiloHeader);
 
 // Datos
 $fila = 3;
@@ -136,43 +140,45 @@ while ($plan = mysqli_fetch_array($planes_avanzados)) {
     $sheet->setCellValue("H{$fila}", $plan['cuota_promedio']);
     $sheet->setCellValue("I{$fila}", $plan['valor_unidad']);
     $sheet->setCellValue("J{$fila}", $plan['venta']);
-    $sheet->setCellValue("K{$fila}", $plan['integracion']);
-    $sheet->setCellValue("L{$fila}", $plan['derecho_adjudicacion']);
-    $sheet->setCellValue("M{$fila}", $plan['precio_final']);
-    $sheet->setCellValue("N{$fila}", $plan['monto_reserva']);
-    $sheet->setCellValue("O{$fila}", $plan['cliente'] . " / " . $plan['usuario_venta']);
+    $sheet->setCellValue("K{$fila}", ($plan['cuota_promedio'] * $plan['cuotas_pagadas_cantidad']) - $plan['venta']);
+    $sheet->setCellValue("L{$fila}", $plan['integracion']);
+    $sheet->setCellValue("M{$fila}", $plan['derecho_adjudicacion']);
+    $sheet->setCellValue("N{$fila}", $plan['precio_final']);
+    $sheet->setCellValue("O{$fila}", $plan['monto_reserva']);
+    $sheet->setCellValue("P{$fila}", $plan['cliente'] . " / " . $plan['usuario_venta']);
     
     // Aplicar centrado a todas las celdas
-    $sheet->getStyle("A{$fila}:O{$fila}")->applyFromArray($estiloCelda);
+    $sheet->getStyle("A{$fila}:P{$fila}")->applyFromArray($estiloCelda);
     
     // No necesitamos alineación especial para números ahora ya que todo va centrado
     // Mantener solo el formato numérico
-    $sheet->getStyle("E{$fila}:N{$fila}")->getNumberFormat()->setFormatCode('#,##0.00');
+    $sheet->getStyle("E{$fila}:O{$fila}")->getNumberFormat()->setFormatCode('#,##0.00');
     
     if ($plan['estado_id'] == 1) {
-        $sheet->getStyle("A{$fila}:O{$fila}")->getFill()
+        $sheet->getStyle("A{$fila}:P{$fila}")->getFill()
               ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
               ->getStartColor()->setRGB('ABEBC6');
     } elseif ($plan['estado_id'] == 2) {
-        $sheet->getStyle("A{$fila}:O{$fila}")->getFill()
+        $sheet->getStyle("A{$fila}:P{$fila}")->getFill()
               ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
               ->getStartColor()->setRGB('FAD7A0');
     } elseif ($plan['estado_id'] == 3) {
-        $sheet->getStyle("A{$fila}:O{$fila}")->getFill()
+        $sheet->getStyle("A{$fila}:P{$fila}")->getFill()
               ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
               ->getStartColor()->setRGB('F1948A');
     }
     
-    // Plus y Total en rojo
+    // Plus, Bonificación y Total en colores especiales
     $sheet->getStyle("G{$fila}")->getFont()->getColor()->setRGB('FF0000');
-    $sheet->getStyle("M{$fila}")->getFont()->getColor()->setRGB('FF0000');
+    $sheet->getStyle("K{$fila}")->getFont()->getColor()->setRGB('0066CC');
+    $sheet->getStyle("N{$fila}")->getFont()->getColor()->setRGB('FF0000');
     
     $fila++;
 }
 
 // Aplicar bordes a toda la tabla
 $ultimaFila = $fila - 1;
-$sheet->getStyle("A1:O{$ultimaFila}")->applyFromArray([
+$sheet->getStyle("A1:P{$ultimaFila}")->applyFromArray([
     'borders' => [
         'allborders' => [
             'style' => \PHPExcel_Style_Border::BORDER_THIN

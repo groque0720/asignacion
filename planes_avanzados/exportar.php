@@ -171,6 +171,7 @@ function generarCardModelo1($sheet, $fila, $columna, $plan) {
         ["Costo DYV", $plan['costo'], true],
         ["Plus", $plan['plus'], true, false, 'FF0000'], // rojo
         ["Precio Venta", $plan['venta'], true, true], // negrita
+        ["Bonificación", ($plan['cuota_promedio'] * $plan['cuotas_pagadas_cantidad']) - $plan['venta'], true, true, '0066CC'], // azul y negrita
         ["Cuota Promedio", $plan['cuota_promedio'], true, false, 'FF0000'], // rojo
         ["Valor de la unidad", $plan['valor_unidad']],
         ["Integración", $plan['integracion'], true],
