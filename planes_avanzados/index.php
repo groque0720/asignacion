@@ -175,7 +175,7 @@
                             <?php echo ''.number_format($plan['venta'], 2, ',', '.'); ?>
                             <!-- Popover -->
                             <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 whitespace-nowrap">
-                                <div>Cuota × Cuotas Pagadas: <?php echo ''.number_format($plan['cuota_promedio'] * $plan['cuotas_pagadas_cantidad'], 2, ',', '.'); ?></div>
+                                <div>Valor actual del Plan: <?php echo ''.number_format($plan['cuota_promedio'] * $plan['cuotas_pagadas_cantidad'], 2, ',', '.'); ?></div>
                                 <div>Venta: <?php echo ''.number_format($plan['venta'], 2, ',', '.'); ?></div>
                                 <div>Bonificación: <?php echo ''.number_format(($plan['cuota_promedio'] * $plan['cuotas_pagadas_cantidad']) - $plan['venta'], 2, ',', '.'); ?></div>
                                 <!-- Flecha del popover -->
