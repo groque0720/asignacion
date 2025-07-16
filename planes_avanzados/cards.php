@@ -173,6 +173,14 @@
                                     <div class="w-7/12  p-1 pl-2 font-bold">Precio Venta </div>
                                     <div class="flex-1 border-l p-1 text-right pr-2 font-bold"><?php echo ''.number_format($plan['venta'], 2, ',', '.'); ?></div>
                                </div>
+                               <div class="flex border-b w-full">
+                                    <div class="w-7/12  p-1 pl-2">Valor actual del Plan </div>
+                                    <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['cuotas_pagadas_cantidad'] * $plan['cuota_promedio'], 2, ',', '.'); ?></div>
+                               </div>
+                               <div class="flex border-b w-full">
+                                    <div class="w-7/12  p-1 pl-2 font-bold text-blue-600">Bonificación </div>
+                                    <div class="flex-1 border-l p-1 text-right pr-2 font-bold text-blue-600"><?php echo ''.number_format(($plan['cuota_promedio'] * $plan['cuotas_pagadas_cantidad']) - $plan['venta'], 2, ',', '.'); ?></div>
+                               </div>
 
                                <div class="w-full p-1 bg-white"></div>
 
