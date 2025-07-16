@@ -13,7 +13,7 @@ $SQL .="  nrounidad = null,";
 $SQL .="  interno = '',";
 $SQL .="  nroorden = '',";
 $SQL .="  anulada = 1,";
-$SQL .="  modificaciones =' ".cambiarFormatoFecha(date("Y-m-d"))." ".$_POST["obs_cambio"]." Reserva Anulada: Ver Causa en Observaciones -   /    - ', ";
+// $SQL .="  modificaciones =' ".cambiarFormatoFecha(date("Y-m-d"))." ".$_POST["obs_cambio"]." Reserva Anulada: Ver Causa en Observaciones -   /    - ', ";
 $SQL .="  obsanulada = ' ".cambiarFormatoFecha(date("Y-m-d"))." RESERVA ANULADA - CAUSA:".$_GET["obser"]."' ";
 $SQL .=" WHERE idreserva =".$_GET["idres"];
 mysqli_query($con, $SQL);
