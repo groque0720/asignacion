@@ -1,7 +1,7 @@
 ﻿  <?php
-  set_time_limit(600); // Aumentamos a 10 minutos
-  ini_set('memory_limit', '512M'); // Aumentamos memoria
-  ini_set('max_execution_time', 600); // Por si set_time_limit está deshabilitado
+  set_time_limit(1800); // Aumentamos a 30 minutos
+  ini_set('memory_limit', '1024M'); // Aumentamos a 1GB
+  ini_set('max_execution_time', 1800); // 30 minutos también aquí
   include("funciones/func_mysql.php");
 	conectar();
 	mysqli_query($con,"SET NAMES 'utf8'");
