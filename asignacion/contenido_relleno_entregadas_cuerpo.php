@@ -2,8 +2,6 @@
   set_time_limit(1800); // Aumentamos a 30 minutos
   ini_set('memory_limit', '1024M'); // Aumentamos a 1GB
   ini_set('max_execution_time', 1800); // 30 minutos también aquí
-  ob_implicit_flush(true); // Habilitar flush automático
-  ob_end_flush(); // Terminar buffering existente
 	//cargo en un arreglo todos los meses que ocuparia en la tabla.
 		$SQL="SELECT * FROM meses";
 		$meses=mysqli_query($con, $SQL);
@@ -114,19 +112,9 @@
 			</tr>
 		</thead>
 <?php
-		$contador = 0; // Contador de registros procesados
-		echo "<div style='background: yellow; padding: 5px; margin: 10px;'>DEBUG: Iniciando procesamiento de registros</div>";
-		flush(); // Forzar salida inmediata
-
-
 
 		while ($unidad=mysqli_fetch_array($unidades)) { 
-			$contador++;
-			if ($contador % 10 == 0) { // Mostrar cada 10 registros para no saturar
-				echo "<div style='background: lightblue; padding: 2px; margin: 2px;'>DEBUG: Procesando registro #$contador - ID: " . $unidad['id_unidad'] . "</div>";
-				flush(); // Forzar salida inmediata
-			}
-			// Debugging: Agregar try-catch para capturar errores
+			// Formatear la fecha de despacho
 			try {
 				// Formatear la fecha de despacho
 				$fec_despacho = new DateTime($unidad['fec_despacho']);
@@ -140,9 +128,10 @@
 				$fec_entrega = !empty($unidad['fec_entrega']) ? new DateTime($unidad['fec_entrega']) : null;
 				$formatted_fec_entrega = $fec_entrega ? $fec_entrega->format('d-m-y') : '';			
 			} catch (Exception $e) {
-				echo "<div style='background: red; color: white; padding: 5px; margin: 5px;'>ERROR en registro ID: " . $unidad['id_unidad'] . " - " . $e->getMessage() . "</div>";
-				flush();
-				continue;
+				// En caso de error en fechas, usar valores por defecto
+				$formatted_fec_despacho = $unidad['fec_despacho'];
+				$formatted_fec_arribo = $unidad['fec_arribo'];
+				$formatted_fec_entrega = $unidad['fec_entrega'];
 			}
 			?>
 
@@ -165,11 +154,7 @@
 				<td style="page-break-inside: always;" class="centrar-texto  celda" data-id="<?php echo $unidad['id_unidad']; ?>"><?php echo $formatted_fec_entrega; ?></td>
 			</tr>
 
-	<?php 
-	} 
-	echo "<div style='background: green; color: white; padding: 5px; margin: 10px;'>DEBUG: Terminado procesamiento. Total registros procesados: $contador</div>";
-	flush();
-	?>
+	<?php } ?>
 	</tbody>
 
 
