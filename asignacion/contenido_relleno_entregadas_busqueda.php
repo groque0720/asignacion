@@ -1,5 +1,7 @@
 ﻿  <?php
-  set_time_limit(300);
+  set_time_limit(600); // Aumentamos a 10 minutos
+  ini_set('memory_limit', '512M'); // Aumentamos memoria
+  ini_set('max_execution_time', 600); // Por si set_time_limit está deshabilitado
   include("funciones/func_mysql.php");
 	conectar();
 	mysqli_query($con,"SET NAMES 'utf8'");
@@ -63,5 +65,9 @@ where ((`asignaciones`.`entregada` = 1) and (`asignaciones`.`borrar` = 0) and (`
 order by `asignaciones`.`fec_entrega` desc";
 
 $unidades = mysqli_query($con, $SQL);
+if (!$unidades) {
+    echo "Error en la consulta: " . mysqli_error($con);
+    exit;
+}
 include('contenido_relleno_entregadas_cuerpo.php');
  ?>

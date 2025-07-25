@@ -1,5 +1,7 @@
 <?php
-  set_time_limit(300);
+  set_time_limit(600); // Aumentamos a 10 minutos
+  ini_set('memory_limit', '512M'); // Aumentamos memoria
+  ini_set('max_execution_time', 600); // Por si set_time_limit está deshabilitado
 	//cargo en un arreglo todos los meses que ocuparia en la tabla.
 		$SQL="SELECT * FROM meses";
 		$meses=mysqli_query($con, $SQL);
