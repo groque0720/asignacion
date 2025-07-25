@@ -55,7 +55,7 @@ asignaciones.fec_entrega AS fec_entrega,
 asignaciones.id_grupo,
 asignaciones.id_modelo,
 asignaciones.id_color,
-asignaciones.servicio_conectado,
+asignaciones.servicio_conectado
 FROM
 ((((asignaciones))
 JOIN usuarios ON ((asignaciones.id_asesor = usuarios.idusuario))))
