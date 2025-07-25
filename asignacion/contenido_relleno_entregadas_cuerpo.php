@@ -2,6 +2,8 @@
   set_time_limit(1800); // Aumentamos a 30 minutos
   ini_set('memory_limit', '1024M'); // Aumentamos a 1GB
   ini_set('max_execution_time', 1800); // 30 minutos también aquí
+  ob_implicit_flush(true); // Habilitar flush automático
+  ob_end_flush(); // Terminar buffering existente
 	//cargo en un arreglo todos los meses que ocuparia en la tabla.
 		$SQL="SELECT * FROM meses";
 		$meses=mysqli_query($con, $SQL);
