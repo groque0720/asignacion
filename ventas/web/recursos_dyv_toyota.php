@@ -91,7 +91,7 @@ $(document).ready(function(){
 				<select name="informe" id="informe">
 					<option value="0"></option>
 					<option value="1">Costos TASA </option>
-					<option value="10">Costos TASA (STPA)</option>
+					<option value="10">Costos TASA (S/TPA/F02)</option>
 					<!-- <option value="2">Recurso Cliente</option> -->
 					<option value="3">Stock Asignación</option>
 					<!-- <option value="3">Fecha de Arribo</option> -->
