@@ -1,5 +1,7 @@
 ﻿  <?php
-  set_time_limit(300);
+  set_time_limit(1800); // Aumentamos a 30 minutos
+  ini_set('memory_limit', '1024M'); // Aumentamos a 1GB
+  ini_set('max_execution_time', 1800); // 30 minutos también aquí
   include("funciones/func_mysql.php");
 	conectar();
 	mysqli_query($con,"SET NAMES 'utf8'");
@@ -55,7 +57,7 @@ asignaciones.fec_entrega AS fec_entrega,
 asignaciones.id_grupo,
 asignaciones.id_modelo,
 asignaciones.id_color,
-asignaciones.servicio_conectado,
+asignaciones.servicio_conectado
 FROM
 ((((asignaciones))
 JOIN usuarios ON ((asignaciones.id_asesor = usuarios.idusuario))))
@@ -63,5 +65,9 @@ where ((`asignaciones`.`entregada` = 1) and (`asignaciones`.`borrar` = 0) and (`
 order by `asignaciones`.`fec_entrega` desc";
 
 $unidades = mysqli_query($con, $SQL);
+if (!$unidades) {
+    echo "Error en la consulta: " . mysqli_error($con);
+    exit;
+}
 include('contenido_relleno_entregadas_cuerpo.php');
  ?>

@@ -1,5 +1,9 @@
 <?php
-  set_time_limit(300);
+  set_time_limit(1800); // Aumentamos a 30 minutos
+  ini_set('memory_limit', '1024M'); // Aumentamos a 1GB
+  ini_set('max_execution_time', 1800); // 30 minutos también aquí
+  ob_implicit_flush(true); // Habilitar flush automático
+  ob_end_flush(); // Terminar buffering existente
 	//cargo en un arreglo todos los meses que ocuparia en la tabla.
 		$SQL="SELECT * FROM meses";
 		$meses=mysqli_query($con, $SQL);
@@ -111,11 +115,10 @@
 		</thead>
 <?php
 
-
-
-
 		while ($unidad=mysqli_fetch_array($unidades)) { 
 			// Formatear la fecha de despacho
+			try {
+				// Formatear la fecha de despacho
 				$fec_despacho = new DateTime($unidad['fec_despacho']);
 				$formatted_fec_despacho = $fec_despacho->format('d-m-y');
 
@@ -126,6 +129,12 @@
 				// Formatear la fecha de entrega (si existe)
 				$fec_entrega = !empty($unidad['fec_entrega']) ? new DateTime($unidad['fec_entrega']) : null;
 				$formatted_fec_entrega = $fec_entrega ? $fec_entrega->format('d-m-y') : '';			
+			} catch (Exception $e) {
+				// En caso de error en fechas, usar valores por defecto
+				$formatted_fec_despacho = $unidad['fec_despacho'];
+				$formatted_fec_arribo = $unidad['fec_arribo'];
+				$formatted_fec_entrega = $unidad['fec_entrega'];
+			}
 			?>
 
 
