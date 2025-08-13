@@ -112,6 +112,11 @@ if (isset($_GET['id'])) {
                 </div>
 
                 <div class="">
+                    <label for="cesion" class="text-red-600" >Cesión</label>
+                    <input type="text" id="cesion" name="cesion"  class="p-2 text-right pr-4" value="<?php echo $planUuId ? $plan['cesion']:'';  ?>"  required   />
+                </div>
+
+                <div class="">
                     <label for="plus" class="text-red-600" >Plus</label>
                     <input type="text" id="plus" name="plus"  class="p-2 text-right pr-4 text-red-600" value="<?php echo $planUuId ? $plan['plus']:'';  ?>"  required   />
                 </div>
