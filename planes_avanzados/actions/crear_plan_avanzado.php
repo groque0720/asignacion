@@ -37,6 +37,7 @@ $situacion_id = $_POST['situacion_id'];
 $cuotas_pagadas_cantidad = $_POST['cuotas_pagadas_cantidad'];
 $cuotas_pagadas_monto = convertirNumero($_POST['cuotas_pagadas_monto']);
 $costo = convertirNumero($_POST['costo']);
+$cesion = convertirNumero($_POST['cesion']);
 $plus = convertirNumero($_POST['plus']);
 $venta = convertirNumero($_POST['venta']);
 $cuota_promedio = convertirNumero($_POST['cuota_promedio']);
@@ -80,6 +81,7 @@ if ($_POST['planUuId']!='') {
     $SQL .= "integracion = $integracion, ";
     $SQL .= "derecho_adjudicacion = $derecho_adjudicacion, ";
     $SQL .= "costo = $costo, ";
+    $SQL .= "cesion = $cesion, ";
     $SQL .= "plus = $plus, ";
     $SQL .= "venta = $venta, ";
     $SQL .= "precio_final = $precio_final, ";
@@ -105,10 +107,10 @@ if ($_POST['planUuId']!='') {
     $uuid = generarUUID();
     $SQL = "INSERT INTO tpa_planes_avanzados ( ";
     $SQL .= "uuid, version_id, modalidad_id,  grupo_orden, situacion_id, cuotas_pagadas_cantidad, cuotas_pagadas_monto, ";
-    $SQL .= "costo, plus, venta, cuota_promedio, valor_unidad, precio_final, derecho_adjudicacion, integracion, observaciones ";
+    $SQL .= "costo, cesion, plus, venta, cuota_promedio, valor_unidad, precio_final, derecho_adjudicacion, integracion, observaciones ";
     $SQL .= ") VALUES ( ";
     $SQL .= " '$uuid', '$version_id', '$modalidad', '$grupo_orden', $situacion_id, '$cuotas_pagadas_cantidad', $cuotas_pagadas_monto, ";
-    $SQL .= " $costo, $plus, $venta, $cuota_promedio, $valor_unidad, $precio_final, $derecho_adjudicacion, $integracion, '$observaciones' ";
+    $SQL .= " $costo, $cesion, $plus, $venta, $cuota_promedio, $valor_unidad, $precio_final, $derecho_adjudicacion, $integracion, '$observaciones' ";
     $SQL .= ")";
 }
 
