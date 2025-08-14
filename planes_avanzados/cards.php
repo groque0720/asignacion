@@ -13,11 +13,19 @@
     }
     $userId = $_SESSION["id"];
     $usersAdmin = ['56','81','11'];
+    $userEFV = ['47']; // Usuarios que pueden ver los planes de EFV
     // 56 Mauro Vargas
     // 81 Santiago Galiano
     // 11 Admin
     $isAdmin = in_array($userId, $usersAdmin);
+    $isEFV = in_array($userId, $userEFV);
+    // $isEFV = true; // Forzar a ver los planes de EFV
 
+
+    if ($isEFV) {
+        header("Location: /planes_avanzados/cards_efv.php");
+        exit; // importante para cortar la ejecución
+    }
 
     include("actions/obtener_modelos_activos_en_planes.php");
 
@@ -79,8 +87,12 @@
                         <option value="vendidos">Exportar Solo Vendidos</option>
                     </select>
                     <a href="/planes_avanzados/exportar_todo.php?situacionId=<?php echo $situacionId; ?>&formato=cards" 
-                       class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap">
+                        class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap">
                         Exportar Todo
+                    </a>
+                    <a href="/planes_avanzados/exportar_todo_efv.php?situacionId=<?php echo $situacionId; ?>&formato=cards" 
+                        class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap">
+                        EFV
                     </a>
                     <a
                     href="/planes_avanzados/plan_view.php" 
@@ -140,60 +152,56 @@
                             <!-- <div class="flex flex-col items-center text-sm <?php echo $plan['estado_id'] == 1 ?  'bg-gray-50' : ''?>"> -->
                             <div class="flex flex-col items-center text-sm bg-gray-50">
                                 <div class="border-b w-full">
-                                     <?php if($isAdmin) { ?>
+                                    <?php if($isAdmin) { ?>
                                         <div class="underline p-1 pl-2 text-center text-blue-500">
                                 <!-- <div class="p-1 pl-2 text-center">Grupo y Orden: <?php echo $plan['grupo_orden']; ?></div> -->
                                             <a href="/planes_avanzados/plan_view.php?id=<?php echo $plan['uuid'] ;?>">Grupo y Orden: <?php echo $plan['grupo_orden']; ?></a>
                                         </div>
                                     <?php } else { ?>
                                         <div class="p-1 pl-2 text-center">Grupo y Orden: <?php echo $plan['grupo_orden']; ?></div>
-                                     <?php } ?>
+                                    <?php } ?>
                                     
                                     <!-- <div class="p-1 pl-2 text-center">Grupo y Orden: <?php echo $plan['grupo_orden']; ?></div> -->
                                     <!-- <div class="flex-1 border-l p-1 text-right pr-2"></div> -->
-                               </div>
-                               <div class="w-full p-1 bg-white"></div>
-                               
-                               <?php if($isAdmin) { ?>
+                                </div>
+                                <div class="w-full p-1 bg-white"></div>
+                                
+                                <?php if($isAdmin) { ?>
 
-                               <div class="flex border-b border-t w-full">
+                                <div class="flex border-b border-t w-full">
                                     <div class="w-7/12  p-1 pl-2">Cuotas Pagas <span class="text-red-600 font-bold">(<?php echo $plan['cuotas_pagadas_cantidad']; ?>)</span></div>
                                     <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['cuotas_pagadas_monto'], 2, ',', '.'); ?></div>
-                               </div>
-                               <div class="flex border-b w-full">
+                                </div>
+                                <div class="flex border-b w-full">
                                     <div class="w-7/12  p-1 pl-2">Costo DYV</div>
                                     <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['costo'], 2, ',', '.'); ?></div>
-                               </div>
-                               <div class="flex border-b w-full">
-                                    <div class="w-7/12  p-1 pl-2"><span class="text-red-600">Plus</span></div>
-                                    <div class="flex-1 border-l p-1 text-right pr-2 text-red-600"><?php echo ''.number_format($plan['plus'], 2, ',', '.'); ?></div>
-                               </div>
-                               <?php } ?>
-                               <div class="flex border-b w-full">
+                                </div>
+                                <div class="flex border-b w-full">
+                                    <div class="w-7/12  p-1 pl-2"><span class="">Cesión</span></div>
+                                    <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['cesion'], 2, ',', '.'); ?></div>
+                                </div>
+
+                                <?php } ?>
+                                <div class="flex border-b w-full">
                                     <div class="w-7/12  p-1 pl-2 font-bold">Precio Venta </div>
                                     <div class="flex-1 border-l p-1 text-right pr-2 font-bold"><?php echo ''.number_format($plan['venta'], 2, ',', '.'); ?></div>
-                               </div>
-                               <div class="flex border-b w-full">
-                                    <div class="w-7/12  p-1 pl-2">Valor actual del Plan </div>
-                                    <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['cuotas_pagadas_cantidad'] * $plan['cuota_promedio'], 2, ',', '.'); ?></div>
-                               </div>
-                               <div class="flex border-b w-full">
-                                    <div class="w-7/12  p-1 pl-2 font-bold text-blue-600">Bonificación </div>
-                                    <div class="flex-1 border-l p-1 text-right pr-2 font-bold text-blue-600"><?php echo ''.number_format(($plan['cuota_promedio'] * $plan['cuotas_pagadas_cantidad']) - $plan['venta'], 2, ',', '.'); ?></div>
-                               </div>
+                                </div>
+                                <div class="w-full p-1 bg-gray-200"></div>
 
-                               <div class="w-full p-1 bg-white"></div>
+                                <?php if($isAdmin) { ?>
+                                    <div class="flex border-b w-full">
+                                        <div class="w-7/12  p-1 pl-2 flex flex-start gap-2">
+                                            <span class="text-red-600">Plus</span>
+                                            <span class="text-red-600 text-[10px]"></span>
+                                        </div>
+                                        <div class="flex-1 border-l p-1 text-right pr-2 text-red-600"><?php echo ''.number_format($plan['plus'], 2, ',', '.'); ?></div>
+                                    </div>
+                                    <div class="w-full p-1 bg-gray-200"></div>
+                                <?php } ?>
 
-                               <div class="flex border-b border-t w-full text-red-600">
-                                    <div class="w-7/12  p-1 pl-2">Cuota Promedio </div>
-                                    <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['cuota_promedio'], 2, ',', '.'); ?></div>
-                               </div>
-                               <div class="flex w-full border-b">
-                                    <div class="w-7/12  p-1 pl-2">Valor de la unidad</div>
-                                    <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['valor_unidad'], 2, ',', '.'); ?></div>
-                               </div>
 
-                               <div class="w-full p-1 bg-white"></div>
+
+
 
                                 <div class="flex border-b border-t w-full">
                                     <div class="w-7/12  p-1 pl-2">Integración </div>
@@ -207,6 +215,30 @@
                                     <div class="w-7/12  p-1 pl-2">Total </div>
                                     <div class="flex-1 border-l p-1 text-right pr-2 "><?php echo ''.number_format($plan['precio_final'], 2, ',', '.'); ?></div>
                                 </div>
+                                <div class="w-full p-1 bg-gray-200"></div>
+
+
+
+                                <div class="flex border-b border-t w-full text-red-600">
+                                    <div class="w-7/12  p-1 pl-2">Cuota Promedio </div>
+                                    <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['cuota_promedio'], 2, ',', '.'); ?></div>
+                                </div>
+                                <div class="flex border-b w-full">
+                                    <div class="w-7/12  p-1 pl-2">Valor actual del Plan </div>
+                                    <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['cuotas_pagadas_cantidad'] * $plan['cuota_promedio'], 2, ',', '.'); ?></div>
+                                </div>
+                                <div class="flex border-b w-full">
+                                    <div class="w-7/12  p-1 pl-2 font-bold text-blue-600">Ahorro cliente </div>
+                                    <div class="flex-1 border-l p-1 text-right pr-2 font-bold text-blue-600"><?php echo ''.number_format(($plan['cuota_promedio'] * $plan['cuotas_pagadas_cantidad']) - $plan['venta'], 2, ',', '.'); ?></div>
+                                </div>
+                                <div class="flex w-full border-b">
+                                    <div class="w-7/12  p-1 pl-2">Valor de la unidad</div>
+                                    <div class="flex-1 border-l p-1 text-right pr-2"><?php echo ''.number_format($plan['valor_unidad'], 2, ',', '.'); ?></div>
+                                </div>
+
+                                <div class="w-full p-1 bg-white"></div>
+
+
 
                                 <div class="w-full p-1 bg-white"></div>
                                 <div class="flex w-full border-b border-t">

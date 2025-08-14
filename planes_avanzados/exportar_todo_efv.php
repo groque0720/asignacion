@@ -356,7 +356,7 @@ $coloresEstado = [
 
 $cardsPerRow = 3;
 $espacioEntreCards = 1;
-$filasPorCard = 22;
+$filasPorCard = 13;
 $espacioEntreFilas = 2;
 $columnaInicial = 'B';
 $filaInicial = 2;
@@ -372,30 +372,34 @@ while ($plan = mysqli_fetch_array($planes_todos_modelos)) {
     $valor_actual_plan = $plan['cuotas_pagadas_cantidad'] * $plan['cuota_promedio'];
     $ahorro_cliente = $valor_actual_plan - $plan['venta'];
 
+    $tipoSituacion = $plan['situacion_id'] == 1 ? "Avanzados" : "Adjudicados";
     // Datos de la card
     $datosPlan = [
+        [$tipoSituacion, null, false, true, null, false], // <-- título
         [$plan['modelo'] . ' ' . $plan['version'], null, false, true, null, true], // <-- título
         ["Modalidad: ".$plan['modalidad'], null, false, true, null, true], // <-- título
         ["Grupo y Orden: ".$plan['grupo_orden'], null, false, true, null, true], // <-- título
         ["Cuotas Pagas (" . $plan['cuotas_pagadas_cantidad'] . ")", $plan['cuotas_pagadas_monto'], true],
         ["Costo DYV", $plan['costo'], true],
-        ["Cesión", $plan['cesion'], true, false], 
-        ["Precio Venta", $plan['venta'], true, true],
-        ["", null, true, true], // fila vacía
         ["Plus", $plan['plus'], true, false, 'FF0000'],
-        ["", null, true, true], // fila vacía
         ["Integración", $plan['integracion'], true],
         ["Derecho Adjudicación", $plan['derecho_adjudicacion'], true],
-        ["Total", $plan['precio_final'], true, true],
+        ["Precio Venta", $plan['venta'], true, true],
         ["", null, true, true], // fila vacía
         ["Cuota Promedio", $plan['cuota_promedio'], true, false, 'FF0000'],
-        ["Valor Actual del Plan", $valor_actual_plan, true],
-        ["Ahorro Cliente", $ahorro_cliente, true, true, '0080FE'],
         ["Valor de la unidad", $plan['valor_unidad'], true, false],
-        ["", null, true, true], // fila vacía
-        ["Reserva", $plan['monto_reserva'], true, false],
-        ["Cliente", $texto_cliente, true],
-        ["Asesor", $plan['usuario_venta'], true]
+        
+        // ["", null, true, true], // fila vacía
+        // ["Cesión", $plan['cesion'], true, false], 
+
+        // ["Total", $plan['precio_final'], true, true],
+        // ["", null, true, true], // fila vacía
+        // ["Valor Actual del Plan", $valor_actual_plan, true],
+        // ["Ahorro Cliente", $ahorro_cliente, true, true, '0080FE'],
+        // ["", null, true, true], // fila vacía
+        // ["Reserva", $plan['monto_reserva'], true, false],
+        // ["Cliente", $texto_cliente, true],
+        // ["Asesor", $plan['usuario_venta'], true]
     ];
 
     // Calcular posición

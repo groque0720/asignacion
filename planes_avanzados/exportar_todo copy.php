@@ -263,268 +263,35 @@ function exportarEnFormatoLista($sheet, $planes_todos_modelos) {
 }
 
 function exportarEnFormatoCards($sheet, $planes_todos_modelos) {
-
-    $styleCellDetail = [
-        'font' => [
-            'size' => 10,
-            'color' => ['rgb' => '000000']
-        ],
-        'alignment' => [
-            'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-            'vertical' => \PHPExcel_Style_Alignment::VERTICAL_CENTER
-        ]
-    ];
-
-    $sheet->getPageSetup()
-    ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT)
-    ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4)
-    ->setFitToWidth(1)
-    ->setFitToHeight(0);
-    $sheet->getPageMargins()->setTop(0.5)->setBottom(0.5)->setLeft(0.5)->setRight(0.5);
-
     // Configuración inicial
-    $columnaInicial = 'B';
-    $filaActual = 2;
+    $columnaInicial = 'A';
+    $filaActual = 1;
     $cardsPerRow = 3; // Número de cards por fila
-    $anchoCard = 23; // Ancho de cada card
+    $anchoCard = 25; // Ancho de cada card
     $espacioEntreCards = 1; // Columnas vacías entre cards
-
-    $sheet->getColumnDimension('A')->setWidth(2);
-
-    $filaSaltoPagina = 54; // Fila donde se insertará el salto de página
 
     // Configurar anchos de columna para el grid
     for ($i = 0; $i < ($cardsPerRow * (2 + $espacioEntreCards)); $i++) {
-        $columna = chr(ord('B') + $i);
+        $columna = chr(ord('A') + $i);
         $sheet->getColumnDimension($columna)->setWidth($anchoCard);
-        $sheet->getColumnDimension('D')->setWidth(3);
-        $sheet->getColumnDimension('G')->setWidth(3);
-        $sheet->getColumnDimension('J')->setWidth(2);
     }
 
     // Resetear el puntero de resultados
     mysqli_data_seek($planes_todos_modelos, 0);
 
-    // relleno blanco para ubicar las tablas
-    // $sheet->getStyle('A1:J1000')->applyFromArray([
-    //     'fill' => [
-    //         'type' => PHPExcel_Style_Fill::FILL_SOLID,
-    //         'color' => ['rgb' => 'FFFFFF']
-    //     ]
-    // ]);
-
-    // Bordes de las celdas con informacion en par
-    $styleBorderCellInfo = [
-        'borders' => [
-            'allborders' => [
-                'style' => PHPExcel_Style_Border::BORDER_DASHED,
-                'color' => ['rgb' => '727272']
-            ]
-        ]
-    ];
-
-// <------------------------------------------------------------------------->
-// Definición de estilos
-$styleBorderCellInfo = [
-    'borders' => [
-        'allborders' => [
-            'style' => PHPExcel_Style_Border::BORDER_DASHED,
-            'color' => ['rgb' => 'CCCCCC']
-        ]
-    ]
-];
-
-$styleEmptyRow = [
-    'fill' => [
-        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-        'color' => ['rgb' => 'EEEEEE']
-    ],
-    'borders' => [
-        'allborders' => [
-            'style' => PHPExcel_Style_Border::BORDER_HAIR,
-            'color' => ['rgb' => 'CCCCCC']
-        ]
-    ]
-];
-
-// Colores del título por estado
-$coloresEstado = [
-    1 => 'ABEBC6', // Libre
-    2 => 'FAD7A0', // Reservado
-    3 => 'F1948A'  // Vendido
-];
-
-$cardsPerRow = 3;
-$espacioEntreCards = 1;
-$filasPorCard = 22;
-$espacioEntreFilas = 2;
-$columnaInicial = 'B';
-$filaInicial = 2;
-$cardCount = 0;
-
-while ($plan = mysqli_fetch_array($planes_todos_modelos)) {
-
-    $texto_cliente = isset($plan['cliente']) && !empty($plan['cliente']) ? $plan['cliente'] : "";
-    
-    // Determinar color de título según estado
-    $colorFondoTitulo = isset($coloresEstado[$plan['estado_id']]) ? $coloresEstado[$plan['estado_id']] : 'FFFFFF';
-    
-    $valor_actual_plan = $plan['cuotas_pagadas_cantidad'] * $plan['cuota_promedio'];
-    $ahorro_cliente = $valor_actual_plan - $plan['venta'];
-
-    // Datos de la card
-    $datosPlan = [
-        [$plan['modelo'] . ' ' . $plan['version'], null, false, true, null, true], // <-- título
-        ["Modalidad: ".$plan['modalidad'], null, false, true, null, true], // <-- título
-        ["Grupo y Orden: ".$plan['grupo_orden'], null, false, true, null, true], // <-- título
-        ["Cuotas Pagas (" . $plan['cuotas_pagadas_cantidad'] . ")", $plan['cuotas_pagadas_monto'], true],
-        ["Costo DYV", $plan['costo'], true],
-        ["Cesión", $plan['cesion'], true, false], 
-        ["Precio Venta", $plan['venta'], true, true],
-        ["", null, true, true], // fila vacía
-        ["Plus", $plan['plus'], true, false, 'FF0000'],
-        ["", null, true, true], // fila vacía
-        ["Integración", $plan['integracion'], true],
-        ["Derecho Adjudicación", $plan['derecho_adjudicacion'], true],
-        ["Total", $plan['precio_final'], true, true],
-        ["", null, true, true], // fila vacía
-        ["Cuota Promedio", $plan['cuota_promedio'], true, false, 'FF0000'],
-        ["Valor Actual del Plan", $valor_actual_plan, true],
-        ["Ahorro Cliente", $ahorro_cliente, true, true, '0080FE'],
-        ["Valor de la unidad", $plan['valor_unidad'], true, false],
-        ["", null, true, true], // fila vacía
-        ["Reserva", $plan['monto_reserva'], true, false],
-        ["Cliente", $texto_cliente, true],
-        ["Asesor", $plan['usuario_venta'], true]
-    ];
-
-    // Calcular posición
-    $colIndex = $cardCount % $cardsPerRow;
-    $colLetraB = chr(ord($columnaInicial) + $colIndex * (2 + $espacioEntreCards));
-    $colLetraC = chr(ord($colLetraB) + 1);
-    $rowIndex = floor($cardCount / $cardsPerRow);
-    $filaInicio = $filaInicial + $rowIndex * ($filasPorCard + $espacioEntreFilas);
-    $fila = $filaInicio;
-    $ultimaFilaCard = $filaInicio + count($datosPlan) - 1;
-
-    foreach ($datosPlan as $dato) {
-        $texto = $dato[0];
-        $valor = $dato[1];
-        $aplicarBorde = isset($dato[2]) ? $dato[2] : false;
-        $negrita = isset($dato[3]) ? $dato[3] : false;
-        $colorTexto = isset($dato[4]) ? $dato[4] : null;
-        $esTitulo = isset($dato[5]) && $dato[5] === true;
-
-        // Texto
-        $sheet->setCellValue("{$colLetraB}{$fila}", " " . $texto);
-
-        // Valor
-        if ($valor !== null) {
-            $sheet->setCellValue("{$colLetraC}{$fila}", $valor);
-            if (is_numeric($valor)) {
-                $sheet->getStyle("{$colLetraC}{$fila}")
-                    ->getNumberFormat()
-                    ->setFormatCode('"$" #,##0.00_-');
-            }
+    $cardCount = 0;
+    while ($plan = mysqli_fetch_array($planes_todos_modelos)) {
+        // Calcular posición de la card
+        $columnaActual = chr(ord($columnaInicial) + ($cardCount % $cardsPerRow) * (2 + $espacioEntreCards));
+        
+        if ($cardCount > 0 && $cardCount % $cardsPerRow == 0) {
+            $filaActual += 18; // Nueva fila después de cada conjunto de cards
         }
-
-        // Estilo especial para filas vacías
-        if (trim($texto) === "" && $valor === null) {
-            $sheet->getStyle("{$colLetraB}{$fila}:{$colLetraC}{$fila}")
-                ->applyFromArray($styleEmptyRow);
-        }
-        // Título con fondo de color
-        elseif ($esTitulo) {
-            $sheet->mergeCells("{$colLetraB}{$fila}:{$colLetraC}{$fila}");
-            $sheet->getStyle("{$colLetraB}{$fila}")
-                ->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
-                ->getStartColor()->setRGB($colorFondoTitulo);
-            $sheet->getStyle("{$colLetraB}{$fila}")->getFont()->setBold(true);
-            $sheet->getStyle("{$colLetraB}{$fila}")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        }
-        // Borde normal
-        elseif ($aplicarBorde) {
-            $sheet->getStyle("{$colLetraB}{$fila}:{$colLetraC}{$fila}")
-                ->applyFromArray($styleBorderCellInfo);
-        }
-
-        // Negrita
-        if ($negrita && !$esTitulo) {
-            $sheet->getStyle("{$colLetraB}{$fila}:{$colLetraC}{$fila}")
-                ->getFont()->setBold(true);
-        }
-
-        // Color de texto
-        if ($colorTexto) {
-            $sheet->getStyle("{$colLetraB}{$fila}:{$colLetraC}{$fila}")
-                ->getFont()->getColor()->setRGB($colorTexto);
-        }
-
-        $fila++;
+        
+        // Generar la card
+        generarCardModelo1($sheet, $filaActual, $columnaActual, $plan);
+        $cardCount++;
     }
-
-    // Borde grueso exterior de la card
-    $sheet->getStyle("{$colLetraB}{$filaInicio}:{$colLetraC}{$ultimaFilaCard}")
-        ->applyFromArray([
-            'borders' => [
-                'outline' => [
-                    'style' => PHPExcel_Style_Border::BORDER_MEDIUM,
-                    'color' => ['rgb' => '000000']
-                ]
-            ]
-        ]);
-
-    $cardCount++;
-}
-
-
-
-
-
-    // while ($plan = mysqli_fetch_array($planes_todos_modelos)) {
-    //     // Calcular posición de la card
-    //     $columnaActual = chr(ord($columnaInicial) + ($cardCount % $cardsPerRow) * (2 + $espacioEntreCards));
-        
-    //     if ($cardCount > 0 && $cardCount % $cardsPerRow == 0) {
-    //         $filaActual += 18; // Nueva fila después de cada conjunto de cards
-    //     }
-
-    //     // ACA GENERAR LA CARD
-    //     // $sheet->setCellValue("M{$fila}", $plan['derecho_adjudicacion']);
-    //     $sheet->setCellValue("B2", "Cuotas Pagas (" . $plan['cuotas_pagadas_cantidad'] . ")");
-    //     $sheet->setCellValue("C2", $plan['cuotas_pagadas_monto']);
-    //     $sheet->getStyle("C2")->getNumberFormat()->setFormatCode('"$" #,##0.00_-');
-    //     $sheet->getStyle("B2:C2")->applyFromArray($styleBorderCellInfo);
-
-
-
-    // $datosPlan = [
-    //     ["Cuotas Pagas (" . $plan['cuotas_pagadas_cantidad'] . ")", $plan['cuotas_pagadas_monto'], true],
-    //     ["Costo DYV", $plan['costo'], true],
-    //     ["Cesión", $plan['cesion'], true, false, 'FF0000'], 
-    //     ["Precio Venta", $plan['venta'], true, true], // negrita
-    //     ["", , true, true], // Celda Vacia
-    //     ["Plus", $plan['plus'], true, false, 'FF0000'], // rojo
-    //     ["", , true, true], // Celda Vacia
-    //     ["Integración", $plan['integracion'], true],
-    //     ["Derecho Adjudicación", $plan['derecho_adjudicacion']],
-    //     ["Total", $plan['precio_final'], true, true], // negrita
-    //     ["", , true, true], // Celda Vacia
-    //     ["Cuota Promedio", $plan['cuota_promedio'], true, false, 'FF0000'], // rojo
-    //     ["Valor Actual del Plan", $plan['cuota_promedio'], true, false, 'FF0000'], // rojo
-    //     ["Ahorro Cliente", $plan['cuota_promedio'], true, false, 'FF0000'], // rojo
-    //     ["Valor de la unidad", $plan['valor_unidad']],
-    //     ["", , true, true], // Celda Vacia
-    //     ["Reserva", $plan['monto_reserva']]
-    // ];
-
-
-
-        
-    //     // Generar la card
-    //     // generarCardModelo1($sheet, $filaActual, $columnaActual, $plan);
-    //     $cardCount++;
-    // }
 }
 
 function generarCardModelo1($sheet, $fila, $columna, $plan) {
@@ -540,7 +307,7 @@ function generarCardModelo1($sheet, $fila, $columna, $plan) {
     $estiloBordeCard = [
         'borders' => [
             'outline' => [
-                'style' => \PHPExcel_Style_Border::BORDER_SLANTDASHDOT,
+                'style' => \PHPExcel_Style_Border::BORDER_MEDIUM,
                 'color' => ['rgb' => '000000']
             ]
         ]
@@ -641,7 +408,7 @@ function agregarFilaDatosConEstilo($sheet, $fila, $columna, $label, $valor, $mos
     if ($mostrarBorde) {
         $estiloBase['borders'] = [
             'top' => ['style' => \PHPExcel_Style_Border::BORDER_THIN],
-            'bottom' => ['style' => \PHPExcel_Style_Border::BORDER_MEDIUM]
+            'bottom' => ['style' => \PHPExcel_Style_Border::BORDER_THIN]
         ];
     }
     
