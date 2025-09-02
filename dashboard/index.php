@@ -164,7 +164,7 @@ if ($_SESSION["autentificado"] != "SI") {
 							<a href="https://cms.derkayvargas.com/infoauto"  target="_blank">
 								<div class="ed-container">
 									<div class="ed-item">
-										<img src="https://i.pinimg.com/280x280_RS/2a/f9/3e/2af93ee5076e04395b5e9c8657adff7c.jpg" alt="">
+										<img width="80" src="https://i.pinimg.com/280x280_RS/2a/f9/3e/2af93ee5076e04395b5e9c8657adff7c.jpg" alt="">
 									</div>
 								</div>
 								<div class="centrar-texto">
