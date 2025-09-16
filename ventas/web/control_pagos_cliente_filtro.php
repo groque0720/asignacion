@@ -64,7 +64,8 @@ if ($_POST["id"] == 0) {
 	Inner Join reservas ON clientes.idcliente = reservas.idcliente
 	Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
 	WHERE reservas.anulada <> 1 AND reservas.entregada < 3 AND 	reservas.enviada >= '1'  ";
-	$SQL .= $FIL." ORDER BY reservas.venta, usuarios.nombre, clientes.nombre";
+	// $SQL .= $FIL." ORDER BY reservas.venta, usuarios.nombre, clientes.nombre";
+	$SQL .= $FIL." ORDER BY usuarios.nombre, clientes.nombre";
 }else{
 
 	$SQL="SELECT
@@ -96,7 +97,8 @@ if ($_POST["id"] == 0) {
 	Inner Join usuarios ON reservas.idusuario = usuarios.idusuario
 	WHERE reservas.anulada <> 1  AND reservas.entregada < 3 AND reservas.enviada >= '1' AND usuarios.idsucursal = ".$_POST["id"];
 
-	$SQL .= $FIL." ORDER BY reservas.venta, usuarios.nombre, clientes.nombre";
+	// $SQL .= $FIL." ORDER BY reservas.venta, usuarios.nombre, clientes.nombre";
+	$SQL .= $FIL." ORDER BY usuarios.nombre, clientes.nombre";
 	}
 
 	$res=mysqli_query($con, $SQL);
