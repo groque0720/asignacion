@@ -19,6 +19,7 @@ $SQL .=" WHERE idreserva =".$_GET["idres"];
 mysqli_query($con, $SQL);
 
 $SQL="SELECT
+reservas.idusuario as idusuario,
 usuarios.nombre AS usuario,
 grupos.grupo AS grupo,
 clientes.nombre AS cliente,
@@ -75,20 +76,46 @@ if ($res["enviada"]>0) {
 
 	$hora=date( 'H:i');
 
-	$SQL="SELECT * FROM notificacionespara WHERE tiponot=3";
-	$resul=mysqli_query($con, $SQL);
+		// Usuario de la reserva
+	$id_usuario_reserva = intval($res['idusuario']);
 
+	// Tu lista original de usuarios
+	$usuarios_not = array(5,7,10,9,8,63,88,155,160,6);
 
+	// Quitamos al usuario de la reserva si está en el array
+	if (($key = array_search($id_usuario_reserva, $usuarios_not)) !== false) {
+		unset($usuarios_not[$key]);
+	}
+
+	// Reindexamos el array (opcional, por prolijidad)
+	$usuarios_not = array_values($usuarios_not);
+
+	// Ahora armás la consulta siguiente, excluyendo esos usuarios
+	$lista_usuarios = implode(',', $usuarios_not);
+
+	$SQL = "SELECT * FROM notificacionespara 
+			WHERE tiponot = 3 
+			AND idusuario NOT IN ($lista_usuarios)";
+
+	$resul = mysqli_query($con, $SQL);
+
+	// $SQL="SELECT * FROM notificacionespara WHERE tiponot=3";
+	// $resul=mysqli_query($con, $SQL);
+	// echo $not["idusuario"].'<br>';
 
 	while ($not=mysqli_fetch_array($resul)) {
 
-	echo $not["idusuario"].'<br>';
+		// echo $not["idusuario"].'<br>';
 
-	$SQL="INSERT INTO notificaciones(tiponot, fechanot, hora, idusuario, compra, idreserva, interno, modelo, cliente, asesor, visto, obs )";
-	$SQL .=" VALUES (3,'".date("Y-m-d")."','$hora','".$not["idusuario"]."','".$res["compra"]."','".$_GET["idres"]."','".$res["interno"].$res["internou"]."','".$res['grupo']." ".$res['modelo']."".$res["detalleu"]."','".$res["cliente"]."','".$res["usuario"]."',0,'".$_GET["obser"]."')";
+		$interno = trim($res["interno"] . $res["internou"]);
+		$interno = ($interno === '') ? 'NULL' : "'$interno'";
 
+		$SQL="INSERT INTO notificaciones(tiponot, fechanot, hora, idusuario, compra, idreserva, interno, modelo, cliente, asesor, visto, obs )";
+		$SQL .=" VALUES (3,'".date("Y-m-d")."','$hora','".$not["idusuario"]."','".$res["compra"]."','".$_GET["idres"]."',$interno,'".$res['grupo']." ".$res['modelo']."".$res["detalleu"]."','".$res["cliente"]."','".$res["usuario"]."',0,'".$_GET["obser"]."')";
 
-	mysqli_query($con, $SQL);
+		// echo $SQL.'<br>';
+
+		mysqli_query($con, $SQL);
 	};
 
 	// Carga de las notificaciones
@@ -99,7 +126,7 @@ if ($res["enviada"]>0) {
 	//}
 
 }
- mysqli_close($con);
-header("Location: asesores.php");
+	mysqli_close($con);
+	header("Location: asesores.php");
 
- ?>
+?>
