@@ -5,41 +5,43 @@ body {
 }
 
 .slider {
-width: 100vw;	
-height: 100vh;
-overflow: hidden;
-position: absolute;;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	position: absolute;
 }
+
 .slider ul{
 	display: flex;
-	padding: 0;
 	width: 300%;
-	margin: 0;
-	overflow: hidden;
-	-webkit-animation: derecha 10s infinite alternate linear;
-	-o-animation: derecha 10s infinite alternate linear;
-	animation: derecha 10s infinite alternate linear;
-}
-.slider li {
 	padding: 0;
+	margin: 0;
+	animation: slide 10s infinite alternate linear;
+}
+
+.slider li{
 	list-style: none;
-}
-.slider img {
-min-width: 100vw;	
-min-height: 100vh;
+	flex: 0 0 100vw; /* Cada slide ocupa todo el viewport */
 }
 
-@keyframes derecha{
-
-	0% {margin-left: 0;}
-	35% {margin-left: 0;}
-
-	40% {margin-left: -100%;}
-	70% {margin-left: -100%;}
-
-	75% {margin-left: -200%;}
-	100% {margin-left: -200%;}
+.slider img{
+	width: 100vw;
+	height: 100vh;
+	object-fit: cover;
 }
+
+@keyframes slide {
+	0%, 35% {
+		transform: translateX(0);
+	}
+	40%, 70% {
+		transform: translateX(-100vw);
+	}
+	75%, 100% {
+		transform: translateX(-200vw);
+	}
+}
+
 
 .lienzo {
 	position: absolute;
