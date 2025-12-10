@@ -5,6 +5,11 @@ $(".btn-cancelar").click(function(event) {
 
 $(".form-unidad").submit(function(event) {
 	event.preventDefault();
+
+	// alert($('#cliente_dos').val());
+
+	// return false;
+
 	if (($('#cliente_uno').val()=='NO EXISTE') || ($('#cliente_dos').val()=='NO EXISTE')) {
 		swal("Unidad Inexistente", "Por favor verifique los datos para realizar el cambio de unidad", "error");
 	}else{
@@ -32,7 +37,7 @@ $("#id_nro_uno").focusout(function(event) {
 			url:"cambio-unidad-buscar.php",
 			cache:false,
 			type:"POST",
-			data:{id_unidad:id_unidad},
+			data:{id_unidad:id_unidad, cliente: 1},
 			success:function(result){
 				$(".mod").hide();
 	 			$("#zona_cliente_uno").html(result);
@@ -51,7 +56,7 @@ $("#id_nro_dos").focusout(function(event) {
 			url:"cambio-unidad-buscar.php",
 			cache:false,
 			type:"POST",
-			data:{id_unidad:id_unidad},
+			data:{id_unidad:id_unidad, cliente: 2},
 			success:function(result){
 				$(".mod").hide();
 	 			$("#zona_cliente_dos").html(result);

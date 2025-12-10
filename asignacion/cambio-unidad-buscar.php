@@ -4,7 +4,7 @@ conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
 extract($_POST);
 
-$SQL="SELECT cliente FROM asignaciones WHERE nro_unidad = ".$id_unidad;
+$SQL="SELECT cliente FROM asignaciones WHERE entregada <> 1 AND nro_unidad = ".$id_unidad;
 $res=mysqli_query($con, $SQL);
 $cant=mysqli_num_rows($res);
 
@@ -15,10 +15,12 @@ if ($cant!=0) {
 	<?php }else{?>
 		<input class="form-inputs inputs-sin-cliente" type="text" size="30" id="cliente_uno" name="cliente_uno" value="<?php echo 'Sin Cliente'; ?>" readonly="readonly">
 	<?php }?>
+	<!-- <span><?php echo $cliente; ?></span> -->
 	
 <?php }else{ ?>
-	<input class="form-inputs inputs-no-cliente" type="text" size="30" id="cliente_uno" name="cliente_uno" value="NO EXISTE" readonly="readonly">
+	<input class="form-inputs inputs-no-cliente" type="text" size="30" id="cliente_dos" name="cliente_dos" value="NO EXISTE" readonly="readonly">
 	<input type="hidden" size="30" class="bandera" value="1" readonly="readonly">
+	<!-- <span><?php echo $cliente; ?></span> -->
 <?php } ?>
 
 

@@ -34,7 +34,7 @@ if (isset($reserva_gerencia)) {
 	for ($i=0; $i < $cantidad; $i++) {
 
 		$SQL="INSERT INTO asignaciones (nro_unidad, id_negocio, id_mes, año, id_grupo, id_modelo, estado_tasa, guardado, reservada, cliente, fec_reserva, id_asesor, no_disponible,servicio_conectado)
-		 VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1, 1, 'RESERVADA EFV','".date("Y-m-d")."', 2,$no_disponible_,$servicio_conectado)";
+		VALUES ($nro, 1, $id_mes, $año, $id_grupo, $id_modelo, $estado, 1, 1, 'RESERVADA EFV','".date("Y-m-d")."', 2,$no_disponible_,$servicio_conectado)";
 		mysqli_query($con, $SQL);
 		$nro++;
 	}
