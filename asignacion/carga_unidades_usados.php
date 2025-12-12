@@ -141,7 +141,7 @@ $es_gerente = in_array($id_usuario, [17]) ? 1 : $es_gerente;
 
 			while ($estado=mysqli_fetch_array($estado_usado)) {
 				// usuarios permitidos a ver otros estados de los usados
-			  $user_permitidos = [1, 2, 11, 16, 17, 20, 75, 128, 27, 36, 41, 45, 46, 47, 49, 56,71, 72, 89, 94, 96, 103, 106, 124, 135, 146];
+			  $user_permitidos = [1, 2, 11, 16, 17, 20, 37, 75, 128, 27, 36, 41, 45, 46, 47, 49, 56,71, 72, 89, 94, 96, 103, 106, 124, 135, 146];
 			//   20 - bartek // 17 - Peulich // 75 - crespo // 128 - Gonzalez
 				// condicional para mostrar otros estados segun usuarios permitidos.
 			  if ( $estado['id_estado_usado'] == 1 or $estado['id_estado_usado'] == 4  or in_array($id_usuario,$user_permitidos) ) {
