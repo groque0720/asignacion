@@ -82,7 +82,7 @@
 					<!-- <li><a href="planilla_asignacion_sin_reserva.php" target="_blank" class="icon-file-pdf-o"> <span></span>Sin Reservas Realizadas</a></li> -->
 					<li><a href="planilla_asignacion_stock_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Costo Asignación Stock</a></li>
 
-					<!-- <li><a href="falta_cancelacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar</a></li> -->
+					<li><a href="falta_cancelacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar</a></li>
 					<!-- <li><a href="falta_cancelacion_mas_cinco_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 5 días</a></li> -->
 					<!-- <li><a href="falta_cancelacion_mas_diez_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 10 días</a></li> -->
 					<!-- <li><a href="planilla_asignacion_tpa_60_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>TPA + 60 días</a></li> -->
