@@ -4,6 +4,8 @@
 	<?php if ($_SESSION['id']==47): ?>
 				<li style="border: 1px solid #ccc; border-radius: 3px;"><a href="planilla_asignacion_pdf.php" target="_blank"> <span></span>Asignación</a></li>
 				<li></li>
+				<li style="border: 1px solid #ccc; border-radius: 3px;"><a href="./reportes/estado_stock.php" target="_blank" > <span></span>Stock Real Estado TASA </a></li>
+				<li></li>
 				<li style="border: 1px solid #ccc; border-radius: 3px;"><a href="stock_real_sin_vender_pdf.php" target="_blank" > <span></span>Stock</a></li>
 				<li></li>
 				<li style="border: 1px solid #ccc; border-radius: 3px;"><a href="usados_pdf.php" target="_blank" > <span></span>Usados</a></li>
