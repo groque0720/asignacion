@@ -86,10 +86,10 @@
 					<!-- <li><a href="falta_cancelacion_mas_cinco_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 5 días</a></li> -->
 					<!-- <li><a href="falta_cancelacion_mas_diez_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 10 días</a></li> -->
 					<!-- <li><a href="planilla_asignacion_tpa_60_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>TPA + 60 días</a></li> -->
-					<!-- <li><a href="stock_por_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock x Suc.</a></li> -->
-					<!-- <li><a href="stock_traslado_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Traslados x Suc.</a></li> -->
-					<!-- <li><a href="en_viaje_pdf.php" target="_blank" target="_blank" class="icon-file-pdf-o" > <span></span>En Viaje</a></li> -->
-					<!-- <li><a href="pendientes_tasa_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Pendiente TASA</a></li> -->
+					<li><a href="stock_por_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock x Suc.</a></li>
+					<li><a href="stock_traslado_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Traslados x Suc.</a></li>
+					<li><a href="en_viaje_pdf.php" target="_blank" target="_blank" class="icon-file-pdf-o" > <span></span>En Viaje</a></li>
+					<li><a href="pendientes_tasa_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Pendiente TASA</a></li>
 					<!-- <li><a href="stock_siniestrada_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Siniestradas</a></li> -->
 					<!-- <li><a href="#" class="item_link icon-outdent" data-id="ultimas_entregas"> <span></span>Últimas Entregas</a></li> -->
 					<!-- <li><a href="llegadas_porllegar_mesactual.php" class="icon-file-pdf-o" data-id=""> <span></span>Por Llegar Mes Actual</a></li> -->
