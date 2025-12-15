@@ -258,7 +258,7 @@ function v($value) {
 		
 		<a href="./estado_stock_pdf.php" target="_blank" style="text-decoration: none; color: #2c3e50; margin-left: 15px;">
 			<span style="font-size: 26px; font-weight: bold;">🖨</span>
-			<!-- <span>imprimir</span> -->
+			<span>imprimir</span>
 		</a>
 		
 	</div>
