@@ -76,36 +76,37 @@
 			<li><a href="#" class="item_link"><span class="icon-car">  </span>Reportes</a>
 				<ul>
 					<li><a href="planilla_asignacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Asignación Gral.</a></li>
-					<li><a href="planilla_asignacion_nc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Reservas No Confirmadas</a></li>
-					<li><a href="planilla_asignacion_sin_reserva.php" target="_blank" class="icon-file-pdf-o"> <span></span>Sin Reservas Realizadas</a></li>
+					<!-- <li><a href="planilla_asignacion_nc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Reservas No Confirmadas</a></li> -->
+					<!-- <li><a href="planilla_asignacion_sin_reserva.php" target="_blank" class="icon-file-pdf-o"> <span></span>Sin Reservas Realizadas</a></li> -->
 					<li><a href="planilla_asignacion_stock_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Costo Asignación Stock</a></li>
 
-					<li><a href="falta_cancelacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar</a></li>
-					<li><a href="falta_cancelacion_mas_cinco_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 5 días</a></li>
-					<li><a href="falta_cancelacion_mas_diez_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 10 días</a></li>
-					<li><a href="planilla_asignacion_tpa_60_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>TPA + 60 días</a></li>
-					<li><a href="stock_por_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock x Suc.</a></li>
-					<li><a href="stock_traslado_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Traslados x Suc.</a></li>
-					<li><a href="en_viaje_pdf.php" target="_blank" target="_blank" class="icon-file-pdf-o" > <span></span>En Viaje</a></li>
-					<li><a href="pendientes_tasa_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Pendiente TASA</a></li>
-					<li><a href="stock_siniestrada_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Siniestradas</a></li>
-					<li><a href="#" class="item_link icon-outdent" data-id="ultimas_entregas"> <span></span>Últimas Entregas</a></li>
-					<li><a href="llegadas_porllegar_mesactual.php" class="icon-file-pdf-o" data-id=""> <span></span>Por Llegar Mes Actual</a></li>
+					<!-- <li><a href="falta_cancelacion_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar</a></li> -->
+					<!-- <li><a href="falta_cancelacion_mas_cinco_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 5 días</a></li> -->
+					<!-- <li><a href="falta_cancelacion_mas_diez_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>Llegadas Sin Cancelar + 10 días</a></li> -->
+					<!-- <li><a href="planilla_asignacion_tpa_60_dias.php" target="_blank" class="icon-file-pdf-o"> <span></span>TPA + 60 días</a></li> -->
+					<!-- <li><a href="stock_por_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock x Suc.</a></li> -->
+					<!-- <li><a href="stock_traslado_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Traslados x Suc.</a></li> -->
+					<!-- <li><a href="en_viaje_pdf.php" target="_blank" target="_blank" class="icon-file-pdf-o" > <span></span>En Viaje</a></li> -->
+					<!-- <li><a href="pendientes_tasa_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Pendiente TASA</a></li> -->
+					<!-- <li><a href="stock_siniestrada_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Siniestradas</a></li> -->
+					<!-- <li><a href="#" class="item_link icon-outdent" data-id="ultimas_entregas"> <span></span>Últimas Entregas</a></li> -->
+					<!-- <li><a href="llegadas_porllegar_mesactual.php" class="icon-file-pdf-o" data-id=""> <span></span>Por Llegar Mes Actual</a></li> -->
 
 				</ul>
 			</li>
 			<li><a href="#" class="item_link"><span class="icon-car">  </span>Info Stock</a>
 				<ul>
 
+					<li><a href="./reportes/estado_stock.php" target="_blank" class="icon-file-pdf-o"><span></span>Stock - Estado Confirmada TASA</a></li>
 
 					<!-- <li><a href="stock_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM</a></li> -->
-					<li><a href="stock_real_sin_vender_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender</a></li>
-					<li><a href="stock_real_sin_vender_mes_sig_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender (12 meses)</a></li>
-					<li><a href="stock_real_sin_vender_mas_12_meses.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender (más 12 meses)</a></li>
+					<!-- <li><a href="stock_real_sin_vender_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender</a></li> -->
+					<!-- <li><a href="stock_real_sin_vender_mes_sig_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender (12 meses)</a></li> -->
+					<!-- <li><a href="stock_real_sin_vender_mas_12_meses.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Real Sin Vender (más 12 meses)</a></li> -->
 					<!-- <li><a href="stock_llegadas_sin_confirmar_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Físico Sin Vender</a></li> -->
-					<li><a href="stock_libres_confirmada_tasa.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Libres sin reservas</a></li>
-					<li><a href="stock_real_sin_vender_con_interno.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Sin Vender con interno</a></li>
-					<li><a href="stock_real_sin_vender_mes_ant_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM (Mes Ant.)</a></li>
+					<!-- <li><a href="stock_libres_confirmada_tasa.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Libres sin reservas</a></li> -->
+					<!-- <li><a href="stock_real_sin_vender_con_interno.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM - Sin Vender con interno</a></li> -->
+					<!-- <li><a href="stock_real_sin_vender_mes_ant_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock 0 KM (Mes Ant.)</a></li> -->
 					<!-- <li><a href="stock_gral_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock Gral. (0km+TPA)</a></li> -->
 					<!-- <li><a href="stock_gral_ma_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock Gral. (Mes Ant.)</a></li> -->
 					<!-- <li><a href="stock_efv_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Stock EFV</a></li> -->
