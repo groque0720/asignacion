@@ -1,209 +1,224 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
-	<title>Aplicaciones</title>
-	<meta charset="UTF-8">
-	 <meta http-equiv="refresh" content="500">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-	<link rel="stylesheet" href="css/styles.css">
-	<link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico" />
-	<style>
-		.ui-dialog-titlebar{
-			display: none;
-		}
-		#form_excel {
-			border: 1px solid #000;
-		}
-		.item {
-			border: 1px solid #D2CACA;
-			border-radius: 5px;
-			margin: 12px;
-			padding: 10px;
-			transition:all 0.3s ease;
-			position: relative;
-		}
-		.cantidad {
-			position: absolute;
-			padding: 5px 10px;
-			right: -5px;
-			background: red;
-			color: white;
-			font-weight: bold;
-			border-radius: 50%;
-			top: -5px;
-		}
+    <title>Panel de Aplicaciones</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="500">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		.item:hover .titulo{
-			color:red;
-/*			font-weight: bold;*/
-		}
+    <link rel="shortcut icon" href="imagenes/favicon.ico">
 
-		.item:hover {
-			box-shadow: 3px 3px 2px #D8D1D1;
-		}
+    <style>
+        /* ======================
+           RESET BÁSICO
+        ====================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
 
-	</style>
-<!-- 	<script>
-		$(document).ready(function(){
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-		})
-	</script> -->
+        /* ======================
+           HEADER
+        ====================== */
+        .header {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .header img {
+            max-width: 90px;
+            height: auto;
+        }
+
+        .header h1 {
+            font-size: 1.2rem;
+            text-align: center;
+            flex: 1;
+        }
+
+        .divider {
+            max-width: 1100px;
+            margin: 10px auto 30px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* ======================
+           GRID DE APLICACIONES
+        ====================== */
+        .apps-container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 15px 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+        }
+
+        /* ======================
+           CARD
+        ====================== */
+        .item {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px 10px;
+            text-align: center;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+
+        .item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0,0,0,.12);
+        }
+
+        .item:hover .titulo {
+            color: #d40000;
+        }
+
+        .item img {
+            width: 70px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .titulo {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* ======================
+           BADGE NOTIFICACIÓN
+        ====================== */
+        .cantidad {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: red;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 50%;
+        }
+
+        /* ======================
+           RESPONSIVE AJUSTES
+        ====================== */
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1rem;
+            }
+
+            .item img {
+                width: 60px;
+            }
+        }
+    </style>
 </head>
-<body>
-<?php
 
+<body>
+
+<?php
 include("funciones/func_mysql.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
 @session_start();
-//COMPRUEBA QUE EL USUARIO ESTA AUTENTIFICADO
+
 if ($_SESSION["autentificado"] != "SI") {
-	//si no existe, envio a la página de autentificacion
-	header("Location: ../login");
-	//ademas salgo de este script
-	exit();
+    header("Location: ../login");
+    exit();
 }
 ?>
-	<div class="ed-container">
-		-
-	</div>
-	<div class="ed-container web-60">
-		<div class="ed-item web-1-3 movil-1-3">
-			<img class="web-40 movil-30" src="imagenes/logodyv.png" alt="logodyv">
-		</div>
-		<div class="ed-item web-1-3 movil-1-3 centrar-texto">
-			<span>Panel de Aplicaciones</span>
-		</div>
-		<div class="ed-item web-1-3 movil-1-3 derecha-contenido ">
-			<img class="web-40 movil-25" src="imagenes/logo_toyota.png" alt="logodyv">
-		</div>
-		<div class="ed_item total">
-		<hr>
-		</div>
-	</div>
-	<div class="ed-container web-60 tablet-90 movil-90 base-100">
 
-		<?php
+<!-- ================= HEADER ================= -->
+<header class="header">
+    <img src="imagenes/logodyv.png" alt="DYV">
+    <h1>Panel de Aplicaciones</h1>
+    <img src="imagenes/logo_toyota.png" alt="Toyota">
+</header>
 
-			$SQL="select aplicaciones.id_aplicacion AS id_aplicacion,aplicaciones.url AS url,aplicaciones.imagen AS imagen,usuarios_aplicaciones.id_usuario AS id_usuario,aplicaciones.aplicacion AS aplicacion,usuarios.idsucursal AS idsucursal from ((usuarios_aplicaciones join aplicaciones on((usuarios_aplicaciones.id_aplicaciones = aplicaciones.id_aplicacion))) join usuarios on((usuarios_aplicaciones.id_usuario = usuarios.idusuario))) where (aplicaciones.activo = 1 AND id_usuario =". $_SESSION['id'].") order by aplicaciones.aplicacion ";
+<div class="divider"></div>
 
+<!-- ================= APLICACIONES ================= -->
+<section class="apps-container">
 
-			$SQL = "SELECT
-					aplicaciones.id_aplicacion AS id_aplicacion,
-					aplicaciones.url AS url,
-					aplicaciones.imagen AS imagen,
-					usuarios_aplicaciones.id_usuario AS id_usuario,
-					aplicaciones.aplicacion AS aplicacion,
-					usuarios.idsucursal AS idsucursal,
-					aplicaciones.activo
-					from ((usuarios_aplicaciones join aplicaciones on((usuarios_aplicaciones.id_aplicaciones = aplicaciones.id_aplicacion))) join usuarios on((usuarios_aplicaciones.id_usuario = usuarios.idusuario)))
-					where (aplicaciones.activo = 1 AND id_usuario =". $_SESSION['id'].")
-					order by aplicaciones.aplicacion ";
+<?php
+$SQL = "
+SELECT
+    aplicaciones.id_aplicacion,
+    aplicaciones.url,
+    aplicaciones.imagen,
+    aplicaciones.aplicacion
+FROM usuarios_aplicaciones
+JOIN aplicaciones ON usuarios_aplicaciones.id_aplicaciones = aplicaciones.id_aplicacion
+JOIN usuarios ON usuarios_aplicaciones.id_usuario = usuarios.idusuario
+WHERE aplicaciones.activo = 1
+AND usuarios_aplicaciones.id_usuario = ".$_SESSION['id']."
+ORDER BY aplicaciones.aplicacion
+";
 
-			///$SQL="SELECT * FROM view_aplicaciones_usuarios WHERE id_usuario = ".$_SESSION["id"];
-			$aplicaciones=mysqli_query($con, $SQL);
+$aplicaciones = mysqli_query($con, $SQL);
 
-			while ($aplicacion = mysqli_fetch_array($aplicaciones)) { ?>
+while ($app = mysqli_fetch_array($aplicaciones)) {
+?>
 
-				<div class="ed-item web-1-6 tablet-1-6 movil-1-6 base-1-6 item">
+    <div class="item">
+        <?php
+        if ($app['id_aplicacion'] == 17) {
+            $SQL = "SELECT COUNT(*) AS cantidad FROM recepcion WHERE visto = 0 AND id_asesor = ".$_SESSION["id"];
+            $res = mysqli_query($con, $SQL);
+            $noti = mysqli_fetch_array($res);
+            if ($noti['cantidad'] > 0) {
+                echo '<div class="cantidad">'.$noti['cantidad'].'</div>';
+            }
+        }
+        ?>
 
+        <a target="_blank" href="<?= $app['url'] ?>">
+            <img src="<?= $app['imagen'] ?>" alt="<?= $app['aplicacion'] ?>">
+            <div class="titulo"><?= $app['aplicacion'] ?></div>
+        </a>
+    </div>
 
-				<?php
+<?php } ?>
 
-					if ($aplicacion['id_aplicacion']==17) {
+<?php if ($_SESSION["idperfil"] == 3): ?>
+    <div class="item">
+        <a target="_blank" href="https://cms.derkayvargas.com/infoauto">
+            <img src="https://i.pinimg.com/280x280_RS/2a/f9/3e/2af93ee5076e04395b5e9c8657adff7c.jpg">
+            <div class="titulo">InfoAuto</div>
+        </a>
+    </div>
 
-					$SQL="SELECT count(visto) as cantidad FROM recepcion WHERE visto = 0 AND id_asesor = ".$_SESSION["id"];
-					$res_cantidad = mysqli_query($con, $SQL);
-					$noti = mysqli_fetch_array($res_cantidad);
+    <?php if($_SESSION["id_negocio"] == 2 && $_SESSION["es_gerente"] == 0): ?>
+        <div class="item">
+            <a href="/planes_avanzados/">
+                <img src="/dashboard/imagenes/logo-tpa.png">
+                <div class="titulo">Avanzados y Adjudicados DYV</div>
+            </a>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
 
-					if ($noti['cantidad']!=0) { ?>
-						<div class="cantidad">
-							<span><?php echo $noti['cantidad']; ?></span>
-						</div>
-				<?php } } ?>
-					<div class="img">
-						<a  target="_blank" href="<?php echo $aplicacion['url']; ?>">
-							<div class="ed-container" style="height: 80px;">
-								<div class="ed-item centrar-texto">
-									<img style="width: 80px" src="<?php echo $aplicacion['imagen']; ?>" alt="<?php echo $aplicacion['aplicacion']; ?>">
-								</div>
-							</div>
-							<div class="centrar-texto" style="font-size:14px;">
-								<span class="titulo">
-									<?php echo $aplicacion['aplicacion']; ?>
-								</span>
-							</div>
-						</a>
-					</div>
-				</div>
-			<?php } ?>
-
-
-<!-- 					<div class="ed-item web-1-6 item">
-			<div class="img">
-				<a href="/uif/Manual-UIF-DyV.pdf"  target="_blank">
-					<div class="ed-container">
-						<div class="ed-item" style="display: flex; justify-content: center;" >
-							<img style="width: 80px;" src="/dashboard/imagenes/uif.png" alt="">
-						</div>
-					</div>
-					<div class="centrar-texto">
-						<span class="titulo" >
-							Manual UIF
-						</span>
-					</div>
-				</a>
-			</div>
-		</div> -->
-
-			<?php if ($_SESSION["idperfil"] == 3): ?>
-
-					<div class="ed-item web-1-6 item">
-						<div class="img">
-							<a href="https://cms.derkayvargas.com/infoauto"  target="_blank">
-								<div class="ed-container">
-									<div class="ed-item" style="display: flex; justify-content: center;">
-										<img width="80" src="https://i.pinimg.com/280x280_RS/2a/f9/3e/2af93ee5076e04395b5e9c8657adff7c.jpg" alt="">
-									</div>
-								</div>
-								<div class="centrar-texto">
-									<span class="titulo">
-										InfoAuto
-									</span>
-								</div>
-							</a>
-						</div>
-					</div>
-
-					<?php if($_SESSION["id_negocio"]==2 and $_SESSION["es_gerente"]==0): ?>
-
-					<div class="ed-item web-1-6 item">
-						<div class="img">
-						<a href="/planes_avanzados/">
-							<div class="ed-container">
-								<div class="ed-item" style="display: flex; justify-content: center;">
-									<img style="width: 80px;" src="/dashboard/imagenes/logo-tpa.png" alt="">
-								</div>
-							</div>
-							<div class="centrar-texto">
-								<span class="titulo">
-									Avanzados y Adjudicados DYV
-								</span>
-							</div>
-						</a>
-						</div>
-					</div>
-
-					<?php endif ?>
-
-					
-
-			<?php endif ?>
-
-
-	</div>
-
+</section>
 
 </body>
 </html>
