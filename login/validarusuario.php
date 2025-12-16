@@ -27,24 +27,24 @@ if (!empty($campo['usuario'])) {
 $SQL="INSERT INTO sesiones (id_usuario, nombre, fecha, hora, latitud, longitud, ip) VALUES (".$_SESSION["id"].",'".$_SESSION["usuario"]."','".date("Y-m-d")."','".date( 'H:i:s')."','','','".$ip_user."')";
 mysqli_query($con, $SQL);
 
-$usuariosPermitidos = [
-    163, 63, 65, 147, 121, 146, 144, 139, 138, 136, 135, 132,
-    13, 47, 37, 117, 125, 28, 120, 124, 119, 116, 106, 31,
-    102, 101, 93, 91, 66, 89, 87, 15, 45, 41, 72, 79, 57,
-    71, 68, 111, 59, 83, 11, 14, 82, 16, 104, 56, 51, 36
-];
+// $usuariosPermitidos = [
+//     63, 163, 65, 147, 121, 146, 144, 139, 138, 136, 135, 132,
+//     13, 47, 37, 117, 125, 28, 120, 124, 119, 116, 106, 31,
+//     102, 101, 93, 91, 66, 89, 87, 15, 45, 41, 72, 79, 57,
+//     71, 68, 111, 59, 83, 11, 14, 82, 16, 104, 56, 51, 36
+// ];
 
-if (
-    in_array($campo['idusuario'], $usuariosPermitidos, true) ||
-    $campo['id_negocio'] == 2
-) {
-    echo '<script>window.location.href = "../dashboard/index.php";</script>';
-} else {
+// if (
+//     in_array($campo['idusuario'], $usuariosPermitidos, true) ||
+//     $campo['id_negocio'] == 2
+// ) {
+//     echo '<script>window.location.href = "../dashboard/index.php";</script>';
+// } else {
 
 
-// if ($campo['idusuario'] == 163 or $campo['idusuario'] == 63 or $campo['idusuario'] == 65 or $campo['idusuario'] == 147 or $campo['idusuario'] == 121 or $campo['idusuario'] == 146 or $campo['idusuario'] == 144 or $campo['idusuario'] == 139 or $campo['idusuario'] == 138 or  $campo['idusuario'] == 136 or $campo['idusuario'] == 135 or $campo['idusuario'] == 132 or $campo['idusuario'] == 13 or $campo['idusuario'] == 47 or $campo['idusuario'] == 37 or $campo['idusuario'] == 117 OR $campo['idusuario'] == 125 OR $campo['idusuario'] == 28 OR $campo['idusuario'] == 120 OR $campo['idusuario'] == 124 OR $campo['idusuario'] == 119 or $campo['idusuario'] == 116 or $campo['idusuario'] == 106 or $campo['idusuario'] == 31 or $campo['idusuario'] == 102 or $campo['idusuario'] == 101 or $campo['idusuario'] == 93 or $campo['idusuario'] == 91 or $campo['idusuario'] == 66 or $campo['idusuario'] == 89 or $campo['idusuario'] == 87 or $campo['idusuario'] == 15 or $campo['id_negocio'] == 2 or $campo['idusuario']==45 or $campo['idusuario']==41 or $campo['idusuario']==72 or $campo['idusuario']==79 or $campo['idusuario']==57 or $campo['idusuario']==71 or $campo['idusuario']==68 or $campo['idusuario']==111 or $campo['idusuario']==59 or $campo['idusuario']==83 or $campo['idusuario']==11 or $campo['idusuario']==14 or $campo['idusuario']==82 or $campo['idusuario']==16 or $campo['idusuario']==104 or $campo['idusuario']==56 or $campo['idusuario']==51 or $campo['idusuario']==36) {
-// 		echo '<script>	window.location.href = "../dashboard/index.php";</script>';
-// 	}else{
+if ($campo['idusuario'] == 163 or $campo['idusuario'] == 63 or $campo['idusuario'] == 65 or $campo['idusuario'] == 147 or $campo['idusuario'] == 121 or $campo['idusuario'] == 146 or $campo['idusuario'] == 144 or $campo['idusuario'] == 139 or $campo['idusuario'] == 138 or  $campo['idusuario'] == 136 or $campo['idusuario'] == 135 or $campo['idusuario'] == 132 or $campo['idusuario'] == 13 or $campo['idusuario'] == 47 or $campo['idusuario'] == 37 or $campo['idusuario'] == 117 OR $campo['idusuario'] == 125 OR $campo['idusuario'] == 28 OR $campo['idusuario'] == 120 OR $campo['idusuario'] == 124 OR $campo['idusuario'] == 119 or $campo['idusuario'] == 116 or $campo['idusuario'] == 106 or $campo['idusuario'] == 31 or $campo['idusuario'] == 102 or $campo['idusuario'] == 101 or $campo['idusuario'] == 93 or $campo['idusuario'] == 91 or $campo['idusuario'] == 66 or $campo['idusuario'] == 89 or $campo['idusuario'] == 87 or $campo['idusuario'] == 15 or $campo['id_negocio'] == 2 or $campo['idusuario']==45 or $campo['idusuario']==41 or $campo['idusuario']==72 or $campo['idusuario']==79 or $campo['idusuario']==57 or $campo['idusuario']==71 or $campo['idusuario']==68 or $campo['idusuario']==111 or $campo['idusuario']==59 or $campo['idusuario']==83 or $campo['idusuario']==11 or $campo['idusuario']==14 or $campo['idusuario']==82 or $campo['idusuario']==16 or $campo['idusuario']==104 or $campo['idusuario']==56 or $campo['idusuario']==51 or $campo['idusuario']==36) {
+		echo '<script>	window.location.href = "../dashboard/index.php";</script>';
+	}else{
 
 
 	if ($campo['idperfil']==1) {
