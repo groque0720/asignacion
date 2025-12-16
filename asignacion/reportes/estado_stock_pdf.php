@@ -11,9 +11,9 @@ mysqli_query($con,"SET NAMES 'utf8'");
 
 function initTotales() {
     return [
-        'stock_total'=>0,'libres'=>0,'con_cliente'=>0,'reventas'=>0,'EFV'=>0,
         'llegadas'=>0,'llegadas_sin_cliente'=>0,'llegadas_con_cliente'=>0,'llegadas_sin_cliente_EFV'=>0,
-        'no_llegadas'=>0,'no_llegadas_sin_cliente'=>0,'no_llegadas_con_cliente'=>0,'no_llegadas_sin_cliente_EFV'=>0
+        'no_llegadas'=>0,'no_llegadas_sin_cliente'=>0,'no_llegadas_con_cliente'=>0,'no_llegadas_sin_cliente_EFV'=>0,
+        'stock_total'=>0,'libres'=>0,'con_cliente'=>0,'reventas'=>0,'EFV'=>0
     ];
 }
 
@@ -40,7 +40,7 @@ function imprimirSubtotal($pdf, $label, $totales, $dark = false) {
     foreach ($totales as $v) {
 		$fila++;
         $pdf->Cell(10,5,v($v),1,0,'C',true);
-		if ($fila==6 || $fila==10) {
+		if ($fila==5 || $fila==9) {
 			$pdf->Cell(4,5,'',0,0,'C');
 		}
 
@@ -79,20 +79,20 @@ class PDF extends FPDF {
         $this->SetTextColor(0);
 
 		$this->cell(49,5,'',0,0,'C'); // espacio despues de modelo
-		$this->Cell(50,5,'Stock Total',1,0,'C',true);
-		$this->Cell(4,5,'',0,0,'C',false); // espacio despues de stock
 		$this->Cell(40,5,'Llegadas',1,0,'C',true);
 		$this->Cell(4,5,'',0,0,'C',false); // espacio despues de stock
 		$this->Cell(40,5,'No Llegadas',1,0,'C',true);
+		$this->Cell(4,5,'',0,0,'C',false); // espacio despues de stock
+		$this->Cell(50,5,'Stock Total',1,0,'C',true);
 		$this->Ln();
 
         $this->Cell(45,5,'Modelo',1,0,'C',true);
 		$this->Cell(4,5,'',0,0,'C');
 
         $headers = [
-            'Tot','s/cli','c/cli','Rev','EFV',
             'Tot','s/cli','c/cli','EFV',
-            'Tot','s/cli','c/cli','EFV'
+            'Tot','s/cli','c/cli','EFV',
+            'Tot','s/cli','c/cli','Rev','EFV',
         ];
 
 	

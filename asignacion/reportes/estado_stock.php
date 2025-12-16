@@ -225,9 +225,9 @@ $result=mysqli_query($con, $SQL);
 
 function initTotales() {
     return [
-        'stock_total'=>0,'libres'=>0,'con_cliente'=>0,'reventas'=>0,'EFV'=>0,
-        'llegadas'=>0,'llegadas_sin_cliente'=>0,'llegadas_sin_cliente_EFV'=>0,'llegadas_con_cliente'=>0,
-        'no_llegadas'=>0,'no_llegadas_sin_cliente'=>0,'no_llegadas_sin_cliente_EFV'=>0,'no_llegadas_con_cliente'=>0
+		'llegadas'=>0,'llegadas_sin_cliente'=>0,'llegadas_sin_cliente_EFV'=>0,'llegadas_con_cliente'=>0,
+        'no_llegadas'=>0,'no_llegadas_sin_cliente'=>0,'no_llegadas_sin_cliente_EFV'=>0,'no_llegadas_con_cliente'=>0,
+        'stock_total'=>0,'libres'=>0,'con_cliente'=>0,'reventas'=>0,'EFV'=>0
     ];
 }
 
@@ -269,27 +269,30 @@ function v($value) {
 <table>
 	<thead>
 	<tr>
-		<th rowspan="2">Modelo</th>
-		<th colspan="5" >Stock</th>
-		<th colspan="4" >Llegadas</th>
-		<th colspan="4" >No Llegadas</th>
+		<th rowspan="2" >Modelo</th>
+		<th colspan="4" >Stock Con Arribo</th>
+		<th colspan="4" >Stock Sin Arribo</th>
+		<th colspan="5" >Stock Total</th>
 	</tr>
 	<tr>
+
+
+		<th style="max-width: 80px;" >Total</th>
+		<th style="max-width: 80px;" >s/cli</th>
+		<th style="max-width: 80px;" >c/cli</th>
+		<th style="max-width: 80px;" >EFV</th>
+
+		<th style="max-width: 80px;" >Total</th>
+		<th style="max-width: 80px;" >s/cli</th>
+		<th style="max-width: 80px;" >c/cli</th>
+		<th style="max-width: 80px;" >EFV</th>
+
 		<th style="max-width: 80px;">Total</th>
 		<th style="max-width: 80px;">s/cli</th>
 		<th style="max-width: 80px;" >c/cli</th>
 		<th style="max-width: 80px;"class="stock-second">Rev</th>
 		<th style="max-width: 80px;">EFV</th>
 
-		<th style="max-width: 80px;" >Total</th>
-		<th style="max-width: 80px;" >s/cli</th>
-		<th style="max-width: 80px;" >c/cli</th>
-		<th style="max-width: 80px;" >EFV</th>
-
-		<th style="max-width: 80px;" >Total</th>
-		<th style="max-width: 80px;" >s/cli</th>
-		<th style="max-width: 80px;" >c/cli</th>
-		<th style="max-width: 80px;" >EFV</th>
 	</tr>
 	</thead>
 
@@ -324,14 +327,11 @@ function v($value) {
 		}
 
 		// fila modelo
-		echo "<tr>
-			<td class='left'>{$row['modelo']}</td>
-			<td class='stock' style='border-left: 2px solid #000;'>".v($row['stock_total'])."</td>
-			<td class='stock' style='border-left: 2px solid #000;'>".v($row['libres'])."</td>
-			<td class='stock'>".v($row['con_cliente'])."</td>
-			<td class='stock stock-second'>".v($row['reventas'])."</td>
-			<td class='stock'>".v($row['EFV'])."</td>
+		echo "
+		<tr>
 
+
+			<td class='left'>{$row['modelo']}</td>
 			<td class='llegadas' style='border-left: 2px solid #000;'>".v($row['llegadas'])."</td>
 			<td class='llegadas' style='border-left: 1px solid #000;'>".v($row['llegadas_sin_cliente'])."</td>
 			<td class='llegadas'>".v($row['llegadas_con_cliente'])."</td>
@@ -341,6 +341,13 @@ function v($value) {
 			<td class='no_llegadas' style='border-left: 1px solid #000;'>".v($row['no_llegadas_sin_cliente'])."</td>
 			<td class='no_llegadas'>".v($row['no_llegadas_con_cliente'])."</td>
 			<td class='no_llegadas'>".v($row['no_llegadas_sin_cliente_EFV'])."</td>
+
+			<td class='stock' style='border-left: 2px solid #000;'>".v($row['stock_total'])."</td>
+			<td class='stock' style='border-left: 2px solid #000;'>".v($row['libres'])."</td>
+			<td class='stock'>".v($row['con_cliente'])."</td>
+			<td class='stock stock-second'>".v($row['reventas'])."</td>
+			<td class='stock'>".v($row['EFV'])."</td>
+
 		</tr>";
 	}
 
