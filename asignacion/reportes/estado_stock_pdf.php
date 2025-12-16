@@ -79,9 +79,9 @@ class PDF extends FPDF {
         $this->SetTextColor(0);
 
 		$this->cell(49,5,'',0,0,'C'); // espacio despues de modelo
-		$this->Cell(40,5,'Llegadas',1,0,'C',true);
+		$this->Cell(40,5,'Stock con Arribo',1,0,'C',true);
 		$this->Cell(4,5,'',0,0,'C',false); // espacio despues de stock
-		$this->Cell(40,5,'No Llegadas',1,0,'C',true);
+		$this->Cell(40,5,'Stock sin Arribo',1,0,'C',true);
 		$this->Cell(4,5,'',0,0,'C',false); // espacio despues de stock
 		$this->Cell(50,5,'Stock Total',1,0,'C',true);
 		$this->Ln();
