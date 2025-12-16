@@ -197,6 +197,13 @@ conectar();
         </a>
     </div>
 
+    <div class="item">
+        <a href="http://crm.derkayvargas.com" target="_blank">
+            <img src="../imagenes/crm.jpg">
+            <div class="titulo">CRM</div>
+        </a>
+    </div>
+
     <?php if ($_SESSION["id"] == 94 || $_SESSION["id"] == 96): ?>
         <div class="item">
             <a href="pagos_clientes.php">
