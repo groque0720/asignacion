@@ -91,7 +91,7 @@
 					<li><a href="en_viaje_pdf.php" target="_blank" target="_blank" class="icon-file-pdf-o" > <span></span>En Viaje</a></li>
 					<li><a href="pendientes_tasa_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Pendiente TASA</a></li>
 					<!-- <li><a href="stock_siniestrada_suc_pdf.php" target="_blank" class="icon-file-pdf-o"> <span></span>Siniestradas</a></li> -->
-					<!-- <li><a href="#" class="item_link icon-outdent" data-id="ultimas_entregas"> <span></span>Últimas Entregas</a></li> -->
+					<li><a href="#" class="item_link icon-outdent" data-id="ultimas_entregas"> <span></span>Últimas Entregas</a></li>
 					<!-- <li><a href="llegadas_porllegar_mesactual.php" class="icon-file-pdf-o" data-id=""> <span></span>Por Llegar Mes Actual</a></li> -->
 
 				</ul>
