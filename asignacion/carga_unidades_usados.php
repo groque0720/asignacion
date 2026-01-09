@@ -238,7 +238,12 @@ $es_gerente = in_array($id_usuario, [17]) ? 1 : $es_gerente;
 					<tr class="<?php echo 'fila_'.$estado['id_estado_usado'].'_'.$fila.' '.$libre. ' '.$nc ?>" style="<?php echo $antiguedad_color.' '.$sin_cancelar;  ?>">
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $fila; ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['interno']; ?></td>
-						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['vehiculo']; ?> <span style="color: #f0f0f0;background: #efb810;"><?php if($usado['id_estado_certificado'] == 2) { echo '(**UCT**)'; } ?></span> </td>
+						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['vehiculo']; ?>
+							<?php if($usado['id_estado_certificado'] == 2) {  ?>
+								<span style="color: #f0f0f0;background: #efb810; padding: 1px 4px; border-radius: 3px;"> (UCT-ORO) </span>  <?php } ?>
+							<?php if($usado['id_estado_certificado'] == 4) {  ?>
+								<span style="color: #62748E;background: #E3E4E5; padding: 1px 4px; border-radius: 3px;"> (UCT-PLATA) </span>  <?php } ?>
+							</td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $por_a[$usado['por']]['grupo_res']; ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo $usado['año']; ?></td>
 						<td class="centrar-texto celda-usado" data-id="<?php echo $usado['id_unidad']; ?>"><?php echo number_format($usado['km'], 0, ',','.'); ?></td>
