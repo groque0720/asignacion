@@ -94,7 +94,7 @@ if ($cant>=1) {
 						<select class="form-inputs" id="id_estado" name="id_estado" <?php echo $lectura; ?> required>
 							<option value="0"></option>
 							<?php
-								$SQL="SELECT * FROM asignaciones_usados_estados WHERE activo = 1 ORDER BY estado_usado";
+								$SQL="SELECT * FROM asignaciones_usados_estados WHERE activo = 1 ORDER BY posicion";
 								$estados=mysqli_query($con, $SQL);
 								while ($estado=mysqli_fetch_array($estados)) { ?>
 									<option value="<?php echo $estado['id_estado_usado']; ?>" <?php if ($estado['id_estado_usado']==$unidad['id_estado']) {echo 'selected';	} ?>><?php echo $estado['estado_usado']; ?></option>
