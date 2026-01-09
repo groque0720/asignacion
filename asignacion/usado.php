@@ -106,7 +106,7 @@ if ($cant>=1) {
 						<select class="form-inputs" id="id_estado_certificado" name="id_estado_certificado" <?php echo $lectura; ?>>
 							<option value="0"></option>
 							<?php
-								$SQL="SELECT * FROM asignaciones_usados_estados_certificados";
+								$SQL="SELECT * FROM asignaciones_usados_estados_certificados WHERE activo = 1 ORDER BY posicion";
 								$estados=mysqli_query($con, $SQL);
 								while ($estado=mysqli_fetch_array($estados)) { ?>
 									<option value="<?php echo $estado['id']; ?>" <?php if ($estado['id']==$unidad['id_estado_certificado']) {echo 'selected';	} ?>><?php echo $estado['estado_certificado']; ?></option>
