@@ -225,8 +225,8 @@ $result=mysqli_query($con, $SQL);
 
 function initTotales() {
     return [
-		'llegadas'=>0,'llegadas_sin_cliente'=>0,'llegadas_sin_cliente_EFV'=>0,'llegadas_con_cliente'=>0,
-        'no_llegadas'=>0,'no_llegadas_sin_cliente'=>0,'no_llegadas_sin_cliente_EFV'=>0,'no_llegadas_con_cliente'=>0,
+		'llegadas'=>0,'llegadas_sin_cliente'=>0,'llegadas_con_cliente'=>0,'llegadas_sin_cliente_EFV'=>0,
+        'no_llegadas'=>0,'no_llegadas_sin_cliente'=>0,'no_llegadas_con_cliente'=>0,'no_llegadas_sin_cliente_EFV'=>0,
         'stock_total'=>0,'libres'=>0,'con_cliente'=>0,'reventas'=>0,'EFV'=>0
     ];
 }
