@@ -350,7 +350,7 @@ if ($cant>=1) {
 					<div class="ancho-1-3">
 						<div class="ancho-45">
 							<?php // if ($id_perfil==14  AND $unidad['reservada']==1) {?>
-							<?php if (($id_usuario==16 or $id_usuario==103 or $id_usuario==56 or $id_usuario==46) AND $unidad['reservada']==1) {?>
+							<?php if (($id_usuario==16 or $id_usuario==103 or $id_usuario==56 or $id_usuario==106) AND $unidad['reservada']==1) {?>
 							<input style="cursor:pointer;" class="form-inputs centrar-texto" id="levantar_reserva" type="submit" size="5" value="Levantar">
 							<?php } ?>
 						</div>
