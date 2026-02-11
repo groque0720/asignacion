@@ -118,8 +118,23 @@ $(document).ready(function(){
 				$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida_no_llegadas";
 				$suc_no_lLegadas = mysqli_query($con, $SQL);
 
+				if (!$suc_no_lLegadas) {
+					die("Error en query (no llegadas): " . mysqli_error($con));
+				}
+
 				$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida_llegadas";
 				$suc_lLegadas = mysqli_query($con, $SQL);
+
+				if (!$suc_lLegadas) {
+					die("Error en query (llegadas): " . mysqli_error($con));
+				}
+
+				$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida_en_viaje";
+				$suc_en_viaje = mysqli_query($con, $SQL);
+
+				if (!$suc_en_viaje) {
+					die("Error en query (viaje): " . mysqli_error($con));
+				}
 
 				$total_sucursal=[];
 
@@ -153,7 +168,13 @@ $(document).ready(function(){
 						while ($suc_no_lLegada=mysqli_fetch_array($suc_no_lLegadas)) {
 								$total_no_llegadas += $suc_no_lLegada['Saldo'];	?>
 						<tr>
-							<td> <?php echo $suc_no_lLegada['Sucursal'] ?></td>
+							<td>
+								<?php //echo $suc_no_lLegada['Sucursal'] ?>
+						
+							<a href="/asignacion/costos_recursos_pendiente_pago.php?sucursalId=<?php echo $suc_no_lLegada['IdSucursal']; ?>" target="_blank">
+								<?php echo $suc_no_lLegada['Sucursal'].' ' ?> 🖨️
+							</a>
+							</td>
 							<td style="text-align: right; padding-right:20px;">
 								<?php echo  number_format($suc_no_lLegada['Saldo'], 0, ',','.') ?></td>
 								<?php
@@ -163,12 +184,55 @@ $(document).ready(function(){
 									$fila++; ?>
 						</tr>	<?php } ?>
 						<tr class="total">
-							<td>Derka y Vargas</td>
+							<td>
+								<a href="/asignacion/costos_recursos_pendiente_pago.php" target="_blank">
+									DYV 🖨️
+								</a>	
+							</td>
 							<td style="text-align: right; padding-right:20px;">
 								<?php echo  number_format($total_no_llegadas, 0, ',','.') ?></td>	
 						</tr>
 					</tbody>
 				</table>				
+			</div>
+			<div>
+			<table>
+					<thead>
+						<tr>
+							<th colspan="2">En Viaje</th>
+						</tr>
+						<tr>
+							<th>Sucursal</th>
+							<th>Saldo</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$total_llegadas = 0;
+						$fila=0;
+						while ($fila_en_viaje=mysqli_fetch_array($suc_en_viaje)) {
+						$total_llegadas += $fila_en_viaje['Saldo'];	?>
+						<tr>
+							<td> <?php //echo $fila_en_viaje['Sucursal'] ?>
+							<a href="/asignacion/costos_recursos_pendiente_en_viaje.php?sucursalId=<?php echo $fila_en_viaje['IdSucursal']; ?>" target="_blank">
+								<?php echo $fila_en_viaje['Sucursal'].' ' ?> 🖨️
+							</a>
+						</td>
+							<td style="text-align: right; padding-right:20px;">  <?php echo  number_format($fila_en_viaje['Saldo'], 0, ',','.') ?></td>
+							<?php $total_sucursal[$fila]['Saldo']=$total_sucursal[$fila]['Saldo'] + $fila_en_viaje['Saldo']; $fila++; ?>
+						</tr>	<?php } ?>
+						<tr class="total">
+							<td>
+								<a href="/asignacion/costos_recursos_pendiente_con_arribo.php" target="_blank">
+									DYV 🖨️
+								</a>
+							</td>
+							<td style="text-align: right; padding-right:20px;">
+								<?php echo  number_format($total_llegadas, 0, ',','.') ?></td>	
+						</tr>
+					</tbody>
+				</table>			
 			</div>
 			<div>
 			<table>
@@ -189,12 +253,20 @@ $(document).ready(function(){
 						while ($suc_lLegada=mysqli_fetch_array($suc_lLegadas)) {
 								$total_llegadas += $suc_lLegada['Saldo'];	?>
 						<tr>
-							<td> <?php echo $suc_lLegada['Sucursal'] ?></td>
+							<td> <?php //echo $suc_lLegada['Sucursal'] ?>
+							<a href="/asignacion/costos_recursos_pendiente_con_arribo.php?sucursalId=<?php echo $suc_lLegada['IdSucursal']; ?>" target="_blank">
+								<?php echo $suc_lLegada['Sucursal'].' ' ?> 🖨️
+							</a>
+						</td>
 							<td style="text-align: right; padding-right:20px;">  <?php echo  number_format($suc_lLegada['Saldo'], 0, ',','.') ?></td>
 							<?php $total_sucursal[$fila]['Saldo']=$total_sucursal[$fila]['Saldo'] + $suc_lLegada['Saldo']; $fila++; ?>
 						</tr>	<?php } ?>
 						<tr class="total">
-							<td>Derka y Vargas</td>
+							<td>
+								<a href="/asignacion/costos_recursos_pendiente_con_arribo.php" target="_blank">
+									DyV 🖨️
+								</a>
+							</td>
 							<td style="text-align: right; padding-right:20px;">
 								<?php echo  number_format($total_llegadas, 0, ',','.') ?></td>	
 						</tr>
@@ -233,7 +305,7 @@ $(document).ready(function(){
 						<tr class="total">
 							<td>
 								<a href="/asignacion/costos_recursos_completa.php" target="_blank">
-									Derka y Vargas  🖨️
+									DyV  🖨️
 								</a>
 							</td>
 							<td style="text-align: right; padding-right:20px;">

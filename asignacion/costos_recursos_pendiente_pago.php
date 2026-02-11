@@ -11,14 +11,27 @@ if ($_SESSION["autentificado"] != "SI") {
 	exit();
 }
 
-$sucursalId = isset($_GET['sucursalId']) ? $_GET['sucursalId'] : null;
+$sucursalId = isset($_GET['sucursalId']) ? intval($_GET['sucursalId']) : null;
 $sucursal = 'Derka y Vargas S. A.';
 
-if ($sucursalId) {
-	$SQL="SELECT * FROM sucursales WHERE idsucursal = $sucursalId";
-	$sucursales = mysqli_query($con, $SQL);
-	$sucursal = mysqli_fetch_array($sucursales)['sucursal'];
-} 
+$SQL = "SELECT * FROM sucursales WHERE idsucursal = " . intval($sucursalId);
+$sucursales = mysqli_query($con, $SQL);
+
+if ($sucursalId !== null) {
+
+    $SQL = "SELECT sucursal FROM sucursales WHERE idsucursal = $sucursalId";
+    $resultado = mysqli_query($con, $SQL);
+
+    if (!$resultado) {
+        die("Error SQL sucursal: " . mysqli_error($con));
+    }
+
+    $fila = mysqli_fetch_assoc($resultado);
+
+    if ($fila) {
+        $sucursal = $fila['sucursal'];
+    }
+}
 
 // $p=$_SESSION["idperfil"];
 
@@ -37,7 +50,10 @@ class PDF extends FPDF
 		if ($this->PageNo()==1) {
 			$this->SetFont('Arial','B',10);
 			$this->Cell(100,5,'DERKA Y VARGAS S. A.',0,0,'L');
-			$this->Cell(90,5,('COSTOS Y RECURSOS - '. strtoupper( $this->sucursal )),0,0,'C');
+			// $this->Cell(90,5,('COSTOS Y RECURSOS - '. strtoupper( $this->sucursal )),0,0,'C');
+			$titulo = 'PENDIENTE PAGO TASA - ' . strtoupper($this->sucursal);
+			$titulo = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $titulo);
+			$this->Cell(90,5,$titulo,0,0,'C');
 			$this->Cell(0,5,cambiarFormatoFecha(date('Y-m-d')).' - '. strftime("%H:%M"),0,0,'R');
 			$this->Ln();
 			$this->Cell(0,0,'',1,0,'C');
@@ -85,11 +101,15 @@ $pdf->SetFont('');
 
 
 
-$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida";
+$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE pagado_tasa IS FALSE";
 if (isset($_GET['sucursalId'])) {
-	$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE idsucursal = $sucursalId";
+	$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE idsucursal = $sucursalId AND pagado_tasa IS FALSE";
 }
 $unidades = mysqli_query($con, $SQL);
+
+if (!$unidades) {
+    die("Error SQL unidades: " . mysqli_error($con));
+}
 
 $nro = 0;
 
@@ -152,29 +172,28 @@ while ($unidad=mysqli_fetch_array($unidades)) {
 	$pdf->Ln();
 }
 
-
-// Línea separadora
 $pdf->Cell(0,0,'',1,0,'C');
 $pdf->Ln(2);
 
-// Evitar que el total caiga solo en otra página
-if ($pdf->GetY() > 180) {
-    $pdf->AddPage('L','A4');
-}
-
-$pdf->SetFont('Arial','B',7);
-
-// Texto TOTAL (ancho acumulado de las columnas anteriores)
-$pdf->Cell(197,6,'TOTAL GENERAL',1,0,'R');
-
-// Totales
-$pdf->Cell(20,6,'$ '.number_format($total_costo_tasa, 0, ',', '.'),1,0,'R');
-$pdf->Cell(20,6,'$ '.number_format($total_reservas, 0, ',', '.'),1,0,'R');
-$pdf->Cell(20,6,'$ '.number_format($total_pagos, 0, ',', '.'),1,0,'R');
-$pdf->Cell(20,6,'$ '.number_format($saldo, 0, ',', '.'),1,0,'R');
+$pdf->Cell(13,5,'',0,0,'C');
+$pdf->Cell(10,5,'',0,0,'C');
+$pdf->Cell(35,5,'',0,0,'L');
+$pdf->Cell(16,5,'',0,0,'C');
+$pdf->Cell(10,5,'',0,0,'C');
+$pdf->Cell(30,5,'',0,0,'L');
+$pdf->Cell(15,5,'',0,0,'L');
+$pdf->Cell(18,5,'',0,0,'C');
+$pdf->Cell(15,5,'',0,0,'C');
+$pdf->Cell(15,5,'',0,0,'C');
+$pdf->Cell(15,5,'Total',1,0,'C');
+$pdf->Cell(5,5,'',1,0,'C');
+$pdf->Cell(20,5,'$ '.number_format($total_costo_tasa, 0, ',','.'),1,0,'R');
+$pdf->Cell(20,5,'$ '.number_format($total_reservas, 0, ',','.'),1,0,'R');		
+$pdf->Cell(20,5,'$ '.number_format($total_pagos, 0, ',','.'),1,0,'R');
+$pdf->Cell(20,5,'$ '.number_format($saldo, 0, ',','.'),1,0,'R');	
 
 $pdf->Ln();
 
-$pdf->Output('Costos_Recursos_Completa.pdf','I');
+$pdf->Output('Pendiente_Pago_TASA.pdf','I');
 $pdf->close();
 ?>
