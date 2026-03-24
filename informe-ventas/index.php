@@ -289,6 +289,38 @@ $anio_actual = intval(date('Y'));
             </div>
         </div>
 
+        <!-- Comparativo mes a mes por modelo/versión -->
+        <div class="chart-card" style="margin-bottom:1rem;">
+            <div class="chart-title" style="justify-content:space-between;flex-wrap:wrap;gap:6px;">
+                <span><i class="fa fa-arrows-left-right" style="color:var(--accent-cyan)"></i> Comparativo Mes a Mes — Por Modelo/Versión</span>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                    <input type="text" id="modelo-mes-search" placeholder="Buscar grupo/versión..." autocomplete="off"
+                        style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-primary);border-radius:6px;padding:3px 10px;font-size:11px;width:170px;outline:none;">
+                    <button id="btn-expand-all" onclick="modeloMesExpandAll(true)"
+                            style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
+                        <i class="fa fa-angles-down"></i> Expandir todo
+                    </button>
+                    <button id="btn-collapse-all" onclick="modeloMesExpandAll(false)"
+                            style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
+                        <i class="fa fa-angles-up"></i> Colapsar todo
+                    </button>
+                    <button onclick="this.closest('.chart-card').querySelector('#modelo-mes-wrap').classList.toggle('d-none')"
+                            style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
+                        Mostrar / Ocultar
+                    </button>
+                </div>
+            </div>
+            <div id="modelo-mes-wrap" style="overflow-x:auto;margin-top:6px;">
+                <table id="modelo-mes-table" style="width:100%;border-collapse:collapse;font-size:11px;">
+                    <thead id="modelo-mes-thead"></thead>
+                    <tbody id="modelo-mes-tbody"></tbody>
+                </table>
+                <div id="modelo-mes-empty" style="display:none;text-align:center;padding:18px;color:var(--text-muted);font-size:12px;">
+                    <i class="fa fa-circle-info"></i> Sin datos para el período seleccionado.
+                </div>
+            </div>
+        </div>
+
         <!-- Fila 2: Por sucursal / Vendedores / Anuladas -->
         <div class="charts-row charts-row-3">
             <div class="chart-card">

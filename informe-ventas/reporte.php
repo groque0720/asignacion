@@ -98,6 +98,54 @@ $mes_res = exec_rep($mes_sql, $params4, $types4);
 $por_mes = array_fill(1, 12, 0);
 if ($mes_res) while ($r = mysqli_fetch_assoc($mes_res)) $por_mes[intval($r['mes'])] = intval($r['cnt']);
 
+// ── Comparativo mes a mes por modelo/versión ─────────────────────────────────
+$params_mm = []; $types_mm = ''; $where_mm = build_where_rep($params_mm, $types_mm);
+$mm_sql = "SELECT
+    COALESCE(g.grupo, 'Usados') AS grupo,
+    COALESCE(m.modelo, '—')     AS modelo,
+    MONTH(r.fecres)             AS mes,
+    COUNT(*)                    AS cantidad
+" . base_from_rep() . $where_mm . "
+GROUP BY r.idgrupo, r.idmodelo, MONTH(r.fecres)
+ORDER BY
+    (g.posicion IS NULL OR g.posicion = 0) ASC, COALESCE(g.posicion, 9999),
+    COALESCE(g.grupo, 'Usados'),
+    (m.posicion IS NULL OR m.posicion = 0) ASC, COALESCE(m.posicion, 9999),
+    COALESCE(m.modelo, '—'),
+    mes";
+$mm_res  = exec_rep($mm_sql, $params_mm, $types_mm);
+$mm_rows = [];
+if ($mm_res) while ($r = mysqli_fetch_assoc($mm_res)) $mm_rows[] = $r;
+
+// Pivot: grupo → modelos → meses
+$mm_grupos     = [];
+$mm_grupoOrder = [];
+foreach ($mm_rows as $r) {
+    $gk = $r['grupo'];
+    $mk = $gk . '||' . $r['modelo'];
+    if (!isset($mm_grupos[$gk])) {
+        $mm_grupos[$gk] = ['nombre' => $r['grupo'], 'modelos' => [], 'modeloOrder' => [], 'mesTotals' => [], 'total' => 0];
+        $mm_grupoOrder[] = $gk;
+    }
+    $g = &$mm_grupos[$gk];
+    if (!isset($g['modelos'][$mk])) {
+        $g['modelos'][$mk] = ['nombre' => $r['modelo'], 'meses' => [], 'total' => 0];
+        $g['modeloOrder'][] = $mk;
+    }
+    $mes = intval($r['mes']); $cant = intval($r['cantidad']);
+    $g['modelos'][$mk]['meses'][$mes]  = $cant;
+    $g['modelos'][$mk]['total']       += $cant;
+    $g['mesTotals'][$mes]              = ($g['mesTotals'][$mes] ?? 0) + $cant;
+    $g['total']                       += $cant;
+    unset($g);
+}
+$mm_meses_activos = [];
+foreach ($mm_grupoOrder as $gk) {
+    foreach (array_keys($mm_grupos[$gk]['mesTotals']) as $m)
+        if (!in_array((int)$m, $mm_meses_activos)) $mm_meses_activos[] = (int)$m;
+}
+sort($mm_meses_activos);
+
 // ── Filtros descripción ───────────────────────────────────────────────────────
 $meses_nombre = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 $filtros_desc = [];
@@ -331,6 +379,36 @@ $usuario = htmlspecialchars($_SESSION['usuario'] ?? '');
         }
         .signatures { display: flex; gap: 40px; margin-top: 40px; }
 
+        /* ── Tabla comparativo mes a mes ───────────── */
+        .mm-table { width: 100%; border-collapse: collapse; font-size: 8pt; margin-bottom: 6px; }
+        .mm-table th {
+            background: #1e2235;
+            color: #fff;
+            padding: 5px 7px;
+            font-size: 7.5pt;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .mm-table th.col-name { text-align: left; }
+        .mm-table td { padding: 4px 7px; border-bottom: 1px solid #eaeaf5; text-align: center; white-space: nowrap; }
+        .mm-table td.col-name { text-align: left; }
+        .mm-grupo-row td {
+            background: #eef0fa;
+            font-weight: 700;
+            color: #1e2235;
+            font-size: 8.5pt;
+        }
+        .mm-version-row td { color: #3a3f5c; }
+        .mm-version-row td.col-name { padding-left: 18px; color: #4a5568; }
+        .mm-total-row td {
+            background: #1e2235;
+            color: #fff;
+            font-weight: 800;
+            font-size: 8.5pt;
+        }
+        .pct-pos { color: #1a6b3c; font-weight: 700; }
+        .pct-neg { color: #c0392b; font-weight: 700; }
+
         /* ── Print ──────────────────────────────────── */
         @media print {
             body { background: #fff; padding: 0; font-size: 10pt; }
@@ -561,10 +639,109 @@ $usuario = htmlspecialchars($_SESSION['usuario'] ?? '');
 
     <div class="footer-report">
         <div>DYV S.A. — Sistema de Gestión de Reservas</div>
-        <div>Página 2 / 2</div>
+        <div>Página 2 / 3</div>
     </div>
 
 </div><!-- /page 2 -->
+
+<!-- ══════════════════════════════════════════════════
+     PÁGINA 3 — Comparativo Mes a Mes por Modelo/Versión
+════════════════════════════════════════════════════ -->
+<div class="page">
+
+    <div class="report-header">
+        <div>
+            <h1>Comparativo Mes a Mes</h1>
+            <div class="subtitle">Por Modelo / Versión — <?= htmlspecialchars($filtros_txt) ?></div>
+        </div>
+        <div class="report-meta">DYV S.A. — <?= date('d/m/Y') ?></div>
+    </div>
+
+    <?php
+    $meses_abrev = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+    // Helper % variación
+    function mm_pct(int $actual, int $anterior): string {
+        if ($anterior <= 0) return '';
+        $v    = round(($actual - $anterior) / $anterior * 100, 1);
+        $sign = $v >= 0 ? '+' : '';
+        $cls  = $v >= 0 ? 'pct-pos' : 'pct-neg';
+        return '<br><span class="' . $cls . '">' . $sign . $v . '%</span>';
+    }
+
+    if (empty($mm_grupoOrder)):
+    ?>
+    <p style="color:#999;font-size:9pt;text-align:center;padding:30px 0">Sin datos para el período seleccionado.</p>
+    <?php else: ?>
+
+    <table class="mm-table">
+        <thead>
+            <tr>
+                <th class="col-name" style="min-width:160px">Grupo / Versión</th>
+                <?php foreach ($mm_meses_activos as $m): ?>
+                <th><?= $meses_abrev[$m] ?></th>
+                <?php endforeach; ?>
+                <th style="color:#4e9af1">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+        $tot_mes    = array_fill_keys($mm_meses_activos, 0);
+        $tot_global = 0;
+
+        foreach ($mm_grupoOrder as $gk):
+            $g = $mm_grupos[$gk];
+        ?>
+            <!-- Fila grupo -->
+            <tr class="mm-grupo-row">
+                <td class="col-name">▸ <?= htmlspecialchars($g['nombre']) ?></td>
+                <?php foreach ($mm_meses_activos as $idx => $m):
+                    $val  = $g['mesTotals'][$m] ?? 0;
+                    $prev = $idx > 0 ? ($g['mesTotals'][$mm_meses_activos[$idx-1]] ?? 0) : null;
+                    $tot_mes[$m] += $val; $tot_global += $val;
+                ?>
+                <td><?= $val > 0 ? $val : '—' ?><?= $prev !== null ? mm_pct($val, $prev) : '' ?></td>
+                <?php endforeach; ?>
+                <td><?= number_format($g['total'], 0, ',', '.') ?></td>
+            </tr>
+            <!-- Filas versión -->
+            <?php foreach ($g['modeloOrder'] as $mk):
+                $mod = $g['modelos'][$mk]; ?>
+            <tr class="mm-version-row">
+                <td class="col-name"><?= htmlspecialchars($mod['nombre']) ?></td>
+                <?php foreach ($mm_meses_activos as $idx => $m):
+                    $val  = $mod['meses'][$m] ?? 0;
+                    $prev = $idx > 0 ? ($mod['meses'][$mm_meses_activos[$idx-1]] ?? 0) : null;
+                ?>
+                <td><?= $val > 0 ? $val : '<span style="color:#ccc">—</span>' ?><?= $prev !== null ? mm_pct($val, $prev) : '' ?></td>
+                <?php endforeach; ?>
+                <td><?= number_format($mod['total'], 0, ',', '.') ?></td>
+            </tr>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+
+        <!-- Fila total general -->
+        <tr class="mm-total-row">
+            <td class="col-name">TOTAL GENERAL</td>
+            <?php foreach ($mm_meses_activos as $idx => $m):
+                $val  = $tot_mes[$m];
+                $prev = $idx > 0 ? $tot_mes[$mm_meses_activos[$idx-1]] : null;
+            ?>
+            <td><?= number_format($val, 0, ',', '.') ?><?= $prev !== null ? mm_pct($val, $prev) : '' ?></td>
+            <?php endforeach; ?>
+            <td><?= number_format($tot_global, 0, ',', '.') ?></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <?php endif; ?>
+
+    <div class="footer-report">
+        <div>DYV S.A. — Sistema de Gestión de Reservas</div>
+        <div>Página 3 / 3</div>
+    </div>
+
+</div><!-- /page 3 -->
 
 </body>
 </html>

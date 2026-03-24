@@ -672,6 +672,12 @@ async function applyFilters() {
                 .catch(console.error);
         }
 
+        // Comparativo mes a mes por modelo (siempre activo)
+        fetch('api.php?action=comp_modelo_mes&' + params)
+            .then(r => r.json())
+            .then(data => renderCompModeloMes(data))
+            .catch(console.error);
+
     } catch(e) {
         console.error('Error al cargar datos:', e);
     }
@@ -994,4 +1000,222 @@ function setText(id, val) {
 function formatNum(n) {
     n = parseInt(n) || 0;
     return n.toLocaleString('es-AR');
+}
+
+// ══════════════════════════════════════════════════════════
+// COMPARATIVO MES A MES POR MODELO / VERSIÓN  (acordeón)
+// ══════════════════════════════════════════════════════════
+function renderCompModeloMes(data) {
+    const thead = document.getElementById('modelo-mes-thead');
+    const tbody = document.getElementById('modelo-mes-tbody');
+    const empty = document.getElementById('modelo-mes-empty');
+    if (!thead || !tbody) return;
+
+    if (!data || !data.rows || data.rows.length === 0) {
+        thead.innerHTML = '';
+        tbody.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+    // ── Pivot manteniendo el orden que llega del servidor (ya ordenado por posicion)
+    const grupos = {};      // { grupoNombre: { modelos: { key: {...} }, modeloOrder: [], mesTotals: {}, total } }
+    const grupoOrder = [];  // mantener orden de inserción
+
+    data.rows.forEach(function(r) {
+        const gKey = r.grupo || '—';
+        const mKey = gKey + '||' + (r.modelo || '—');
+
+        if (!grupos[gKey]) {
+            grupos[gKey] = { nombre: r.grupo, modelos: {}, modeloOrder: [], mesTotals: {}, total: 0 };
+            grupoOrder.push(gKey);
+        }
+        const g = grupos[gKey];
+
+        if (!g.modelos[mKey]) {
+            g.modelos[mKey] = { nombre: r.modelo, meses: {}, total: 0 };
+            g.modeloOrder.push(mKey);
+        }
+
+        const mes  = parseInt(r.mes);
+        const cant = parseInt(r.cantidad) || 0;
+
+        g.modelos[mKey].meses[mes]  = cant;
+        g.modelos[mKey].total      += cant;
+        g.mesTotals[mes]            = (g.mesTotals[mes] || 0) + cant;
+        g.total                    += cant;
+    });
+
+    // ── Meses activos (solo los que tienen datos)
+    const mesesSet = new Set();
+    grupoOrder.forEach(gk => Object.keys(grupos[gk].mesTotals).forEach(m => mesesSet.add(parseInt(m))));
+    const mesesActivos = Array.from(mesesSet).sort((a, b) => a - b);
+
+    // ── Helpers de estilo
+    const thBase = 'background:var(--bg-secondary);color:var(--text-secondary);padding:5px 8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--border-color);white-space:nowrap;';
+    const tdBase = 'padding:4px 8px;border-bottom:1px solid var(--border-color);text-align:center;';
+
+    function pctBadge(actual, anterior) {
+        if (anterior <= 0) return '';
+        const v = ((actual - anterior) / anterior * 100).toFixed(1);
+        const color = parseFloat(v) >= 0 ? '#63c795' : '#e05c5c';
+        const sign  = parseFloat(v) >= 0 ? '+' : '';
+        return '<br><span style="font-size:9px;font-weight:700;color:' + color + '">' + sign + v + '%</span>';
+    }
+
+    function cellVal(val, bold) {
+        if (val <= 0) return '<span style="color:var(--text-muted)">—</span>';
+        return bold ? '<b>' + val + '</b>' : String(val);
+    }
+
+    // ── THEAD
+    let headRow = '<tr>'
+        + '<th style="' + thBase + 'text-align:left;min-width:200px;padding-left:10px">Grupo / Versión</th>';
+    mesesActivos.forEach(function(m) {
+        headRow += '<th style="' + thBase + 'text-align:center;min-width:68px">' + MESES[m - 1] + '</th>';
+    });
+    headRow += '<th style="' + thBase + 'text-align:center;color:var(--accent-blue);min-width:60px">Total</th></tr>';
+    thead.innerHTML = headRow;
+
+    // ── TBODY con acordeón
+    const totMes = {};
+    mesesActivos.forEach(m => { totMes[m] = 0; });
+    let totGlobal = 0;
+    let rows = '';
+
+    grupoOrder.forEach(function(gk, gi) {
+        const g = grupos[gk];
+
+        // ─ Fila GRUPO (cabecera acordeón)
+        rows += '<tr class="mm-grupo-row" data-gi="' + gi + '" data-nombre="' + escHtml(gk) + '" '
+              + 'style="cursor:pointer;background:var(--bg-secondary);user-select:none;" '
+              + 'onclick="modeloMesToggleGrupo(' + gi + ')">';
+        rows += '<td style="' + tdBase + 'text-align:left;font-weight:700;color:var(--text-primary);font-size:12px;padding-left:10px;">'
+              + '<i id="mm-chev-' + gi + '" class="fa fa-chevron-right" style="font-size:9px;margin-right:6px;transition:transform .2s;color:var(--accent-cyan)"></i>'
+              + escHtml(g.nombre) + '</td>';
+
+        mesesActivos.forEach(function(m, idx) {
+            const val  = g.mesTotals[m] || 0;
+            const prev = idx > 0 ? (g.mesTotals[mesesActivos[idx - 1]] || 0) : null;
+            totMes[m] += val;
+            totGlobal += val;
+            const badge = prev !== null ? pctBadge(val, prev) : '';
+            rows += '<td style="' + tdBase + 'font-weight:700;color:var(--accent-orange)">'
+                  + cellVal(val, true) + badge + '</td>';
+        });
+        rows += '<td style="' + tdBase + 'font-weight:800;color:var(--accent-orange)">'
+              + g.total.toLocaleString('es-AR') + '</td>';
+        rows += '</tr>';
+
+        // ─ Filas VERSIÓN (ocultas por defecto)
+        g.modeloOrder.forEach(function(mk) {
+            const mod = g.modelos[mk];
+            rows += '<tr class="mm-version-row mm-gi-' + gi + '" '
+                  + 'data-gi="' + gi + '" data-nombre="' + escHtml(gk + ' ' + mod.nombre) + '" '
+                  + 'style="display:none;">';
+            rows += '<td style="' + tdBase + 'text-align:left;color:var(--text-secondary);padding-left:28px;">'
+                  + '<i class="fa fa-minus" style="font-size:8px;margin-right:6px;color:var(--border-color)"></i>'
+                  + escHtml(mod.nombre) + '</td>';
+
+            mesesActivos.forEach(function(m, idx) {
+                const val  = mod.meses[m] || 0;
+                const prev = idx > 0 ? (mod.meses[mesesActivos[idx - 1]] || 0) : null;
+                const badge = prev !== null ? pctBadge(val, prev) : '';
+                rows += '<td style="' + tdBase + '">' + cellVal(val, false) + badge + '</td>';
+            });
+            rows += '<td style="' + tdBase + 'color:var(--text-secondary)">'
+                  + mod.total.toLocaleString('es-AR') + '</td>';
+            rows += '</tr>';
+        });
+    });
+
+    // ─ Fila TOTAL GENERAL
+    rows += '<tr style="background:var(--bg-secondary);border-top:2px solid var(--border-color)">';
+    rows += '<td style="' + tdBase + 'text-align:left;font-weight:800;color:var(--text-primary);font-size:12px;padding-left:10px">TOTAL GENERAL</td>';
+    let acum = 0;
+    mesesActivos.forEach(function(m, idx) {
+        const val  = totMes[m];
+        const prev = idx > 0 ? totMes[mesesActivos[idx - 1]] : null;
+        acum += val;
+        const badge = prev !== null ? pctBadge(val, prev) : '';
+        rows += '<td style="' + tdBase + 'font-weight:700;color:var(--accent-blue)">'
+              + val.toLocaleString('es-AR') + badge + '</td>';
+    });
+    rows += '<td style="' + tdBase + 'font-weight:800;color:var(--accent-blue);font-size:13px">'
+          + acum.toLocaleString('es-AR') + '</td>';
+    rows += '</tr>';
+
+    tbody.innerHTML = rows;
+
+    // ── Búsqueda en tiempo real
+    bindModeloMesSearch();
+}
+
+// Toggle individual de un grupo
+function modeloMesToggleGrupo(gi) {
+    const rows  = document.querySelectorAll('.mm-gi-' + gi);
+    const chev  = document.getElementById('mm-chev-' + gi);
+    const isOpen = chev && chev.style.transform === 'rotate(90deg)';
+    rows.forEach(function(tr) { tr.style.display = isOpen ? 'none' : ''; });
+    if (chev) chev.style.transform = isOpen ? '' : 'rotate(90deg)';
+}
+
+// Expandir o colapsar todos los grupos
+function modeloMesExpandAll(open) {
+    const tbody = document.getElementById('modelo-mes-tbody');
+    if (!tbody) return;
+    tbody.querySelectorAll('.mm-version-row').forEach(function(tr) {
+        tr.style.display = open ? '' : 'none';
+    });
+    tbody.querySelectorAll('[id^="mm-chev-"]').forEach(function(chev) {
+        chev.style.transform = open ? 'rotate(90deg)' : '';
+    });
+}
+
+function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function bindModeloMesSearch() {
+    const input = document.getElementById('modelo-mes-search');
+    if (!input) return;
+    input.oninput = function() {
+        const q = this.value.trim().toLowerCase();
+        const tbody = document.getElementById('modelo-mes-tbody');
+        if (!tbody) return;
+
+        if (q === '') {
+            // Restaurar: solo mostrar filas de grupo, ocultar versiones
+            tbody.querySelectorAll('.mm-grupo-row').forEach(tr => { tr.style.display = ''; });
+            tbody.querySelectorAll('.mm-version-row').forEach(function(tr) {
+                const gi   = tr.dataset.gi;
+                const chev = document.getElementById('mm-chev-' + gi);
+                const open = chev && chev.style.transform === 'rotate(90deg)';
+                tr.style.display = open ? '' : 'none';
+            });
+            return;
+        }
+
+        // Con búsqueda: mostrar solo filas cuyo nombre coincide
+        const matchGi = new Set();
+        tbody.querySelectorAll('.mm-version-row').forEach(function(tr) {
+            const match = tr.dataset.nombre && tr.dataset.nombre.toLowerCase().includes(q);
+            tr.style.display = match ? '' : 'none';
+            if (match) matchGi.add(tr.dataset.gi);
+        });
+        // Mostrar u ocultar filas de grupo según si tienen versiones coincidentes
+        tbody.querySelectorAll('.mm-grupo-row').forEach(function(tr) {
+            const grupoNombre = tr.dataset.nombre && tr.dataset.nombre.toLowerCase().includes(q);
+            const tieneHijos  = matchGi.has(tr.dataset.gi);
+            tr.style.display  = (grupoNombre || tieneHijos) ? '' : 'none';
+            if (tieneHijos) {
+                // Asegurarse de que estén visibles las versiones coincidentes
+                const chev = document.getElementById('mm-chev-' + tr.dataset.gi);
+                if (chev) chev.style.transform = 'rotate(90deg)';
+            }
+        });
+    };
 }
