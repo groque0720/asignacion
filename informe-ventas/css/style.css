@@ -360,6 +360,21 @@ body {
 .btn-pdf   { background: #c0392b; color: #fff; }
 .btn-report { background: var(--accent-purple); color: #fff; }
 
+/* Bootstrap 5 tabla — forzar variables a modo oscuro/claro según tema */
+/* Sin esto, Bootstrap aplica bg blanco (#fff) en los td y el texto claro queda invisible */
+[data-theme="dark"] table.dataTable,
+[data-theme="dark"] .table {
+    --bs-table-color:        var(--text-primary);
+    --bs-table-bg:           var(--bg-card);
+    --bs-table-border-color: var(--border-color);
+    --bs-table-striped-color:var(--text-primary);
+    --bs-table-striped-bg:   rgba(255,255,255,0.02);
+    --bs-table-active-color: var(--text-primary);
+    --bs-table-active-bg:    var(--bg-card-hover);
+    --bs-table-hover-color:  var(--text-primary);
+    --bs-table-hover-bg:     var(--bg-card-hover);
+}
+
 /* DataTables dark overrides */
 .dataTables_wrapper { color: var(--text-primary) !important; }
 .dataTables_wrapper .dataTables_length label,
@@ -399,15 +414,16 @@ table.dataTable thead th {
 table.dataTable thead th.sorting::after,
 table.dataTable thead th.sorting_asc::after,
 table.dataTable thead th.sorting_desc::after { opacity: 0.5; }
-table.dataTable tbody tr { background: var(--bg-card) !important; }
-table.dataTable tbody tr:hover { background: var(--bg-card-hover) !important; }
+table.dataTable tbody tr { background-color: var(--bg-card) !important; }
+table.dataTable tbody tr:hover { background-color: var(--bg-card-hover) !important; }
 table.dataTable tbody td {
+    background-color: transparent !important;
     border-color: var(--border-color) !important;
     color: var(--text-primary) !important;
     font-size: 13px;
     vertical-align: middle;
 }
-table.dataTable.table-striped tbody tr:nth-of-type(odd) { background: rgba(255,255,255,0.02) !important; }
+table.dataTable.table-striped tbody tr:nth-of-type(odd) { background-color: rgba(255,255,255,0.02) !important; }
 
 /* Badges en tabla */
 .badge-anulada { background: var(--accent-red); color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 10px; }

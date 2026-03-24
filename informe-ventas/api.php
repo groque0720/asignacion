@@ -32,6 +32,7 @@ switch ($action) {
     case 'chart_anuladas':    echo json_encode(get_chart_anuladas());      break;
     case 'chart_compra':      echo json_encode(get_chart_compra());        break;
     case 'comp_grupo':        echo json_encode(get_comp_grupo());         break;
+    case 'comp_modelo_mes':   echo json_encode(get_comp_modelo_mes());     break;
     case 'modelos_by_grupo':  echo json_encode(get_modelos_by_grupo());    break;
     case 'table':             echo json_encode(get_table());               break;
     default:
@@ -573,6 +574,51 @@ function get_comp_grupo(): array
         'anios' => [(string)$anio_actual, (string)$anio_ant1, (string)$anio_ant2],
         'rows'  => $rows ?? []
     ];
+}
+
+// =============================================================
+// ACTION: comp_modelo_mes — Comparativo mes a mes por modelo/versión
+// Devuelve: { anio, rows: [{grupo, modelo, mes, cantidad}] }
+// =============================================================
+function get_comp_modelo_mes(): array
+{
+    $params   = [];
+    $types    = '';
+    $anio_req = intval($_REQUEST['anio'] ?? 0);
+
+    if ($anio_req < 2015 || $anio_req > 2035) {
+        // Sin año seleccionado → usar año actual
+        $anio_req = intval(date('Y'));
+        $params[] = $anio_req;
+        $types   .= 'i';
+        $where    = " AND YEAR(r.fecres) = ?";
+        $params2  = [];
+        $types2   = '';
+        $where2   = build_where_clause($params2, $types2, true);
+        $params   = array_merge($params, $params2);
+        $types   .= $types2;
+        $where   .= $where2;
+    } else {
+        $where = build_where_clause($params, $types);
+    }
+
+    $sql = "SELECT
+        COALESCE(g.grupo, 'Usados') AS grupo,
+        COALESCE(m.modelo, '—')     AS modelo,
+        MONTH(r.fecres)             AS mes,
+        COUNT(*)                    AS cantidad
+    " . base_from_sql() . $where . "
+    GROUP BY r.idgrupo, r.idmodelo, MONTH(r.fecres)
+    ORDER BY
+        (g.posicion IS NULL OR g.posicion = 0) ASC, COALESCE(g.posicion, 9999),
+        COALESCE(g.grupo, 'Usados'),
+        (m.posicion IS NULL OR m.posicion = 0) ASC, COALESCE(m.posicion, 9999),
+        COALESCE(m.modelo, '—'),
+        mes";
+
+    $rows = exec_prepared($sql, $params, $types);
+
+    return ['anio' => $anio_req, 'rows' => $rows ?? []];
 }
 
 // =============================================================
