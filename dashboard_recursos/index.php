@@ -12,6 +12,8 @@ if (!isset($_SESSION["autentificado"]) || $_SESSION["autentificado"] !== "SI") {
 $data_pendiente  = [];
 $data_en_viaje   = [];
 $data_con_arribo = [];
+$data_asesor     = [];
+$data_modelo     = [];
 $total_pendiente  = 0.0;
 $total_en_viaje   = 0.0;
 $total_con_arribo = 0.0;
@@ -38,6 +40,38 @@ if ($res) {
         $data_con_arribo[] = $r;
         $total_con_arribo += (float)$r['Saldo'];
     }
+}
+
+$res = mysqli_query($con,
+  "SELECT " .
+  "COALESCE(NULLIF(TRIM(Asesor), ''), 'SIN ASESOR') AS Nombre, " .
+  "SUM(Saldo) AS Saldo, " .
+  "COUNT(*) AS Unidades " .
+  "FROM view_asignaciones_saldo_pendiente_corregida " .
+  "GROUP BY COALESCE(NULLIF(TRIM(Asesor), ''), 'SIN ASESOR') " .
+  "ORDER BY Saldo DESC " .
+  "LIMIT 10"
+);
+if ($res) {
+  while ($r = mysqli_fetch_assoc($res)) {
+    $data_asesor[] = $r;
+  }
+}
+
+$res = mysqli_query($con,
+  "SELECT " .
+  "COALESCE(NULLIF(TRIM(Modelo), ''), 'SIN MODELO') AS Nombre, " .
+  "SUM(Saldo) AS Saldo, " .
+  "COUNT(*) AS Unidades " .
+  "FROM view_asignaciones_saldo_pendiente_corregida " .
+  "GROUP BY COALESCE(NULLIF(TRIM(Modelo), ''), 'SIN MODELO') " .
+  "ORDER BY Saldo DESC " .
+  "LIMIT 10"
+);
+if ($res) {
+  while ($r = mysqli_fetch_assoc($res)) {
+    $data_modelo[] = $r;
+  }
 }
 
 $total_general    = $total_pendiente + $total_en_viaje + $total_con_arribo;
@@ -182,7 +216,11 @@ $hora_actual  = date('H:i:s');
       <div class="flex items-center gap-2">
         <a href="/asignacion/costos_recursos_completa_resumen.php" target="_blank"
            class="flex items-center gap-1.5 bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">
-          <i class="fas fa-file-alt"></i> Resumen PDF
+          <i class="fas fa-file-alt"></i> Resumen Viejo
+        </a>
+        <a href="pdf/resumen_ejecutivo.php" target="_blank"
+           class="flex items-center gap-1.5 bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">
+          <i class="fas fa-chart-line"></i> Resumen Ejecutivo
         </a>
         <button onclick="window.print()"
                 class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">
@@ -194,6 +232,40 @@ $hora_actual  = date('H:i:s');
 </header>
 
 <main class="max-w-screen-xl mx-auto px-8 py-6 space-y-5">
+
+  <!-- ── Métricas de Gestión ────────────────────────────────────────────────── -->
+  <div class="metrics-bar grid grid-cols-3 gap-4">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
+      <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center flex-shrink-0">
+        <i class="fas fa-check-circle text-emerald-500"></i>
+      </div>
+      <div>
+        <p class="text-xs text-slate-500 uppercase tracking-wider font-medium">Tasa de Arribo</p>
+        <p class="text-xl font-bold text-slate-900"><?php echo pct($total_con_arribo, $total_financiado); ?>%</p>
+        <p class="text-xs text-slate-400">Unidades financiadas que llegaron</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
+      <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
+        <i class="fas fa-percentage text-blue-500"></i>
+      </div>
+      <div>
+        <p class="text-xs text-slate-500 uppercase tracking-wider font-medium">Cartera Financiada</p>
+        <p class="text-xl font-bold text-slate-900"><?php echo pct($total_financiado, $total_general); ?>%</p>
+        <p class="text-xs text-slate-400">Del total con TASA activada</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
+      <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
+        <i class="fas fa-exclamation-triangle text-amber-500"></i>
+      </div>
+      <div>
+        <p class="text-xs text-slate-500 uppercase tracking-wider font-medium">Pendiente sin Activar</p>
+        <p class="text-xl font-bold text-slate-900"><?php echo pct($total_pendiente, $total_general); ?>%</p>
+        <p class="text-xs text-slate-400">Del total con TASA pendiente de pago</p>
+      </div>
+    </div>
+  </div>
 
   <!-- ── KPI Cards ─────────────────────────────────────────────────────────── -->
   <div class="grid grid-cols-4 gap-5">
@@ -301,40 +373,6 @@ $hora_actual  = date('H:i:s');
     </div>
   </div>
 
-  <!-- ── Métricas de Gestión ────────────────────────────────────────────────── -->
-  <div class="metrics-bar grid grid-cols-3 gap-4">
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
-      <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center flex-shrink-0">
-        <i class="fas fa-check-circle text-emerald-500"></i>
-      </div>
-      <div>
-        <p class="text-xs text-slate-500 uppercase tracking-wider font-medium">Tasa de Arribo</p>
-        <p class="text-xl font-bold text-slate-900"><?php echo pct($total_con_arribo, $total_financiado); ?>%</p>
-        <p class="text-xs text-slate-400">Unidades financiadas que llegaron</p>
-      </div>
-    </div>
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
-      <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
-        <i class="fas fa-percentage text-blue-500"></i>
-      </div>
-      <div>
-        <p class="text-xs text-slate-500 uppercase tracking-wider font-medium">Cartera Financiada</p>
-        <p class="text-xl font-bold text-slate-900"><?php echo pct($total_financiado, $total_general); ?>%</p>
-        <p class="text-xs text-slate-400">Del total con TASA activada</p>
-      </div>
-    </div>
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
-      <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
-        <i class="fas fa-exclamation-triangle text-amber-500"></i>
-      </div>
-      <div>
-        <p class="text-xs text-slate-500 uppercase tracking-wider font-medium">Pendiente sin Activar</p>
-        <p class="text-xl font-bold text-slate-900"><?php echo pct($total_pendiente, $total_general); ?>%</p>
-        <p class="text-xs text-slate-400">Del total con TASA pendiente de pago</p>
-      </div>
-    </div>
-  </div>
-
   <!-- ── Gráficos ───────────────────────────────────────────────────────────── -->
   <div class="chart-wrap grid grid-cols-5 gap-5">
 
@@ -393,8 +431,85 @@ $hora_actual  = date('H:i:s');
     </div>
   </div>
 
+  <!-- ── Análisis por Asesor y Modelo ─────────────────────────────────────── -->
+  <div class="grid grid-cols-2 gap-5">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h2 class="text-sm font-semibold text-slate-800">Exposición por Asesor</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Top 10 responsables por saldo consolidado</p>
+        </div>
+        <span class="text-xs bg-gray-100 text-slate-500 px-2 py-1 rounded-md font-medium">Ranking</span>
+      </div>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-xs text-slate-400 uppercase tracking-wide border-b border-gray-100">
+            <th class="text-left py-2.5 font-medium pl-1">Asesor</th>
+            <th class="text-right py-2.5 font-medium">Saldo</th>
+            <th class="text-right py-2.5 font-medium">Unid.</th>
+            <th class="text-right py-2.5 font-medium pr-1">% Total</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-50">
+          <?php foreach ($data_asesor as $r):
+            $s = (float)$r['Saldo'];
+            $p = pct($s, $total_general); ?>
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="py-2.5 text-slate-800 pl-1 font-medium"><?php echo htmlspecialchars($r['Nombre']); ?></td>
+            <td class="py-2.5 text-right font-mono font-semibold text-slate-900"><?php echo fmt($s); ?></td>
+            <td class="py-2.5 text-right text-slate-600"><?php echo (int)$r['Unidades']; ?></td>
+            <td class="py-2.5 text-right pr-1 text-slate-600"><?php echo $p; ?>%</td>
+          </tr>
+          <?php endforeach; ?>
+          <?php if (count($data_asesor) === 0): ?>
+          <tr>
+            <td colspan="4" class="py-6 text-center text-slate-400">Sin datos por asesor.</td>
+          </tr>
+          <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h2 class="text-sm font-semibold text-slate-800">Exposición por Modelo</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Top 10 modelos por saldo consolidado</p>
+        </div>
+        <span class="text-xs bg-gray-100 text-slate-500 px-2 py-1 rounded-md font-medium">Ranking</span>
+      </div>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-xs text-slate-400 uppercase tracking-wide border-b border-gray-100">
+            <th class="text-left py-2.5 font-medium pl-1">Modelo</th>
+            <th class="text-right py-2.5 font-medium">Saldo</th>
+            <th class="text-right py-2.5 font-medium">Unid.</th>
+            <th class="text-right py-2.5 font-medium pr-1">% Total</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-50">
+          <?php foreach ($data_modelo as $r):
+            $s = (float)$r['Saldo'];
+            $p = pct($s, $total_general); ?>
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="py-2.5 text-slate-800 pl-1 font-medium"><?php echo htmlspecialchars($r['Nombre']); ?></td>
+            <td class="py-2.5 text-right font-mono font-semibold text-slate-900"><?php echo fmt($s); ?></td>
+            <td class="py-2.5 text-right text-slate-600"><?php echo (int)$r['Unidades']; ?></td>
+            <td class="py-2.5 text-right pr-1 text-slate-600"><?php echo $p; ?>%</td>
+          </tr>
+          <?php endforeach; ?>
+          <?php if (count($data_modelo) === 0): ?>
+          <tr>
+            <td colspan="4" class="py-6 text-center text-slate-400">Sin datos por modelo.</td>
+          </tr>
+          <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- ── Tablas detalladas ──────────────────────────────────────────────────── -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+  <div id="card-tabs-detalle" class="bg-white rounded-xl shadow-sm border border-gray-200">
     <!-- Tab nav -->
     <div class="border-b border-gray-200 px-5 flex items-center no-print">
       <button class="tab-btn active" data-tab="pendiente">
@@ -669,6 +784,13 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.getElementById('tab-' + btn.dataset.tab).classList.remove('hidden');
   });
 });
+
+// Reubica la card de tabs debajo de las cards de totales (tercera fila visual).
+const tabsCard = document.getElementById('card-tabs-detalle');
+const chartWrap = document.querySelector('.chart-wrap');
+if (tabsCard && chartWrap && chartWrap.parentNode) {
+  chartWrap.parentNode.insertBefore(tabsCard, chartWrap);
+}
 
 // ── Chart.js ──────────────────────────────────────────────────────────────────
 const labels = <?php echo json_encode($chart_labels, JSON_UNESCAPED_UNICODE); ?>;
