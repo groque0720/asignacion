@@ -100,7 +100,7 @@ $resA = mysqli_query($con,
     "SELECT COALESCE(NULLIF(TRIM(Asesor), ''), 'SIN ASESOR') AS Nombre, SUM(Saldo) AS Saldo, COUNT(*) AS Unidades " .
     "FROM view_asignaciones_saldo_pendiente_corregida " .
     "GROUP BY COALESCE(NULLIF(TRIM(Asesor), ''), 'SIN ASESOR') " .
-    "ORDER BY Saldo DESC LIMIT 8"
+    "ORDER BY Saldo DESC"
 );
 if ($resA) {
     while ($r = mysqli_fetch_assoc($resA)) {
@@ -113,7 +113,7 @@ $resM = mysqli_query($con,
     "SELECT COALESCE(NULLIF(TRIM(Modelo), ''), 'SIN MODELO') AS Nombre, SUM(Saldo) AS Saldo, COUNT(*) AS Unidades " .
     "FROM view_asignaciones_saldo_pendiente_corregida " .
     "GROUP BY COALESCE(NULLIF(TRIM(Modelo), ''), 'SIN MODELO') " .
-    "ORDER BY Saldo DESC LIMIT 8"
+    "ORDER BY Saldo DESC"
 );
 if ($resM) {
     while ($r = mysqli_fetch_assoc($resM)) {
@@ -208,61 +208,88 @@ $pdf->Cell(30, 7, ars($totViaje), 0, 0, 'R', true);
 $pdf->Cell(30, 7, ars($totArribo), 0, 0, 'R', true);
 $pdf->Cell(30, 7, ars($totGeneral), 0, 1, 'R', true);
 
-// Advisor and model sections
-$pdf->Ln(4);
-$yStart = $pdf->GetY();
-
-$pdf->SetFillColor(51, 65, 85);
+// Seccion completa: Exposicion por Asesor (todos)
+$pdf->AddPage();
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->SetFillColor(30, 41, 59);
 $pdf->SetTextColor(255, 255, 255);
+$pdf->Cell(0, 7, 'EXPOSICION POR ASESOR (TODOS)', 0, 1, 'L', true);
+
 $pdf->SetFont('Arial', 'B', 8);
-$pdf->SetXY(10, $yStart);
-$pdf->Cell(92, 6, 'Top 10 por Asesor', 0, 0, 'L', true);
-$pdf->SetXY(108, $yStart);
-$pdf->Cell(92, 6, 'Top 10 por Modelo', 0, 1, 'L', true);
+$pdf->SetFillColor(226, 232, 240);
+$pdf->SetTextColor(30, 41, 59);
+$pdf->Cell(110, 6, 'Asesor', 0, 0, 'L', true);
+$pdf->Cell(45, 6, 'Saldo', 0, 0, 'R', true);
+$pdf->Cell(20, 6, 'Unid.', 0, 0, 'R', true);
+$pdf->Cell(25, 6, '% Total', 0, 1, 'R', true);
 
 $pdf->SetTextColor(15, 23, 42);
-$pdf->SetFont('Arial', 'B', 7.5);
-$pdf->SetXY(10, $yStart + 6);
-$pdf->Cell(52, 5, 'Nombre', 0, 0, 'L');
-$pdf->Cell(24, 5, 'Saldo', 0, 0, 'R');
-$pdf->Cell(16, 5, 'Unid.', 0, 0, 'R');
-$pdf->SetXY(108, $yStart + 6);
-$pdf->Cell(52, 5, 'Nombre', 0, 0, 'L');
-$pdf->Cell(24, 5, 'Saldo', 0, 0, 'R');
-$pdf->Cell(16, 5, 'Unid.', 0, 1, 'R');
+$pdf->SetFont('Arial', '', 8);
+$fill = false;
+foreach ($topAsesor as $a) {
+    if ($pdf->GetY() > 275) {
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetFillColor(226, 232, 240);
+        $pdf->SetTextColor(30, 41, 59);
+        $pdf->Cell(110, 6, 'Asesor', 0, 0, 'L', true);
+        $pdf->Cell(45, 6, 'Saldo', 0, 0, 'R', true);
+        $pdf->Cell(20, 6, 'Unid.', 0, 0, 'R', true);
+        $pdf->Cell(25, 6, '% Total', 0, 1, 'R', true);
+        $pdf->SetTextColor(15, 23, 42);
+        $pdf->SetFont('Arial', '', 8);
+    }
 
-$pdf->SetFont('Arial', '', 7);
-$maxRows = max(count($topAsesor), count($topModelo));
-if ($maxRows < 4) {
-    $maxRows = 4;
+    $fill = !$fill;
+    $pdf->SetFillColor($fill ? 248 : 255, $fill ? 250 : 255, $fill ? 252 : 255);
+    $saldo = (float)$a['Saldo'];
+    $p = $totGeneral > 0 ? round(($saldo / $totGeneral) * 100, 1) : 0;
+    $pdf->Cell(110, 6, utf8_decode(txt_cut($a['Nombre'], 50)), 0, 0, 'L', true);
+    $pdf->Cell(45, 6, ars($saldo), 0, 0, 'R', true);
+    $pdf->Cell(20, 6, (int)$a['Unidades'], 0, 0, 'R', true);
+    $pdf->Cell(25, 6, number_format($p, 1, ',', '.') . '%', 0, 1, 'R', true);
 }
 
-for ($i = 0; $i < $maxRows; $i++) {
-    $y = $yStart + 11 + ($i * 5);
-    $pdf->SetFillColor($i % 2 ? 250 : 255, $i % 2 ? 252 : 255, 255);
+// Seccion completa: Exposicion por Modelo (todos)
+$pdf->AddPage();
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->SetFillColor(30, 41, 59);
+$pdf->SetTextColor(255, 255, 255);
+$pdf->Cell(0, 7, 'EXPOSICION POR MODELO (TODOS)', 0, 1, 'L', true);
 
-    $pdf->SetXY(10, $y);
-    $pdf->Cell(92, 5, '', 0, 0, 'L', true);
-    $pdf->SetXY(108, $y);
-    $pdf->Cell(92, 5, '', 0, 0, 'L', true);
+$pdf->SetFont('Arial', 'B', 8);
+$pdf->SetFillColor(226, 232, 240);
+$pdf->SetTextColor(30, 41, 59);
+$pdf->Cell(110, 6, 'Modelo', 0, 0, 'L', true);
+$pdf->Cell(45, 6, 'Saldo', 0, 0, 'R', true);
+$pdf->Cell(20, 6, 'Unid.', 0, 0, 'R', true);
+$pdf->Cell(25, 6, '% Total', 0, 1, 'R', true);
 
-    if (isset($topAsesor[$i])) {
-        $a = $topAsesor[$i];
-        $nombre = utf8_decode(txt_cut($a['Nombre'], 24));
-        $pdf->SetXY(10, $y);
-        $pdf->Cell(52, 5, $nombre, 0, 0, 'L');
-        $pdf->Cell(24, 5, ars($a['Saldo']), 0, 0, 'R');
-        $pdf->Cell(16, 5, (int)$a['Unidades'], 0, 0, 'R');
+$pdf->SetTextColor(15, 23, 42);
+$pdf->SetFont('Arial', '', 8);
+$fill = false;
+foreach ($topModelo as $m) {
+    if ($pdf->GetY() > 275) {
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetFillColor(226, 232, 240);
+        $pdf->SetTextColor(30, 41, 59);
+        $pdf->Cell(110, 6, 'Modelo', 0, 0, 'L', true);
+        $pdf->Cell(45, 6, 'Saldo', 0, 0, 'R', true);
+        $pdf->Cell(20, 6, 'Unid.', 0, 0, 'R', true);
+        $pdf->Cell(25, 6, '% Total', 0, 1, 'R', true);
+        $pdf->SetTextColor(15, 23, 42);
+        $pdf->SetFont('Arial', '', 8);
     }
 
-    if (isset($topModelo[$i])) {
-        $m = $topModelo[$i];
-        $nombre = utf8_decode(txt_cut($m['Nombre'], 24));
-        $pdf->SetXY(108, $y);
-        $pdf->Cell(52, 5, $nombre, 0, 0, 'L');
-        $pdf->Cell(24, 5, ars($m['Saldo']), 0, 0, 'R');
-        $pdf->Cell(16, 5, (int)$m['Unidades'], 0, 0, 'R');
-    }
+    $fill = !$fill;
+    $pdf->SetFillColor($fill ? 248 : 255, $fill ? 250 : 255, $fill ? 252 : 255);
+    $saldo = (float)$m['Saldo'];
+    $p = $totGeneral > 0 ? round(($saldo / $totGeneral) * 100, 1) : 0;
+    $pdf->Cell(110, 6, utf8_decode(txt_cut($m['Nombre'], 50)), 0, 0, 'L', true);
+    $pdf->Cell(45, 6, ars($saldo), 0, 0, 'R', true);
+    $pdf->Cell(20, 6, (int)$m['Unidades'], 0, 0, 'R', true);
+    $pdf->Cell(25, 6, number_format($p, 1, ',', '.') . '%', 0, 1, 'R', true);
 }
 
 ob_end_clean();

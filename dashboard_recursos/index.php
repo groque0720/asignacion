@@ -49,8 +49,7 @@ $res = mysqli_query($con,
   "COUNT(*) AS Unidades " .
   "FROM view_asignaciones_saldo_pendiente_corregida " .
   "GROUP BY COALESCE(NULLIF(TRIM(Asesor), ''), 'SIN ASESOR') " .
-  "ORDER BY Saldo DESC " .
-  "LIMIT 10"
+  "ORDER BY Saldo DESC"
 );
 if ($res) {
   while ($r = mysqli_fetch_assoc($res)) {
@@ -65,8 +64,7 @@ $res = mysqli_query($con,
   "COUNT(*) AS Unidades " .
   "FROM view_asignaciones_saldo_pendiente_corregida " .
   "GROUP BY COALESCE(NULLIF(TRIM(Modelo), ''), 'SIN MODELO') " .
-  "ORDER BY Saldo DESC " .
-  "LIMIT 10"
+  "ORDER BY Saldo DESC"
 );
 if ($res) {
   while ($r = mysqli_fetch_assoc($res)) {
@@ -437,7 +435,7 @@ $hora_actual  = date('H:i:s');
       <div class="flex items-start justify-between mb-4">
         <div>
           <h2 class="text-sm font-semibold text-slate-800">Exposición por Asesor</h2>
-          <p class="text-xs text-slate-500 mt-0.5">Top 10 responsables por saldo consolidado</p>
+          <p class="text-xs text-slate-500 mt-0.5">Todos los responsables ordenados por saldo consolidado</p>
         </div>
         <span class="text-xs bg-gray-100 text-slate-500 px-2 py-1 rounded-md font-medium">Ranking</span>
       </div>
@@ -474,7 +472,7 @@ $hora_actual  = date('H:i:s');
       <div class="flex items-start justify-between mb-4">
         <div>
           <h2 class="text-sm font-semibold text-slate-800">Exposición por Modelo</h2>
-          <p class="text-xs text-slate-500 mt-0.5">Top 10 modelos por saldo consolidado</p>
+          <p class="text-xs text-slate-500 mt-0.5">Todos los modelos ordenados por saldo consolidado</p>
         </div>
         <span class="text-xs bg-gray-100 text-slate-500 px-2 py-1 rounded-md font-medium">Ranking</span>
       </div>
