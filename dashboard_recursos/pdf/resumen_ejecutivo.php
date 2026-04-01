@@ -126,37 +126,16 @@ $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetAutoPageBreak(true, 12);
 
-// KPI line
-$pdf->SetFillColor(248, 250, 252);
-$pdf->SetDrawColor(226, 232, 240);
-$pdf->Rect(10, 22, 190, 24, 'DF');
-
-$pdf->SetFont('Arial', 'B', 9);
-$pdf->SetTextColor(51, 65, 85);
-$pdf->SetXY(14, 25);
-$pdf->Cell(45, 4, 'Pendiente TASA', 0, 0, 'L');
-$pdf->Cell(45, 4, 'En Viaje', 0, 0, 'L');
-$pdf->Cell(45, 4, 'Con Arribo', 0, 0, 'L');
-$pdf->Cell(45, 4, 'Exposicion Total', 0, 1, 'L');
-
-$pdf->SetFont('Arial', 'B', 11);
-$pdf->SetTextColor(15, 23, 42);
-$pdf->SetX(14);
-$pdf->Cell(45, 8, ars($totPend), 0, 0, 'L');
-$pdf->Cell(45, 8, ars($totViaje), 0, 0, 'L');
-$pdf->Cell(45, 8, ars($totArribo), 0, 0, 'L');
-$pdf->Cell(45, 8, ars($totGeneral), 0, 1, 'L');
-
 // Summary by branch
-$pdf->Ln(4);
+$pdf->SetY(24);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->SetFillColor(30, 41, 59);
 $pdf->SetTextColor(255, 255, 255);
-$pdf->Cell(70, 7, 'Sucursal', 0, 0, 'L', true);
-$pdf->Cell(30, 7, 'Pendiente', 0, 0, 'R', true);
-$pdf->Cell(30, 7, 'En Viaje', 0, 0, 'R', true);
-$pdf->Cell(30, 7, 'Con Arribo', 0, 0, 'R', true);
-$pdf->Cell(30, 7, 'Total', 0, 1, 'R', true);
+$pdf->Cell(60, 7, 'Sucursal', 0, 0, 'L', true);
+$pdf->Cell(32, 7, 'Pendiente', 0, 0, 'R', true);
+$pdf->Cell(32, 7, 'En Viaje', 0, 0, 'R', true);
+$pdf->Cell(32, 7, 'Con Arribo', 0, 0, 'R', true);
+$pdf->Cell(34, 7, 'Total', 0, 1, 'R', true);
 
 $pdf->SetTextColor(15, 23, 42);
 $pdf->SetFont('Arial', '', 8);
@@ -193,23 +172,23 @@ foreach ($rowsShown as $r) {
     $pdf->SetFillColor($fill ? 248 : 255, $fill ? 250 : 255, $fill ? 252 : 255);
     $totalSuc = (float)$r['pendiente'] + (float)$r['viaje'] + (float)$r['arribo'];
 
-    $pdf->Cell(70, 6, utf8_decode(txt_cut($r['Sucursal'], 28)), 0, 0, 'L', true);
-    $pdf->Cell(30, 6, ars($r['pendiente']), 0, 0, 'R', true);
-    $pdf->Cell(30, 6, ars($r['viaje']), 0, 0, 'R', true);
-    $pdf->Cell(30, 6, ars($r['arribo']), 0, 0, 'R', true);
-    $pdf->Cell(30, 6, ars($totalSuc), 0, 1, 'R', true);
+    $pdf->Cell(60, 6, utf8_decode(txt_cut($r['Sucursal'], 28)), 0, 0, 'L', true);
+    $pdf->Cell(32, 6, ars($r['pendiente']), 0, 0, 'R', true);
+    $pdf->Cell(32, 6, ars($r['viaje']), 0, 0, 'R', true);
+    $pdf->Cell(32, 6, ars($r['arribo']), 0, 0, 'R', true);
+    $pdf->Cell(34, 6, ars($totalSuc), 0, 1, 'R', true);
 }
 
 $pdf->SetFillColor(226, 232, 240);
 $pdf->SetFont('Arial', 'B', 8.5);
-$pdf->Cell(70, 7, 'TOTAL', 0, 0, 'L', true);
-$pdf->Cell(30, 7, ars($totPend), 0, 0, 'R', true);
-$pdf->Cell(30, 7, ars($totViaje), 0, 0, 'R', true);
-$pdf->Cell(30, 7, ars($totArribo), 0, 0, 'R', true);
-$pdf->Cell(30, 7, ars($totGeneral), 0, 1, 'R', true);
+$pdf->Cell(60, 7, 'TOTAL', 0, 0, 'L', true);
+$pdf->Cell(32, 7, ars($totPend), 0, 0, 'R', true);
+$pdf->Cell(32, 7, ars($totViaje), 0, 0, 'R', true);
+$pdf->Cell(32, 7, ars($totArribo), 0, 0, 'R', true);
+$pdf->Cell(34, 7, ars($totGeneral), 0, 1, 'R', true);
 
 // Seccion completa: Exposicion por Asesor (todos)
-$pdf->AddPage();
+$pdf->Ln(4);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->SetFillColor(30, 41, 59);
 $pdf->SetTextColor(255, 255, 255);
@@ -218,10 +197,10 @@ $pdf->Cell(0, 7, 'EXPOSICION POR ASESOR (TODOS)', 0, 1, 'L', true);
 $pdf->SetFont('Arial', 'B', 8);
 $pdf->SetFillColor(226, 232, 240);
 $pdf->SetTextColor(30, 41, 59);
-$pdf->Cell(110, 6, 'Asesor', 0, 0, 'L', true);
-$pdf->Cell(45, 6, 'Saldo', 0, 0, 'R', true);
-$pdf->Cell(20, 6, 'Unid.', 0, 0, 'R', true);
-$pdf->Cell(25, 6, '% Total', 0, 1, 'R', true);
+$pdf->Cell(90, 6, 'Asesor', 0, 0, 'L', true);
+$pdf->Cell(40, 6, 'Saldo', 0, 0, 'R', true);
+$pdf->Cell(30, 6, 'Unidades', 0, 0, 'R', true);
+$pdf->Cell(30, 6, '% Total', 0, 1, 'R', true);
 
 $pdf->SetTextColor(15, 23, 42);
 $pdf->SetFont('Arial', '', 8);
@@ -229,13 +208,17 @@ $fill = false;
 foreach ($topAsesor as $a) {
     if ($pdf->GetY() > 275) {
         $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetFillColor(30, 41, 59);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->Cell(0, 7, 'EXPOSICION POR ASESOR (TODOS)', 0, 1, 'L', true);
         $pdf->SetFont('Arial', 'B', 8);
         $pdf->SetFillColor(226, 232, 240);
         $pdf->SetTextColor(30, 41, 59);
-        $pdf->Cell(110, 6, 'Asesor', 0, 0, 'L', true);
-        $pdf->Cell(45, 6, 'Saldo', 0, 0, 'R', true);
-        $pdf->Cell(20, 6, 'Unid.', 0, 0, 'R', true);
-        $pdf->Cell(25, 6, '% Total', 0, 1, 'R', true);
+        $pdf->Cell(90, 6, 'Asesor', 0, 0, 'L', true);
+        $pdf->Cell(40, 6, 'Saldo', 0, 0, 'R', true);
+        $pdf->Cell(30, 6, 'Unidades', 0, 0, 'R', true);
+        $pdf->Cell(30, 6, '% Total', 0, 1, 'R', true);
         $pdf->SetTextColor(15, 23, 42);
         $pdf->SetFont('Arial', '', 8);
     }
@@ -244,14 +227,18 @@ foreach ($topAsesor as $a) {
     $pdf->SetFillColor($fill ? 248 : 255, $fill ? 250 : 255, $fill ? 252 : 255);
     $saldo = (float)$a['Saldo'];
     $p = $totGeneral > 0 ? round(($saldo / $totGeneral) * 100, 1) : 0;
-    $pdf->Cell(110, 6, utf8_decode(txt_cut($a['Nombre'], 50)), 0, 0, 'L', true);
-    $pdf->Cell(45, 6, ars($saldo), 0, 0, 'R', true);
-    $pdf->Cell(20, 6, (int)$a['Unidades'], 0, 0, 'R', true);
-    $pdf->Cell(25, 6, number_format($p, 1, ',', '.') . '%', 0, 1, 'R', true);
+    $pdf->Cell(90, 6, utf8_decode(txt_cut($a['Nombre'], 42)), 0, 0, 'L', true);
+    $pdf->Cell(40, 6, ars($saldo), 0, 0, 'R', true);
+    $pdf->Cell(30, 6, (int)$a['Unidades'], 0, 0, 'R', true);
+    $pdf->Cell(30, 6, number_format($p, 1, ',', '.') . '%', 0, 1, 'R', true);
 }
 
 // Seccion completa: Exposicion por Modelo (todos)
-$pdf->AddPage();
+$pdf->Ln(4);
+$thisSectionNeedsHeader = false;
+if ($pdf->GetY() > 250) {
+    $pdf->AddPage();
+}
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->SetFillColor(30, 41, 59);
 $pdf->SetTextColor(255, 255, 255);
@@ -260,10 +247,10 @@ $pdf->Cell(0, 7, 'EXPOSICION POR MODELO (TODOS)', 0, 1, 'L', true);
 $pdf->SetFont('Arial', 'B', 8);
 $pdf->SetFillColor(226, 232, 240);
 $pdf->SetTextColor(30, 41, 59);
-$pdf->Cell(110, 6, 'Modelo', 0, 0, 'L', true);
-$pdf->Cell(45, 6, 'Saldo', 0, 0, 'R', true);
-$pdf->Cell(20, 6, 'Unid.', 0, 0, 'R', true);
-$pdf->Cell(25, 6, '% Total', 0, 1, 'R', true);
+$pdf->Cell(90, 6, 'Modelo', 0, 0, 'L', true);
+$pdf->Cell(40, 6, 'Saldo', 0, 0, 'R', true);
+$pdf->Cell(30, 6, 'Unidades', 0, 0, 'R', true);
+$pdf->Cell(30, 6, '% Total', 0, 1, 'R', true);
 
 $pdf->SetTextColor(15, 23, 42);
 $pdf->SetFont('Arial', '', 8);
@@ -271,13 +258,17 @@ $fill = false;
 foreach ($topModelo as $m) {
     if ($pdf->GetY() > 275) {
         $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetFillColor(30, 41, 59);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->Cell(0, 7, 'EXPOSICION POR MODELO (TODOS)', 0, 1, 'L', true);
         $pdf->SetFont('Arial', 'B', 8);
         $pdf->SetFillColor(226, 232, 240);
         $pdf->SetTextColor(30, 41, 59);
-        $pdf->Cell(110, 6, 'Modelo', 0, 0, 'L', true);
-        $pdf->Cell(45, 6, 'Saldo', 0, 0, 'R', true);
-        $pdf->Cell(20, 6, 'Unid.', 0, 0, 'R', true);
-        $pdf->Cell(25, 6, '% Total', 0, 1, 'R', true);
+        $pdf->Cell(90, 6, 'Modelo', 0, 0, 'L', true);
+        $pdf->Cell(40, 6, 'Saldo', 0, 0, 'R', true);
+        $pdf->Cell(30, 6, 'Unidades', 0, 0, 'R', true);
+        $pdf->Cell(30, 6, '% Total', 0, 1, 'R', true);
         $pdf->SetTextColor(15, 23, 42);
         $pdf->SetFont('Arial', '', 8);
     }
@@ -286,10 +277,10 @@ foreach ($topModelo as $m) {
     $pdf->SetFillColor($fill ? 248 : 255, $fill ? 250 : 255, $fill ? 252 : 255);
     $saldo = (float)$m['Saldo'];
     $p = $totGeneral > 0 ? round(($saldo / $totGeneral) * 100, 1) : 0;
-    $pdf->Cell(110, 6, utf8_decode(txt_cut($m['Nombre'], 50)), 0, 0, 'L', true);
-    $pdf->Cell(45, 6, ars($saldo), 0, 0, 'R', true);
-    $pdf->Cell(20, 6, (int)$m['Unidades'], 0, 0, 'R', true);
-    $pdf->Cell(25, 6, number_format($p, 1, ',', '.') . '%', 0, 1, 'R', true);
+    $pdf->Cell(90, 6, utf8_decode(txt_cut($m['Nombre'], 42)), 0, 0, 'L', true);
+    $pdf->Cell(40, 6, ars($saldo), 0, 0, 'R', true);
+    $pdf->Cell(30, 6, (int)$m['Unidades'], 0, 0, 'R', true);
+    $pdf->Cell(30, 6, number_format($p, 1, ',', '.') . '%', 0, 1, 'R', true);
 }
 
 ob_end_clean();
