@@ -1,0 +1,593 @@
+/* ============================================================
+   usados_docs.css — Módulo Seguimiento Documentación Usados
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+body {
+    background: #f3f0f0;
+    min-height: 100vh;
+}
+
+/* ── HEADER ──────────────────────────────────────────────────────── */
+.ud-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: #fff;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 300;
+}
+
+.ud-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ud-logo { height: 30px; }
+
+.ud-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+}
+
+.ud-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ud-user { color: #666; }
+
+.btn-admin {
+    background: #37474f;
+    color: #fff;
+    border: none;
+    padding: 6px 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .3px;
+}
+.btn-admin:hover { background: #263238; }
+
+/* ── FILTROS ─────────────────────────────────────────────────────── */
+.ud-filters {
+    position: fixed;
+    top: 52px; left: 0; right: 0;
+    background: #fff;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+    padding: 8px 16px;
+    z-index: 200;
+}
+
+.ud-filters form {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-group label { color: #555; white-space: nowrap; }
+
+.filter-group select {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    color: #333;
+}
+
+.filter-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #888;
+    margin-left: 4px;
+}
+
+.btn-limpiar {
+    color: #e53935;
+    text-decoration: none;
+    font-size: 12px;
+}
+.btn-limpiar:hover { text-decoration: underline; }
+
+/* ── TABLA WRAPPER ───────────────────────────────────────────────── */
+.ud-table-wrapper {
+    margin-top: 98px;          /* header 52px + filtros ~46px */
+    overflow-x: auto;
+    padding: 16px;
+    min-height: calc(100vh - 98px);
+}
+
+/* Scrollbar personalizada */
+.ud-table-wrapper::-webkit-scrollbar { height: 6px; }
+.ud-table-wrapper::-webkit-scrollbar-track { background: #ebebeb; }
+.ud-table-wrapper::-webkit-scrollbar-thumb { background: #bbb; border-radius: 3px; }
+
+/* ── TABLA MATRICIAL ─────────────────────────────────────────────── */
+.ud-table {
+    border-collapse: collapse;
+    width: max-content;
+    min-width: 100%;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,.10);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.ud-table th,
+.ud-table td {
+    border: 1px solid #e0e0e0;
+    padding: 7px 11px;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+/* Cabecera */
+.ud-table thead th {
+    background: #37474f;
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+/* Hover de fila */
+.ud-table tbody tr:hover > td { background-color: #f5f9ff !important; }
+
+/* ── COLUMNAS STICKY (IZQUIERDA) ─────────────────────────────────── */
+.col-sticky {
+    position: sticky;
+    z-index: 20;
+    background: #fff;
+}
+.ud-table thead .col-sticky {
+    background: #37474f;
+    z-index: 60;
+}
+
+/* Anchos y offsets left */
+.col-interno  { left: 0;     min-width: 72px;  text-align: center; font-weight: 700; }
+.col-vehiculo { left: 72px;  min-width: 170px; }
+.col-dominio  { left: 242px; min-width: 90px;  text-align: center; }
+.col-asesor   { left: 332px; min-width: 130px; }
+
+/* Sombra al final de las columnas sticky */
+.col-asesor::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -5px; bottom: 0;
+    width: 5px;
+    background: linear-gradient(to right, rgba(0,0,0,.07), transparent);
+    pointer-events: none;
+}
+
+/* ── COLUMNA ESTADO GENERAL (STICKY DERECHA) ─────────────────────── */
+.col-estado-gral {
+    min-width: 120px;
+    text-align: center;
+}
+.col-sticky-right {
+    position: sticky;
+    right: 0;
+    z-index: 20;
+    background: #fff;
+    border-left: 2px solid #e0e0e0 !important;
+}
+.ud-table thead .col-sticky-right {
+    background: #37474f;
+    z-index: 60;
+}
+.col-sticky-right::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -5px; bottom: 0;
+    width: 5px;
+    background: linear-gradient(to left, rgba(0,0,0,.07), transparent);
+    pointer-events: none;
+}
+
+/* ── COLUMNAS DE ÍTEMS ───────────────────────────────────────────── */
+.col-item {
+    min-width: 96px;
+    max-width: 130px;
+    text-align: center;
+}
+
+/* ── CELDAS CLICKEABLES ──────────────────────────────────────────── */
+.celda-item {
+    cursor: pointer;
+    user-select: none;
+    transition: filter .12s;
+    position: relative;
+}
+.celda-item:hover { filter: brightness(.88); }
+.celda-item:active { filter: brightness(.75); }
+
+.celda-icon {
+    font-size: 15px;
+    display: block;
+    line-height: 1.2;
+}
+
+.celda-clip {
+    font-size: 10px;
+    display: block;
+    opacity: .7;
+}
+
+/* ── ESTADOS DE CELDA ────────────────────────────────────────────── */
+.est-pendiente      { background: #f5f5f5; color: #9e9e9e; }
+.est-hecho          { background: #e8f5e9; color: #2e7d32; }
+.est-no-corresponde { background: #eceff1; color: #546e7a; }
+.est-en-proceso     { background: #fff8e1; color: #e65100; }
+
+/* ── BADGES ──────────────────────────────────────────────────────── */
+.badge-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+}
+.badge-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.est-pendiente.badge-estado,
+.est-pendiente.badge-mini      { background: #eeeeee;  color: #757575; }
+.est-hecho.badge-estado,
+.est-hecho.badge-mini          { background: #c8e6c9;  color: #1b5e20; }
+.est-no-corresponde.badge-estado,
+.est-no-corresponde.badge-mini { background: #cfd8dc;  color: #37474f; }
+.est-en-proceso.badge-estado,
+.est-en-proceso.badge-mini     { background: #ffe0b2;  color: #bf360c; }
+
+/* ── EMPTY STATE ─────────────────────────────────────────────────── */
+.ud-empty {
+    text-align: center;
+    color: #888;
+    padding: 60px 20px;
+    font-size: 14px;
+}
+.btn-link-inline {
+    background: none;
+    border: none;
+    color: #1565c0;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* ── MODAL OVERLAY ───────────────────────────────────────────────── */
+.ud-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.50);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── MODAL BOX ───────────────────────────────────────────────────── */
+.ud-modal {
+    background: #fff;
+    border-radius: 8px;
+    width: 480px;
+    max-width: 96vw;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0,0,0,.28);
+}
+.ud-modal-admin { width: 660px; }
+
+.ud-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    flex-shrink: 0;
+}
+
+.ud-modal-titulo  { font-size: 14px; font-weight: 700; color: #222; }
+.ud-modal-subtitulo { font-size: 12px; color: #888; margin-top: 2px; }
+
+.ud-modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    color: #aaa;
+    padding: 0 4px;
+    line-height: 1;
+    margin-left: 10px;
+}
+.ud-modal-close:hover { color: #333; }
+
+.ud-modal-body {
+    overflow-y: auto;
+    padding: 20px;
+    flex: 1;
+}
+
+/* ── FORMULARIO CELDA ────────────────────────────────────────────── */
+.form-group         { margin-bottom: 14px; }
+.form-group label   { display: block; color: #555; margin-bottom: 5px; font-weight: 500; }
+.form-group textarea,
+.form-group input[type="text"],
+.form-group input[type="number"] {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    resize: vertical;
+    color: #333;
+}
+.form-group input[type="file"] { color: #555; font-size: 12px; }
+
+.form-info-actual {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 7px 10px;
+    margin-bottom: 14px;
+    color: #666;
+}
+
+/* Estado opciones (radio visual) */
+.estado-opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.estado-opcion {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color .15s;
+    font-weight: 500;
+    user-select: none;
+}
+.estado-opcion input[type="radio"] { display: none; }
+
+.estado-opcion.est-pendiente      { background: #f5f5f5; color: #757575; }
+.estado-opcion.est-hecho          { background: #e8f5e9; color: #2e7d32; }
+.estado-opcion.est-no-corresponde { background: #eceff1; color: #546e7a; }
+.estado-opcion.est-en-proceso     { background: #fff8e1; color: #e65100; }
+
+.estado-opcion:hover { border-color: currentColor; opacity: .85; }
+.estado-opcion.activo { border-color: currentColor; }
+
+.estado-icon { font-size: 15px; }
+
+.archivo-actual { margin-bottom: 6px; }
+.archivo-actual a { color: #1565c0; text-decoration: none; font-size: 12px; }
+.archivo-actual a:hover { text-decoration: underline; }
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #eee;
+    align-items: center;
+}
+
+/* ── BOTONES ─────────────────────────────────────────────────────── */
+.btn-guardar {
+    background: #2e7d32;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13px;
+}
+.btn-guardar:hover   { background: #1b5e20; }
+.btn-guardar:disabled { background: #a5d6a7; cursor: not-allowed; }
+
+.btn-historial {
+    background: #1565c0;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.btn-historial:hover { background: #0d47a1; }
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #1565c0;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 4px 0;
+    font-size: 12px;
+}
+
+/* ── HISTORIAL ───────────────────────────────────────────────────── */
+.historial-titulo {
+    font-weight: 700;
+    color: #333;
+    font-size: 13px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.hist-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.hist-item:last-child { border-bottom: none; }
+
+.hist-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.hist-fecha { color: #aaa; font-size: 11px; }
+.hist-cambio { margin-bottom: 4px; }
+.hist-arrow  { margin: 0 4px; color: #bbb; }
+.hist-obs    { color: #666; font-style: italic; font-size: 12px; margin-top: 3px; }
+.hist-link   { color: #1565c0; text-decoration: none; font-size: 12px; }
+.hist-link:hover { text-decoration: underline; }
+.hist-empty  { color: #aaa; font-style: italic; text-align: center; padding: 20px; }
+
+/* ── ADMIN ───────────────────────────────────────────────────────── */
+.admin-section h3 {
+    font-size: 13px;
+    color: #333;
+    margin: 18px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #eee;
+}
+.admin-section h3:first-child { margin-top: 0; }
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 6px;
+}
+.admin-table th {
+    background: #f5f5f5;
+    text-align: left;
+    padding: 6px 10px;
+    border: 1px solid #e0e0e0;
+    font-weight: 600;
+    color: #555;
+}
+.admin-table td {
+    padding: 6px 10px;
+    border: 1px solid #e0e0e0;
+    vertical-align: middle;
+}
+
+.btn-edit-item {
+    background: #1565c0;
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.btn-edit-item:hover { background: #0d47a1; }
+
+.admin-form  { margin-top: 6px; }
+
+.form-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+.form-row .form-group     { flex: 1; min-width: 160px; margin-bottom: 0; }
+.form-row .form-group-sm  { flex: 0 0 auto; }
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    font-weight: normal !important;
+}
+.checkbox-label input { width: auto !important; }
+
+.admin-nota {
+    color: #888;
+    font-size: 11px;
+    margin-top: 16px;
+    font-style: italic;
+}
+
+.req { color: #e53935; }
+
+/* ── LOADING ─────────────────────────────────────────────────────── */
+.ud-loading {
+    text-align: center;
+    color: #bbb;
+    padding: 30px;
+}
+
+/* ── ERRORES EN MODAL ────────────────────────────────────────────── */
+.modal-error {
+    color: #c62828;
+    padding: 20px;
+    text-align: center;
+}
+
+/* ── TOAST ───────────────────────────────────────────────────────── */
+.ud-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    padding: 10px 22px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s, transform .25s;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,.22);
+}
+.ud-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+.ud-toast.toast-success { background: #2e7d32; }
+.ud-toast.toast-error   { background: #c62828; }
+.ud-toast.toast-info    { background: #1565c0; }
