@@ -28,7 +28,21 @@ $r   = mysqli_query($con, "SELECT s.*, u.nombre AS nombre_usuario
     WHERE s.id_unidad = $id_unidad AND s.id_item = $id_item");
 $seg = mysqli_fetch_assoc($r);
 
-$estado_actual = $seg ? (int)$seg['estado'] : 0;
+$estado_actual  = $seg ? (int)$seg['estado'] : 0;
+$archivo_actual = $seg ? $seg['archivo'] : null;
+
+// Archivos anteriores del historial (distintos al actual)
+$archivos_hist = [];
+$arch_excluir  = $archivo_actual ? "AND h.archivo != '" . mysqli_real_escape_string($con, $archivo_actual) . "'" : '';
+$r2 = mysqli_query($con, "SELECT h.id, h.archivo, h.fecha, u.nombre
+    FROM usados_docs_historial h
+    LEFT JOIN usuarios u ON h.id_usuario = u.idusuario
+    WHERE h.id_unidad = $id_unidad AND h.id_item = $id_item
+      AND h.archivo IS NOT NULL
+      $arch_excluir
+    ORDER BY h.fecha DESC
+    LIMIT 10");
+while ($row = mysqli_fetch_assoc($r2)) $archivos_hist[] = $row;
 ?>
 
 <form id="form-celda" enctype="multipart/form-data">
@@ -36,48 +50,82 @@ $estado_actual = $seg ? (int)$seg['estado'] : 0;
     <input type="hidden" name="id_item"   value="<?= $id_item ?>">
 
     <?php if ($seg): ?>
-    <div class="form-info-actual">
-        <small>
-            Última modificación:
-            <strong><?= htmlspecialchars($seg['nombre_usuario'] ?? 'Desconocido') ?></strong>
-            — <?= date('d/m/Y H:i', strtotime($seg['updated_at'])) ?>
-        </small>
+    <div class="form-meta-bar">
+        <span class="form-meta-estado badge-mini <?= $ESTADOS[$estado_actual]['class'] ?>">
+            <?= $ESTADOS[$estado_actual]['icon'] ?> <?= $ESTADOS[$estado_actual]['label'] ?>
+        </span>
+        <span class="form-meta-info">
+            <?= htmlspecialchars($seg['nombre_usuario'] ?? 'Desconocido') ?>
+            &mdash; <?= date('d/m/Y H:i', strtotime($seg['updated_at'])) ?>
+        </span>
     </div>
     <?php endif; ?>
 
     <!-- Estado -->
-    <div class="form-group">
-        <label>Estado:</label>
+    <div class="form-section">
+        <div class="form-section-label">Estado</div>
         <div class="estado-opciones">
             <?php foreach ($ESTADOS as $val => $e): ?>
             <label class="estado-opcion <?= $e['class'] ?> <?= $estado_actual === $val ? 'activo' : '' ?>">
                 <input type="radio" name="estado" value="<?= $val ?>"
                        <?= $estado_actual === $val ? 'checked' : '' ?>>
                 <span class="estado-icon"><?= $e['icon'] ?></span>
-                <span><?= $e['label'] ?></span>
+                <span class="estado-texto"><?= $e['label'] ?></span>
             </label>
             <?php endforeach; ?>
         </div>
     </div>
 
     <!-- Observación -->
-    <div class="form-group">
-        <label>Observación:</label>
-        <textarea name="observacion" rows="3"
+    <div class="form-section">
+        <div class="form-section-label">Observación</div>
+        <textarea name="observacion" rows="2"
                   placeholder="Opcional..."><?= htmlspecialchars($seg['observacion'] ?? '') ?></textarea>
     </div>
 
-    <!-- Archivo adjunto -->
-    <div class="form-group">
-        <label>Adjuntar archivo <small>(PDF o imagen, máx. 2 MB)</small>:</label>
-        <?php if ($seg && $seg['archivo']): ?>
-        <div class="archivo-actual">
-            <a href="uploads/<?= htmlspecialchars($seg['archivo']) ?>" target="_blank">
-                &#128206; Ver archivo actual
+    <!-- Archivo -->
+    <div class="form-section">
+        <div class="form-section-label">Archivo adjunto</div>
+
+        <?php if ($archivo_actual): ?>
+        <div class="archivo-actual" id="archivo-actual-row">
+            <span class="archivo-icon">&#128206;</span>
+            <a href="uploads/<?= htmlspecialchars($archivo_actual) ?>" target="_blank">
+                Ver archivo actual
             </a>
+            <button type="button" class="btn-del-archivo"
+                onclick="eliminarArchivo('actual', <?= $id_unidad ?>, <?= $id_item ?>, 0, this)"
+                title="Eliminar archivo">&#10005;</button>
         </div>
         <?php endif; ?>
-        <input type="file" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp">
+
+        <?php if (!empty($archivos_hist)): ?>
+        <div class="archivos-previos">
+            <div class="archivos-previos-titulo">Anteriores:</div>
+            <?php foreach ($archivos_hist as $ah): ?>
+            <div class="archivo-prev-item" id="archivo-hist-<?= $ah['id'] ?>">
+                <a href="uploads/<?= htmlspecialchars($ah['archivo']) ?>" target="_blank" class="hist-link">
+                    &#128206; Ver archivo
+                </a>
+                <span class="archivo-prev-meta">
+                    <?= htmlspecialchars($ah['nombre'] ?? 'Desconocido') ?>,
+                    <?= date('d/m/y H:i', strtotime($ah['fecha'])) ?>
+                </span>
+                <button type="button" class="btn-del-archivo"
+                    onclick="eliminarArchivo('historial', <?= $id_unidad ?>, <?= $id_item ?>, <?= $ah['id'] ?>, this)"
+                    title="Eliminar archivo">&#10005;</button>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+
+        <div class="archivo-upload-area">
+            <label class="archivo-upload-label">
+                <span>&#8679; Subir <?= $archivo_actual ? 'nuevo' : '' ?> archivo</span>
+                <small>PDF, JPG, PNG &mdash; máx. 2 MB</small>
+                <input type="file" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp">
+            </label>
+        </div>
     </div>
 
     <div class="form-actions">

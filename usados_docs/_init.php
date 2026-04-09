@@ -22,7 +22,7 @@ if ($_SESSION["autentificado"] != "SI") {
 $id_usuario     = (int)$_SESSION["id"];
 $id_perfil      = (int)$_SESSION["idperfil"];
 $nombre_usuario = $_SESSION["usuario"];
-$es_admin       = in_array($id_perfil, [1, 2]);
+$es_admin       = in_array($id_perfil, [1, 2]) || $id_usuario === 11;
 
 // ── Crear tablas si no existen ──────────────────────────────────────────────
 
@@ -79,9 +79,9 @@ if ((int)$rc['c'] === 0) {
 
 $ESTADOS = [
     0 => ['label' => 'Pendiente',       'icon' => '○', 'class' => 'est-pendiente'],
-    1 => ['label' => 'Hecho',           'icon' => '✓', 'class' => 'est-hecho'],
     2 => ['label' => 'No corresponde',  'icon' => '−', 'class' => 'est-no-corresponde'],
     3 => ['label' => 'En proceso',      'icon' => '◑', 'class' => 'est-en-proceso'],
+    1 => ['label' => 'Hecho',           'icon' => '✓', 'class' => 'est-hecho'],
 ];
 
 /**

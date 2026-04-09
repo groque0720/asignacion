@@ -3,3 +3,7 @@ planes_avanzados/_session_ping.php
 planes_avanzados/_session_heartbeat.php
 planes_avanzados/_ping.php
 planes_avanzados/_keep_session_alive.php
+
+# Archivos subidos por usuarios
+usados_docs/uploads/*
+!usados_docs/uploads/.htaccess

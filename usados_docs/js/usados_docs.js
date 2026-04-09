@@ -242,6 +242,39 @@ function actualizarEstadoGeneralFila(idUnidad) {
     $badge.text(icon + ' ' + label);
 }
 
+// ── Eliminar archivo adjunto ──────────────────────────────────────────
+function eliminarArchivo(tipo, idUnidad, idItem, idHist, btn) {
+    if (!confirm('¿Eliminar este archivo? Esta acción no se puede deshacer.')) return;
+
+    var $btn = $(btn);
+    $btn.prop('disabled', true).text('…');
+
+    $.post('eliminar_archivo.php', {
+        tipo:      tipo,
+        id_unidad: idUnidad,
+        id_item:   idItem,
+        id_hist:   idHist
+    }, function (res) {
+        if (res.ok) {
+            if (tipo === 'actual') {
+                $('#archivo-actual-row').remove();
+                // Quitar clip de la celda si ya no hay archivo actual
+                var $cell = $('#ud-modal-overlay').data('cell');
+                if ($cell) $cell.find('.celda-clip').remove();
+            } else {
+                $('#archivo-hist-' + idHist).remove();
+            }
+            toast('Archivo eliminado', 'success');
+        } else {
+            toast('Error: ' + res.error, 'error');
+            $btn.prop('disabled', false).text('✕');
+        }
+    }, 'json').fail(function () {
+        toast('Error de conexión', 'error');
+        $btn.prop('disabled', false).text('✕');
+    });
+}
+
 // ── Toast ─────────────────────────────────────────────────────────────
 function toast(msg, tipo) {
     var $t = $('#ud-toast');
