@@ -74,7 +74,10 @@ while ($row = mysqli_fetch_assoc($r)) $items_all[] = $row;
                 <input type="number" name="posicion" value="<?= count($items_all) + 1 ?>" min="1" style="width:70px">
             </div>
         </div>
-        <button type="submit" class="btn-guardar">+ Agregar ítem</button>
+        <div style="display:flex; gap:10px">
+            <button type="submit" class="btn-guardar">+ Agregar ítem</button>
+            <button type="button" class="btn-link" onclick="this.closest('form').reset()">Cancelar</button>
+        </div>
     </form>
 
     <!-- Formulario editar ítem (oculto) -->
