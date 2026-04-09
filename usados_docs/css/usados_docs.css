@@ -209,14 +209,17 @@ body {
 
 .celda-icon {
     font-size: 15px;
-    display: block;
+    display: inline-block;
     line-height: 1.2;
+    vertical-align: middle;
 }
 
 .celda-clip {
     font-size: 10px;
-    display: block;
+    display: inline-block;
     opacity: .7;
+    vertical-align: middle;
+    margin-left: 3px;
 }
 
 /* ── ESTADOS DE CELDA ────────────────────────────────────────────── */
