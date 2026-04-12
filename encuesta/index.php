@@ -53,7 +53,7 @@ if (!in_array($sec, ['entregas', 'config', 'resultados'])) $sec = 'entregas';
 	<a href="index.php?sec=config"    class="enc-nav-item <?php if($sec=='config')    echo 'activo'; ?>">
 		<span class="icon-cogs"></span> Configurar Encuesta
 	</a>
-	<a href="resultado_dashboard.php" class="enc-nav-item">
+	<a href="resultados/dashboard.php" class="enc-nav-item">
 		<span class="icon-line-chart"></span> Resultados
 	</a>
 </div>
@@ -62,9 +62,9 @@ if (!in_array($sec, ['entregas', 'config', 'resultados'])) $sec = 'entregas';
 <div class="enc-contenido">
 	<?php
 	switch ($sec) {
-		case 'entregas':   include('_tab_entregas.php');   break;
-		case 'config':     include('_tab_config.php');     break;
-		case 'resultados': include('_tab_resultados.php'); break;
+		case 'entregas':   include('templates/tab_entregas.php');   break;
+		case 'config':     include('templates/tab_config.php');     break;
+		case 'resultados': include('templates/tab_resultados.php'); break;
 	}
 	?>
 </div>

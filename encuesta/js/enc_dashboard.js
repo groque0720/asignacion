@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const API = 'api_dashboard.php';
+const API = '../ajax/api_dashboard.php';
 
 const State = {
     filters: {
