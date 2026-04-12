@@ -1,0 +1,376 @@
+/* ============================================================
+   Encuesta Satisfacción — Vista Pública (Mobile-First)
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+	--color-primario: #1a5276;
+	--color-primario-claro: #2980b9;
+	--color-acento: #e74c3c;
+	--color-texto: #2c3e50;
+	--color-gris: #7f8c8d;
+	--color-fondo: #f5f6fa;
+	--color-blanco: #fff;
+	--radio: 12px;
+}
+
+html, body {
+	height: 100%;
+	overflow-x: hidden;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	background: var(--color-fondo);
+	color: var(--color-texto);
+	-webkit-font-smoothing: antialiased;
+}
+
+/* ── BARRA DE PROGRESO ────────────────────────────────────── */
+.enc-progreso-wrap {
+	position: fixed;
+	top: 0; left: 0; right: 0;
+	height: 5px;
+	background: rgba(255,255,255,0.3);
+	z-index: 200;
+}
+.enc-progreso-fill {
+	height: 100%;
+	background: var(--color-acento);
+	transition: width 0.4s ease;
+}
+
+/* ── CONTADOR DE PROGRESO ─────────────────────────────────── */
+.enc-progreso-contador {
+	position: fixed;
+	top: 5px; right: 10px;
+	font-size: 11px;
+	color: rgba(255,255,255,0.85);
+	z-index: 201;
+	line-height: 1;
+	min-width: 36px;
+	text-align: right;
+}
+
+/* ── CONTENEDOR PRINCIPAL ─────────────────────────────────── */
+.enc-pub-contenedor {
+	min-height: calc(100vh - 90px); /* descontamos la nav fija */
+	padding-top: 16px;
+	padding-bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+/* ── SLIDES DE PREGUNTAS ──────────────────────────────────── */
+.enc-slide {
+	display: none;
+	width: 100%;
+	max-width: 540px;
+	padding: 12px 10px 10px; /* menos margen lateral en mobile */
+	animation: fadeIn .25s ease;
+}
+.enc-slide.activo { display: flex; flex-direction: column; }
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(10px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── BIENVENIDA ───────────────────────────────────────────── */
+.enc-bienvenida {
+	background: var(--color-blanco);
+	border-radius: var(--radio);
+	padding: 30px 24px;
+	text-align: center;
+	box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+	overflow: hidden;
+}
+.enc-bienvenida-icono {
+	margin-bottom: 18px;
+}
+.enc-bienvenida-icono img {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	max-height: 60px;
+	width: auto;
+	height: auto;
+}
+.enc-bienvenida h2 {
+	font-size: 20px;
+	color: var(--color-primario);
+	margin-bottom: 10px;
+}
+.enc-bienvenida p {
+	font-size: 14px;
+	color: #555;
+	line-height: 1.6;
+}
+
+/* ── TARJETA DE PREGUNTA ──────────────────────────────────── */
+.enc-pregunta-card {
+	background: var(--color-blanco);
+	border-radius: var(--radio);
+	padding: 22px 18px 18px;
+	box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+	width: 100%;
+}
+.enc-pregunta-nro {
+	font-size: 11px;
+	color: var(--color-gris);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	margin-bottom: 10px;
+}
+.enc-pregunta-texto {
+	font-size: 18px;
+	font-weight: 600;
+	color: var(--color-texto);
+	line-height: 1.45;
+	margin-bottom: 24px;
+}
+
+/* ── RESPUESTA: ESCALA 1-10 ───────────────────────────────── */
+.enc-escala {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 10px;
+}
+.enc-escala-btn {
+	width: 100%;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	border: 2.5px solid #dde3e9;
+	background: #fff;
+	font-size: 20px;
+	font-weight: bold;
+	color: var(--color-texto);
+	cursor: pointer;
+	transition: all .2s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 0;
+}
+.enc-escala-btn:hover    { border-color: var(--color-primario); color: var(--color-primario); }
+.enc-escala-btn.elegido  { background: var(--color-primario); border-color: var(--color-primario); color: #fff; }
+
+/* Colores de calificación */
+.enc-escala-btn[data-val="1"],
+.enc-escala-btn[data-val="2"],
+.enc-escala-btn[data-val="3"]  { border-color: #e74c3c; color: #e74c3c; }
+.enc-escala-btn[data-val="4"],
+.enc-escala-btn[data-val="5"],
+.enc-escala-btn[data-val="6"]  { border-color: #f39c12; color: #f39c12; }
+.enc-escala-btn[data-val="7"],
+.enc-escala-btn[data-val="8"]  { border-color: #27ae60; color: #27ae60; }
+.enc-escala-btn[data-val="9"],
+.enc-escala-btn[data-val="10"] { border-color: #1a5276; color: #1a5276; }
+
+.enc-escala-btn[data-val="1"].elegido,
+.enc-escala-btn[data-val="2"].elegido,
+.enc-escala-btn[data-val="3"].elegido  { background: #e74c3c; border-color: #e74c3c; color: #fff; }
+.enc-escala-btn[data-val="4"].elegido,
+.enc-escala-btn[data-val="5"].elegido,
+.enc-escala-btn[data-val="6"].elegido  { background: #f39c12; border-color: #f39c12; color: #fff; }
+.enc-escala-btn[data-val="7"].elegido,
+.enc-escala-btn[data-val="8"].elegido  { background: #27ae60; border-color: #27ae60; color: #fff; }
+.enc-escala-btn[data-val="9"].elegido,
+.enc-escala-btn[data-val="10"].elegido { background: #1a5276; border-color: #1a5276; color: #fff; }
+
+.enc-escala-labels {
+	display: none; /* oculto en mobile (2 filas, no aplica) */
+}
+@media (min-width: 480px) {
+	.enc-escala-labels {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 6px;
+		font-size: 10px;
+		color: var(--color-gris);
+		text-transform: uppercase;
+		letter-spacing: 0.4px;
+	}
+}
+
+/* ── RESPUESTA: SI/NO SIMPLE ──────────────────────────────── */
+.enc-sino-wrap {
+	display: flex;
+	gap: 14px;
+	justify-content: center;
+}
+.enc-sino-btn {
+	flex: 1;
+	max-width: 160px;
+	padding: 16px 0;
+	border-radius: 10px;
+	border: 2px solid #dde3e9;
+	background: #fff;
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	text-align: center;
+	transition: all .2s;
+	color: var(--color-texto);
+}
+.enc-sino-btn:hover { border-color: var(--color-primario); color: var(--color-primario); }
+.enc-sino-btn.elegido { background: var(--color-primario); border-color: var(--color-primario); color: #fff; }
+.enc-sino-btn .enc-sino-label { font-size: 12px; font-weight: normal; display: block; margin-top: 4px; opacity: .8; }
+
+/* ── RESPUESTA: SELECCIÓN MÚLTIPLE ───────────────────────── */
+.enc-multiple-lista { display: flex; flex-direction: column; gap: 8px; }
+.enc-multiple-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 14px;
+	border: 2px solid #dde3e9;
+	border-radius: 8px;
+	background: #fff;
+	cursor: pointer;
+	transition: all .2s;
+}
+.enc-multiple-item:hover { border-color: var(--color-primario); }
+.enc-multiple-item.elegido { border-color: var(--color-primario); background: #eaf4fb; }
+.enc-multiple-check {
+	width: 22px; height: 22px;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	display: flex; align-items: center; justify-content: center;
+	flex-shrink: 0;
+	font-size: 14px;
+	color: transparent;
+	transition: all .2s;
+}
+.enc-multiple-item.elegido .enc-multiple-check {
+	border-color: var(--color-primario);
+	background: var(--color-primario);
+	color: #fff;
+}
+.enc-multiple-label { font-size: 14px; flex: 1; }
+
+/* ── RESPUESTA: LISTA SI/NO ───────────────────────────────── */
+.enc-listasino { display: flex; flex-direction: column; gap: 6px; }
+.enc-listasino-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 14px;
+	border: 1px solid #dde3e9;
+	border-radius: 8px;
+	background: #fff;
+	gap: 12px;
+}
+.enc-listasino-label { font-size: 13px; flex: 1; }
+.enc-listasino-btns  { display: flex; gap: 6px; flex-shrink: 0; }
+.enc-listasino-btn {
+	padding: 6px 16px;
+	border: 2px solid #dde3e9;
+	border-radius: 6px;
+	background: #fff;
+	font-size: 13px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all .2s;
+	color: var(--color-gris);
+}
+.enc-listasino-btn.si.elegido  { border-color: #27ae60; background: #27ae60; color: #fff; }
+.enc-listasino-btn.no.elegido  { border-color: #e74c3c; background: #e74c3c; color: #fff; }
+
+/* ── RESPUESTA: TEXTO LIBRE ───────────────────────────────── */
+.enc-textarea {
+	width: 100%;
+	min-height: 100px;
+	padding: 12px 14px;
+	border: 2px solid #dde3e9;
+	border-radius: 8px;
+	font-size: 14px;
+	font-family: inherit;
+	color: var(--color-texto);
+	resize: vertical;
+	transition: border-color .2s;
+	background: #fff;
+}
+.enc-textarea:focus { outline: none; border-color: var(--color-primario); }
+
+/* ── NAVEGACIÓN INFERIOR ──────────────────────────────────── */
+.enc-pub-nav {
+	position: fixed;
+	bottom: 0; left: 0; right: 0;
+	background: #fff;
+	border-top: 1px solid #eee;
+	padding: 10px 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 100;
+	box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+}
+.enc-btn-nav {
+	padding: 12px 28px;
+	border: none;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: opacity .2s, transform .1s;
+}
+.enc-btn-nav:active    { transform: scale(0.97); }
+.enc-btn-nav:disabled  { opacity: .4; cursor: not-allowed; }
+.enc-btn-anterior { background: #eee; color: #555; }
+.enc-btn-siguiente { background: var(--color-primario); color: #fff; }
+.enc-btn-finalizar { background: #27ae60; color: #fff; }
+
+/* ── PANTALLA GRACIAS / EXPIRADA ──────────────────────────── */
+.enc-pantalla-final {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	background: var(--color-primario);
+}
+.enc-final-card {
+	background: #fff;
+	border-radius: 16px;
+	padding: 40px 30px;
+	text-align: center;
+	max-width: 400px;
+	width: 100%;
+	box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.enc-final-icono { font-size: 56px; margin-bottom: 14px; }
+.enc-final-titulo {
+	font-size: 22px;
+	font-weight: 700;
+	color: var(--color-primario);
+	margin-bottom: 10px;
+}
+.enc-final-mensaje { font-size: 14px; color: #555; line-height: 1.6; }
+
+/* ── ERROR / REQUERIDO ────────────────────────────────────── */
+.enc-error-msg {
+	color: #e74c3c;
+	font-size: 12px;
+	margin-top: 8px;
+	text-align: center;
+	min-height: 18px;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (min-width: 480px) {
+	.enc-slide { padding: 16px 20px 10px; }
+	.enc-pregunta-texto { font-size: 19px; }
+	.enc-escala {
+		grid-template-columns: repeat(10, 1fr);
+		gap: 8px;
+	}
+	.enc-escala-btn { font-size: 17px; }
+}
+@media (min-width: 768px) {
+	.enc-slide { padding: 20px 24px 16px; }
+	.enc-pregunta-card { padding: 28px 26px 22px; }
+	.enc-pregunta-texto { font-size: 21px; }
+	.enc-bienvenida-icono img { max-height: 72px; }
+	.enc-escala-btn { font-size: 19px; }
+}
