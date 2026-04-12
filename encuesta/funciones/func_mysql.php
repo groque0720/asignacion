@@ -34,6 +34,23 @@
 		return hash('sha256', $id_asignacion . microtime(true) . random_bytes(16));
 	}
 
+	// Devuelve el nivel (nombre + color) para un score dado, desde enc_niveles
+	// Si no hay tabla o no hay coincidencia, devuelve fallback hardcodeado
+	function get_nivel($score) {
+		global $con;
+		$s = (float)$score;
+		$res = mysqli_query($con,
+			"SELECT nombre, color FROM enc_niveles
+			 WHERE $s >= valor_desde AND $s <= valor_hasta
+			 ORDER BY valor_desde DESC LIMIT 1");
+		if ($res && mysqli_num_rows($res) > 0) return mysqli_fetch_assoc($res);
+		// Fallback si la tabla no existe o no hay rango configurado
+		if ($s >= 9) return ['nombre' => 'Alta satisfacción', 'color' => '#1e8449'];
+		if ($s >= 7) return ['nombre' => 'Satisfactorio',     'color' => '#1a7abf'];
+		if ($s >= 5) return ['nombre' => 'Regular',           'color' => '#d68910'];
+		return             ['nombre' => 'A mejorar',          'color' => '#c0392b'];
+	}
+
 	// Evalúa la condición de una pregunta contra las respuestas ya dadas
 	// $valor_respuesta: valor numérico de la pregunta de referencia
 	// $operador: '<','<=','=','>=','>','!='

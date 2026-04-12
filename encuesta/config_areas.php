@@ -83,6 +83,14 @@ while ($a = mysqli_fetch_array($res)) $areas[] = $a;
 			<span style="font-size:11px;color:#aaa;margin-left:8px;"><?php echo htmlspecialchars($a['color']); ?></span>
 		</div>
 		<div class="enc-preg-acciones">
+			<button class="btn-enc btn-enc-gris btn-enc-sm btn-orden-area"
+			        data-id="<?php echo $a['id_area']; ?>" data-accion="subir" title="Subir">
+				<span class="icon-chevron-up"></span>
+			</button>
+			<button class="btn-enc btn-enc-gris btn-enc-sm btn-orden-area"
+			        data-id="<?php echo $a['id_area']; ?>" data-accion="bajar" title="Bajar">
+				<span class="icon-chevron-down"></span>
+			</button>
 			<button class="btn-enc btn-enc-gris btn-enc-sm btn-editar-area"
 			        data-id="<?php echo $a['id_area']; ?>"
 			        data-nombre="<?php echo htmlspecialchars($a['nombre'], ENT_QUOTES); ?>"
@@ -157,6 +165,16 @@ $(function(){
 				ocultarCargando();
 				swal("Error", "Error al guardar.", "error");
 			}
+		});
+	});
+
+	// ── Reordenar área ───────────────────────────────────────
+	$(document).on("click", ".btn-orden-area", function(){
+		var id     = $(this).data("id");
+		var accion = $(this).data("accion");
+		$.post("config_area_orden.php", {id_area: id, accion: accion}, function(resp){
+			if (resp == "ok") location.reload();
+			else swal("Error", resp, "error");
 		});
 	});
 

@@ -9,6 +9,9 @@ $encuestas = mysqli_query($con, $SQL);
 	<a class="btn-enc btn-enc-gris btn-enc-sm" href="config_areas.php" style="margin-left:auto;">
 		<span class="icon-tags"></span> Áreas
 	</a>
+	<a class="btn-enc btn-enc-gris btn-enc-sm" href="config_niveles.php" style="margin-left:6px;">
+		<span class="icon-star-o"></span> Niveles
+	</a>
 	<button class="btn-enc btn-enc-azul" id="btn-nueva-encuesta" style="margin-left:8px;">
 		<span class="icon-plus"></span> Nueva Encuesta
 	</button>

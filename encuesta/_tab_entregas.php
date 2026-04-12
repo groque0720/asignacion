@@ -10,12 +10,15 @@ $SQL = "SELECT
 			u.nombre   AS asesor,
 			g.grupo    AS grupo,
 			m.modelo   AS modelo,
-			s.sucursal AS sucursal
+			s.sucursal AS sucursal,
+			er.id_respuesta,
+			er.resultado_promedio
 		FROM asignaciones a
 		JOIN  usuarios   u ON a.id_asesor    = u.idusuario
 		LEFT JOIN grupos g ON a.id_grupo     = g.idgrupo
 		LEFT JOIN modelos m ON a.id_modelo   = m.idmodelo
 		LEFT JOIN sucursales s ON a.id_sucursal = s.idsucursal
+		LEFT JOIN enc_respuestas er ON er.id_asignacion = a.id_unidad
 		WHERE a.entregada = 1
 		  AND a.borrar    = 0
 		  AND a.guardado  = 1
@@ -65,13 +68,31 @@ $tipos_estado = [
 			<td><?php echo htmlspecialchars($e['sucursal']); ?></td>
 			<td style="text-align:center;">
 				<span class="badge-enc <?php echo $estado['class']; ?>"><?php echo $estado['label']; ?></span>
+				<?php if ($e['con_encuesta'] == 2 && $e['resultado_promedio'] !== null):
+					$prom = (float)$e['resultado_promedio'];
+					if ($prom >= 8)      $color_prom = '#1e8449';
+					elseif ($prom >= 6)  $color_prom = '#d68910';
+					else                 $color_prom = '#c0392b';
+				?>
+				<span style="margin-left:5px;font-weight:bold;font-size:12px;color:<?php echo $color_prom; ?>">
+					<?php echo number_format($prom, 1); ?>
+				</span>
+				<?php endif; ?>
 			</td>
 			<td class="celda-acciones">
+				<?php if ($e['con_encuesta'] == 2 && $e['id_respuesta']): ?>
+				<a class="btn-enc btn-enc-verde btn-enc-sm"
+				   href="resultado_detalle.php?id=<?php echo (int)$e['id_respuesta']; ?>"
+				   title="Ver resultado de la encuesta">
+					<span class="icon-line-chart"></span> Resultado
+				</a>
+				<?php else: ?>
 				<a class="btn-enc btn-enc-azul btn-enc-sm"
 				   href="puente.php?id=<?php echo (int)$e['id_unidad']; ?>"
 				   title="Ver página de encuesta">
 					<span class="icon-search"></span> Ver
 				</a>
+				<?php endif; ?>
 			</td>
 		</tr>
 	<?php endwhile; ?>
