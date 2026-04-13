@@ -51,7 +51,7 @@ $tipos = [
 <?php include('../en_proceso/en_proceso.php'); ?>
 
 <div class="enc-subpag-cabecera">
-	<a class="btn-enc btn-enc-gris btn-enc-sm" href="index.php?sec=config">← Volver</a>
+	<a class="btn-enc btn-enc-gris btn-enc-sm" href="../index.php?sec=config">← Volver</a>
 	<span class="enc-titulo">
 		Preguntas: <strong><?php echo htmlspecialchars($encuesta['nombre']); ?></strong>
 	</span>

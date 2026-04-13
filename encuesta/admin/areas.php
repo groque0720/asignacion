@@ -28,7 +28,7 @@ while ($a = mysqli_fetch_array($res)) $areas[] = $a;
 <?php include('../en_proceso/en_proceso.php'); ?>
 
 <div class="enc-subpag-cabecera">
-	<a class="btn-enc btn-enc-gris btn-enc-sm" href="index.php?sec=config">← Volver</a>
+	<a class="btn-enc btn-enc-gris btn-enc-sm" href="../index.php?sec=config">← Volver</a>
 	<span class="enc-titulo">Áreas Responsables</span>
 	<button class="btn-enc btn-enc-azul btn-enc-sm" id="btn-nueva-area" style="margin-left:auto;">
 		<span class="icon-plus"></span> Nueva Área

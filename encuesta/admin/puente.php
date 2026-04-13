@@ -68,7 +68,7 @@ if (mysqli_num_rows($res_tok) > 0) {
 
 <!-- CABECERA SIMPLIFICADA -->
 <div class="enc-subpag-cabecera">
-	<a class="btn-enc btn-enc-gris btn-enc-sm" href="index.php?sec=entregas">
+	<a class="btn-enc btn-enc-gris btn-enc-sm" href="../index.php?sec=entregas">
 		← Volver a Entregas
 	</a>
 	<span class="enc-titulo">Página de Encuesta</span>
@@ -123,14 +123,14 @@ if (mysqli_num_rows($res_tok) > 0) {
 	<!-- Sin encuesta activa -->
 	<div style="background:#fef9e7;border:1px solid #f9ca24;border-radius:6px;padding:12px;margin-top:16px;color:#856404;">
 		<strong>Atención:</strong> No hay ninguna encuesta activa.
-		Configurá una encuesta desde la sección <a href="index.php?sec=config" style="color:#1a5276;">Configurar Encuesta</a>.
+		Configurá una encuesta desde la sección <a href="../index.php?sec=config" style="color:#1a5276;">Configurar Encuesta</a>.
 	</div>
 
 	<?php elseif ($unidad['con_encuesta'] == 2): ?>
 	<!-- Ya completada -->
 	<div style="background:#eafaf1;border:1px solid #82e0aa;border-radius:6px;padding:12px;margin-top:16px;color:#1e8449;">
 		<strong>Encuesta completada.</strong> El cliente ya respondió esta encuesta.
-		<a href="index.php?sec=resultados" style="color:#1a5276;">Ver resultados</a>.
+		<a href="../index.php?sec=resultados" style="color:#1a5276;">Ver resultados</a>.
 	</div>
 
 	<?php else: ?>
