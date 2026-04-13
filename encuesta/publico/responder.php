@@ -151,12 +151,8 @@ $tipo_labels = [
 			<?php elseif ($tipo == 2): ?>
 			<!-- ── Sí / No simple ──────────────────────────── -->
 			<div class="enc-sino-wrap" id="sino-<?php echo $id_p; ?>">
-				<button type="button" class="enc-sino-btn" data-id="<?php echo $id_p; ?>" data-val="1">
-					Sí <span class="enc-sino-label">de acuerdo</span>
-				</button>
-				<button type="button" class="enc-sino-btn" data-id="<?php echo $id_p; ?>" data-val="0">
-					No <span class="enc-sino-label">en desacuerdo</span>
-				</button>
+				<button type="button" class="enc-sino-btn" data-id="<?php echo $id_p; ?>" data-val="1">Sí</button>
+				<button type="button" class="enc-sino-btn" data-id="<?php echo $id_p; ?>" data-val="0">No</button>
 			</div>
 
 			<?php elseif ($tipo == 3): ?>
@@ -164,8 +160,8 @@ $tipo_labels = [
 			<div class="enc-multiple-lista" id="multi-<?php echo $id_p; ?>">
 				<?php foreach ($p['opciones'] as $op): ?>
 				<div class="enc-multiple-item" data-id="<?php echo $id_p; ?>" data-opcion="<?php echo $op['id_opcion']; ?>">
-					<div class="enc-multiple-check">✓</div>
 					<span class="enc-multiple-label"><?php echo htmlspecialchars($op['texto_opcion']); ?></span>
+					<div class="enc-multiple-check">✓</div>
 				</div>
 				<?php endforeach; ?>
 			</div>

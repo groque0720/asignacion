@@ -157,6 +157,7 @@ function score_color($v) {
 <div class="rd-section-title" style="margin:6px 0 10px;">Respuestas</div>
 
 <?php foreach ($detalles as $d):
+	if (!$d['mostrada']) continue;
 	$tipo       = (int)$d['tipo_pregunta'];
 	$area_color = $d['area_color'] ?: '#cbd5e0';
 	$area_nombre= $d['area_nombre'];

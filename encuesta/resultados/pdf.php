@@ -95,6 +95,15 @@ function score_label($val) {
 	return pdf_text(get_nivel((float)$val)['nombre']);
 }
 
+// Mezcla un color RGB con blanco para suavizarlo (0=original, 1=blanco puro)
+function soften_rgb($r, $g, $b, $mix = 0.35) {
+	return [
+		(int)($r + $mix * (255 - $r)),
+		(int)($g + $mix * (255 - $g)),
+		(int)($b + $mix * (255 - $b)),
+	];
+}
+
 // ── Clase PDF ──────────────────────────────────────────────
 class EncuestaPDF extends FPDF {
 	var $titulo_enc   = '';
@@ -108,7 +117,7 @@ class EncuestaPDF extends FPDF {
 		}
 
 		// Título principal
-		$this->SetTextColor(26, 82, 118);
+		$this->SetTextColor(68, 110, 150);
 		$this->SetFont('Arial', 'B', 12);
 		$this->SetXY(55, 6);
 		$this->Cell(0, 6, 'Encuesta de Satisfacci' . chr(243) . 'n 0km', 0, 1, 'L');
@@ -126,7 +135,7 @@ class EncuestaPDF extends FPDF {
 		$this->Cell(190, 4, pdf_text($this->cliente_nombre), 0, 1, 'R');
 
 		// Línea separadora
-		$this->SetDrawColor(26, 82, 118);
+		$this->SetDrawColor(155, 188, 212);
 		$this->SetLineWidth(0.5);
 		$this->Line(10, 24, 200, 24);
 
@@ -135,7 +144,7 @@ class EncuestaPDF extends FPDF {
 
 	function Footer() {
 		$this->SetY(-14);
-		$this->SetDrawColor(210, 218, 228);
+		$this->SetDrawColor(225, 232, 240);
 		$this->SetLineWidth(0.3);
 		$this->Line(10, $this->GetY(), 200, $this->GetY());
 		$this->Ln(2);
@@ -165,14 +174,14 @@ $tipos    = [1 => 'Escala 1-10', 2 => 'S' . chr(237) . '/No',
 // ═══════════════════════════════════════════════════════════
 
 // Encabezado de sección
-$pdf->SetFillColor(240, 244, 248);
-$pdf->SetDrawColor(26, 82, 118);
+$pdf->SetFillColor(246, 249, 252);
+$pdf->SetDrawColor(155, 188, 212);
 $pdf->SetLineWidth(0.5);
 $pdf->Rect(10, $pdf->GetY(), 190, 7, 'DF');
-$pdf->SetFillColor(26, 82, 118);
+$pdf->SetFillColor(110, 152, 182);
 $pdf->Rect(10, $pdf->GetY(), 3, 7, 'F');
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->SetTextColor(26, 82, 118);
+$pdf->SetTextColor(68, 110, 150);
 $pdf->SetX(15);
 $pdf->Cell(0, 7, 'DATOS DEL CLIENTE', 0, 1, 'L');
 $pdf->Ln(2);
@@ -212,12 +221,12 @@ for ($i = 0; $i < max(count($campos_izq), count($campos_der)); $i++) {
 		$pdf->SetTextColor(130, 130, 130);
 		$pdf->Cell($lbl_w, $row_h - 1, $campos_izq[$i][0] . ':', 0, 0, 'L');
 		$pdf->SetFont('Arial', 'B', 7.5);
-		$pdf->SetTextColor(40, 40, 40);
+		$pdf->SetTextColor(70, 72, 76);
 		$pdf->Cell($val_w, $row_h - 1, $campos_izq[$i][1], 0, 0, 'L');
 	}
 
 	// Divisor vertical central
-	$pdf->SetDrawColor(220, 225, 232);
+	$pdf->SetDrawColor(232, 237, 243);
 	$pdf->SetLineWidth(0.2);
 	$pdf->Line(105, $y_row, 105, $y_row + $row_h);
 
@@ -228,13 +237,13 @@ for ($i = 0; $i < max(count($campos_izq), count($campos_der)); $i++) {
 		$pdf->SetTextColor(130, 130, 130);
 		$pdf->Cell($lbl_w, $row_h - 1, $campos_der[$i][0] . ':', 0, 0, 'L');
 		$pdf->SetFont('Arial', 'B', 7.5);
-		$pdf->SetTextColor(40, 40, 40);
+		$pdf->SetTextColor(70, 72, 76);
 		$pdf->Cell($val_w, $row_h - 1, $campos_der[$i][1], 0, 0, 'L');
 	}
 }
 
 // Borde exterior de la grilla
-$pdf->SetDrawColor(210, 218, 228);
+$pdf->SetDrawColor(225, 232, 240);
 $pdf->SetLineWidth(0.3);
 $grid_h = max(count($campos_izq), count($campos_der)) * $row_h;
 $pdf->Rect(10, $y_grid, 190, $grid_h, 'D');
@@ -249,14 +258,14 @@ $pdf->Ln(6);
 list($sr, $sg, $sb) = score_rgb($prom_val);
 
 // Encabezado de sección
-$pdf->SetFillColor(240, 244, 248);
-$pdf->SetDrawColor(26, 82, 118);
+$pdf->SetFillColor(246, 249, 252);
+$pdf->SetDrawColor(155, 188, 212);
 $pdf->SetLineWidth(0.5);
 $pdf->Rect(10, $pdf->GetY(), 190, 7, 'DF');
-$pdf->SetFillColor(26, 82, 118);
+$pdf->SetFillColor(110, 152, 182);
 $pdf->Rect(10, $pdf->GetY(), 3, 7, 'F');
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->SetTextColor(26, 82, 118);
+$pdf->SetTextColor(68, 110, 150);
 $pdf->SetX(15);
 $pdf->Cell(0, 7, 'RESULTADO GENERAL', 0, 1, 'L');
 $pdf->Ln(3);
@@ -266,27 +275,34 @@ $col_izq_w = 72;           // columna izquierda (score)
 $col_der_x = 10 + $col_izq_w + 8;  // columna derecha (áreas)
 $col_der_w = 190 - $col_izq_w - 8; // 110mm
 
-// ── Columna izquierda: score en color, sin fondo ──────────
-// Número grande — centramos score + "/10" dentro de la columna
-$score_cell_w = 46;
-$start_x = 10 + ($col_izq_w - $score_cell_w - 14) / 2;
-
-$pdf->SetFont('Arial', 'B', 36);
+// ── Columna izquierda: score ──────────────────────────────
+// Número grande centrado
+$pdf->SetFont('Arial', 'B', 42);
 $pdf->SetTextColor($sr, $sg, $sb);
-$pdf->SetXY($start_x, $sec_y + 2);
-$pdf->Cell($score_cell_w, 14, $prom_str, 0, 0, 'C');
+$pdf->SetXY(10, $sec_y + 2);
+$pdf->Cell($col_izq_w, 15, $prom_str, 0, 0, 'C');
 
-// "/ 10" a la derecha del número
-$pdf->SetFont('Arial', '', 10);
-$pdf->SetTextColor(140, 140, 140);
-$pdf->SetXY($start_x + $score_cell_w, $sec_y + 9);
-$pdf->Cell(14, 7, '/ 10', 0, 0, 'L');
+// "/ 10" centrado debajo
+$pdf->SetFont('Arial', '', 9);
+$pdf->SetTextColor(160, 160, 160);
+$pdf->SetXY(10, $sec_y + 17);
+$pdf->Cell($col_izq_w, 5, '/ 10', 0, 0, 'C');
 
-// Etiqueta de nivel debajo
-$pdf->SetFont('Arial', 'B', 8);
+// Etiqueta de nivel
+$pdf->SetFont('Arial', 'B', 9);
 $pdf->SetTextColor($sr, $sg, $sb);
-$pdf->SetXY(10, $sec_y + 18);
-$pdf->Cell($col_izq_w, 6, score_label($prom_val), 0, 0, 'C');
+$pdf->SetXY(10, $sec_y + 23);
+$pdf->Cell($col_izq_w, 5, score_label($prom_val), 0, 0, 'C');
+
+// Barra de progreso
+$bar_x = 18;
+$bar_y = $sec_y + 30;
+$bar_w = $col_izq_w - 16;
+$pdf->SetFillColor(210, 215, 220);
+$pdf->Rect($bar_x, $bar_y, $bar_w, 2.5, 'F');
+list($ssr, $ssg, $ssb) = soften_rgb($sr, $sg, $sb);
+$pdf->SetFillColor($ssr, $ssg, $ssb);
+$pdf->Rect($bar_x, $bar_y, ($prom_val / 10) * $bar_w, 2.5, 'F');
 
 // ── Columna derecha: áreas ────────────────────────────────
 if (!empty($areas_prom)) {
@@ -304,7 +320,7 @@ if (!empty($areas_prom)) {
 	foreach ($areas_prom as $i => $ap) {
 		$av = (float)$ap['promedio'];
 		list($vr, $vg, $vb) = score_rgb($av);
-		list($cr, $cg, $cb) = $ap['color'] ? hex2rgb($ap['color']) : [26, 82, 118];
+		list($cr, $cg, $cb) = $ap['color'] ? hex2rgb($ap['color']) : [90, 132, 168];
 		$row_y = $sec_y + 5 + $i * $area_h;
 
 		// Fondo alternado neutro
@@ -324,11 +340,12 @@ if (!empty($areas_prom)) {
 
 		// Barra fondo (gris)
 		$bx = $col_der_x + 6 + $area_label_w;
-		$pdf->SetFillColor(210, 210, 210);
+		$pdf->SetFillColor(222, 226, 232);
 		$pdf->Rect($bx, $row_y + 2, $area_bar_w, 3, 'F');
 
-		// Barra rellena (color del score)
-		$pdf->SetFillColor($vr, $vg, $vb);
+		// Barra rellena (color del score, suavizado)
+		list($svr, $svg, $svb) = soften_rgb($vr, $vg, $vb);
+		$pdf->SetFillColor($svr, $svg, $svb);
 		$pdf->Rect($bx, $row_y + 2, ($av / 10) * $area_bar_w, 3, 'F');
 
 		// Valor numérico
@@ -341,17 +358,17 @@ if (!empty($areas_prom)) {
 
 	// Borde exterior de la tabla de áreas
 	$areas_h = count($areas_prom) * $area_h;
-	$pdf->SetDrawColor(210, 218, 228);
+	$pdf->SetDrawColor(225, 232, 240);
 	$pdf->SetLineWidth(0.2);
 	$pdf->Rect($col_der_x, $sec_y + 5, $col_der_w, $areas_h, 'D');
 
-	$end_y = $sec_y + max(28, 5 + $areas_h);
+	$end_y = $sec_y + max(36, 5 + $areas_h);
 } else {
-	$end_y = $sec_y + 28;
+	$end_y = $sec_y + 36;
 }
 
 // Línea divisora vertical entre columnas
-$pdf->SetDrawColor(210, 215, 220);
+$pdf->SetDrawColor(228, 233, 238);
 $pdf->SetLineWidth(0.3);
 $pdf->Line($col_der_x - 4, $sec_y, $col_der_x - 4, $end_y);
 
@@ -362,19 +379,20 @@ $pdf->Ln(6);
 // SECCIÓN: RESPUESTAS POR PREGUNTA
 // ═══════════════════════════════════════════════════════════
 
-$pdf->SetFillColor(240, 244, 248);
-$pdf->SetDrawColor(26, 82, 118);
+$pdf->SetFillColor(246, 249, 252);
+$pdf->SetDrawColor(155, 188, 212);
 $pdf->SetLineWidth(0.5);
 $pdf->Rect(10, $pdf->GetY(), 190, 7, 'DF');
-$pdf->SetFillColor(26, 82, 118);
+$pdf->SetFillColor(110, 152, 182);
 $pdf->Rect(10, $pdf->GetY(), 3, 7, 'F');
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->SetTextColor(26, 82, 118);
+$pdf->SetTextColor(68, 110, 150);
 $pdf->SetX(15);
 $pdf->Cell(0, 7, 'RESPUESTAS POR PREGUNTA', 0, 1, 'L');
 $pdf->Ln(3);
 
 foreach ($detalles as $d) {
+	if (!$d['mostrada']) continue;
 	$tipo = (int)$d['tipo_pregunta'];
 
 	if ($pdf->GetY() > 245) $pdf->AddPage();
@@ -384,7 +402,7 @@ foreach ($detalles as $d) {
 	$q_w       = 186;
 
 	// Color del área (borde izquierdo)
-	list($ar, $ag, $ab) = [26, 82, 118];
+	list($ar, $ag, $ab) = [90, 132, 168];
 	if ($d['area_color']) list($ar, $ag, $ab) = hex2rgb($d['area_color']);
 
 	// ── Resultado para mostrar a la derecha (tipos 1, 2, 3) ──
@@ -407,7 +425,7 @@ foreach ($detalles as $d) {
 		}
 	}
 	$show_result = ($result_txt !== '');
-	$txt_w = $show_result ? ($q_w - $result_w - 2) : $q_w;
+	$txt_w = $q_w - $result_w - 2; // siempre reservar columna derecha para alinear
 
 	// ── Encabezado: texto de la pregunta ─────────────────────
 	$hdr_y      = $pdf->GetY();
@@ -415,9 +433,9 @@ foreach ($detalles as $d) {
 	$texto_preg = $d['nro_orden'] . '. ' . pdf_text($d['texto_pregunta']) . $area_sufijo;
 
 	$pdf->SetXY($q_inner_x, $hdr_y);
-	$pdf->SetFillColor(242, 242, 242);
+	$pdf->SetFillColor(247, 248, 250);
 	$pdf->SetFont('Arial', '', 8.5);
-	$pdf->SetTextColor(20, 20, 20);
+	$pdf->SetTextColor(55, 58, 62);
 	$pdf->MultiCell($txt_w, 5.5, $texto_preg, 0, 'L', true);
 	$hdr_end_y = $pdf->GetY();
 	$hdr_h     = $hdr_end_y - $hdr_y;
@@ -427,7 +445,7 @@ foreach ($detalles as $d) {
 		$res_x = $q_inner_x + $txt_w + 2;
 		$res_w = $result_w - 2;
 		// Fondo igual al header
-		$pdf->SetFillColor(242, 242, 242);
+		$pdf->SetFillColor(247, 248, 250);
 		$pdf->Rect($res_x, $hdr_y, $res_w, $hdr_h, 'F');
 		// Valor en color del nivel
 		$pdf->SetFont('Arial', 'B', 9);
@@ -461,21 +479,21 @@ foreach ($detalles as $d) {
 				$pdf->SetFillColor($bg, $bg, $bg);
 				$pdf->Rect($q_inner_x, $ry, $q_w, 5, 'F');
 				$pdf->SetFont('Arial', '', 8);
-				$pdf->SetTextColor(30, 30, 30);
+				$pdf->SetTextColor(62, 65, 68);
 				$pdf->SetXY($q_inner_x + 2, $ry + 0.5);
 				$pdf->Cell($q_w - 22, 4, pdf_text($op['texto_opcion']), 0, 0, 'L');
 				$badge_bx = $q_inner_x + $q_w - 18;
 				$pdf->SetFont('Arial', 'B', 7);
 				if ($op['valor_elegido']) {
-					$pdf->SetFillColor(212, 239, 223); // verde claro
+					$pdf->SetFillColor(220, 242, 231); // verde claro
 					$pdf->Rect($badge_bx, $ry + 0.8, 16, 3.5, 'F');
-					$pdf->SetTextColor(30, 132, 73);   // verde oscuro
+					$pdf->SetTextColor(48, 148, 90);   // verde oscuro
 					$pdf->SetXY($badge_bx, $ry + 0.8);
 					$pdf->Cell(16, 3.5, 'S' . chr(237), 0, 0, 'C');
 				} else {
-					$pdf->SetFillColor(245, 183, 177); // rojo claro
+					$pdf->SetFillColor(248, 205, 200); // rojo claro
 					$pdf->Rect($badge_bx, $ry + 0.8, 16, 3.5, 'F');
-					$pdf->SetTextColor(192, 57, 43);   // rojo oscuro
+					$pdf->SetTextColor(195, 80, 68);   // rojo oscuro
 					$pdf->SetXY($badge_bx, $ry + 0.8);
 					$pdf->Cell(16, 3.5, 'No', 0, 0, 'C');
 				}

@@ -65,8 +65,8 @@ html, body {
 .enc-slide {
 	display: none;
 	width: 100%;
-	max-width: 540px;
-	padding: 12px 10px 10px; /* menos margen lateral en mobile */
+	max-width: 700px;
+	padding: 16px 14px 12px; /* menos margen lateral en mobile */
 	animation: fadeIn .25s ease;
 }
 .enc-slide.activo { display: flex; flex-direction: column; }
@@ -111,23 +111,23 @@ html, body {
 .enc-pregunta-card {
 	background: var(--color-blanco);
 	border-radius: var(--radio);
-	padding: 22px 18px 18px;
+	padding: 30px 26px 24px;
 	box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 	width: 100%;
 }
 .enc-pregunta-nro {
-	font-size: 11px;
+	font-size: 12px;
 	color: var(--color-gris);
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
-	margin-bottom: 10px;
+	margin-bottom: 14px;
 }
 .enc-pregunta-texto {
-	font-size: 18px;
+	font-size: 22px;
 	font-weight: 600;
 	color: var(--color-texto);
 	line-height: 1.45;
-	margin-bottom: 24px;
+	margin-bottom: 28px;
 }
 
 /* ── RESPUESTA: ESCALA 1-10 ───────────────────────────────── */
@@ -359,8 +359,8 @@ html, body {
 
 /* ── RESPONSIVE ───────────────────────────────────────────── */
 @media (min-width: 480px) {
-	.enc-slide { padding: 16px 20px 10px; }
-	.enc-pregunta-texto { font-size: 19px; }
+	.enc-slide { padding: 20px 24px 14px; }
+	.enc-pregunta-texto { font-size: 23px; }
 	.enc-escala {
 		grid-template-columns: repeat(10, 1fr);
 		gap: 8px;
@@ -368,9 +368,9 @@ html, body {
 	.enc-escala-btn { font-size: 17px; }
 }
 @media (min-width: 768px) {
-	.enc-slide { padding: 20px 24px 16px; }
-	.enc-pregunta-card { padding: 28px 26px 22px; }
-	.enc-pregunta-texto { font-size: 21px; }
+	.enc-slide { padding: 24px 30px 18px; }
+	.enc-pregunta-card { padding: 36px 32px 28px; }
+	.enc-pregunta-texto { font-size: 25px; }
 	.enc-bienvenida-icono img { max-height: 72px; }
 	.enc-escala-btn { font-size: 19px; }
 }
