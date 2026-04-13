@@ -14,27 +14,35 @@ const State = {
         idgrupo: 0, idmodelo: 0,
         id_area: 0
     },
-    charts: {}
+    charts: {},
+    niveles: []   // cargado desde enc_niveles vía filters API
 };
 
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
-// ── Colores ──────────────────────────────────────────────────
+// ── Colores — dinámico según enc_niveles ─────────────────────
 function scoreColor(val) {
-    if (val === null || val === undefined) return '#6b7394';
-    if (val >= 8) return '#63c795';
-    if (val >= 6) return '#f1a84e';
+    if (val === null || val === undefined || isNaN(parseFloat(val))) return '#6b7394';
+    const v = parseFloat(val);
+    if (State.niveles && State.niveles.length > 0) {
+        for (const n of State.niveles) {
+            if (v >= n.desde && v <= n.hasta) return n.color;
+        }
+    }
+    // Fallback si enc_niveles está vacío
+    if (v >= 8) return '#63c795';
+    if (v >= 6) return '#f1a84e';
     return '#e05c5c';
 }
 
 // ── Init ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
     restoreTheme();
-    loadFilters();
     initCharts();
     initDataTable();
     bindEvents();
-    applyFilters();
+    // loadFilters primero para tener State.niveles antes de renderizar
+    loadFilters().then(applyFilters);
 });
 
 // ── Tema ─────────────────────────────────────────────────────
@@ -72,7 +80,10 @@ function refreshChartsTheme(theme) {
 
 // ── Cargar filtros desde API ──────────────────────────────────
 function loadFilters() {
-    $.get(API, { action: 'filters' }, function (data) {
+    return $.get(API, { action: 'filters' }, function (data) {
+        // Guardar niveles en State para scoreColor() dinámico
+        State.niveles = data.niveles || [];
+
         populateSelect('f-sucursal', data.sucursales, 'Todas');
         populateSelect('f-asesor',   data.asesores,   'Todos');
         populateSelect('f-grupo',    data.grupos,     'Todos');
@@ -154,30 +165,43 @@ function showLoading(show) {
 
 // ── KPIs ──────────────────────────────────────────────────────
 function renderKpis(data) {
-    // Tarjeta promedio general
+    // Promedio general
     const prom = data.promedio !== null ? parseFloat(data.promedio).toFixed(1) : '—';
     $('#kpi-promedio').text(prom);
     $('#kpi-promedio-card').css('border-top-color', scoreColor(parseFloat(prom)));
 
+    // Total encuestas
     $('#kpi-total').text(data.total ?? '—');
-    $('#kpi-exc').text((data.pct_exc ?? 0) + '%');
-    $('#kpi-exc-sub').text(data.excelentes + ' encuestas ≥ 9');
-    $('#kpi-reg').text((data.pct_reg ?? 0) + '%');
-    $('#kpi-reg-sub').text(data.regulares + ' encuestas < 7');
+
+    // Tarjetas de nivel — dinámicas desde enc_niveles
+    $('#kpi-row .kpi-card-nivel').remove();
+    (data.niveles || []).forEach(n => {
+        const col = n.color || '#4e9af1';
+        const sub = n.cantidad + ' enc. · ' + parseFloat(n.desde).toFixed(1) + '–' + parseFloat(n.hasta).toFixed(1);
+        $('#kpi-row').append(
+            `<div class="kpi-card kpi-card-nivel" style="border-top-color:${col}">
+                <i class="fa fa-circle kpi-icon" style="color:${col};font-size:18px;opacity:.75;"></i>
+                <div class="kpi-label" style="color:${col}">${escHtml(n.nombre)}</div>
+                <div class="kpi-value" style="color:${col}">${n.pct}%</div>
+                <div class="kpi-sub">${sub}</div>
+            </div>`
+        );
+    });
 
     // Áreas dinámicas
-    const $row = $('#areas-row').empty();
+    const $areasRow = $('#areas-row').empty();
     if (data.areas && data.areas.length > 0) {
         data.areas.forEach(ar => {
             const val = ar.promedio !== null ? parseFloat(ar.promedio).toFixed(1) : '—';
             const col = ar.color || '#4e9af1';
             const tc  = scoreColor(parseFloat(val));
-            $row.append(`
-                <div class="area-kpi-card" style="border-top-color:${col}">
+            $areasRow.append(
+                `<div class="area-kpi-card" style="border-top-color:${col}">
                     <div class="area-kpi-label" style="color:${col}">${escHtml(ar.nombre)}</div>
                     <div class="area-kpi-value" style="color:${tc}">${val}</div>
                     <div class="area-kpi-sub">${ar.total} encuestas</div>
-                </div>`);
+                </div>`
+            );
         });
         $('#areas-section').show();
     } else {

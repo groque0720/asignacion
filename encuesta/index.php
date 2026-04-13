@@ -14,6 +14,16 @@ conectar();
 
 $sec = isset($_GET['sec']) ? $_GET['sec'] : 'entregas';
 if (!in_array($sec, ['entregas', 'config', 'resultados'])) $sec = 'entregas';
+// Solo perfil autorizado puede acceder a la configuración
+if ($sec === 'config' && !in_array($_SESSION["id"], ENCUESTA_USUARIOS_CONFIG)) $sec = 'entregas';
+
+// Filtro sucursal: default = sucursal del usuario; 0 = todas
+$filtro_sucursal = isset($_GET['suc']) ? (int)$_GET['suc'] : (int)$_SESSION["idsuc"];
+
+// Lista de sucursales para el dropdown
+$sucursales_list = [];
+$res_suc = mysqli_query($con, "SELECT idsucursal, sucursal FROM sucursales ORDER BY sucursal ASC");
+while ($s = mysqli_fetch_array($res_suc)) $sucursales_list[] = $s;
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -50,9 +60,11 @@ if (!in_array($sec, ['entregas', 'config', 'resultados'])) $sec = 'entregas';
 	<a href="index.php?sec=entregas"  class="enc-nav-item <?php if($sec=='entregas')  echo 'activo'; ?>">
 		<span class="icon-auto"></span> Entregas
 	</a>
+	<?php if (in_array($_SESSION["id"], ENCUESTA_USUARIOS_CONFIG)): ?>
 	<a href="index.php?sec=config"    class="enc-nav-item <?php if($sec=='config')    echo 'activo'; ?>">
 		<span class="icon-cogs"></span> Configurar Encuesta
 	</a>
+	<?php endif; ?>
 	<a href="resultados/dashboard.php" class="enc-nav-item">
 		<span class="icon-line-chart"></span> Resultados
 	</a>

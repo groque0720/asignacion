@@ -1,5 +1,7 @@
 <?php
 // ── Tab: Resultados ────────────────────────────────────────
+$where_suc_r = $filtro_sucursal > 0 ? "AND a.id_sucursal = $filtro_sucursal" : "";
+
 $SQL = "SELECT
 			r.id_respuesta,
 			r.fecha_completada,
@@ -18,18 +20,28 @@ $SQL = "SELECT
 		LEFT JOIN grupos    g  ON a.id_grupo        = g.idgrupo
 		LEFT JOIN sucursales s ON a.id_sucursal     = s.idsucursal
 		JOIN enc_encuestas  e  ON r.id_encuesta     = e.id_encuesta
+		WHERE 1=1 $where_suc_r
 		ORDER BY r.fecha_completada DESC
 		LIMIT 200";
 $resultados = mysqli_query($con, $SQL);
 
-// Promedio global
-$SQL_prom = "SELECT AVG(resultado_promedio) AS prom_global, COUNT(*) AS total FROM enc_respuestas";
+// Promedio global (respetando filtro de sucursal)
+if ($filtro_sucursal > 0) {
+	$SQL_prom = "SELECT AVG(r.resultado_promedio) AS prom_global, COUNT(*) AS total
+				 FROM enc_respuestas r
+				 JOIN asignaciones a ON r.id_asignacion = a.id_unidad
+				 WHERE a.id_sucursal = $filtro_sucursal";
+} else {
+	$SQL_prom = "SELECT AVG(resultado_promedio) AS prom_global, COUNT(*) AS total FROM enc_respuestas";
+}
 $res_prom = mysqli_query($con, $SQL_prom);
 $prom_data = mysqli_fetch_array($res_prom);
 $prom_global = $prom_data['prom_global'] !== null ? number_format($prom_data['prom_global'], 1) : '-';
 $total_resp  = $prom_data['total'];
 
-// Promedio por área (global, todas las respuestas)
+// Promedio por área (respetando filtro de sucursal)
+$join_suc_areas  = $filtro_sucursal > 0 ? "JOIN asignaciones a ON r.id_asignacion = a.id_unidad" : "";
+$where_suc_areas = $filtro_sucursal > 0 ? "AND a.id_sucursal = $filtro_sucursal" : "";
 $SQL_prom_areas = "SELECT ar.nombre AS area, ar.color,
 						  ROUND(AVG(d.respuesta_valor), 1) AS promedio,
 						  COUNT(DISTINCT r.id_respuesta) AS total_resp
@@ -37,7 +49,8 @@ $SQL_prom_areas = "SELECT ar.nombre AS area, ar.color,
 				   JOIN enc_preguntas p  ON p.id_area = ar.id_area AND p.baja = 0
 				   JOIN enc_respuestas_detalle d ON d.id_pregunta = p.id_pregunta AND d.mostrada = 1
 				   JOIN enc_respuestas r ON d.id_respuesta = r.id_respuesta
-				   WHERE p.pondera = 1
+				   $join_suc_areas
+				   WHERE p.pondera = 1 $where_suc_areas
 				   GROUP BY ar.id_area, ar.nombre, ar.color
 				   ORDER BY ar.nro_orden ASC";
 $res_prom_areas = mysqli_query($con, $SQL_prom_areas);
@@ -47,7 +60,23 @@ while ($a = mysqli_fetch_array($res_prom_areas)) $areas_stats[] = $a;
 
 <div class="enc-sec-header">
 	<span class="enc-sec-titulo"><span class="icon-line-chart"></span> Resultados de Encuestas</span>
+	<div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+		<label for="filtro_suc_resultados" style="font-size:12px;color:#555;">Sucursal:</label>
+		<select id="filtro_suc_resultados" class="enc-select-filtro">
+			<option value="0" <?php if ($filtro_sucursal == 0) echo 'selected'; ?>>Todas</option>
+			<?php foreach ($sucursales_list as $s): ?>
+			<option value="<?php echo $s['idsucursal']; ?>" <?php if ($filtro_sucursal == $s['idsucursal']) echo 'selected'; ?>>
+				<?php echo htmlspecialchars($s['sucursal']); ?>
+			</option>
+			<?php endforeach; ?>
+		</select>
+	</div>
 </div>
+<script>
+$("#filtro_suc_resultados").on("change", function(){
+	window.location = "index.php?sec=resultados&suc=" + $(this).val();
+});
+</script>
 
 <!-- RESUMEN GLOBAL -->
 <div style="display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;">

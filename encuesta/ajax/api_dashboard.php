@@ -3,6 +3,9 @@
  * api_dashboard.php — API JSON del Dashboard de Encuestas
  * Todos los datos pasan por aquí. 100% dinámico: áreas y preguntas se leen de DB.
  */
+// Endpoint JSON: nunca mostrar notices/warnings en la respuesta
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', '0');
 
 include("../funciones/func_mysql.php");
 conectar();
@@ -34,17 +37,29 @@ switch ($action) {
 }
 
 // =============================================================
+// HELPER: niveles de resultado desde enc_niveles
+// =============================================================
+function get_niveles(): array
+{
+    global $con;
+    $res = mysqli_query($con, "SELECT id_nivel, nombre, valor_desde, valor_hasta, color FROM enc_niveles ORDER BY valor_desde DESC");
+    $niveles = [];
+    while ($n = mysqli_fetch_assoc($res)) $niveles[] = $n;
+    return $niveles;
+}
+
+// =============================================================
 // BASE FROM: JOINs compartidos por todas las queries
 // =============================================================
 function base_from(): string
 {
     return "FROM enc_respuestas r
-    JOIN enc_tokens t     ON r.id_token       = t.id_token
-    JOIN asignaciones a   ON r.id_asignacion  = a.id_unidad
-    JOIN usuarios u       ON a.id_asesor      = u.idusuario
-    LEFT JOIN grupos g    ON a.id_grupo       = g.idgrupo
-    LEFT JOIN modelos m   ON a.id_modelo      = m.idmodelo
-    LEFT JOIN sucursales s ON a.id_sucursal   = s.idsucursal
+    LEFT JOIN enc_tokens t  ON r.id_token      = t.id_token
+    LEFT JOIN asignaciones a ON r.id_asignacion = a.id_unidad
+    LEFT JOIN usuarios u    ON a.id_asesor      = u.idusuario
+    LEFT JOIN grupos g      ON a.id_grupo       = g.idgrupo
+    LEFT JOIN modelos m     ON a.id_modelo      = m.idmodelo
+    LEFT JOIN sucursales s  ON a.id_sucursal    = s.idsucursal
     WHERE 1=1";
 }
 
@@ -209,7 +224,18 @@ function get_filters(): array
     $anios = [];
     while ($row = mysqli_fetch_assoc($r)) $anios[] = intval($row['anio']);
 
-    return compact('sucursales', 'asesores', 'grupos', 'modelos', 'areas', 'anios');
+    // Niveles de resultado (para colorear scores dinámicamente en el cliente)
+    $niveles = [];
+    foreach (get_niveles() as $n) {
+        $niveles[] = [
+            'nombre' => $n['nombre'],
+            'color'  => $n['color'],
+            'desde'  => (float)$n['valor_desde'],
+            'hasta'  => (float)$n['valor_hasta'],
+        ];
+    }
+
+    return compact('sucursales', 'asesores', 'grupos', 'modelos', 'areas', 'anios', 'niveles');
 }
 
 // =============================================================
@@ -223,21 +249,37 @@ function get_kpis(): array
     $sc     = score_expr();
     $aj     = area_join();
 
-    $sql = "SELECT
-        COUNT(*) AS total,
-        ROUND(AVG($sc), 2) AS promedio,
-        SUM(CASE WHEN $sc >= 9   THEN 1 ELSE 0 END) AS excelentes,
-        SUM(CASE WHEN $sc >= 7 AND $sc < 9 THEN 1 ELSE 0 END) AS buenas,
-        SUM(CASE WHEN $sc < 7   THEN 1 ELSE 0 END) AS regulares
-    " . base_from() . $aj . $where;
+    // Construir SELECT dinámico: COUNT + AVG + un SUM por cada nivel
+    $niveles_def = get_niveles();
+    $nivel_selects = [];
+    foreach ($niveles_def as $i => $n) {
+        $desde = number_format((float)$n['valor_desde'], 4, '.', '');
+        $hasta = number_format((float)$n['valor_hasta'], 4, '.', '');
+        $nivel_selects[] = "SUM(CASE WHEN $sc >= $desde AND $sc <= $hasta THEN 1 ELSE 0 END) AS niv$i";
+    }
+    $sel_extra = empty($nivel_selects) ? '' : ', ' . implode(', ', $nivel_selects);
+
+    $sql = "SELECT COUNT(*) AS total, ROUND(AVG($sc), 2) AS promedio$sel_extra "
+         . base_from() . $aj . $where;
 
     $row = exec_one($sql, $params, $types);
 
-    $total     = intval($row['total'] ?? 0);
-    $promedio  = $row['promedio'] !== null ? round((float)$row['promedio'], 1) : null;
-    $excelentes = intval($row['excelentes'] ?? 0);
-    $buenas     = intval($row['buenas'] ?? 0);
-    $regulares  = intval($row['regulares'] ?? 0);
+    $total    = intval($row['total'] ?? 0);
+    $promedio = isset($row['promedio']) && $row['promedio'] !== null ? round((float)$row['promedio'], 1) : null;
+
+    // Armar array de niveles con cantidad y porcentaje
+    $niveles_kpi = [];
+    foreach ($niveles_def as $i => $n) {
+        $cnt = intval($row["niv$i"] ?? 0);
+        $niveles_kpi[] = [
+            'nombre'   => $n['nombre'],
+            'color'    => $n['color'],
+            'desde'    => (float)$n['valor_desde'],
+            'hasta'    => (float)$n['valor_hasta'],
+            'cantidad' => $cnt,
+            'pct'      => $total > 0 ? round($cnt / $total * 100, 1) : 0,
+        ];
+    }
 
     // Áreas dinámicas: una tarjeta por área
     $params2 = []; $types2 = '';
@@ -266,15 +308,10 @@ function get_kpis(): array
     }
 
     return [
-        "total"      => $total,
-        "promedio"   => $promedio,
-        "excelentes" => $excelentes,
-        "pct_exc"    => $total > 0 ? round($excelentes / $total * 100, 1) : 0,
-        "buenas"     => $buenas,
-        "pct_bue"    => $total > 0 ? round($buenas / $total * 100, 1) : 0,
-        "regulares"  => $regulares,
-        "pct_reg"    => $total > 0 ? round($regulares / $total * 100, 1) : 0,
-        "areas"      => $areas
+        "total"    => $total,
+        "promedio" => $promedio,
+        "niveles"  => $niveles_kpi,
+        "areas"    => $areas,
     ];
 }
 
@@ -411,46 +448,36 @@ function get_chart_areas(): array
 }
 
 // =============================================================
-// ACTION: chart_dist — distribución de puntajes en buckets
+// ACTION: chart_dist — distribución de puntajes usando enc_niveles
 // =============================================================
 function get_chart_dist(): array
 {
+    $niveles_def = get_niveles();
+    if (empty($niveles_def)) {
+        return ['labels' => [], 'cantidades' => [], 'colores' => []];
+    }
+
     $params = []; $types = '';
     $where  = build_where($params, $types);
     $sc     = score_expr();
     $aj     = area_join();
 
-    $sql = "SELECT
-        CASE
-            WHEN $sc >= 9              THEN '9-10 Excelente'
-            WHEN $sc >= 7 AND $sc < 9  THEN '7-8 Bueno'
-            WHEN $sc >= 5 AND $sc < 7  THEN '5-6 Regular'
-            ELSE                            '1-4 Bajo'
-        END AS bucket,
-        CASE
-            WHEN $sc >= 9              THEN 4
-            WHEN $sc >= 7 AND $sc < 9  THEN 3
-            WHEN $sc >= 5 AND $sc < 7  THEN 2
-            ELSE                            1
-        END AS orden,
-        COUNT(*) AS cantidad
-    " . base_from() . $aj . $where . "
-    GROUP BY bucket, orden
-    ORDER BY orden ASC";
+    // Un SUM por cada nivel definido
+    $select_parts = [];
+    foreach ($niveles_def as $i => $n) {
+        $desde = number_format((float)$n['valor_desde'], 4, '.', '');
+        $hasta = number_format((float)$n['valor_hasta'], 4, '.', '');
+        $select_parts[] = "SUM(CASE WHEN $sc >= $desde AND $sc <= $hasta THEN 1 ELSE 0 END) AS niv$i";
+    }
+    $sql = "SELECT " . implode(', ', $select_parts) . " " . base_from() . $aj . $where;
 
-    $rows = exec_q($sql, $params, $types);
+    $row = exec_one($sql, $params, $types);
 
     $labels = []; $cantidades = []; $colores = [];
-    $color_map = [
-        '1-4 Bajo'       => '#e05c5c',
-        '5-6 Regular'    => '#f1a84e',
-        '7-8 Bueno'      => '#4e9af1',
-        '9-10 Excelente' => '#63c795',
-    ];
-    foreach ($rows as $r) {
-        $labels[]     = $r['bucket'];
-        $cantidades[] = intval($r['cantidad']);
-        $colores[]    = $color_map[$r['bucket']] ?? '#9fa8c0';
+    foreach ($niveles_def as $i => $n) {
+        $labels[]     = $n['nombre'];
+        $cantidades[] = intval($row["niv$i"] ?? 0);
+        $colores[]    = $n['color'] ?: '#4e9af1';
     }
 
     return compact('labels', 'cantidades', 'colores');

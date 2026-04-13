@@ -18,4 +18,7 @@ define('ENCUESTA_FECHA_DESDE', '2023/01/01');
 // Perfiles con acceso al panel admin del módulo
 define('ENCUESTA_PERFILES', [1, 5, 14]);
 
+// Usuarios (idusuario) con permiso para configurar encuestas (crear, editar, preguntas, áreas, niveles)
+define('ENCUESTA_USUARIOS_CONFIG', [11]);
+
 ?>

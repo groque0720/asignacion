@@ -1,5 +1,6 @@
 <?php
 // ── Tab: Configuración de Encuestas ───────────────────────
+if (!in_array($_SESSION["id"], ENCUESTA_USUARIOS_CONFIG)) { echo "<p>Sin autorización.</p>"; return; }
 $SQL = "SELECT * FROM enc_encuestas WHERE baja = 0 ORDER BY fecha_creacion DESC";
 $encuestas = mysqli_query($con, $SQL);
 ?>

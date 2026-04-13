@@ -1,5 +1,7 @@
 <?php
 // ── Tab: Lista de Entregas ─────────────────────────────────
+$where_suc = $filtro_sucursal > 0 ? "AND a.id_sucursal = $filtro_sucursal" : "";
+
 $SQL = "SELECT
 			a.id_unidad,
 			a.fec_entrega,
@@ -23,6 +25,7 @@ $SQL = "SELECT
 		  AND a.borrar    = 0
 		  AND a.guardado  = 1
 		  AND a.fec_entrega >= '".ENCUESTA_FECHA_DESDE."'
+		  $where_suc
 		ORDER BY a.fec_entrega DESC
 		LIMIT 200";
 $entregas = mysqli_query($con, $SQL);
@@ -36,7 +39,23 @@ $tipos_estado = [
 
 <div class="enc-sec-header">
 	<span class="enc-sec-titulo"><span class="icon-auto"></span> Entregas con Encuesta Pendiente</span>
+	<div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+		<label for="filtro_suc_entregas" style="font-size:12px;color:#555;">Sucursal:</label>
+		<select id="filtro_suc_entregas" class="enc-select-filtro">
+			<option value="0" <?php if ($filtro_sucursal == 0) echo 'selected'; ?>>Todas</option>
+			<?php foreach ($sucursales_list as $s): ?>
+			<option value="<?php echo $s['idsucursal']; ?>" <?php if ($filtro_sucursal == $s['idsucursal']) echo 'selected'; ?>>
+				<?php echo htmlspecialchars($s['sucursal']); ?>
+			</option>
+			<?php endforeach; ?>
+		</select>
+	</div>
 </div>
+<script>
+$("#filtro_suc_entregas").on("change", function(){
+	window.location = "index.php?sec=entregas&suc=" + $(this).val();
+});
+</script>
 
 <table class="enc-tabla">
 	<thead>

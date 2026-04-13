@@ -2,7 +2,7 @@
 @session_start();
 if ($_SESSION["autentificado"] != "SI") { echo "Sin autorización."; exit(); }
 include_once("../config.php");
-if (!in_array($_SESSION["idperfil"], ENCUESTA_PERFILES)) { echo "Sin autorización."; exit(); }
+if (!in_array($_SESSION["id"], ENCUESTA_USUARIOS_CONFIG)) { echo "Sin autorización."; exit(); }
 include_once("../funciones/func_mysql.php");
 conectar();
 

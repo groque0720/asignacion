@@ -80,6 +80,18 @@ body {
 	color: #1a5276;
 }
 
+/* ── FILTRO SUCURSAL ─────────────────────────────────────── */
+.enc-select-filtro {
+	font-size: 12px;
+	padding: 4px 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: #fff;
+	color: #333;
+	cursor: pointer;
+}
+.enc-select-filtro:focus { outline: none; border-color: #2980b9; }
+
 /* ── BOTONES ──────────────────────────────────────────────── */
 .btn-enc {
 	display: inline-flex;

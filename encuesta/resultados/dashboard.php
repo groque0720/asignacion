@@ -146,26 +146,14 @@ $anio_actual = intval(date('Y'));
             <div class="kpi-sub">escala 0 – 10</div>
         </div>
 
-        <div class="kpi-card">
+        <div class="kpi-card" id="kpi-total-card">
             <i class="fa fa-clipboard-check kpi-icon"></i>
             <div class="kpi-label">Encuestas completadas</div>
             <div class="kpi-value" id="kpi-total">—</div>
             <div class="kpi-sub">respuestas recibidas</div>
         </div>
 
-        <div class="kpi-card">
-            <i class="fa fa-face-smile kpi-icon"></i>
-            <div class="kpi-label">Alta satisfacción</div>
-            <div class="kpi-value" id="kpi-exc">—</div>
-            <div class="kpi-sub" id="kpi-exc-sub">encuestas ≥ 9</div>
-        </div>
-
-        <div class="kpi-card">
-            <i class="fa fa-face-frown kpi-icon"></i>
-            <div class="kpi-label">A mejorar</div>
-            <div class="kpi-value" id="kpi-reg">—</div>
-            <div class="kpi-sub" id="kpi-reg-sub">encuestas &lt; 7</div>
-        </div>
+        <!-- Tarjetas de niveles — renderizadas dinámicamente desde enc_niveles -->
 
     </div><!-- /kpi-row -->
 

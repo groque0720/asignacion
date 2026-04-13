@@ -128,7 +128,7 @@ body {
 /* ── KPI Cards ───────────────────────────────────────── */
 #kpi-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1rem; margin-bottom: 1.25rem;
 }
 .kpi-card {
@@ -158,15 +158,11 @@ body {
     position: absolute; top: 14px; right: 14px;
     font-size: 22px; opacity: .15;
 }
-/* Colores por posición */
-.kpi-card:nth-child(1) { border-top-color: var(--accent-green); }
-.kpi-card:nth-child(1) .kpi-value, .kpi-card:nth-child(1) .kpi-icon { color: var(--accent-green); }
-.kpi-card:nth-child(2) { border-top-color: var(--accent-blue); }
-.kpi-card:nth-child(2) .kpi-value, .kpi-card:nth-child(2) .kpi-icon { color: var(--accent-blue); }
-.kpi-card:nth-child(3) { border-top-color: var(--accent-cyan); }
-.kpi-card:nth-child(3) .kpi-value, .kpi-card:nth-child(3) .kpi-icon { color: var(--accent-cyan); }
-.kpi-card:nth-child(4) { border-top-color: var(--accent-red); }
-.kpi-card:nth-child(4) .kpi-value, .kpi-card:nth-child(4) .kpi-icon { color: var(--accent-red); }
+/* Colores para las 2 tarjetas fijas */
+#kpi-promedio-card { border-top-color: var(--accent-green); }
+#kpi-promedio-card .kpi-value, #kpi-promedio-card .kpi-icon { color: var(--accent-green); }
+#kpi-total-card { border-top-color: var(--accent-blue); }
+#kpi-total-card .kpi-value, #kpi-total-card .kpi-icon { color: var(--accent-blue); }
 
 /* ── KPI Áreas (dinámicas) ───────────────────────────── */
 #areas-row {
@@ -296,12 +292,11 @@ table.dataTable tbody td {
 }
 .kpi-card:nth-child(1) { animation-delay: 0s; }
 .kpi-card:nth-child(2) { animation-delay: .05s; }
-.kpi-card:nth-child(3) { animation-delay: .1s; }
-.kpi-card:nth-child(4) { animation-delay: .15s; }
+.kpi-card:nth-child(n+3) { animation-delay: .1s; }
 
 /* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 1200px) {
-    #kpi-row { grid-template-columns: repeat(2, 1fr); }
+    #kpi-row { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
     .charts-row-3 { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 900px) {

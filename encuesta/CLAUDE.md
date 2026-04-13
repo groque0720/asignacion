@@ -199,9 +199,12 @@ Ejemplo: Pregunta 2 tiene `cond_id_preg_ref=1`, `cond_operador='<'`, `cond_valor
 
 ## Perfiles con Acceso al Panel Admin
 
-Por ahora: `idperfil IN (1, 5)`
+`ENCUESTA_PERFILES` (acceso general — entregas y resultados): `idperfil IN (1, 5, 11, 14)`
+`ENCUESTA_PERFILES_CONFIG` (configurar encuesta, preguntas, áreas, niveles): `idperfil IN (11)`
 - Perfil 1: admin general
 - Perfil 5: operador asignación
+- Perfil 11: configurador de encuesta
+- Perfil 14: acceso adicional
 
 Futuro (no implementar todavía):
 - Asesores: ver sus propias encuestas
@@ -339,7 +342,8 @@ Cada pregunta puede tener asignada un **área responsable** (`enc_areas`):
 |-------|----------|
 | `con_encuesta` | 0=sin generar, 1=pendiente, 2=completada |
 | Generación de token | Automática al abrir `puente.php` |
-| Perfiles de acceso | `idperfil IN (1, 5, 14)` |
+| Perfiles de acceso general | `ENCUESTA_PERFILES = [1, 5, 11, 14]` |
+| Perfiles configuración | `ENCUESTA_PERFILES_CONFIG = [11]` |
 | Lógica condicional | Condición en pregunta destino, evaluada en JS |
 | Selección múltiple ponderación | (seleccionadas/total) × 10 |
 | Lista si/no ponderación | NO pondera |

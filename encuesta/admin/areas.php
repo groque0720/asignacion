@@ -2,7 +2,7 @@
 @session_start();
 if ($_SESSION["autentificado"] != "SI") { header("Location: ../../login"); exit(); }
 include_once("../config.php");
-if (!in_array($_SESSION["idperfil"], ENCUESTA_PERFILES)) { header("Location: ../../login"); exit(); }
+if (!in_array($_SESSION["id"], ENCUESTA_USUARIOS_CONFIG)) { header("Location: ../../login"); exit(); }
 include_once("../funciones/func_mysql.php");
 conectar();
 
