@@ -45,14 +45,24 @@ $res_det = mysqli_query($con, $SQL_det);
 $detalles = [];
 while ($d = mysqli_fetch_array($res_det)) {
 	$d['opciones_resp'] = [];
-	if (in_array($d['tipo_pregunta'], [3, 4])) {
-		$SQL_op = "SELECT ro.valor_elegido, o.texto_opcion
-				   FROM enc_respuestas_opciones ro
-				   JOIN enc_opciones o ON ro.id_opcion = o.id_opcion
-				   WHERE ro.id_detalle = {$d['id_detalle']} ORDER BY o.nro_orden ASC";
-		$res_op = mysqli_query($con, $SQL_op);
-		while ($op = mysqli_fetch_array($res_op)) $d['opciones_resp'][] = $op;
-	}
+	if ($d['tipo_pregunta'] == 3) {
+			$SQL_op = "SELECT o.texto_opcion,
+						 COALESCE(ro.valor_elegido, 0) AS valor_elegido
+					   FROM enc_opciones o
+					   LEFT JOIN enc_respuestas_opciones ro
+						      ON o.id_opcion = ro.id_opcion AND ro.id_detalle = {$d['id_detalle']}
+					   WHERE o.id_pregunta = {$d['id_pregunta']} AND o.baja = 0
+					   ORDER BY o.nro_orden ASC";
+			$res_op = mysqli_query($con, $SQL_op);
+			while ($op = mysqli_fetch_array($res_op)) $d['opciones_resp'][] = $op;
+		} elseif ($d['tipo_pregunta'] == 4) {
+			$SQL_op = "SELECT ro.valor_elegido, o.texto_opcion
+					   FROM enc_respuestas_opciones ro
+					   JOIN enc_opciones o ON ro.id_opcion = o.id_opcion
+					   WHERE ro.id_detalle = {$d['id_detalle']} ORDER BY o.nro_orden ASC";
+			$res_op = mysqli_query($con, $SQL_op);
+			while ($op = mysqli_fetch_array($res_op)) $d['opciones_resp'][] = $op;
+		}
 	$detalles[] = $d;
 }
 
@@ -461,10 +471,51 @@ foreach ($detalles as $d) {
 	$pdf->SetFillColor($ar, $ag, $ab);
 	$pdf->Rect($q_x, $hdr_y, 3, $pdf->GetY() - $hdr_y, 'F');
 
-	// ── Cuerpo: solo tipo 4 (lista) y tipo 5 (texto libre) ───
+	// ── Cuerpo: tipo 3 (selección múltiple), tipo 4 (lista) y tipo 5 (texto libre) ───
 	$body_y = $pdf->GetY();
 
-	if ($tipo == 4) {
+	if ($tipo == 3) {
+		// Selección múltiple — todas las opciones con marcacion visual (check / tachado)
+		$pdf->SetXY($q_inner_x, $body_y);
+		if (empty($d['opciones_resp'])) {
+			$pdf->SetFont('Arial', 'I', 8);
+			$pdf->SetTextColor(160, 160, 160);
+			$pdf->Cell($q_w, 6, 'Sin opciones definidas.', 0, 1, 'L', true);
+		} else {
+			foreach ($d['opciones_resp'] as $j => $op) {
+				$ry = $pdf->GetY();
+				$pdf->SetFont('Arial', '', 8);
+				$pdf->SetXY($q_inner_x + 2, $ry + 0.5);
+				$badge_bx = $q_inner_x + $q_w - 18;
+				if ($op['valor_elegido']) {
+					// Marcada: texto normal + badge verde con tilde
+					$pdf->SetTextColor(62, 65, 68);
+					$pdf->Cell($q_w - 22, 4, pdf_text($op['texto_opcion']), 0, 0, 'L');
+					$pdf->SetFillColor(220, 242, 231);
+					$pdf->Rect($badge_bx, $ry + 0.8, 16, 3.5, 'F');
+					$pdf->SetFont('Arial', 'B', 7);
+					$pdf->SetTextColor(48, 148, 90);
+					$pdf->SetXY($badge_bx, $ry + 0.8);
+					$pdf->Cell(16, 3.5, 'Si', 0, 0, 'C');
+				} else {
+					// No marcada: texto gris + badge gris neutro
+					$pdf->SetTextColor(170, 170, 175);
+					$pdf->Cell($q_w - 22, 4, pdf_text($op['texto_opcion']), 0, 0, 'L');
+					$pdf->SetFillColor(236, 237, 240);
+					$pdf->Rect($badge_bx, $ry + 0.8, 16, 3.5, 'F');
+					$pdf->SetFont('Arial', '', 7);
+					$pdf->SetTextColor(160, 162, 168);
+					$pdf->SetXY($badge_bx, $ry + 0.8);
+					$pdf->Cell(16, 3.5, 'No', 0, 0, 'C');
+				}
+				$pdf->SetXY($q_inner_x, $ry + 5);
+			}
+		}
+		// Borde izquierdo extendido al cuerpo
+		$pdf->SetFillColor($ar, $ag, $ab);
+		$pdf->Rect($q_x, $body_y, 3, $pdf->GetY() - $body_y, 'F');
+
+	} elseif ($tipo == 4) {
 		// Lista Sí/No — se mantiene completa
 		$pdf->SetXY($q_inner_x, $body_y);
 		if (empty($d['opciones_resp'])) {
@@ -474,10 +525,6 @@ foreach ($detalles as $d) {
 		} else {
 			foreach ($d['opciones_resp'] as $j => $op) {
 				$ry = $pdf->GetY();
-				// Fondo alternado: B&W safe (blanco / gris muy claro)
-				$bg = $j % 2 === 0 ? 248 : 255;
-				$pdf->SetFillColor($bg, $bg, $bg);
-				$pdf->Rect($q_inner_x, $ry, $q_w, 5, 'F');
 				$pdf->SetFont('Arial', '', 8);
 				$pdf->SetTextColor(62, 65, 68);
 				$pdf->SetXY($q_inner_x + 2, $ry + 0.5);

@@ -43,7 +43,18 @@ $res_det = mysqli_query($con, $SQL_det);
 $detalles = [];
 while ($d = mysqli_fetch_array($res_det)) {
 	$d['opciones_resp'] = [];
-	if (in_array($d['tipo_pregunta'], [3, 4])) {
+	if ($d['tipo_pregunta'] == 3) {
+		// Tipo 3: traer TODAS las opciones; LEFT JOIN para saber cuales fueron elegidas
+		$SQL_op = "SELECT o.texto_opcion,
+					 COALESCE(ro.valor_elegido, 0) AS valor_elegido
+				   FROM enc_opciones o
+				   LEFT JOIN enc_respuestas_opciones ro
+					      ON o.id_opcion = ro.id_opcion AND ro.id_detalle = {$d['id_detalle']}
+				   WHERE o.id_pregunta = {$d['id_pregunta']} AND o.baja = 0
+				   ORDER BY o.nro_orden ASC";
+		$res_op = mysqli_query($con, $SQL_op);
+		while ($op = mysqli_fetch_array($res_op)) $d['opciones_resp'][] = $op;
+	} elseif ($d['tipo_pregunta'] == 4) {
 		$SQL_op = "SELECT ro.valor_elegido, o.texto_opcion
 				   FROM enc_respuestas_opciones ro
 				   JOIN enc_opciones o ON ro.id_opcion = o.id_opcion
@@ -217,13 +228,22 @@ function score_color($v) {
 	<?php elseif ($tipo == 3): ?>
 		<div class="rd-cuerpo">
 			<?php if (empty($d['opciones_resp'])): ?>
-				<span class="rd-vacio">Ninguna opción seleccionada.</span>
+				<span class="rd-vacio">Sin opciones definidas.</span>
 			<?php else: ?>
-				<ul class="rd-opciones-lista">
-				<?php foreach ($d['opciones_resp'] as $op): ?>
-					<li><?php echo htmlspecialchars($op['texto_opcion']); ?></li>
+				<table class="rd-lista-sino">
+				<?php foreach ($d['opciones_resp'] as $j => $op): ?>
+					<tr class="<?php echo $j%2==0?'par':'impar'; ?>">
+						<td class="rd-lista-texto"><?php echo htmlspecialchars($op['texto_opcion']); ?></td>
+						<td class="rd-lista-badge">
+							<?php if ($op['valor_elegido']): ?>
+								<span class="rd-badge-si">✓</span>
+							<?php else: ?>
+								<span class="rd-badge-no-sel">✗</span>
+							<?php endif; ?>
+						</td>
+					</tr>
 				<?php endforeach; ?>
-				</ul>
+				</table>
 			<?php endif; ?>
 		</div>
 
