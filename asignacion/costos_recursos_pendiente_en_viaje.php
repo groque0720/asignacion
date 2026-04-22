@@ -102,10 +102,10 @@ $pdf->SetFont('');
 
 
 // $SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE Arribo IS NULL AND pagado_tasa IS true";
-$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE Arribo IS NULL AND pagado_tasa IS true AND  Chasis IS NOT NULL";
+$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE Arribo IS NULL AND pagado_tasa IS true AND Chasis <> ''";
 if (isset($_GET['sucursalId'])) {
 	// $SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE idsucursal = $sucursalId AND Arribo IS NULL AND pagado_tasa IS true";
-	$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE idsucursal = $sucursalId AND Arribo IS NULL AND pagado_tasa IS true AND  Chasis IS NOT NULL";
+	$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE idsucursal = $sucursalId AND Arribo IS NULL AND pagado_tasa IS true AND  Chasis <> ''";
 }
 $unidades = mysqli_query($con, $SQL);
 
