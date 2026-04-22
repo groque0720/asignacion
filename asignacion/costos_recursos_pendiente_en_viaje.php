@@ -196,6 +196,6 @@ $pdf->Cell(20,5,'$ '.number_format($saldo, 0, ',','.'),1,0,'R');
 
 $pdf->Ln();
 
-$pdf->Output('Con_Arribo.pdf','I');
+$pdf->Output('En_viaje.pdf','I');
 $pdf->close();
 ?>
