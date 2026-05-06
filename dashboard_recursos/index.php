@@ -397,7 +397,13 @@ $hora_actual  = date('H:i:s');
         </h2>
         <p class="text-xs text-slate-500 mt-0.5">Inversión en stock arribado, separando unidades con reserva confirmada</p>
       </div>
-      <span class="text-xs bg-violet-50 text-violet-700 px-2 py-1 rounded-md font-medium"><?php echo $total_unidades_arribo; ?> unidades</span>
+      <div class="flex items-center gap-2">
+        <span class="text-xs bg-violet-50 text-violet-700 px-2 py-1 rounded-md font-medium"><?php echo $total_unidades_arribo; ?> unidades</span>
+        <a href="pdf/costo_arribo.php" target="_blank"
+           class="no-print inline-flex items-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-md text-xs font-medium transition-colors">
+          <i class="fas fa-file-pdf"></i> PDF
+        </a>
+      </div>
     </div>
 
     <div class="grid grid-cols-3 gap-4 mb-4">
@@ -754,11 +760,19 @@ $hora_actual  = date('H:i:s');
             </td>
             <td class="py-3 text-right font-mono text-slate-700"><?php echo fmt((float)$r['Saldo']); ?></td>
             <td class="py-3 text-center no-print">
-              <a href="/asignacion/costos_recursos_pendiente_con_arribo.php?sucursalId=<?php echo (int)$r['IdSucursal']; ?>"
-                 target="_blank"
-                 class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 text-xs font-medium hover:underline">
-                <i class="fas fa-file-pdf"></i> Ver
-              </a>
+              <div class="flex items-center justify-center gap-2">
+                <a href="/asignacion/costos_recursos_pendiente_con_arribo.php?sucursalId=<?php echo (int)$r['IdSucursal']; ?>"
+                   target="_blank"
+                   class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 text-xs font-medium hover:underline">
+                  <i class="fas fa-file-pdf"></i> Ver
+                </a>
+                <a href="pdf/costo_arribo.php?sucursalId=<?php echo (int)$r['IdSucursal']; ?>"
+                   target="_blank"
+                   class="inline-flex items-center gap-1 text-violet-600 hover:text-violet-800 text-xs font-medium hover:underline"
+                   title="PDF detallado de costos">
+                  <i class="fas fa-coins"></i> Costo
+                </a>
+              </div>
             </td>
           </tr>
           <?php endforeach; ?>
@@ -781,11 +795,19 @@ $hora_actual  = date('H:i:s');
             </td>
             <td class="py-3 text-right font-mono font-bold text-slate-900"><?php echo fmt($total_con_arribo); ?></td>
             <td class="py-3 text-center no-print">
-              <a href="/asignacion/costos_recursos_pendiente_con_arribo.php"
-                 target="_blank"
-                 class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 text-xs font-medium hover:underline">
-                <i class="fas fa-file-pdf"></i> Todo DyV
-              </a>
+              <div class="flex items-center justify-center gap-2">
+                <a href="/asignacion/costos_recursos_pendiente_con_arribo.php"
+                   target="_blank"
+                   class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 text-xs font-medium hover:underline">
+                  <i class="fas fa-file-pdf"></i> Todo DyV
+                </a>
+                <a href="pdf/costo_arribo.php"
+                   target="_blank"
+                   class="inline-flex items-center gap-1 text-violet-600 hover:text-violet-800 text-xs font-medium hover:underline"
+                   title="PDF detallado de costos">
+                  <i class="fas fa-coins"></i> Costo
+                </a>
+              </div>
             </td>
           </tr>
         </tfoot>
