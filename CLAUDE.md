@@ -29,6 +29,15 @@ Aliases expuestos: `NroUn.` (= `asignaciones.nro_unidad`), `Mes`, `Año`, `Model
 
 > **Saldo = Operacion − Pagos** (con COALESCE 0).
 
+### Vistas hijas (independientes de la maestra)
+**Importante:** las tres vistas hijas no son `SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE ...`. Tienen su propio FROM/JOIN y devuelven solo `IdSucursal`, `Sucursal`, `Saldo` agregado por sucursal. Modificar la maestra **no se propaga** a las hijas.
+
+- **`_no_llegadas`** (KPI "Pendiente Pago TASA"): filtros `pagado = 0`. **No** filtra por `fec_arribo`. Sin JOIN a `modelos`/`grupos`.
+- **`_en_viaje`** (KPI "En Viaje"): `pagado = 1` AND `fec_arribo IS NULL` AND `chasis` no vacío. Inicia desde `sucursales` con LEFT JOIN, así devuelve fila por sucursal aunque no tenga unidades. Sin JOIN a `modelos`.
+- **`_llegadas`** (KPI "Con Arribo"): `pagado = 1` AND `fec_arribo IS NOT NULL` AND `fec_arribo <> ''`. Sin JOIN a `modelos`.
+
+Para mostrar **costo** y **estado_reserva** por sucursal hay que agregarles JOIN con `modelos` y nuevas columnas agregadas.
+
 ### Tabla `asignaciones` (subyacente)
 Columnas relevantes detectadas por uso: `id_unidad`, `id_modelo`, `chasis`, `reservada` (0/1), `estado_reserva` (0=No Confirmada, 1=Confirmada), `entregada`, `borrar`, `cancelada`, `fec_limite`, `fec_reserva`, `fec_arribo`, `fec_despacho`, `fec_playa`, `pagado`, `estado_tasa`, `cliente`, `id_asesor`, `id_color`.
 Ref: [stock_real_sin_vender_pdf.php:155](asignacion/stock_real_sin_vender_pdf.php#L155), [a_transpaso.php:80](asignacion/a_transpaso.php#L80), [unidad.php:293-295](asignacion/unidad.php#L293).

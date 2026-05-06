@@ -8,3 +8,6 @@ planes_avanzados/_keep_session_alive.php
 # Archivos subidos por usuarios
 usados_docs/uploads/*
 !usados_docs/uploads/.htaccess
+
+# Migraciones SQL y backups de vistas — se gestionan localmente
+sql/
