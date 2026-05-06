@@ -18,6 +18,13 @@ $total_pendiente  = 0.0;
 $total_en_viaje   = 0.0;
 $total_con_arribo = 0.0;
 
+// Métricas extra para "Con Arribo": costo de modelos.costo y desglose por estado_reserva.
+$total_costo_arribo              = 0.0;
+$total_costo_arribo_con_reserva  = 0.0;
+$total_costo_arribo_sin_reserva  = 0.0;
+$total_unidades_arribo           = 0;
+$total_unidades_arribo_con_reserva = 0;
+
 $res = mysqli_query($con, "SELECT * FROM view_asignaciones_saldo_pendiente_corregida_no_llegadas");
 if ($res) {
     while ($r = mysqli_fetch_assoc($res)) {
@@ -38,7 +45,12 @@ $res = mysqli_query($con, "SELECT * FROM view_asignaciones_saldo_pendiente_corre
 if ($res) {
     while ($r = mysqli_fetch_assoc($res)) {
         $data_con_arribo[] = $r;
-        $total_con_arribo += (float)$r['Saldo'];
+        $total_con_arribo                 += (float)$r['Saldo'];
+        $total_costo_arribo               += (float)$r['Costo'];
+        $total_costo_arribo_con_reserva   += (float)$r['CostoConReserva'];
+        $total_costo_arribo_sin_reserva   += (float)$r['CostoSinReserva'];
+        $total_unidades_arribo            += (int)$r['Unidades'];
+        $total_unidades_arribo_con_reserva+= (int)$r['UnidadesConReserva'];
     }
 }
 
@@ -371,6 +383,63 @@ $hora_actual  = date('H:i:s');
     </div>
   </div>
 
+  <!-- ── Costo de Unidades con Arribo (con/sin reserva) ─────────────────────── -->
+  <?php
+    $unidades_arribo_sin_reserva = max(0, $total_unidades_arribo - $total_unidades_arribo_con_reserva);
+    $pct_costo_con_reserva = pct($total_costo_arribo_con_reserva, $total_costo_arribo);
+    $pct_costo_sin_reserva = pct($total_costo_arribo_sin_reserva, $total_costo_arribo);
+  ?>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <h2 class="text-sm font-semibold text-slate-800">
+          <i class="fas fa-warehouse text-violet-500 mr-1.5"></i>Costo de Unidades con Arribo
+        </h2>
+        <p class="text-xs text-slate-500 mt-0.5">Inversión en stock arribado, separando unidades con reserva confirmada</p>
+      </div>
+      <span class="text-xs bg-violet-50 text-violet-700 px-2 py-1 rounded-md font-medium"><?php echo $total_unidades_arribo; ?> unidades</span>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 mb-4">
+      <div class="bg-slate-50 rounded-lg p-4 border border-slate-100">
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Costo Total</p>
+        <p class="text-2xl font-bold text-slate-900 mt-1 font-mono"><?php echo fmt($total_costo_arribo); ?></p>
+        <p class="text-xs text-slate-400 mt-0.5"><?php echo fmtM($total_costo_arribo); ?> · <?php echo $total_unidades_arribo; ?> unidades</p>
+      </div>
+
+      <div class="bg-emerald-50 rounded-lg p-4 border border-emerald-100">
+        <p class="text-xs font-semibold text-emerald-700 uppercase tracking-wider">
+          <i class="fas fa-check-circle mr-1"></i>Con Reserva Confirmada
+        </p>
+        <p class="text-2xl font-bold text-emerald-900 mt-1 font-mono"><?php echo fmt($total_costo_arribo_con_reserva); ?></p>
+        <p class="text-xs text-emerald-700 mt-0.5">
+          <?php echo fmtM($total_costo_arribo_con_reserva); ?> · <?php echo $total_unidades_arribo_con_reserva; ?> unid. · <?php echo $pct_costo_con_reserva; ?>%
+        </p>
+      </div>
+
+      <div class="bg-amber-50 rounded-lg p-4 border border-amber-100">
+        <p class="text-xs font-semibold text-amber-700 uppercase tracking-wider">
+          <i class="fas fa-circle-notch mr-1"></i>Sin Reserva
+        </p>
+        <p class="text-2xl font-bold text-amber-900 mt-1 font-mono"><?php echo fmt($total_costo_arribo_sin_reserva); ?></p>
+        <p class="text-xs text-amber-700 mt-0.5">
+          <?php echo fmtM($total_costo_arribo_sin_reserva); ?> · <?php echo $unidades_arribo_sin_reserva; ?> unid. · <?php echo $pct_costo_sin_reserva; ?>%
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex justify-between text-xs text-slate-500 mb-1.5">
+        <span>Distribución del costo</span>
+        <span class="font-semibold text-emerald-700"><?php echo $pct_costo_con_reserva; ?>% reservado</span>
+      </div>
+      <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden flex">
+        <div class="h-full bg-emerald-500 transition-all" style="width:<?php echo $pct_costo_con_reserva; ?>%"></div>
+        <div class="h-full bg-amber-400 transition-all" style="width:<?php echo $pct_costo_sin_reserva; ?>%"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── Gráficos ───────────────────────────────────────────────────────────── -->
   <div class="chart-wrap grid grid-cols-5 gap-5">
 
@@ -653,26 +722,37 @@ $hora_actual  = date('H:i:s');
         <thead>
           <tr class="text-xs text-slate-400 uppercase tracking-wide border-b border-gray-100">
             <th class="text-left py-2.5 font-medium pl-1">Sucursal</th>
+            <th class="text-right py-2.5 font-medium pr-6">Costo Total</th>
+            <th class="text-right py-2.5 font-medium pr-6">Con Reserva</th>
+            <th class="text-right py-2.5 font-medium pr-6">Sin Reserva</th>
+            <th class="text-center py-2.5 font-medium pr-6" style="width:180px;">Reservadas</th>
             <th class="text-right py-2.5 font-medium">Saldo</th>
-            <th class="py-2.5 font-medium text-center" style="width:140px;">Distribución</th>
-            <th class="text-right py-2.5 font-medium pr-4">% Cat.</th>
-            <th class="text-center py-2.5 font-medium">Riesgo</th>
             <th class="text-center py-2.5 font-medium no-print">Detalle</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
           <?php foreach ($data_con_arribo as $r):
-            $p = pct((float)$r['Saldo'], $total_con_arribo); ?>
+            $unid_total      = (int)$r['Unidades'];
+            $unid_res        = (int)$r['UnidadesConReserva'];
+            $costo_suc       = (float)$r['Costo'];
+            $costo_res       = (float)$r['CostoConReserva'];
+            $costo_sin_res   = (float)$r['CostoSinReserva'];
+            $pct_res         = pct($costo_res, $costo_suc); ?>
           <tr class="hover:bg-gray-50 transition-colors">
             <td class="py-3 font-medium text-slate-800 pl-1"><?php echo htmlspecialchars($r['Sucursal']); ?></td>
-            <td class="py-3 text-right font-mono font-semibold text-slate-900"><?php echo fmt((float)$r['Saldo']); ?></td>
-            <td class="py-3 px-3">
-              <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                <div class="h-full bg-violet-400 rounded-full transition-all" style="width:<?php echo $p; ?>%"></div>
+            <td class="py-3 pr-6 text-right font-mono font-semibold text-slate-900"><?php echo fmt($costo_suc); ?></td>
+            <td class="py-3 pr-6 text-right font-mono text-emerald-700"><?php echo fmt($costo_res); ?></td>
+            <td class="py-3 pr-6 text-right font-mono text-amber-700"><?php echo fmt($costo_sin_res); ?></td>
+            <td class="py-3 pr-6 text-center">
+              <div class="flex items-center justify-center gap-2">
+                <span class="text-xs font-semibold text-slate-700"><?php echo $unid_res; ?>/<?php echo $unid_total; ?></span>
+                <div class="w-14 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-500 rounded-full" style="width:<?php echo $pct_res; ?>%"></div>
+                </div>
+                <span class="text-xs text-slate-400"><?php echo $pct_res; ?>%</span>
               </div>
             </td>
-            <td class="py-3 text-right text-slate-500 pr-4"><?php echo $p; ?>%</td>
-            <td class="py-3 text-center"><?php echo riskBadge((float)$r['Saldo'], $total_con_arribo); ?></td>
+            <td class="py-3 text-right font-mono text-slate-700"><?php echo fmt((float)$r['Saldo']); ?></td>
             <td class="py-3 text-center no-print">
               <a href="/asignacion/costos_recursos_pendiente_con_arribo.php?sucursalId=<?php echo (int)$r['IdSucursal']; ?>"
                  target="_blank"
@@ -684,14 +764,22 @@ $hora_actual  = date('H:i:s');
           <?php endforeach; ?>
         </tbody>
         <tfoot>
+          <?php $pct_res_total = pct($total_costo_arribo_con_reserva, $total_costo_arribo); ?>
           <tr class="border-t-2 border-gray-200 bg-violet-50">
             <td class="py-3 font-bold text-slate-800 pl-1">Total DyV</td>
-            <td class="py-3 text-right font-mono font-bold text-slate-900"><?php echo fmt($total_con_arribo); ?></td>
-            <td class="py-3 px-3">
-              <div class="h-2 bg-violet-200 rounded-full"></div>
+            <td class="py-3 pr-6 text-right font-mono font-bold text-slate-900"><?php echo fmt($total_costo_arribo); ?></td>
+            <td class="py-3 pr-6 text-right font-mono font-bold text-emerald-700"><?php echo fmt($total_costo_arribo_con_reserva); ?></td>
+            <td class="py-3 pr-6 text-right font-mono font-bold text-amber-700"><?php echo fmt($total_costo_arribo_sin_reserva); ?></td>
+            <td class="py-3 pr-6 text-center">
+              <div class="flex items-center justify-center gap-2">
+                <span class="text-xs font-bold text-slate-800"><?php echo $total_unidades_arribo_con_reserva; ?>/<?php echo $total_unidades_arribo; ?></span>
+                <div class="w-14 h-1.5 bg-emerald-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-600 rounded-full" style="width:<?php echo $pct_res_total; ?>%"></div>
+                </div>
+                <span class="text-xs font-semibold text-slate-600"><?php echo $pct_res_total; ?>%</span>
+              </div>
             </td>
-            <td class="py-3 text-right font-bold text-slate-600 pr-4">100%</td>
-            <td></td>
+            <td class="py-3 text-right font-mono font-bold text-slate-900"><?php echo fmt($total_con_arribo); ?></td>
             <td class="py-3 text-center no-print">
               <a href="/asignacion/costos_recursos_pendiente_con_arribo.php"
                  target="_blank"
