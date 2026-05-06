@@ -528,3 +528,211 @@ table.dataTable.table-striped tbody tr:nth-of-type(odd) { background-color: rgba
 .kpi-card:nth-child(5) { animation-delay: 0.20s; }
 .kpi-card:nth-child(6) { animation-delay: 0.25s; }
 .kpi-card:nth-child(7) { animation-delay: 0.30s; }
+
+/* ═══════════════════════════════════════════════════
+   Tabs (Mes a Mes / Día a Día)
+   ═══════════════════════════════════════════════════ */
+.mm-card .mm-tabs {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 10px;
+    gap: 4px;
+}
+.mm-card .mm-tabs .nav-link {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+    border-radius: 8px 8px 0 0;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .03em;
+    transition: background 0.15s, color 0.15s;
+}
+.mm-card .mm-tabs .nav-link:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+.mm-card .mm-tabs .nav-link.active {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color) var(--border-color) var(--bg-secondary);
+}
+.mm-card .mm-tabs .nav-link i { margin-right: 6px; }
+
+/* ═══════════════════════════════════════════════════
+   Tab "Día a Día"
+   ═══════════════════════════════════════════════════ */
+.dia-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.dia-mode-toggle {
+    display: inline-flex;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+.dia-mode-toggle button {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 0;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.dia-mode-toggle button:not(:last-child) {
+    border-right: 1px solid var(--border-color);
+}
+.dia-mode-toggle button.active {
+    background: var(--accent-blue);
+    color: #fff;
+}
+.dia-mode-toggle button:hover:not(.active) {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+
+/* Slider del día */
+.dia-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 6px;
+    margin-bottom: 6px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+.dia-slider-row label {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.dia-slider-row label i { color: var(--accent-orange); }
+.dia-slider-row input[type="range"] {
+    flex: 1;
+    min-width: 200px;
+    accent-color: var(--accent-orange);
+    cursor: pointer;
+}
+.dia-slider-value {
+    background: var(--accent-orange);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    min-width: 38px;
+    text-align: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-variant-numeric: tabular-nums;
+}
+.dia-slider-hint {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-style: italic;
+}
+
+/* Sub-título del tab (año filtrado) */
+.dia-titulo-anio {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 500;
+    margin-left: 4px;
+}
+
+.dia-delta-up   { color: var(--accent-green); font-weight: 700; }
+.dia-delta-down { color: var(--accent-red);   font-weight: 700; }
+.dia-delta-zero { color: var(--text-muted); }
+.dia-cell-muted { color: var(--text-muted); font-style: italic; }
+
+/* ═══════════════════════════════════════════════════
+   Tabla acordeón "Día a Día por Grupo/Versión"
+   ═══════════════════════════════════════════════════ */
+.dia-modelo-section { margin-top: 18px; }
+.dia-modelo-tabla-wrap { overflow-x: auto; margin-top: 6px; }
+#dia-modelo-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+}
+#dia-modelo-tabla thead th {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    padding: 6px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    border-bottom: 2px solid var(--border-color);
+    white-space: nowrap;
+}
+#dia-modelo-tabla thead th.dm-th-period { text-align: left; padding-left: 10px; min-width: 200px; }
+#dia-modelo-tabla thead th.dm-th-num    { text-align: center; min-width: 70px; }
+#dia-modelo-tabla thead th.dm-th-base   { color: var(--accent-blue); }
+#dia-modelo-tabla thead th.dm-th-delta  { color: var(--text-muted); font-size: 9px; min-width: 60px; }
+#dia-modelo-tabla thead th .dm-th-sub   { font-size: 9px; font-weight: 500; color: var(--text-muted); text-transform: none; letter-spacing: 0; }
+
+#dia-modelo-tabla tbody td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+#dia-modelo-tabla tbody td.dm-cell-period { text-align: left; padding-left: 10px; }
+#dia-modelo-tabla tbody td.dm-cell-base   { color: var(--accent-blue); font-weight: 600; }
+#dia-modelo-tabla tbody td.dm-cell-delta  { font-weight: 600; }
+
+/* Filas grupo (cabecera acordeón) */
+.dm-grupo-row {
+    background: var(--bg-secondary);
+    cursor: pointer;
+    user-select: none;
+}
+.dm-grupo-row:hover td { background: var(--bg-card-hover); transition: background 0.15s; }
+.dm-cell-grupo {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 12px;
+}
+.dm-cell-grupo-val { color: var(--accent-orange); font-weight: 700; }
+.dm-grupo-row .dm-cell-base { color: var(--accent-blue); font-weight: 700; }
+
+/* Chevron */
+.dm-chev {
+    font-size: 9px;
+    margin-right: 6px;
+    color: var(--accent-cyan);
+    transition: transform 0.2s;
+}
+.dm-chev.open { transform: rotate(90deg); }
+
+/* Filas versión (ocultas por defecto vía inline style en el render) */
+.dm-version-row td { color: var(--text-secondary); }
+.dm-version-row:hover td { background: var(--bg-card-hover); transition: background 0.15s; }
+.dm-cell-version { padding-left: 28px !important; }
+.dm-bullet { font-size: 8px; margin-right: 6px; color: var(--border-color); }
+
+/* Fila TOTAL GENERAL */
+.dm-total-row td {
+    background: var(--bg-secondary);
+    border-top: 2px solid var(--border-color);
+    font-weight: 700;
+}
+.dm-cell-total {
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 800 !important;
+}
+.dm-total-row .dm-cell-base { color: var(--accent-blue); font-size: 12px; }
+
+/* Reusar dia-delta-up / down / zero ya definidos arriba */
+.dia-modelo-delta { font-size: 10px; }

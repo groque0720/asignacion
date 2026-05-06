@@ -289,36 +289,100 @@ $anio_actual = intval(date('Y'));
             </div>
         </div>
 
-        <!-- Comparativo mes a mes por modelo/versión -->
-        <div class="chart-card" style="margin-bottom:1rem;">
-            <div class="chart-title" style="justify-content:space-between;flex-wrap:wrap;gap:6px;">
-                <span><i class="fa fa-arrows-left-right" style="color:var(--accent-cyan)"></i> Comparativo Mes a Mes — Por Modelo/Versión</span>
-                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                    <input type="text" id="modelo-mes-search" placeholder="Buscar grupo/versión..." autocomplete="off"
-                        style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-primary);border-radius:6px;padding:3px 10px;font-size:11px;width:170px;outline:none;">
-                    <button id="btn-expand-all" onclick="modeloMesExpandAll(true)"
-                            style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
-                        <i class="fa fa-angles-down"></i> Expandir todo
+        <!-- Comparativo Mes a Mes / Día a Día (tabs) -->
+        <div class="chart-card mm-card" style="margin-bottom:1rem;">
+            <ul class="nav nav-pills mm-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-mm-mes" data-bs-toggle="pill" data-bs-target="#pane-mm-mes" type="button" role="tab">
+                        <i class="fa fa-arrows-left-right"></i> Mes a Mes — Por Modelo/Versión
                     </button>
-                    <button id="btn-collapse-all" onclick="modeloMesExpandAll(false)"
-                            style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
-                        <i class="fa fa-angles-up"></i> Colapsar todo
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-mm-dia" data-bs-toggle="pill" data-bs-target="#pane-mm-dia" type="button" role="tab">
+                        <i class="fa fa-calendar-day"></i> Día a Día — Comparativo
                     </button>
-                    <button onclick="this.closest('.chart-card').querySelector('#modelo-mes-wrap').classList.toggle('d-none')"
-                            style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
-                        Mostrar / Ocultar
-                    </button>
-                </div>
-            </div>
-            <div id="modelo-mes-wrap" style="overflow-x:auto;margin-top:6px;">
-                <table id="modelo-mes-table" style="width:100%;border-collapse:collapse;font-size:11px;">
-                    <thead id="modelo-mes-thead"></thead>
-                    <tbody id="modelo-mes-tbody"></tbody>
-                </table>
-                <div id="modelo-mes-empty" style="display:none;text-align:center;padding:18px;color:var(--text-muted);font-size:12px;">
-                    <i class="fa fa-circle-info"></i> Sin datos para el período seleccionado.
-                </div>
-            </div>
+                </li>
+            </ul>
+
+            <div class="tab-content mm-tab-content">
+
+                <!-- ─── PANE: Mes a Mes (tabla acordeón existente) ─── -->
+                <div class="tab-pane fade show active" id="pane-mm-mes" role="tabpanel">
+                    <div class="chart-title" style="justify-content:space-between;flex-wrap:wrap;gap:6px;">
+                        <span><i class="fa fa-arrows-left-right" style="color:var(--accent-cyan)"></i> Comparativo Mes a Mes — Por Modelo/Versión</span>
+                        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                            <input type="text" id="modelo-mes-search" placeholder="Buscar grupo/versión..." autocomplete="off"
+                                style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-primary);border-radius:6px;padding:3px 10px;font-size:11px;width:170px;outline:none;">
+                            <button id="btn-expand-all" onclick="modeloMesExpandAll(true)"
+                                    style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
+                                <i class="fa fa-angles-down"></i> Expandir todo
+                            </button>
+                            <button id="btn-collapse-all" onclick="modeloMesExpandAll(false)"
+                                    style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
+                                <i class="fa fa-angles-up"></i> Colapsar todo
+                            </button>
+                            <button onclick="document.getElementById('modelo-mes-wrap').classList.toggle('d-none')"
+                                    style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
+                                Mostrar / Ocultar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="modelo-mes-wrap" style="overflow-x:auto;margin-top:6px;">
+                        <table id="modelo-mes-table" style="width:100%;border-collapse:collapse;font-size:11px;">
+                            <thead id="modelo-mes-thead"></thead>
+                            <tbody id="modelo-mes-tbody"></tbody>
+                        </table>
+                        <div id="modelo-mes-empty" style="display:none;text-align:center;padding:18px;color:var(--text-muted);font-size:12px;">
+                            <i class="fa fa-circle-info"></i> Sin datos para el período seleccionado.
+                        </div>
+                    </div>
+                </div><!-- /pane-mm-mes -->
+
+                <!-- ─── PANE: Día a Día ─── -->
+                <div class="tab-pane fade" id="pane-mm-dia" role="tabpanel">
+                    <div class="chart-title" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
+                        <span><i class="fa fa-calendar-day" style="color:var(--accent-orange)"></i> Día a Día — Comparativo de meses al día <span id="dia-titulo-num">N</span> <span class="dia-titulo-anio" id="dia-titulo-anio"></span></span>
+                        <div class="dia-controls">
+                            <div class="dia-mode-toggle" role="group">
+                                <button type="button" id="dia-mode-acum" class="active">Acumulado</button>
+                                <button type="button" id="dia-mode-diario">Diario</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dia-slider-row">
+                        <label for="dia-slider"><i class="fa fa-calendar"></i> Día:</label>
+                        <input type="range" id="dia-slider" min="1" max="31" value="1" step="1">
+                        <span class="dia-slider-value" id="dia-slider-value">1</span>
+                        <span class="dia-slider-hint" id="dia-slider-hint"></span>
+                    </div>
+
+                    <!-- Toolbar acordeón -->
+                    <div class="chart-title" style="justify-content:flex-end;flex-wrap:wrap;gap:6px;margin-top:6px;">
+                        <input type="text" id="dia-modelo-search" placeholder="Buscar grupo/versión..." autocomplete="off"
+                            style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-primary);border-radius:6px;padding:3px 10px;font-size:11px;width:170px;outline:none;">
+                        <button type="button" onclick="diaModeloExpandAll(true)"
+                                style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
+                            <i class="fa fa-angles-down"></i> Expandir todo
+                        </button>
+                        <button type="button" onclick="diaModeloExpandAll(false)"
+                                style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
+                            <i class="fa fa-angles-up"></i> Colapsar todo
+                        </button>
+                    </div>
+
+                    <div class="dia-modelo-tabla-wrap">
+                        <table id="dia-modelo-tabla">
+                            <thead id="dia-modelo-thead"></thead>
+                            <tbody id="dia-modelo-tbody"></tbody>
+                        </table>
+                        <div id="dia-modelo-empty" style="display:none;text-align:center;padding:18px;color:var(--text-muted);font-size:12px;">
+                            <i class="fa fa-circle-info"></i> Sin datos para el año seleccionado.
+                        </div>
+                    </div>
+                </div><!-- /pane-mm-dia -->
+
+            </div><!-- /tab-content -->
         </div>
 
         <!-- Fila 2: Por sucursal / Vendedores / Anuladas -->

@@ -33,6 +33,7 @@ switch ($action) {
     case 'chart_compra':      echo json_encode(get_chart_compra());        break;
     case 'comp_grupo':        echo json_encode(get_comp_grupo());         break;
     case 'comp_modelo_mes':   echo json_encode(get_comp_modelo_mes());     break;
+    case 'comp_dia_mes':      echo json_encode(get_comp_dia_mes());        break;
     case 'modelos_by_grupo':  echo json_encode(get_modelos_by_grupo());    break;
     case 'table':             echo json_encode(get_table());               break;
     default:
@@ -46,7 +47,7 @@ switch ($action) {
 // Llena: $params (array por referencia) y $types (string por ref)
 // SEGURIDAD: todos los valores de usuario van a ? placeholders
 // =============================================================
-function build_where_clause(array &$params, string &$types, bool $exclude_anio = false): string
+function build_where_clause(array &$params, string &$types, bool $exclude_anio = false, bool $exclude_mes_fechas = false): string
 {
     $where = "";
 
@@ -61,32 +62,34 @@ function build_where_clause(array &$params, string &$types, bool $exclude_anio =
     }
 
     // --- MES ---
-    $mes = intval($_REQUEST['mes'] ?? 0);
-    if ($mes >= 1 && $mes <= 12) {
-        $where  .= " AND MONTH(r.fecres) = ?";
-        $params[] = $mes;
-        $types   .= 'i';
-    }
-
-    // --- FECHA DESDE ---
-    $fecha_desde = trim($_REQUEST['fecha_desde'] ?? '');
-    if ($fecha_desde !== '') {
-        $dt = DateTime::createFromFormat('Y-m-d', $fecha_desde);
-        if ($dt && $dt->format('Y-m-d') === $fecha_desde) {
-            $where  .= " AND r.fecres >= ?";
-            $params[] = $fecha_desde;
-            $types   .= 's';
+    if (!$exclude_mes_fechas) {
+        $mes = intval($_REQUEST['mes'] ?? 0);
+        if ($mes >= 1 && $mes <= 12) {
+            $where  .= " AND MONTH(r.fecres) = ?";
+            $params[] = $mes;
+            $types   .= 'i';
         }
-    }
 
-    // --- FECHA HASTA ---
-    $fecha_hasta = trim($_REQUEST['fecha_hasta'] ?? '');
-    if ($fecha_hasta !== '') {
-        $dt = DateTime::createFromFormat('Y-m-d', $fecha_hasta);
-        if ($dt && $dt->format('Y-m-d') === $fecha_hasta) {
-            $where  .= " AND r.fecres <= ?";
-            $params[] = $fecha_hasta;
-            $types   .= 's';
+        // --- FECHA DESDE ---
+        $fecha_desde = trim($_REQUEST['fecha_desde'] ?? '');
+        if ($fecha_desde !== '') {
+            $dt = DateTime::createFromFormat('Y-m-d', $fecha_desde);
+            if ($dt && $dt->format('Y-m-d') === $fecha_desde) {
+                $where  .= " AND r.fecres >= ?";
+                $params[] = $fecha_desde;
+                $types   .= 's';
+            }
+        }
+
+        // --- FECHA HASTA ---
+        $fecha_hasta = trim($_REQUEST['fecha_hasta'] ?? '');
+        if ($fecha_hasta !== '') {
+            $dt = DateTime::createFromFormat('Y-m-d', $fecha_hasta);
+            if ($dt && $dt->format('Y-m-d') === $fecha_hasta) {
+                $where  .= " AND r.fecres <= ?";
+                $params[] = $fecha_hasta;
+                $types   .= 's';
+            }
         }
     }
 
@@ -619,6 +622,115 @@ function get_comp_modelo_mes(): array
     $rows = exec_prepared($sql, $params, $types);
 
     return ['anio' => $anio_req, 'rows' => $rows ?? []];
+}
+
+// =============================================================
+// ACTION: comp_dia_mes — Comparativo día a día por grupo/modelo
+// Para el AÑO filtrado (o calendario actual si no hay filtro):
+// devuelve los meses con datos × cada (grupo, modelo) × día.
+// El cliente acumula hasta el día N elegido por el slider.
+//
+// Ignora los filtros mes/fecha_desde/fecha_hasta (define su propia ventana
+// = todo el año); respeta sucursal, vendedor, grupo, modelo, marca,
+// anulada, crédito, toma, compra.
+// =============================================================
+function get_comp_dia_mes(): array
+{
+    // Año: filtro del usuario o calendario actual
+    $anio = intval($_REQUEST['anio'] ?? 0);
+    if ($anio < 2015 || $anio > 2035) $anio = intval(date('Y'));
+
+    // Filtros adicionales SIN año, mes ni fechas (este endpoint
+    // define su propia ventana temporal = año entero)
+    $params_extra = [];
+    $types_extra  = '';
+    $where_extra  = build_where_clause($params_extra, $types_extra, true, true);
+
+    $params = array_merge([$anio], $params_extra);
+    $types  = 'i' . $types_extra;
+
+    // Una sola query: por (grupo, modelo, mes, día)
+    $sql = "SELECT
+        r.idgrupo, r.idmodelo,
+        COALESCE(g.grupo, 'Usados') AS grupo,
+        COALESCE(g.posicion, 9999)  AS gpos,
+        COALESCE(m.modelo, '—')     AS modelo,
+        COALESCE(m.posicion, 9999)  AS mpos,
+        MONTH(r.fecres)             AS mes,
+        DAY(r.fecres)               AS dia,
+        COUNT(*)                    AS cnt
+    " . base_from_sql() . " AND YEAR(r.fecres) = ?" . $where_extra . "
+    GROUP BY r.idgrupo, r.idmodelo, mes, dia
+    ORDER BY
+        (g.posicion IS NULL OR g.posicion = 0) ASC, gpos, grupo,
+        (m.posicion IS NULL OR m.posicion = 0) ASC, mpos, modelo,
+        mes, dia";
+
+    $rows = exec_prepared($sql, $params, $types);
+
+    // Pivot: { grupoKey: { grupo, modelos: { modeloKey: { modelo, daily_por_mes: {1..12: [31]} } } } }
+    $grupos       = [];
+    $grupo_order  = [];
+    $meses_set    = [];
+
+    foreach ((array)$rows as $r) {
+        $mes = intval($r['mes']);
+        $dia = intval($r['dia']);
+        $cnt = intval($r['cnt']);
+        if ($mes >= 1 && $mes <= 12) $meses_set[$mes] = true;
+
+        $gkey = ($r['idgrupo'] !== null ? 'g' . $r['idgrupo'] : 'usados');
+        $mkey = $gkey . '||' . ($r['idmodelo'] !== null ? 'm' . $r['idmodelo'] : 'sm');
+
+        if (!isset($grupos[$gkey])) {
+            $grupos[$gkey] = ['grupo' => $r['grupo'], 'modelos' => [], '_morder' => []];
+            $grupo_order[] = $gkey;
+        }
+        if (!isset($grupos[$gkey]['modelos'][$mkey])) {
+            $daily_por_mes = [];
+            for ($mm = 1; $mm <= 12; $mm++) $daily_por_mes[$mm] = array_fill(0, 31, 0);
+            $grupos[$gkey]['modelos'][$mkey] = [
+                'modelo'        => $r['modelo'],
+                'daily_por_mes' => $daily_por_mes,
+            ];
+            $grupos[$gkey]['_morder'][] = $mkey;
+        }
+        if ($mes >= 1 && $mes <= 12 && $dia >= 1 && $dia <= 31) {
+            $grupos[$gkey]['modelos'][$mkey]['daily_por_mes'][$mes][$dia - 1] += $cnt;
+        }
+    }
+
+    // Aplanar preservando orden de la query
+    $grupos_out = [];
+    foreach ($grupo_order as $gk) {
+        $modelos_out = [];
+        foreach ($grupos[$gk]['_morder'] as $mk) {
+            $modelos_out[] = $grupos[$gk]['modelos'][$mk];
+        }
+        $grupos_out[] = ['grupo' => $grupos[$gk]['grupo'], 'modelos' => $modelos_out];
+    }
+
+    // Días reales por mes en este año (Feb 28/29, etc.)
+    $dias_mes_por_mes = [];
+    for ($mm = 1; $mm <= 12; $mm++) {
+        $dias_mes_por_mes[$mm] = intval(date('t', mktime(0, 0, 0, $mm, 1, $anio)));
+    }
+
+    $meses_activos = array_keys($meses_set);
+    sort($meses_activos);
+
+    // Día por defecto
+    $hoy_anio = intval(date('Y'));
+    $hoy_dia  = intval(date('j'));
+    $dia_actual = ($anio === $hoy_anio) ? $hoy_dia : 31;
+
+    return [
+        'anio'             => $anio,
+        'meses_activos'    => $meses_activos,
+        'dias_mes_por_mes' => $dias_mes_por_mes,
+        'grupos'           => $grupos_out,
+        'dia_actual'       => $dia_actual,
+    ];
 }
 
 // =============================================================

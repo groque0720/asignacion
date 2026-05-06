@@ -678,6 +678,9 @@ async function applyFilters() {
             .then(data => renderCompModeloMes(data))
             .catch(console.error);
 
+        // Comparativo día a día (siempre activo, otro tab)
+        loadCompDiaMes();
+
     } catch(e) {
         console.error('Error al cargar datos:', e);
     }
@@ -1219,3 +1222,308 @@ function bindModeloMesSearch() {
         });
     };
 }
+
+// ══════════════════════════════════════════════════════════
+// COMPARATIVO DÍA A DÍA  (tab "Día a Día")
+// Cliente acumula desde data.grupos[].modelos[].daily_por_mes[mes][día]
+// hasta el día N del slider, para CADA mes activo del año filtrado.
+// ══════════════════════════════════════════════════════════
+const MESES_LABEL = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+const DiaMesState = {
+    data: null,        // payload del backend
+    dia:  1,           // día anclado (1..31)
+    mode: 'acum'       // 'acum' | 'diario'
+};
+
+// Cargar datos desde el backend (se llama desde applyFilters)
+function loadCompDiaMes() {
+    return fetch('api.php?action=comp_dia_mes&' + buildParams())
+        .then(r => r.json())
+        .then(data => {
+            DiaMesState.data = data;
+            initDiaMesSlider();
+            renderDiaMes();
+        })
+        .catch(console.error);
+}
+
+// Configurar slider con max = mayor cantidad de días entre los meses activos
+function initDiaMesSlider() {
+    const data = DiaMesState.data;
+    if (!data) return;
+
+    const slider = document.getElementById('dia-slider');
+    if (!slider) return;
+
+    let maxDias = 31;
+    if (data.dias_mes_por_mes && Array.isArray(data.meses_activos) && data.meses_activos.length) {
+        maxDias = Math.max.apply(null, data.meses_activos.map(m => parseInt(data.dias_mes_por_mes[m]) || 0));
+        if (!maxDias) maxDias = 31;
+    }
+    slider.max = maxDias;
+
+    // Día default sugerido por el backend
+    let dia = parseInt(data.dia_actual) || 1;
+    if (dia < 1) dia = 1;
+    if (dia > maxDias) dia = maxDias;
+
+    DiaMesState.dia = dia;
+    slider.value = dia;
+    updateDiaSliderLabels();
+}
+
+function updateDiaSliderLabels() {
+    const dia  = DiaMesState.dia;
+    const data = DiaMesState.data;
+    setText('dia-slider-value', dia);
+    setText('dia-titulo-num', dia);
+
+    const anioEl = document.getElementById('dia-titulo-anio');
+    if (anioEl) anioEl.textContent = data && data.anio ? '· Año ' + data.anio : '';
+
+    const hint = document.getElementById('dia-slider-hint');
+    if (hint) {
+        hint.textContent = (DiaMesState.mode === 'acum')
+            ? '· acumulado del 1 al ' + dia
+            : '· solo el día ' + dia;
+    }
+}
+
+// Render orquestador
+function renderDiaMes() {
+    updateDiaSliderLabels();
+    renderDiaModeloTabla();
+}
+
+// ══════════════════════════════════════════════════════════
+// TABLA ACORDEÓN: meses del año × grupo/versión
+// Cada celda = valor al día N del mes (acum o diario).
+// Δ% inline vs el mes anterior (mismo patrón que renderCompModeloMes).
+// ══════════════════════════════════════════════════════════
+function renderDiaModeloTabla() {
+    const data  = DiaMesState.data;
+    const thead = document.getElementById('dia-modelo-thead');
+    const tbody = document.getElementById('dia-modelo-tbody');
+    const empty = document.getElementById('dia-modelo-empty');
+    if (!thead || !tbody) return;
+
+    if (!data || !Array.isArray(data.meses_activos) || data.meses_activos.length === 0
+        || !Array.isArray(data.grupos) || data.grupos.length === 0) {
+        thead.innerHTML = '';
+        tbody.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    const dia    = DiaMesState.dia;
+    const mode   = DiaMesState.mode;
+    const meses  = data.meses_activos;
+    const diasPM = data.dias_mes_por_mes || {};
+
+    // Helper: valor (acum o diario) al día N para un mes dado
+    function valAtDia(daily, mes) {
+        if (!daily) return 0;
+        const diasMes = parseInt(diasPM[mes]) || 31;
+        if (mode === 'acum') {
+            const upTo = Math.min(dia, diasMes);
+            let acc = 0;
+            for (let i = 0; i < upTo; i++) acc += parseInt(daily[i]) || 0;
+            return acc;
+        }
+        // diario: si N supera los días del mes (Feb 30), no hay valor
+        if (dia > diasMes) return 0;
+        return parseInt(daily[dia - 1]) || 0;
+    }
+
+    // Helper: badge Δ% del mes actual vs el mes anterior (en la fila)
+    function pctBadge(actual, anterior) {
+        if (anterior <= 0) return '';
+        const v = ((actual - anterior) / anterior) * 100;
+        if (!isFinite(v)) return '';
+        const sign = v >= 0 ? '+' : '';
+        const cls  = v >= 0 ? 'dia-delta-up' : 'dia-delta-down';
+        return '<br><span class="' + cls + ' dia-modelo-delta">' + sign + v.toFixed(1) + '%</span>';
+    }
+
+    function cellVal(val, bold) {
+        if (val <= 0) return '<span class="dia-cell-muted">—</span>';
+        return bold ? '<b>' + val.toLocaleString('es-AR') + '</b>' : val.toLocaleString('es-AR');
+    }
+
+    // ── THEAD: Grupo/Versión | meses... | Total
+    let head = '<tr>';
+    head += '<th class="dm-th-period">Grupo / Versión</th>';
+    meses.forEach(function(m) {
+        head += '<th class="dm-th-num">' + MESES_LABEL[m - 1] + '</th>';
+    });
+    head += '<th class="dm-th-num dm-th-base">Total</th>';
+    head += '</tr>';
+    thead.innerHTML = head;
+
+    // ── TBODY con acordeón
+    const totMes      = meses.map(() => 0);
+    let totGeneral    = 0;
+    let html          = '';
+
+    data.grupos.forEach(function(g, gi) {
+        // Subtotales del grupo por mes
+        const grupoTotMes = meses.map(() => 0);
+        let grupoTot      = 0;
+
+        g.modelos.forEach(function(mod) {
+            meses.forEach(function(m, idx) {
+                const v = valAtDia(mod.daily_por_mes ? mod.daily_por_mes[m] : null, m);
+                grupoTotMes[idx] += v;
+                grupoTot         += v;
+            });
+        });
+
+        if (grupoTot === 0) return; // ocultar grupos sin datos al día N
+
+        meses.forEach((m, idx) => { totMes[idx] += grupoTotMes[idx]; });
+        totGeneral += grupoTot;
+
+        // Fila GRUPO
+        html += '<tr class="dm-grupo-row" data-gi="' + gi + '" data-nombre="' + escHtml(g.grupo) + '" '
+              + 'onclick="diaModeloToggleGrupo(' + gi + ')">';
+        html += '<td class="dm-cell-period dm-cell-grupo">'
+              + '<i id="dm-chev-' + gi + '" class="fa fa-chevron-right dm-chev"></i>'
+              + escHtml(g.grupo) + '</td>';
+        meses.forEach(function(m, idx) {
+            const val  = grupoTotMes[idx];
+            const prev = idx > 0 ? grupoTotMes[idx - 1] : null;
+            const badge = (prev !== null) ? pctBadge(val, prev) : '';
+            html += '<td class="dm-cell-num dm-cell-grupo-val">' + cellVal(val, true) + badge + '</td>';
+        });
+        html += '<td class="dm-cell-num dm-cell-base"><b>' + grupoTot.toLocaleString('es-AR') + '</b></td>';
+        html += '</tr>';
+
+        // Filas VERSIÓN
+        g.modelos.forEach(function(mod) {
+            const valsMes = meses.map(m => valAtDia(mod.daily_por_mes ? mod.daily_por_mes[m] : null, m));
+            const tot     = valsMes.reduce((a, b) => a + b, 0);
+            if (tot === 0) return;
+
+            html += '<tr class="dm-version-row dm-gi-' + gi + '" data-gi="' + gi + '" '
+                  + 'data-nombre="' + escHtml(g.grupo + ' ' + mod.modelo) + '" '
+                  + 'style="display:none;">';
+            html += '<td class="dm-cell-period dm-cell-version">'
+                  + '<i class="fa fa-minus dm-bullet"></i>'
+                  + escHtml(mod.modelo) + '</td>';
+            valsMes.forEach(function(v, idx) {
+                const prev = idx > 0 ? valsMes[idx - 1] : null;
+                const badge = (prev !== null) ? pctBadge(v, prev) : '';
+                html += '<td class="dm-cell-num">' + cellVal(v, false) + badge + '</td>';
+            });
+            html += '<td class="dm-cell-num dm-cell-base">' + tot.toLocaleString('es-AR') + '</td>';
+            html += '</tr>';
+        });
+    });
+
+    // Fila TOTAL GENERAL
+    html += '<tr class="dm-total-row">';
+    html += '<td class="dm-cell-period dm-cell-total">TOTAL GENERAL</td>';
+    meses.forEach(function(m, idx) {
+        const val  = totMes[idx];
+        const prev = idx > 0 ? totMes[idx - 1] : null;
+        const badge = (prev !== null) ? pctBadge(val, prev) : '';
+        html += '<td class="dm-cell-num"><b>' + val.toLocaleString('es-AR') + '</b>' + badge + '</td>';
+    });
+    html += '<td class="dm-cell-num dm-cell-base"><b>' + totGeneral.toLocaleString('es-AR') + '</b></td>';
+    html += '</tr>';
+
+    tbody.innerHTML = html;
+
+    // Mantener filtro de búsqueda activo al re-render por slider
+    const searchInput = document.getElementById('dia-modelo-search');
+    if (searchInput && searchInput.value.trim() !== '') {
+        applyDiaModeloSearch(searchInput.value);
+    }
+}
+
+// Bind controles del tab Día a Día (slider + toggle modo)
+function bindDiaMesControls() {
+    const slider = document.getElementById('dia-slider');
+    if (slider) {
+        slider.addEventListener('input', function() {
+            DiaMesState.dia = parseInt(this.value) || 1;
+            updateDiaSliderLabels();
+            renderDiaModeloTabla();
+        });
+    }
+
+    const btnAcum   = document.getElementById('dia-mode-acum');
+    const btnDiario = document.getElementById('dia-mode-diario');
+    function setMode(mode) {
+        DiaMesState.mode = mode;
+        if (btnAcum)   btnAcum.classList.toggle('active',   mode === 'acum');
+        if (btnDiario) btnDiario.classList.toggle('active', mode === 'diario');
+        renderDiaMes();
+    }
+    if (btnAcum)   btnAcum.addEventListener('click',   () => setMode('acum'));
+    if (btnDiario) btnDiario.addEventListener('click', () => setMode('diario'));
+}
+
+document.addEventListener('DOMContentLoaded', bindDiaMesControls);
+
+// Toggle de un grupo (acordeón)
+function diaModeloToggleGrupo(gi) {
+    const rows  = document.querySelectorAll('.dm-gi-' + gi);
+    const chev  = document.getElementById('dm-chev-' + gi);
+    const isOpen = chev && chev.classList.contains('open');
+    rows.forEach(function(tr) { tr.style.display = isOpen ? 'none' : ''; });
+    if (chev) chev.classList.toggle('open', !isOpen);
+}
+
+function diaModeloExpandAll(open) {
+    const tbody = document.getElementById('dia-modelo-tbody');
+    if (!tbody) return;
+    tbody.querySelectorAll('.dm-version-row').forEach(function(tr) {
+        tr.style.display = open ? '' : 'none';
+    });
+    tbody.querySelectorAll('.dm-chev').forEach(function(chev) {
+        chev.classList.toggle('open', !!open);
+    });
+}
+
+function applyDiaModeloSearch(q) {
+    const tbody = document.getElementById('dia-modelo-tbody');
+    if (!tbody) return;
+    const query = (q || '').trim().toLowerCase();
+
+    if (query === '') {
+        tbody.querySelectorAll('.dm-grupo-row').forEach(tr => { tr.style.display = ''; });
+        tbody.querySelectorAll('.dm-version-row').forEach(function(tr) {
+            const gi   = tr.dataset.gi;
+            const chev = document.getElementById('dm-chev-' + gi);
+            const open = chev && chev.classList.contains('open');
+            tr.style.display = open ? '' : 'none';
+        });
+        return;
+    }
+
+    const matchGi = new Set();
+    tbody.querySelectorAll('.dm-version-row').forEach(function(tr) {
+        const m = tr.dataset.nombre && tr.dataset.nombre.toLowerCase().includes(query);
+        tr.style.display = m ? '' : 'none';
+        if (m) matchGi.add(tr.dataset.gi);
+    });
+    tbody.querySelectorAll('.dm-grupo-row').forEach(function(tr) {
+        const grupoMatch = tr.dataset.nombre && tr.dataset.nombre.toLowerCase().includes(query);
+        const tieneHijos = matchGi.has(tr.dataset.gi);
+        tr.style.display = (grupoMatch || tieneHijos) ? '' : 'none';
+        if (tieneHijos) {
+            const chev = document.getElementById('dm-chev-' + tr.dataset.gi);
+            if (chev) chev.classList.add('open');
+        }
+    });
+}
+
+function bindDiaModeloSearch() {
+    const input = document.getElementById('dia-modelo-search');
+    if (!input) return;
+    input.oninput = function() { applyDiaModeloSearch(this.value); };
+}
+document.addEventListener('DOMContentLoaded', bindDiaModeloSearch);
