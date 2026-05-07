@@ -9,6 +9,19 @@
 		$con = mysqli_connect(HOST, USER, PASS) or die("ERROR EN CONEXION: " . mysqli_error());
 		$base_datos = mysqli_select_db($con, DB) or die("ERROR AL SELECCIONAR LA BASE DE DATOS: " . mysqli_error());
 		mysqli_query($con, "SET NAMES 'utf8'");
+
+		// Variables de sesión MySQL leídas por trigger trg_asignaciones_audit_update
+		// (tabla auditoria_unidades). Si no hay sesión PHP cae a 0 / 'sistema'.
+		if (session_status() === PHP_SESSION_NONE) {
+			@session_start();
+		}
+		$uid    = isset($_SESSION['id']) ? (int)$_SESSION['id'] : 0;
+		$uname  = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : 'sistema';
+		$origen = isset($_SERVER['SCRIPT_NAME']) ? basename($_SERVER['SCRIPT_NAME']) : 'cli';
+		$uname  = mysqli_real_escape_string($con, $uname);
+		$origen = mysqli_real_escape_string($con, $origen);
+		mysqli_query($con, "SET @id_usuario = $uid, @usuario_nombre = '$uname', @origen = '$origen'");
+
 		return $con;
 	}
 
