@@ -43,13 +43,33 @@ asignacion/
    ```
 3. **Verificar** abriendo cualquier unidad y guardándola: debería aparecer 1 fila en `auditoria_unidades` con la columna `movimiento` poblada.
 
+### Verificación rápida desde SQL
+
+```sql
+-- ¿Está el trigger instalado?
+SHOW TRIGGERS LIKE 'asignaciones';
+-- Debe listar trg_asignaciones_audit_update con Event=UPDATE, Timing=BEFORE.
+
+-- Últimas 10 entradas
+SELECT id_audit, fecha, hora, usuario, origen, cant_campos
+FROM auditoria_unidades ORDER BY id_audit DESC LIMIT 10;
+
+-- ¿Las variables de sesión llegan? (después de un guardado real)
+SELECT usuario, origen, COUNT(*) AS n
+FROM auditoria_unidades
+WHERE fecha = CURDATE()
+GROUP BY usuario, origen;
+-- Si todo aparece como usuario='sistema' / origen='', conectar() no está
+-- seteando las @vars o el script que escribe no llamó a conectar() (ver advertencia abajo).
+```
+
 ## Esquema
 
 ### `auditoria_unidades` — 1 fila = 1 Guardar
 
 | Columna | Tipo | Notas |
 |---------|------|-------|
-| id_audit | INT AI PK | |
+| id_audit | INT UNSIGNED AI PK | |
 | id_unidad | INT | FK lógica a `asignaciones.id_unidad` |
 | nro_unidad | INT | Denormalizado (NEW.nro_unidad) — sobrevive si se borra la unidad |
 | fecha | DATE | CURDATE() |
@@ -81,9 +101,9 @@ asignacion/
 Identificación: `nro_unidad`, `chasis`, `nro_orden`, `interno`, `patente`
 Modelo/colores: `id_grupo`, `id_modelo`, `id_color`, `color_uno`, `color_dos`, `color_tres`
 Sucursal/ubicación: `id_sucursal`, `id_ubicacion`, `id_ubicacion_entrega`
-Estados: `estado_tasa`, `estado_reserva`, `reservada`, `reserva`, `cancelada`, `entregada`, `pagado`, `no_disponible`, `borrar`, `reventa`, `servicio_conectado`, `con_encuesta`
+Estados: `estado_tasa`, `estado_reserva`, `reservada`, `reserva`, `cancelada`, `entregada`, `pagado`, `no_disponible`, `borrar`, `reventa`, `servicio_conectado`
 Fechas: `fec_playa`, `fec_despacho`, `fec_arribo`, `fec_reserva`, `fec_limite`, `fec_cancelacion`, `fec_entrega`, `fec_inscripcion`, `fec_pedido`
-Otros: `costo`, `cliente`, `id_asesor`, `id_negocio`, `id_mes`, `año`, `nro_remito`, `observacion`, `hora`, `id_estado_entrega`, `hora_pedido`
+Otros: `costo`, `cliente`, `id_asesor`, `id_negocio`, `id_mes`, `año`, `nro_remito`, `observacion`, `hora`, `id_estado_entrega`, `hora_pedido`, `con_encuesta`
 
 **NO** se audita: `guardado` (uso interno cache), `fecha_borrado`/`hora_borrado`/`usuario_borrado` (datos del borrado lógico, ya quedan en otra parte).
 
@@ -120,22 +140,62 @@ WHERE a.fec_entrega IS NOT NULL
   AND a.fec_entrega < DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
 ```
 
-**Programar** en el Programador de tareas de Windows, frecuencia diaria o semanal:
+**Modo CLI (recomendado)** — programar en el Programador de tareas de Windows, frecuencia diaria o semanal:
 ```
 Programa: php.exe (de Laragon)
 Argumentos: c:\laragon\www\asignacion\asignacion\sql\purgar_auditoria_unidades.php
 ```
 
-Salida queda en `asignacion/api_log.txt` con cantidad de filas borradas y timestamp.
+**Modo web (para ejecución manual)** — `/asignacion/sql/purgar_auditoria_unidades.php?web=1`
+- Requiere sesión PHP activa (`$_SESSION["autentificado"]="SI"`).
+- Requiere `idperfil === 14` (admin). Cualquier otro perfil recibe `403 Forbidden`.
+- Sin `?web=1` el script aborta con "Falta parámetro web=1.".
+
+**Salida**: en ambos modos imprime una línea con previstas/borradas/OK|ERROR y la appendea a `asignacion/api_log.txt` con timestamp. Útil para auditar la purga.
 
 ## Cosas a tener en cuenta
 
-- **El trigger es transparente**: si falla la inserción en `auditoria_unidades`, falla TODO el UPDATE de la unidad. Por eso el SQL es minimalista, sin lógica que pueda romperse en runtime.
+- **El trigger NO bloquea el UPDATE si la auditoría falla**: tiene un `DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN END` que silencia cualquier error (UTF-8 inválido en TEXT, versión rara de MySQL, etc.). El UPDATE de la unidad se completa igual. Decisión deliberada: preferimos perder un registro de auditoría antes que bloquear un guardado del usuario. Si se sospecha que la auditoría está perdiendo filas, hay que revisar el log de errores de MySQL — el trigger no devuelve nada al PHP.
 - **`<=>` es comparación NULL-safe**: `NULL <=> NULL` = 1 (TRUE), así que no se loggean falsos positivos cuando ambos están en NULL.
 - **El historial empieza el día que se instala el trigger**. No hay forma de recuperar histórico anterior.
 - **JSON nativo**: la columna `movimiento` es tipo `JSON`. MySQL la valida sintácticamente al insertar y permite consultarla con funciones JSON. Si en el futuro quisieran portarse a una DB vieja sin tipo JSON, se puede cambiar a `LONGTEXT` sin tocar nada más.
-- **Cron / a_script_***: aparecen como `id_usuario=0`, `usuario='sistema'`, `origen='a_script_levantar.php'` (o el script que sea).
+- **Cron / a_script_***: aparecen como `id_usuario=0`, `usuario='sistema'`, `origen='a_script_levantar.php'` (o el script que sea) — cualquier script CLI hereda eso porque no hay `$_SESSION`.
 - **Otros módulos** (dashboard_recursos, ventas, etc.) que NO escriben hoy a `asignaciones` — si en el futuro escriben, hay que parchear su `func_mysql.php` igual que los de `asignacion/` y `encuesta/`. De lo contrario el cambio queda registrado pero como `usuario='sistema'`.
+- **UPDATEs por fuera del PHP**: ediciones manuales desde phpMyAdmin, MySQL Workbench o cualquier conexión que no llame a `conectar()` también disparan el trigger, pero con `id_usuario=0`, `usuario='sistema'`, `origen=''`. Útil saberlo cuando se investigue una fila huérfana.
+- **Sincronización con `historial_unidad.php`**: si se agrega un campo nuevo al trigger, también hay que sumarlo a `$etiquetas` en [historial_unidad.php:84](../historial_unidad.php#L84) para que se renderice con nombre legible (si no, sale el nombre crudo del campo). Si el campo es FK a otra tabla, agregar la entrada correspondiente en `$caches` para mostrar el valor humano. Booleanos/enum-like: agregar al array `$booleanos`.
+
+## Consultas útiles sobre el JSON
+
+```sql
+-- Cambios recientes a un campo específico (ej: cliente)
+SELECT au.id_audit, au.fecha, au.hora, au.usuario, au.id_unidad,
+       JSON_UNQUOTE(JSON_EXTRACT(c.v, '$.antes'))   AS antes,
+       JSON_UNQUOTE(JSON_EXTRACT(c.v, '$.despues')) AS despues
+FROM auditoria_unidades au
+JOIN JSON_TABLE(au.movimiento, '$[*]'
+       COLUMNS (v JSON PATH '$')) c
+WHERE JSON_UNQUOTE(JSON_EXTRACT(c.v, '$.campo')) = 'cliente'
+ORDER BY au.id_audit DESC
+LIMIT 50;
+-- Requiere MySQL 8+. En 5.7 usar JSON_EXTRACT y un WHERE con JSON_SEARCH.
+
+-- Filas que tocaron un campo dado (5.7+ compatible)
+SELECT id_audit, fecha, usuario, id_unidad
+FROM auditoria_unidades
+WHERE JSON_SEARCH(movimiento, 'one', 'estado_tasa', NULL, '$[*].campo') IS NOT NULL
+ORDER BY id_audit DESC LIMIT 50;
+
+-- Top usuarios por actividad en un rango
+SELECT usuario, COUNT(*) AS guardados, SUM(cant_campos) AS campos_tocados
+FROM auditoria_unidades
+WHERE fecha BETWEEN '2026-04-01' AND '2026-04-30'
+GROUP BY usuario ORDER BY guardados DESC;
+
+-- Tamaño actual de la auditoría
+SELECT COUNT(*) AS filas,
+       ROUND(SUM(LENGTH(movimiento))/1024/1024, 2) AS mb_json
+FROM auditoria_unidades;
+```
 
 ## Rollback
 
