@@ -622,6 +622,16 @@ if ($cant>=1) {
 				<div class="ancho-20">
 					<input type="submit" class="botones btn-cancelar" value="Cancelar">
 				</div>
+				<div class="ancho-20 centrar-texto">
+					<?php if (!empty($unidad['id_unidad'])): ?>
+						<a href="historial_unidad.php?id_unidad=<?php echo (int)$unidad['id_unidad']; ?>"
+						   target="_blank"
+						   class="botones"
+						   style="display:inline-block; padding:6px 14px; background:#555; color:#fff; text-decoration:none; border-radius:4px; cursor:pointer;">
+						   Historial
+						</a>
+					<?php endif; ?>
+				</div>
 						<?php if ($unidad['no_disponible'] != 1 or $id_usuario == 11 or $id_usuario == 56 OR $id_usuario == 16): ?>
 							<div class="ancho-20 derecha-texto">
 								<?php if ($id_usuario==136 OR $id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94 OR $id_usuario == 31 OR $id_usuario == 50) { ?>

@@ -11,3 +11,5 @@ usados_docs/uploads/*
 
 # Migraciones SQL y backups de vistas — se gestionan localmente
 sql/
+# Excepción: módulo de auditoría de unidades (parte de la feature, debe deployarse)
+!asignacion/sql/

@@ -9,6 +9,13 @@ Sistema interno de **Derka y Vargas S.A.** (concesionaria) corriendo sobre Larag
 - Locale: `America/Argentina/Buenos_Aires`, formato monetario AR (`$ 1.234.567`).
 - Las queries se construyen concatenando strings (no hay PDO/prepared statements en el código existente).
 
+## Auditoría de cambios en `asignaciones`
+- Trigger MySQL `trg_asignaciones_audit_update` graba en tabla `auditoria_unidades` un row por campo modificado.
+- `conectar()` en `asignacion/funciones/func_mysql.php` y `encuesta/funciones/func_mysql.php` setea `@id_usuario`, `@usuario_nombre`, `@origen` (variables de sesión MySQL que el trigger lee).
+- UI: botón "Historial" en `unidad.php` → abre `asignacion/historial_unidad.php?id_unidad=X` en nueva pestaña.
+- Retención 6 meses post `fec_entrega`. Purga: `asignacion/sql/purgar_auditoria_unidades.php` (cron).
+- Detalles, instalación SQL y lista de campos auditados: ver [asignacion/sql/CLAUDE.md](asignacion/sql/CLAUDE.md).
+
 ## Módulo `dashboard_recursos/`
 Dashboard contable de exposición financiera por sucursal.
 
