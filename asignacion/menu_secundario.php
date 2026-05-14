@@ -132,6 +132,7 @@
 				<ul>
 					<li><a href="usados_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Planilla Gral.</a></li>
 					<li><a href="usados_certificados_pdf.php" target="_blank" class="icon-file-pdf-o"> <span> </span>Planilla Físico</a></li>
+					<li><a href="usados_excel.php" target="_blank" class="icon-file-excel-o"> <span> </span>Planilla Excel (A4 horiz.)</a></li>
 				</ul>
 			</li>
 			<li style="background: #E3EAFB;">
