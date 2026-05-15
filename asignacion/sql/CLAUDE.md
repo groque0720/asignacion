@@ -9,21 +9,21 @@ Sistema para dejar asentado qué cambios se hacen sobre cada unidad: día, hora,
 | Alcance | **Solo tabla `asignaciones`**. No se auditan otras tablas. |
 | Operaciones | **Solo UPDATE**. INSERTs y DELETEs físicos NO se loggean. El borrado lógico (`borrar=1`) sí queda registrado porque es un UPDATE del campo `borrar`. |
 | Granularidad | **1 fila por cada Guardar** que cambia ≥ 1 campo. Si el Guardar no cambió nada → no se crea fila. |
-| Estructura | **1 sola tabla** `auditoria_unidades`. Todos los campos modificados quedan dentro de la columna `movimiento` (tipo `JSON`) como un array de `{campo, antes, despues}`. |
-| Estrategia | **Trigger MySQL `BEFORE UPDATE`** sobre `asignaciones`. Cuenta cambios; si > 0, arma el JSON con `JSON_OBJECT` + `JSON_ARRAY_APPEND` y hace 1 INSERT. |
+| Estructura | **1 sola tabla** `auditoria_unidades`. Todos los campos modificados quedan dentro de la columna `movimiento` (tipo `LONGTEXT` que almacena JSON) como un array de `{campo, antes, despues}`. |
+| Estrategia | **Trigger MySQL `BEFORE UPDATE`** sobre `asignaciones`. Cuenta cambios; si > 0, arma el JSON manualmente con `CONCAT` + `REPLACE` (via función helper `fn_aud_json_obj`) y hace 1 INSERT. **No se usan funciones JSON nativas** (incompatibles con el MariaDB 10.1 del VPS). |
 | Usuario | El trigger lee variables de sesión MySQL `@id_usuario`, `@usuario_nombre`, `@origen` que setea `conectar()` en `func_mysql.php` desde `$_SESSION`. Si no hay sesión PHP (cron / a_script_*) cae a `0` / `'sistema'`. |
 | Retención | **6 meses después de `fec_entrega`**. Script de purga manual: `sql/purgar_auditoria_unidades.php`. |
 | UI | Botón "Historial" dentro de `unidad.php` (visible para todos los que pueden abrir la unidad). Abre `historial_unidad.php?id_unidad=X` en nueva pestaña. PHP decodea el JSON y muestra un card por evento con los campos adentro. |
 | Módulos parcheados | `asignacion/funciones/func_mysql.php` y `encuesta/funciones/func_mysql.php` son los únicos que escriben hoy a `asignaciones`. |
-| Requisito DB | **MySQL 5.7+ o MariaDB 10.2.7+** (uso del tipo `JSON` y de `JSON_OBJECT`/`JSON_ARRAY_APPEND` en el trigger). |
+| Requisito DB | **MariaDB 10.0+ o MySQL 5.5+**. NO usa tipo `JSON` ni funciones JSON nativas — `movimiento` es `LONGTEXT` y el trigger arma el JSON con `CONCAT` + `REPLACE` para soportar el VPS de producción (MariaDB 10.1.48). |
 
 ## Archivos del módulo
 
 ```
 asignacion/
 ├── sql/
-│   ├── 01_auditoria_unidades_tabla.sql      # CREATE TABLE auditoria_unidades (con columna JSON)
-│   ├── 02_auditoria_unidades_trigger.sql    # CREATE TRIGGER trg_asignaciones_audit_update
+│   ├── 01_auditoria_unidades_tabla.sql      # CREATE TABLE auditoria_unidades (movimiento LONGTEXT)
+│   ├── 02_auditoria_unidades_trigger.sql    # CREATE FUNCTION fn_aud_json_obj + CREATE TRIGGER trg_asignaciones_audit_update
 │   ├── purgar_auditoria_unidades.php        # Script de purga (cron)
 │   └── CLAUDE.md                            # Este archivo
 ├── funciones/func_mysql.php                 # MODIFICADO: setea @id_usuario, @usuario_nombre, @origen
@@ -78,7 +78,7 @@ GROUP BY usuario, origen;
 | usuario | VARCHAR(64) | `$_SESSION['usuario']` o 'sistema' |
 | origen | VARCHAR(96) | basename(SCRIPT_NAME) |
 | cant_campos | SMALLINT | Cantidad de campos cambiados (denormalizado para mostrar en UI) |
-| **movimiento** | **JSON** | Array de objetos `{campo, antes, despues}` con todos los deltas |
+| **movimiento** | **LONGTEXT** | Array JSON de objetos `{campo, antes, despues}` con todos los deltas. Se usa LONGTEXT (no JSON nativo) para compatibilidad con MariaDB < 10.2.7. |
 
 Índices: `id_unidad`, `fecha`, `id_usuario`.
 
@@ -111,8 +111,8 @@ Otros: `costo`, `cliente`, `id_asesor`, `id_negocio`, `id_mes`, `año`, `nro_rem
 
 Editar `02_auditoria_unidades_trigger.sql`:
 1. **Agregar/quitar la línea** correspondiente en el cálculo de `v_count` (suma de `(1 - (OLD.x <=> NEW.x))`).
-2. **Agregar/quitar el bloque** `IF NOT (OLD.x <=> NEW.x) THEN SET v_json = JSON_ARRAY_APPEND(...); END IF;`.
-3. Reejecutar el archivo entero. El `DROP TRIGGER IF EXISTS` lo recrea sin tocar datos existentes.
+2. **Agregar/quitar el bloque** `IF NOT (OLD.x <=> NEW.x) THEN SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('x', OLD.x, NEW.x)); SET v_sep = ','; END IF;`.
+3. Reejecutar el archivo entero. Los `DROP TRIGGER IF EXISTS` + `DROP FUNCTION IF EXISTS` al inicio del SQL lo recrean sin tocar datos existentes.
 
 > Las dos secciones (count + IFs) tienen que estar en sincronía. Si el count está pero falta el IF, `cant_campos` queda mayor al tamaño del array JSON real (inconsistencia visual, no rompe).
 
@@ -124,7 +124,7 @@ Editar `02_auditoria_unidades_trigger.sql`:
 4. `guardar_unidad.php` arma `UPDATE asignaciones SET ... WHERE id_unidad = X`.
 5. Trigger `BEFORE UPDATE` se dispara:
    - Cuenta cuántos campos auditados cambian respecto a OLD.
-   - Si > 0: construye un JSON array iterando los campos cambiados con `JSON_ARRAY_APPEND(JSON_OBJECT('campo','x','antes',OLD.x,'despues',NEW.x))` y hace 1 `INSERT INTO auditoria_unidades`.
+   - Si > 0: construye un JSON array iterando los campos cambiados con la función helper `fn_aud_json_obj(campo, OLD.x, NEW.x)` (que arma `{"campo":"x","antes":...,"despues":...}` con `CONCAT` + `REPLACE` escapado), los acumula con coma como separador y los envuelve en `[...]`. Después hace 1 `INSERT INTO auditoria_unidades`.
    - Si = 0: no hace nada.
 6. Usuario abre `historial_unidad.php?id_unidad=X` (botón "Historial"); el PHP hace `json_decode(movimiento)` y renderiza un card por fila con la tabla de cambios adentro.
 
@@ -158,7 +158,15 @@ Argumentos: c:\laragon\www\asignacion\asignacion\sql\purgar_auditoria_unidades.p
 - **El trigger NO bloquea el UPDATE si la auditoría falla**: tiene un `DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN END` que silencia cualquier error (UTF-8 inválido en TEXT, versión rara de MySQL, etc.). El UPDATE de la unidad se completa igual. Decisión deliberada: preferimos perder un registro de auditoría antes que bloquear un guardado del usuario. Si se sospecha que la auditoría está perdiendo filas, hay que revisar el log de errores de MySQL — el trigger no devuelve nada al PHP.
 - **`<=>` es comparación NULL-safe**: `NULL <=> NULL` = 1 (TRUE), así que no se loggean falsos positivos cuando ambos están en NULL.
 - **El historial empieza el día que se instala el trigger**. No hay forma de recuperar histórico anterior.
-- **JSON nativo**: la columna `movimiento` es tipo `JSON`. MySQL la valida sintácticamente al insertar y permite consultarla con funciones JSON. Si en el futuro quisieran portarse a una DB vieja sin tipo JSON, se puede cambiar a `LONGTEXT` sin tocar nada más.
+- **`movimiento` es LONGTEXT y el trigger NO usa funciones JSON nativas**: decidido el 2026-05-15. El VPS de producción corre **MariaDB 10.1.48** (Ubuntu 18.04), versión que:
+  - No tiene el tipo `JSON` (recién en 10.2.7+) → daba error 1064 en `CREATE TABLE`.
+  - No tiene `JSON_OBJECT`, `JSON_ARRAY`, `JSON_ARRAY_APPEND` (recién en 10.2.3+) → el trigger compilaba pero fallaba en cada UPDATE; como el `EXIT HANDLER FOR SQLEXCEPTION` silencia errores, la unidad se guardaba normal y la fila de auditoría nunca se insertaba (sin error visible).
+  
+  Por eso el trigger arma el JSON manualmente con una función helper `fn_aud_json_obj(campo, antes, despues)` que devuelve un string `{"campo":"X","antes":...,"despues":...}` usando `CONCAT` + `REPLACE` para escapar backslash / comillas / CR / LF / TAB. Los `NULL` se serializan como `null` literal sin comillas; cualquier otro valor (int/varchar/date/decimal) se serializa como string entre comillas — `json_decode` en PHP lo devuelve como string, igual que con la versión vieja del trigger.
+  
+  Las consultas con `JSON_EXTRACT` / `JSON_SEARCH` / `JSON_TABLE` **no están disponibles** en 10.1, así que las del bloque "Consultas útiles sobre el JSON" más arriba sólo van a funcionar si la DB se actualiza. Para 10.1, hay que parsear con `LIKE` o desde PHP.
+  
+  Si en el futuro el VPS se actualiza a MariaDB 10.2.3+ / MySQL 5.7+, conviene volver a la versión del trigger con `JSON_OBJECT` (más limpia y con validación sintáctica automática) — está en el historial de git, commits previos a 2026-05-15.
 - **Cron / a_script_***: aparecen como `id_usuario=0`, `usuario='sistema'`, `origen='a_script_levantar.php'` (o el script que sea) — cualquier script CLI hereda eso porque no hay `$_SESSION`.
 - **Otros módulos** (dashboard_recursos, ventas, etc.) que NO escriben hoy a `asignaciones` — si en el futuro escriben, hay que parchear su `func_mysql.php` igual que los de `asignacion/` y `encuesta/`. De lo contrario el cambio queda registrado pero como `usuario='sistema'`.
 - **UPDATEs por fuera del PHP**: ediciones manuales desde phpMyAdmin, MySQL Workbench o cualquier conexión que no llame a `conectar()` también disparan el trigger, pero con `id_usuario=0`, `usuario='sistema'`, `origen=''`. Útil saberlo cuando se investigue una fila huérfana.
@@ -166,8 +174,10 @@ Argumentos: c:\laragon\www\asignacion\asignacion\sql\purgar_auditoria_unidades.p
 
 ## Consultas útiles sobre el JSON
 
+> ⚠️ En el VPS de producción (**MariaDB 10.1**), las funciones `JSON_EXTRACT`/`JSON_SEARCH`/`JSON_TABLE` **NO existen**. Las consultas siguientes son sólo para entornos con MariaDB 10.2.3+ / MySQL 5.7+. En 10.1 usar `LIKE` o parsear el JSON desde PHP.
+
 ```sql
--- Cambios recientes a un campo específico (ej: cliente)
+-- (Requiere MySQL 8+) Cambios recientes a un campo específico (ej: cliente)
 SELECT au.id_audit, au.fecha, au.hora, au.usuario, au.id_unidad,
        JSON_UNQUOTE(JSON_EXTRACT(c.v, '$.antes'))   AS antes,
        JSON_UNQUOTE(JSON_EXTRACT(c.v, '$.despues')) AS despues
@@ -177,12 +187,17 @@ JOIN JSON_TABLE(au.movimiento, '$[*]'
 WHERE JSON_UNQUOTE(JSON_EXTRACT(c.v, '$.campo')) = 'cliente'
 ORDER BY au.id_audit DESC
 LIMIT 50;
--- Requiere MySQL 8+. En 5.7 usar JSON_EXTRACT y un WHERE con JSON_SEARCH.
 
--- Filas que tocaron un campo dado (5.7+ compatible)
+-- (Requiere MariaDB 10.2.3+ / MySQL 5.7+) Filas que tocaron un campo dado
 SELECT id_audit, fecha, usuario, id_unidad
 FROM auditoria_unidades
 WHERE JSON_SEARCH(movimiento, 'one', 'estado_tasa', NULL, '$[*].campo') IS NOT NULL
+ORDER BY id_audit DESC LIMIT 50;
+
+-- Compatible con MariaDB 10.1 (fallback con LIKE — menos preciso)
+SELECT id_audit, fecha, usuario, id_unidad
+FROM auditoria_unidades
+WHERE movimiento LIKE '%"campo":"estado_tasa"%'
 ORDER BY id_audit DESC LIMIT 50;
 
 -- Top usuarios por actividad en un rango
@@ -201,11 +216,13 @@ FROM auditoria_unidades;
 
 Si se quiere desactivar la auditoría sin perder los datos:
 ```sql
-DROP TRIGGER IF EXISTS trg_asignaciones_audit_update;
+DROP TRIGGER  IF EXISTS trg_asignaciones_audit_update;
+DROP FUNCTION IF EXISTS fn_aud_json_obj;
 ```
 La tabla queda intacta. Para desinstalar completo:
 ```sql
-DROP TRIGGER IF EXISTS trg_asignaciones_audit_update;
-DROP TABLE IF EXISTS auditoria_unidades;
+DROP TRIGGER  IF EXISTS trg_asignaciones_audit_update;
+DROP FUNCTION IF EXISTS fn_aud_json_obj;
+DROP TABLE    IF EXISTS auditoria_unidades;
 ```
 Y revertir los `func_mysql.php` (los `SET @id_usuario = ...` no rompen nada aunque queden — las variables de sesión MySQL son inocuas si no hay trigger que las consuma).

@@ -4,7 +4,8 @@
 -- 1. Cuenta cuántos campos auditados cambian.
 -- 2. Si > 0:
 --      a) Construye un array JSON `v_json` con un objeto {campo, antes, despues}
---         por cada campo que cambió. Usa JSON_ARRAY_APPEND + JSON_OBJECT.
+--         por cada campo que cambió. Usa CONCAT + REPLACE (no funciones JSON
+--         nativas, para soportar MariaDB 10.0+).
 --      b) INSERT 1 fila en `auditoria_unidades` con ese JSON en `movimiento`.
 -- 3. Si = 0: no hace nada (no se crean filas vacías).
 --
@@ -14,12 +15,64 @@
 --   @origen          (VARCHAR)
 --
 -- `<=>` es NULL-safe equal: 1 si iguales (incluso ambos NULL), 0 si distintos.
--- Requisito: MySQL 5.7+ o MariaDB 10.2.7+.
+-- Requisito: MariaDB 10.0+ o MySQL 5.5+. El JSON se construye con CONCAT
+-- + REPLACE para escapar comillas / backslash / saltos de línea, así NO
+-- depende de JSON_OBJECT / JSON_ARRAY_APPEND (que sólo existen en
+-- MariaDB 10.2.3+ / MySQL 5.7+).
 -- =====================================================================
 
-DROP TRIGGER IF EXISTS `trg_asignaciones_audit_update`;
+DROP TRIGGER  IF EXISTS `trg_asignaciones_audit_update`;
+DROP FUNCTION IF EXISTS `fn_aud_json_obj`;
 
 DELIMITER $$
+
+-- ---------------------------------------------------------------------
+-- Función helper: construye un objeto JSON {"campo":"X","antes":A,"despues":B}
+-- - Si el valor es NULL → emite `null` literal (sin comillas).
+-- - Si el valor no es NULL → lo trata como string y lo escapa (comilla,
+--   backslash, CR, LF, TAB). Números y fechas se serializan como strings
+--   entre comillas — PHP json_decode los devuelve como strings, idéntico
+--   a como los manejaba la versión con JSON_OBJECT.
+-- ---------------------------------------------------------------------
+CREATE FUNCTION `fn_aud_json_obj`(
+  p_campo   VARCHAR(64),
+  p_antes   TEXT,
+  p_despues TEXT
+) RETURNS TEXT
+  DETERMINISTIC
+  CONTAINS SQL
+BEGIN
+  DECLARE v_antes_json   TEXT;
+  DECLARE v_despues_json TEXT;
+
+  IF p_antes IS NULL THEN
+    SET v_antes_json = 'null';
+  ELSE
+    SET v_antes_json = CONCAT('"',
+      REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(p_antes,
+        '\\', '\\\\'),
+        '"',  '\\"'),
+        CHAR(13), '\\r'),
+        CHAR(10), '\\n'),
+        CHAR(9),  '\\t'),
+      '"');
+  END IF;
+
+  IF p_despues IS NULL THEN
+    SET v_despues_json = 'null';
+  ELSE
+    SET v_despues_json = CONCAT('"',
+      REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(p_despues,
+        '\\', '\\\\'),
+        '"',  '\\"'),
+        CHAR(13), '\\r'),
+        CHAR(10), '\\n'),
+        CHAR(9),  '\\t'),
+      '"');
+  END IF;
+
+  RETURN CONCAT('{"campo":"', p_campo, '","antes":', v_antes_json, ',"despues":', v_despues_json, '}');
+END$$
 
 CREATE TRIGGER `trg_asignaciones_audit_update`
 BEFORE UPDATE ON `asignaciones`
@@ -29,7 +82,8 @@ BEGIN
   DECLARE v_uname   VARCHAR(64);
   DECLARE v_origen  VARCHAR(96);
   DECLARE v_count   INT;
-  DECLARE v_json    JSON;
+  DECLARE v_json    LONGTEXT;
+  DECLARE v_sep     VARCHAR(1);
 
   -- IMPORTANTE: si la auditoría falla por cualquier motivo (UTF-8 inválido en
   -- algún TEXT, version rara de MySQL, etc.) el handler silencia el error y
@@ -90,116 +144,117 @@ BEGIN
     SET v_uid    = IFNULL(@id_usuario, 0);
     SET v_uname  = IFNULL(@usuario_nombre, 'sistema');
     SET v_origen = IFNULL(@origen, '');
-    SET v_json   = JSON_ARRAY();
+    SET v_json   = '';
+    SET v_sep    = '';
 
     -- Identificación
     IF NOT (OLD.nro_unidad <=> NEW.nro_unidad) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','nro_unidad','antes',OLD.nro_unidad,'despues',NEW.nro_unidad)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('nro_unidad', OLD.nro_unidad, NEW.nro_unidad)); SET v_sep = ','; END IF;
     IF NOT (OLD.chasis <=> NEW.chasis) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','chasis','antes',OLD.chasis,'despues',NEW.chasis)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('chasis', OLD.chasis, NEW.chasis)); SET v_sep = ','; END IF;
     IF NOT (OLD.nro_orden <=> NEW.nro_orden) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','nro_orden','antes',OLD.nro_orden,'despues',NEW.nro_orden)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('nro_orden', OLD.nro_orden, NEW.nro_orden)); SET v_sep = ','; END IF;
     IF NOT (OLD.interno <=> NEW.interno) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','interno','antes',OLD.interno,'despues',NEW.interno)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('interno', OLD.interno, NEW.interno)); SET v_sep = ','; END IF;
     IF NOT (OLD.patente <=> NEW.patente) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','patente','antes',OLD.patente,'despues',NEW.patente)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('patente', OLD.patente, NEW.patente)); SET v_sep = ','; END IF;
 
     -- Modelo / colores
     IF NOT (OLD.id_grupo <=> NEW.id_grupo) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_grupo','antes',OLD.id_grupo,'despues',NEW.id_grupo)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_grupo', OLD.id_grupo, NEW.id_grupo)); SET v_sep = ','; END IF;
     IF NOT (OLD.id_modelo <=> NEW.id_modelo) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_modelo','antes',OLD.id_modelo,'despues',NEW.id_modelo)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_modelo', OLD.id_modelo, NEW.id_modelo)); SET v_sep = ','; END IF;
     IF NOT (OLD.id_color <=> NEW.id_color) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_color','antes',OLD.id_color,'despues',NEW.id_color)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_color', OLD.id_color, NEW.id_color)); SET v_sep = ','; END IF;
     IF NOT (OLD.color_uno <=> NEW.color_uno) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','color_uno','antes',OLD.color_uno,'despues',NEW.color_uno)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('color_uno', OLD.color_uno, NEW.color_uno)); SET v_sep = ','; END IF;
     IF NOT (OLD.color_dos <=> NEW.color_dos) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','color_dos','antes',OLD.color_dos,'despues',NEW.color_dos)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('color_dos', OLD.color_dos, NEW.color_dos)); SET v_sep = ','; END IF;
     IF NOT (OLD.color_tres <=> NEW.color_tres) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','color_tres','antes',OLD.color_tres,'despues',NEW.color_tres)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('color_tres', OLD.color_tres, NEW.color_tres)); SET v_sep = ','; END IF;
 
     -- Sucursal / ubicación
     IF NOT (OLD.id_sucursal <=> NEW.id_sucursal) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_sucursal','antes',OLD.id_sucursal,'despues',NEW.id_sucursal)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_sucursal', OLD.id_sucursal, NEW.id_sucursal)); SET v_sep = ','; END IF;
     IF NOT (OLD.id_ubicacion <=> NEW.id_ubicacion) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_ubicacion','antes',OLD.id_ubicacion,'despues',NEW.id_ubicacion)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_ubicacion', OLD.id_ubicacion, NEW.id_ubicacion)); SET v_sep = ','; END IF;
     IF NOT (OLD.id_ubicacion_entrega <=> NEW.id_ubicacion_entrega) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_ubicacion_entrega','antes',OLD.id_ubicacion_entrega,'despues',NEW.id_ubicacion_entrega)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_ubicacion_entrega', OLD.id_ubicacion_entrega, NEW.id_ubicacion_entrega)); SET v_sep = ','; END IF;
 
     -- Estados
     IF NOT (OLD.estado_tasa <=> NEW.estado_tasa) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','estado_tasa','antes',OLD.estado_tasa,'despues',NEW.estado_tasa)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('estado_tasa', OLD.estado_tasa, NEW.estado_tasa)); SET v_sep = ','; END IF;
     IF NOT (OLD.estado_reserva <=> NEW.estado_reserva) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','estado_reserva','antes',OLD.estado_reserva,'despues',NEW.estado_reserva)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('estado_reserva', OLD.estado_reserva, NEW.estado_reserva)); SET v_sep = ','; END IF;
     IF NOT (OLD.reservada <=> NEW.reservada) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','reservada','antes',OLD.reservada,'despues',NEW.reservada)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('reservada', OLD.reservada, NEW.reservada)); SET v_sep = ','; END IF;
     IF NOT (OLD.reserva <=> NEW.reserva) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','reserva','antes',OLD.reserva,'despues',NEW.reserva)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('reserva', OLD.reserva, NEW.reserva)); SET v_sep = ','; END IF;
     IF NOT (OLD.cancelada <=> NEW.cancelada) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','cancelada','antes',OLD.cancelada,'despues',NEW.cancelada)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('cancelada', OLD.cancelada, NEW.cancelada)); SET v_sep = ','; END IF;
     IF NOT (OLD.entregada <=> NEW.entregada) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','entregada','antes',OLD.entregada,'despues',NEW.entregada)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('entregada', OLD.entregada, NEW.entregada)); SET v_sep = ','; END IF;
     IF NOT (OLD.pagado <=> NEW.pagado) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','pagado','antes',OLD.pagado,'despues',NEW.pagado)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('pagado', OLD.pagado, NEW.pagado)); SET v_sep = ','; END IF;
     IF NOT (OLD.no_disponible <=> NEW.no_disponible) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','no_disponible','antes',OLD.no_disponible,'despues',NEW.no_disponible)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('no_disponible', OLD.no_disponible, NEW.no_disponible)); SET v_sep = ','; END IF;
     IF NOT (OLD.borrar <=> NEW.borrar) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','borrar','antes',OLD.borrar,'despues',NEW.borrar)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('borrar', OLD.borrar, NEW.borrar)); SET v_sep = ','; END IF;
     IF NOT (OLD.reventa <=> NEW.reventa) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','reventa','antes',OLD.reventa,'despues',NEW.reventa)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('reventa', OLD.reventa, NEW.reventa)); SET v_sep = ','; END IF;
     IF NOT (OLD.servicio_conectado <=> NEW.servicio_conectado) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','servicio_conectado','antes',OLD.servicio_conectado,'despues',NEW.servicio_conectado)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('servicio_conectado', OLD.servicio_conectado, NEW.servicio_conectado)); SET v_sep = ','; END IF;
 
     -- Fechas
     IF NOT (OLD.fec_playa <=> NEW.fec_playa) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','fec_playa','antes',OLD.fec_playa,'despues',NEW.fec_playa)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('fec_playa', OLD.fec_playa, NEW.fec_playa)); SET v_sep = ','; END IF;
     IF NOT (OLD.fec_despacho <=> NEW.fec_despacho) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','fec_despacho','antes',OLD.fec_despacho,'despues',NEW.fec_despacho)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('fec_despacho', OLD.fec_despacho, NEW.fec_despacho)); SET v_sep = ','; END IF;
     IF NOT (OLD.fec_arribo <=> NEW.fec_arribo) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','fec_arribo','antes',OLD.fec_arribo,'despues',NEW.fec_arribo)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('fec_arribo', OLD.fec_arribo, NEW.fec_arribo)); SET v_sep = ','; END IF;
     IF NOT (OLD.fec_reserva <=> NEW.fec_reserva) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','fec_reserva','antes',OLD.fec_reserva,'despues',NEW.fec_reserva)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('fec_reserva', OLD.fec_reserva, NEW.fec_reserva)); SET v_sep = ','; END IF;
     IF NOT (OLD.fec_limite <=> NEW.fec_limite) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','fec_limite','antes',OLD.fec_limite,'despues',NEW.fec_limite)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('fec_limite', OLD.fec_limite, NEW.fec_limite)); SET v_sep = ','; END IF;
     IF NOT (OLD.fec_cancelacion <=> NEW.fec_cancelacion) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','fec_cancelacion','antes',OLD.fec_cancelacion,'despues',NEW.fec_cancelacion)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('fec_cancelacion', OLD.fec_cancelacion, NEW.fec_cancelacion)); SET v_sep = ','; END IF;
     IF NOT (OLD.fec_entrega <=> NEW.fec_entrega) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','fec_entrega','antes',OLD.fec_entrega,'despues',NEW.fec_entrega)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('fec_entrega', OLD.fec_entrega, NEW.fec_entrega)); SET v_sep = ','; END IF;
     IF NOT (OLD.fec_inscripcion <=> NEW.fec_inscripcion) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','fec_inscripcion','antes',OLD.fec_inscripcion,'despues',NEW.fec_inscripcion)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('fec_inscripcion', OLD.fec_inscripcion, NEW.fec_inscripcion)); SET v_sep = ','; END IF;
     IF NOT (OLD.fec_pedido <=> NEW.fec_pedido) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','fec_pedido','antes',OLD.fec_pedido,'despues',NEW.fec_pedido)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('fec_pedido', OLD.fec_pedido, NEW.fec_pedido)); SET v_sep = ','; END IF;
 
     -- Otros
     IF NOT (OLD.costo <=> NEW.costo) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','costo','antes',OLD.costo,'despues',NEW.costo)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('costo', OLD.costo, NEW.costo)); SET v_sep = ','; END IF;
     IF NOT (OLD.cliente <=> NEW.cliente) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','cliente','antes',OLD.cliente,'despues',NEW.cliente)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('cliente', OLD.cliente, NEW.cliente)); SET v_sep = ','; END IF;
     IF NOT (OLD.id_asesor <=> NEW.id_asesor) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_asesor','antes',OLD.id_asesor,'despues',NEW.id_asesor)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_asesor', OLD.id_asesor, NEW.id_asesor)); SET v_sep = ','; END IF;
     IF NOT (OLD.id_negocio <=> NEW.id_negocio) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_negocio','antes',OLD.id_negocio,'despues',NEW.id_negocio)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_negocio', OLD.id_negocio, NEW.id_negocio)); SET v_sep = ','; END IF;
     IF NOT (OLD.id_mes <=> NEW.id_mes) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_mes','antes',OLD.id_mes,'despues',NEW.id_mes)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_mes', OLD.id_mes, NEW.id_mes)); SET v_sep = ','; END IF;
     IF NOT (OLD.`año` <=> NEW.`año`) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','año','antes',OLD.`año`,'despues',NEW.`año`)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('año', OLD.`año`, NEW.`año`)); SET v_sep = ','; END IF;
     IF NOT (OLD.nro_remito <=> NEW.nro_remito) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','nro_remito','antes',OLD.nro_remito,'despues',NEW.nro_remito)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('nro_remito', OLD.nro_remito, NEW.nro_remito)); SET v_sep = ','; END IF;
     IF NOT (OLD.observacion <=> NEW.observacion) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','observacion','antes',OLD.observacion,'despues',NEW.observacion)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('observacion', OLD.observacion, NEW.observacion)); SET v_sep = ','; END IF;
     IF NOT (OLD.hora <=> NEW.hora) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','hora','antes',OLD.hora,'despues',NEW.hora)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('hora', OLD.hora, NEW.hora)); SET v_sep = ','; END IF;
     IF NOT (OLD.id_estado_entrega <=> NEW.id_estado_entrega) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','id_estado_entrega','antes',OLD.id_estado_entrega,'despues',NEW.id_estado_entrega)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('id_estado_entrega', OLD.id_estado_entrega, NEW.id_estado_entrega)); SET v_sep = ','; END IF;
     IF NOT (OLD.hora_pedido <=> NEW.hora_pedido) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','hora_pedido','antes',OLD.hora_pedido,'despues',NEW.hora_pedido)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('hora_pedido', OLD.hora_pedido, NEW.hora_pedido)); SET v_sep = ','; END IF;
     IF NOT (OLD.con_encuesta <=> NEW.con_encuesta) THEN
-      SET v_json = JSON_ARRAY_APPEND(v_json, '$', JSON_OBJECT('campo','con_encuesta','antes',OLD.con_encuesta,'despues',NEW.con_encuesta)); END IF;
+      SET v_json = CONCAT(v_json, v_sep, fn_aud_json_obj('con_encuesta', OLD.con_encuesta, NEW.con_encuesta)); SET v_sep = ','; END IF;
 
     INSERT INTO auditoria_unidades
       (id_unidad, nro_unidad, fecha, hora, id_usuario, usuario, origen, cant_campos, movimiento)
     VALUES
-      (NEW.id_unidad, NEW.nro_unidad, CURDATE(), CURTIME(), v_uid, v_uname, v_origen, v_count, v_json);
+      (NEW.id_unidad, NEW.nro_unidad, CURDATE(), CURTIME(), v_uid, v_uname, v_origen, v_count, CONCAT('[', v_json, ']'));
   END IF;
 END$$
 

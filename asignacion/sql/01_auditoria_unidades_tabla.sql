@@ -8,8 +8,9 @@
 -- Llenada automáticamente por el trigger `trg_asignaciones_audit_update`.
 -- Ejecutar UNA SOLA VEZ. Reejecutar NO borra datos (IF NOT EXISTS).
 --
--- Requisito: MySQL 5.7+ o MariaDB 10.2.7+ (uso del tipo JSON nativo y
--- de las funciones JSON_OBJECT / JSON_ARRAY_APPEND en el trigger).
+-- Requisito: MariaDB 10.0+ o MySQL 5.5+. No usa el tipo JSON nativo ni
+-- funciones JSON (`JSON_OBJECT`, etc.) para soportar el VPS de producción
+-- que corre MariaDB 10.1. El trigger arma el JSON con CONCAT + REPLACE.
 -- =====================================================================
 
 CREATE TABLE IF NOT EXISTS `auditoria_unidades` (
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `auditoria_unidades` (
   `usuario`      VARCHAR(64) NOT NULL DEFAULT 'sistema',
   `origen`       VARCHAR(96) NULL,
   `cant_campos`  SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-  `movimiento`   JSON NOT NULL,
+  `movimiento`   LONGTEXT NOT NULL,
   PRIMARY KEY (`id_audit`),
   KEY `idx_id_unidad` (`id_unidad`),
   KEY `idx_fecha` (`fecha`),
