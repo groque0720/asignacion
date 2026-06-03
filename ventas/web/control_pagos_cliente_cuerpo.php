@@ -47,10 +47,9 @@
 									};
 								};
             	if (celda == 16) {
-            						//texto = $(this).html();
-            						//texto.replace(" ","");
-            						//var tres= texto.split("|");
-            			       		$("#obs").val($(this).html());
+            						// Solo el texto libre (no el (TipoVenta) en azul), como texto plano.
+            						// Antes tomaba $(this).html() y guardaba TODO el HTML de la celda en obscanc.
+            			       		$("#obs").val($.trim($(this).find('.obs_txt').text()));
             			       	};
 
               celda++;
@@ -254,9 +253,7 @@
 					<span>
 						<?php echo "<b style='color: blue;'>(".$reg['tipo_venta'].") </b> "; ?>
 					</span>
-					<span>
-						<?php echo $reg['obs']; ?>
-					</span>
+					<span class="obs_txt"><?php echo htmlspecialchars($reg['obs'], ENT_QUOTES, 'UTF-8'); ?></span>
 					
 					</td>
 			<td class="control">
