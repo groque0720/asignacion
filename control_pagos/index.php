@@ -46,6 +46,17 @@ $fecha_actual = date('d/m/Y');
         </div>
       </div>
       <div class="flex items-center gap-5">
+        <div class="flex items-center gap-2">
+          <a :href="exportUrl('excel')" target="_blank"
+             class="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">
+            <i class="fas fa-file-excel"></i> Excel
+          </a>
+          <a :href="exportUrl('pdf')" target="_blank"
+             class="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">
+            <i class="fas fa-file-pdf"></i> PDF / Imprimir
+          </a>
+        </div>
+        <div class="w-px h-7 bg-slate-700"></div>
         <div class="text-right">
           <p class="text-[10px] text-slate-500 uppercase tracking-widest leading-none mb-0.5">Fecha</p>
           <p class="text-sm font-semibold"><?php echo $fecha_actual; ?></p>
@@ -409,6 +420,14 @@ $fecha_actual = date('d/m/Y');
         resetFiltros() {
           this.filtros = { suc: 0, est: '11', venta: '', q: '', campo: 'todo', per: 50, sort: '', dir: 'asc' };
           this.resetLoad();
+        },
+        exportUrl(tipo) {
+          const p = new URLSearchParams({
+            suc: this.filtros.suc, est: this.filtros.est, venta: this.filtros.venta,
+            q: this.filtros.q, campo: this.filtros.campo,
+            sort: this.filtros.sort, dir: this.filtros.dir,
+          });
+          return tipo + '.php?' + p.toString();
         },
         placeholderBusqueda() {
           return {

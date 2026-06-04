@@ -18,6 +18,7 @@
 header('Content-Type: application/json; charset=utf-8');
 @session_start();
 include("funciones/func_mysql.php");
+include("_consulta.php");
 conectar();
 mysqli_query($con, "SET NAMES 'utf8'");
 
@@ -27,67 +28,15 @@ if (!isset($_SESSION["autentificado"]) || $_SESSION["autentificado"] !== "SI") {
     exit;
 }
 
-// ─── Parámetros ─────────────────────────────────────────────────────────────
-$suc   = isset($_GET['suc'])   ? (int)$_GET['suc']            : 0;
-$est   = isset($_GET['est'])   ? (string)$_GET['est']         : '11';
-$q     = isset($_GET['q'])     ? trim($_GET['q'])             : '';
-$campo = isset($_GET['campo']) ? (string)$_GET['campo']       : 'todo';
-$venta = isset($_GET['venta']) ? trim($_GET['venta'])         : '';
-$page  = isset($_GET['page'])  ? max(1, (int)$_GET['page'])   : 1;
-$per   = isset($_GET['per'])   ? (int)$_GET['per']            : 50;
+// ─── Parámetros de paginación ───────────────────────────────────────────────
+$page  = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$per   = isset($_GET['per'])  ? (int)$_GET['per']           : 50;
 if ($per < 1)   $per = 50;
 if ($per > 500) $per = 500;
 $offset = ($page - 1) * $per;
 
-$sortMap = [
-    'idreserva' => 'r.idreserva',
-    'nrounidad' => 'r.nrounidad', 'interno' => 'r.interno', 'nroorden' => 'r.nroorden',
-    'asesor'    => 'u.nombre',    'cliente' => 'c.nombre',  'fecres'   => 'r.fecres',
-    'llego'     => 'r.llego',     'fechacanc' => 'r.fechacanc',
-];
-$sort    = (isset($_GET['sort']) && isset($sortMap[$_GET['sort']])) ? $sortMap[$_GET['sort']] : null;
-$dir     = (isset($_GET['dir']) && strtolower($_GET['dir']) === 'desc') ? 'DESC' : 'ASC';
-$orderBy = $sort ? ($sort.' '.$dir) : 'u.nombre ASC, c.nombre ASC';
-
-$qe = mysqli_real_escape_string($con, $q);
-$ve = mysqli_real_escape_string($con, $venta);
-
-// ─── WHERE (mismos filtros que el módulo viejo) ─────────────────────────────
-$W = "r.anulada <> 1 AND r.entregada < 3 AND r.enviada >= '1'";
-// Cuando hay búsqueda, se ignoran los filtros de sucursal/estado/venta y se busca
-// en TODO (igual que el módulo viejo). Así se puede encontrar una reserva aunque
-// no haya llegado, esté en otra sucursal, etc.
-if ($q !== '') {
-    switch ($campo) {
-        case 'nr':                                                  // Nro Reserva: exacto
-            $W .= " AND r.idreserva = '".$qe."'"; break;
-        case 'nu':                                                  // Nro Unidad: exacto
-            $W .= " AND r.nrounidad = '".$qe."'"; break;
-        case 'orden':                                               // Nro Orden: parcial
-            $W .= " AND r.nroorden LIKE '%$qe%'"; break;
-        case 'interno':                                             // Interno: parcial
-            $W .= " AND r.interno LIKE '%$qe%'"; break;
-        case 'cliente':                                             // Cliente: nombre o documento
-            $W .= " AND (c.nombre LIKE '%$qe%' OR c.nrodoc LIKE '%$qe%' OR c.tfijo LIKE '%$qe%' OR c.tcelu LIKE '%$qe%')"; break;
-        default:                                                    // Todo
-            $W .= " AND (c.nombre LIKE '%$qe%' OR c.nrodoc LIKE '%$qe%' OR c.tfijo LIKE '%$qe%' OR c.tcelu LIKE '%$qe%'".
-                  " OR r.idreserva LIKE '%$qe%' OR r.nroorden LIKE '%$qe%' OR r.nrounidad LIKE '%$qe%'".
-                  " OR r.interno LIKE '%$qe%' OR f.nombre LIKE '%$qe%')";
-    }
-} else {
-    if ($suc > 0) $W .= " AND u.idsucursal = ".$suc;
-
-    switch ($est) {
-        case '1':  $W .= " AND r.llego IS NOT NULL AND r.llego <> 0"; break;                                   // llegadas todas
-        case '11': $W .= " AND r.cancelada = 0 AND r.llego IS NOT NULL AND r.llego <> 0"; break;               // llegadas no canceladas
-        case '12': $W .= " AND r.cancelada = 1 AND r.llego IS NOT NULL AND r.llego <> 0"; break;               // llegadas canceladas
-        case '2':  $W .= " AND (r.llego IS NULL OR r.llego = '')"; break;                                      // no llegadas
-        case '21': $W .= " AND r.cancelada = 1 AND (r.llego IS NULL OR r.llego = '')"; break;                  // no llegadas canceladas
-        case '3':  $W .= " AND r.cancelada = 0 AND r.llego IS NOT NULL AND r.llego <> 0 AND datediff(curdate(), r.llego) > 10"; break; // +10 días
-        case '4':  $W .= " AND r.cancelada = 0 AND r.llego IS NOT NULL AND r.llego <> 0 AND (datediff(curdate(), r.fechacanc) > 0 OR r.fechacanc = 0 OR r.fechacanc = '')"; break; // cancelación vencida
-    }
-    if ($venta !== '') $W .= " AND r.venta = '".$ve."'";
-}
+// ─── Filtro (compartido con las exportaciones) ──────────────────────────────
+list($W, $orderBy) = cp_where($con);
 
 $BASE_JOINS = "FROM reservas r
     INNER JOIN clientes c ON c.idcliente = r.idcliente
@@ -165,32 +114,9 @@ if (!empty($ids)) {
 }
 
 // ─── Armar salida ───────────────────────────────────────────────────────────
-function modeloTexto($r) {
-    if ($r['compra'] === 'Nuevo') {
-        $g = ($r['grupo']  !== null && $r['grupo']  !== '--') ? $r['grupo']  : '';
-        $m = ($r['modelo'] !== null && $r['modelo'] !== '--') ? $r['modelo'] : '';
-        return trim($g.' '.$m);
-    }
-    return (string)$r['detalleu'];
-}
-
 $out = [];
 foreach ($rows as $id => $r) {
-    $a = $agg[$id] ?? [];
-    $pl_usado    = (float)($a['pl_usado']    ?? 0);
-    $pl_efectivo = (float)($a['pl_efectivo'] ?? 0);
-    $pl_credito  = (float)($a['pl_credito']  ?? 0);
-    $pl_leasing  = (float)($a['pl_leasing']  ?? 0);
-    $ld_usado    = (float)($a['ld_usado']    ?? 0);
-    $ld_mov1     = (float)($a['ld_mov1']     ?? 0);
-    $ld_credito  = (float)($a['ld_credito']  ?? 0);
-    $ld_leasing  = (float)($a['ld_leasing']  ?? 0);
-
-    $total_usado = $ld_usado - $pl_usado;
-    $efectivo    = $ld_mov1 - $ld_leasing - $ld_credito - $pl_usado - $pl_efectivo - $total_usado;
-    $credito     = $ld_credito - $pl_credito;
-    $leasing     = $ld_leasing - $pl_leasing;
-    $saldo       = $efectivo + $credito + $leasing + $total_usado;
+    $c = cp_calc($agg[$id] ?? []);
 
     $llego_ok = ($r['llego'] !== null && $r['llego'] !== '' && $r['llego'] !== '0000-00-00');
 
@@ -204,14 +130,14 @@ foreach ($rows as $id => $r) {
         'nroorden'       => $r['nroorden'],
         'asesor'         => $r['asesor'],
         'cliente'        => $r['cliente'],
-        'modelo'         => modeloTexto($r),
+        'modelo'         => cp_modelo_texto($r),
         'tipo_venta'     => $r['tipo_venta'],
-        'usado'          => $total_usado,
-        'usado_p'        => ($pl_usado > 0),
-        'efectivo'       => $efectivo,
-        'credito'        => $credito,
-        'leasing'        => $leasing,
-        'saldo'          => $saldo,
+        'usado'          => $c['usado'],
+        'usado_p'        => $c['usado_p'],
+        'efectivo'       => $c['efectivo'],
+        'credito'        => $c['credito'],
+        'leasing'        => $c['leasing'],
+        'saldo'          => $c['saldo'],
         'fecres'         => $r['fecres'],
         'llego'          => $llego_ok ? $r['llego'] : null,
         'fechacanc'      => ($r['fechacanc'] && $r['fechacanc'] !== '0000-00-00') ? $r['fechacanc'] : null,
