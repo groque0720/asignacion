@@ -31,7 +31,7 @@ $fecha_actual = date('d/m/Y');
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen text-slate-800"
-      x-data="controlPagos(<?php echo (int)$_SESSION['idperfil']; ?>)" x-init="init()" x-cloak>
+      x-data="controlPagos(<?php echo in_array((int)$_SESSION['idperfil'], [1, 2, 9, 14]) ? 'true' : 'false'; ?>)" x-init="init()" x-cloak>
 
   <!-- ── Header ──────────────────────────────────────────────────────────── -->
   <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-30">
@@ -186,7 +186,7 @@ $fecha_actual = date('d/m/Y');
                     </template>
                   </div>
                 </td>
-                <template x-if="perfil == 9">
+                <template x-if="puedeEditar">
                   <td class="px-3 py-2 text-center">
                     <button @click="abrirEdicion(r)" title="Editar"
                             class="w-7 h-7 rounded-md text-slate-400 hover:text-blue-600 hover:bg-blue-50">
@@ -319,9 +319,25 @@ $fecha_actual = date('d/m/Y');
   </div>
 
   <script>
-    function controlPagos(perfil) {
+    function controlPagos(puedeEditar) {
+      const columnas = [
+        { key: 'idreserva', label: 'N.R.',     sortable: true  },
+        { key: 'nrounidad', label: 'N.U.',     sortable: true  },
+        { key: 'interno',   label: 'Interno',  sortable: true  },
+        { key: 'nroorden',  label: 'Nro Orden',sortable: true  },
+        { key: 'asesor',    label: 'Asesor',   sortable: true  },
+        { key: 'cliente',   label: 'Cliente',  sortable: true  },
+        { key: 'modelo',    label: 'Modelo',   sortable: false },
+        { key: 'saldo',     label: 'Saldo',    sortable: false, align: 'right' },
+        { key: 'fecres',    label: 'Fec.Res.', sortable: true  },
+        { key: 'llego',     label: 'Llegó',    sortable: true  },
+        { key: 'fechacanc', label: 'Cancela',  sortable: true  },
+        { key: 'estados',   label: 'Estados',  sortable: false },
+      ];
+      if (puedeEditar) columnas.push({ key: 'adm', label: '', sortable: false });
       return {
-        perfil: perfil,
+        columnas: columnas,
+        puedeEditar: puedeEditar,
         loading: false,
         rows: [],
         total: 0,
@@ -356,21 +372,6 @@ $fecha_actual = date('d/m/Y');
         ],
         ventas: ['Convencional','Usado Certificado','Reventa','Plan Dueño','Plan Empleado',
                  'Especial','Plan de Ahorro','Plan Adjudicado','Plan Avanzado','Reg. Discapacidad'],
-
-        columnas: [
-          { key: 'idreserva', label: 'N.R.',     sortable: true  },
-          { key: 'nrounidad', label: 'N.U.',     sortable: true  },
-          { key: 'interno',   label: 'Interno',  sortable: true  },
-          { key: 'nroorden',  label: 'Nro Orden',sortable: true  },
-          { key: 'asesor',    label: 'Asesor',   sortable: true  },
-          { key: 'cliente',   label: 'Cliente',  sortable: true  },
-          { key: 'modelo',    label: 'Modelo',   sortable: false },
-          { key: 'saldo',     label: 'Saldo',    sortable: false, align: 'right' },
-          { key: 'fecres',    label: 'Fec.Res.', sortable: true  },
-          { key: 'llego',     label: 'Llegó',    sortable: true  },
-          { key: 'fechacanc', label: 'Cancela',  sortable: true  },
-          { key: 'estados',   label: 'Estados',  sortable: false },
-        ],
 
         async load() {
           this.loading = true;
@@ -417,7 +418,6 @@ $fecha_actual = date('d/m/Y');
         },
 
         init() {
-          if (this.perfil == 9) this.columnas.push({ key: 'adm', label: '', sortable: false });
           this.load();
         },
 
