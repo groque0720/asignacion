@@ -72,21 +72,21 @@
                         class="inline-block px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700"></span>
                   <span x-show="!r.fechacanc" class="text-slate-300">—</span>
                 </td>
-                <td class="px-3 py-2 text-center">
-                  <button @click.stop="toggleEstados(r, $event)" title="Ver estados"
-                          class="w-7 h-7 rounded-md border inline-flex items-center justify-center text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition"
-                          :class="popState.open && popState.idreserva == r.idreserva ? 'border-blue-300 bg-blue-50 text-blue-600' : 'border-gray-200 bg-white'">
-                    <i class="fas fa-ellipsis-vertical"></i>
-                  </button>
-                </td>
-                <template x-if="puedeEditar">
-                  <td class="px-3 py-2 text-center">
-                    <button @click="abrirEdicion(r)" title="Editar"
-                            class="w-7 h-7 rounded-md inline-flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50">
-                      <i class="fas fa-pen-to-square"></i>
+                <td class="px-2 py-2">
+                  <div class="flex items-center justify-center gap-1">
+                    <button @click.stop="toggleEstados(r, $event)" title="Ver estados"
+                            class="w-7 h-7 rounded-md border inline-flex items-center justify-center text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition"
+                            :class="popState.open && popState.idreserva == r.idreserva ? 'border-blue-300 bg-blue-50 text-blue-600' : 'border-gray-200 bg-white'">
+                      <i class="fas fa-ellipsis-vertical"></i>
                     </button>
-                  </td>
-                </template>
+                    <template x-if="puedeEditar">
+                      <button @click="abrirEdicion(r)" title="Editar"
+                              class="w-7 h-7 rounded-md inline-flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50">
+                        <i class="fas fa-pen-to-square"></i>
+                      </button>
+                    </template>
+                  </div>
+                </td>
               </tr>
             </template>
 

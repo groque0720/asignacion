@@ -16,9 +16,8 @@ function controlPagos(puedeEditar) {
     { key: 'fecres',    label: 'Fec.Res.', sortable: true,  width: '96px'  },
     { key: 'llego',     label: 'Llegó',    sortable: true,  width: '100px' },
     { key: 'fechacanc', label: 'Cancela',  sortable: true,  width: '100px' },
-    { key: 'estados',   label: 'Estados',  sortable: false, width: '64px',  icon: 'fa-list-check', align: 'center' },
+    { key: 'acciones',  label: '',         sortable: false, width: puedeEditar ? '92px' : '60px', icon: 'fa-list-check', align: 'center' },
   ];
-  if (puedeEditar) columnas.push({ key: 'adm', label: '', sortable: false, width: '44px', align: 'center' });
   return {
     columnas: columnas,
     puedeEditar: puedeEditar,
