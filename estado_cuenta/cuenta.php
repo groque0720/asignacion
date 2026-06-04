@@ -46,6 +46,9 @@ $puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28,
         </div>
       </div>
       <div class="flex items-center gap-4">
+        <a href="index.php" class="text-xs text-slate-300 hover:text-white">
+          <i class="fas fa-users mr-1"></i> Lista de clientes
+        </a>
         <a href="javascript:history.back()" class="text-xs text-slate-300 hover:text-white">
           <i class="fas fa-arrow-left mr-1"></i> Volver
         </a>

@@ -572,7 +572,7 @@ $fecha_actual = date('d/m/Y');
             make('reserva', resv,   base + 'reserva.php?IDrecord=' + r.idreserva),
             make('factura', fact,   base + 'facturacion.php?IDrecord=' + r.idreserva),
             make('credito', cred,   r.idcredito ? (base + 'credito.php?IDrecord=' + r.idcredito) : ''),
-            make('pago',    pago,   '../estado_cuenta/?IDrecord=' + r.idcliente),
+            make('pago',    pago,   '../estado_cuenta/cuenta.php?IDrecord=' + r.idcliente),
             make('arribo',  arribo, ''),
           ];
         },
