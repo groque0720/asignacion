@@ -7,7 +7,7 @@
               <template x-for="c in columnas" :key="c.key">
                 <th class="px-3 py-2.5 font-semibold whitespace-nowrap select-none"
                     :style="c.width ? ('width:' + c.width) : ''"
-                    :class="c.sortable ? 'cursor-pointer hover:text-slate-900' : ''"
+                    :class="(c.sortable ? 'cursor-pointer hover:text-slate-900 ' : '') + (c.cls || '')"
                     @click="c.sortable && ordenar(c.key)">
                   <div class="flex items-center gap-1"
                        :class="c.align === 'right' ? 'justify-end' : (c.align === 'center' ? 'justify-center' : 'justify-start')">
@@ -37,11 +37,13 @@
             <template x-for="r in (loading ? [] : rows)" :key="r.idreserva">
               <tr class="transition-colors"
                   :class="r.anulada == 1 ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-blue-50/40'">
-                <td class="px-3 py-2 text-slate-500" x-text="r.idreserva"></td>
-                <td class="px-3 py-2 font-medium text-slate-900" x-text="r.nrounidad"></td>
-                <td class="px-3 py-2 text-slate-500" x-text="r.interno"></td>
-                <td class="px-3 py-2 text-slate-500" x-text="r.nroorden"></td>
-                <td class="px-3 py-2" x-text="r.asesor"></td>
+                <td class="px-3 py-2 text-center text-[11px] text-slate-500" x-text="r.idreserva"></td>
+                <td class="px-3 py-2 text-center text-[11px] font-medium text-slate-900" x-text="r.nrounidad"></td>
+                <td class="px-3 py-2 text-center text-[11px] text-slate-500" x-text="r.interno"></td>
+                <td class="px-3 py-2 text-center text-[11px] text-slate-500" x-text="r.nroorden"></td>
+                <td class="px-3 py-2">
+                  <div class="truncate" x-text="asesorCorto(r.asesor)" :title="r.asesor"></div>
+                </td>
                 <td class="px-3 py-2">
                   <div class="font-medium truncate" :class="r.anulada == 1 ? 'text-red-700 line-through' : 'text-slate-900'" x-text="r.cliente" :title="r.cliente"></div>
                   <div class="flex items-center gap-1.5">

@@ -5,10 +5,10 @@
  */
 function controlPagos(puedeEditar) {
   const columnas = [
-    { key: 'idreserva', label: 'N.R.',     sortable: true,  width: '64px'  },
-    { key: 'nrounidad', label: 'N.U.',     sortable: true,  width: '70px'  },
-    { key: 'interno',   label: 'Interno',  sortable: true,  width: '76px'  },
-    { key: 'nroorden',  label: 'Nro Orden',sortable: true,  width: '104px' },
+    { key: 'idreserva', label: 'N.R.',     sortable: true,  width: '64px',  align: 'center', cls: 'text-[11px]' },
+    { key: 'nrounidad', label: 'N.U.',     sortable: true,  width: '70px',  align: 'center', cls: 'text-[11px]' },
+    { key: 'interno',   label: 'Int.',     sortable: true,  width: '76px',  align: 'center', cls: 'text-[11px]' },
+    { key: 'nroorden',  label: 'O.N.',     sortable: true,  width: '104px', align: 'center', cls: 'text-[11px]' },
     { key: 'asesor',    label: 'Asesor',   sortable: true,  width: '96px'  },
     { key: 'cliente',   label: 'Cliente',  sortable: true,  width: '200px' },
     { key: 'modelo',    label: 'Modelo',   sortable: false, width: '190px' },
@@ -258,6 +258,11 @@ function controlPagos(puedeEditar) {
       if (!f) return '';
       const p = String(f).split('-');
       return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : f;
+    },
+    asesorCorto(n) {
+      if (!n) return '';
+      const i = String(n).indexOf(' ');
+      return i === -1 ? n : n.slice(0, i);
     },
     arriboDemorado(f) {
       if (!f) return false;
