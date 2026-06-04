@@ -40,7 +40,7 @@ $d['ok'] = true;
 $d['lookups'] = [
     'tipos'       => lookup($con, "SELECT idtipopago AS id, tipopago AS nombre FROM pagos_tipos ORDER BY tipopago"),
     'modos'       => lookup($con, "SELECT idpagomodo AS id, modo AS nombre FROM pagos_modos ORDER BY modo"),
-    'financieras' => lookup($con, "SELECT idfinanciera AS id, financiera AS nombre FROM financieras ORDER BY financiera"),
+    'financieras' => lookup($con, "SELECT idfinanciera AS id, financiera AS nombre FROM financieras WHERE seleccionable = 1 ORDER BY financiera"),
 ];
 
 echo json_encode($d, JSON_UNESCAPED_UNICODE);
