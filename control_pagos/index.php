@@ -172,17 +172,22 @@ $fecha_actual = date('d/m/Y');
 
     <!-- ── Tabla ─────────────────────────────────────────────────────────── -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="overflow-x-auto" style="max-height: calc(100vh - 360px);">
-        <table class="w-full text-sm">
+      <div class="overflow-x-auto" style="max-height: calc(100vh - 360px);" @scroll="popState.open = false">
+        <table class="w-full text-xs table-fixed">
           <thead class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wide border-b border-gray-200">
             <tr>
               <template x-for="c in columnas" :key="c.key">
                 <th class="px-3 py-2.5 font-semibold whitespace-nowrap select-none"
-                    :class="[c.align === 'right' ? 'text-right' : 'text-left', c.sortable ? 'cursor-pointer hover:text-slate-900' : '']"
+                    :style="c.width ? ('width:' + c.width) : ''"
+                    :class="c.sortable ? 'cursor-pointer hover:text-slate-900' : ''"
                     @click="c.sortable && ordenar(c.key)">
-                  <span x-text="c.label"></span>
-                  <i x-show="filtros.sort === c.key" class="fas ml-1 text-[10px]"
-                     :class="filtros.dir === 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+                  <div class="flex items-center gap-1"
+                       :class="c.align === 'right' ? 'justify-end' : (c.align === 'center' ? 'justify-center' : 'justify-start')">
+                    <i x-show="c.icon" :class="'fas ' + c.icon" :title="c.label"></i>
+                    <span x-show="!c.icon" x-text="c.label"></span>
+                    <i x-show="filtros.sort === c.key" class="fas text-[10px]"
+                       :class="filtros.dir === 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+                  </div>
                 </th>
               </template>
             </tr>
@@ -210,14 +215,16 @@ $fecha_actual = date('d/m/Y');
                 <td class="px-3 py-2 text-slate-500" x-text="r.nroorden"></td>
                 <td class="px-3 py-2" x-text="r.asesor"></td>
                 <td class="px-3 py-2">
-                  <div class="font-medium" :class="r.anulada == 1 ? 'text-red-700 line-through' : 'text-slate-900'" x-text="r.cliente"></div>
+                  <div class="font-medium truncate" :class="r.anulada == 1 ? 'text-red-700 line-through' : 'text-slate-900'" x-text="r.cliente" :title="r.cliente"></div>
                   <div class="flex items-center gap-1.5">
                     <span class="text-xs text-blue-600" x-text="'(' + r.tipo_venta + ')'"></span>
                     <span x-show="r.anulada == 1"
                           class="text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded bg-red-600 text-white">Anulada</span>
                   </div>
                 </td>
-                <td class="px-3 py-2 text-slate-600" x-text="r.modelo"></td>
+                <td class="px-3 py-2 text-slate-600">
+                  <div class="truncate" x-text="r.modelo" :title="r.modelo"></div>
+                </td>
                 <td class="px-3 py-2 text-right num font-semibold"
                     :class="r.saldo == 0 ? 'text-emerald-700' : (r.saldo < 0 ? 'text-red-600' : 'text-slate-900')">
                   <span x-text="money(r.saldo)"></span>
@@ -235,22 +242,17 @@ $fecha_actual = date('d/m/Y');
                         class="inline-block px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700"></span>
                   <span x-show="!r.fechacanc" class="text-slate-300">—</span>
                 </td>
-                <td class="px-3 py-2">
-                  <div class="flex items-center gap-1.5">
-                    <template x-for="b in badges(r)" :key="b.key">
-                      <a :href="b.href || null" :target="b.href ? '_blank' : null" :title="b.title"
-                         class="w-6 h-6 rounded-md flex items-center justify-center text-xs flex-shrink-0 transition"
-                         :class="b.href ? 'hover:ring-2 hover:ring-blue-300 hover:scale-110' : 'cursor-default'"
-                         :style="`background:${b.bg};color:${b.fg};border:1px solid ${b.fg}40`">
-                        <i :class="b.icon"></i>
-                      </a>
-                    </template>
-                  </div>
+                <td class="px-3 py-2 text-center">
+                  <button @click.stop="toggleEstados(r, $event)" title="Ver estados"
+                          class="w-7 h-7 rounded-md border inline-flex items-center justify-center text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition"
+                          :class="popState.open && popState.idreserva == r.idreserva ? 'border-blue-300 bg-blue-50 text-blue-600' : 'border-gray-200 bg-white'">
+                    <i class="fas fa-ellipsis-vertical"></i>
+                  </button>
                 </td>
                 <template x-if="puedeEditar">
                   <td class="px-3 py-2 text-center">
                     <button @click="abrirEdicion(r)" title="Editar"
-                            class="w-7 h-7 rounded-md text-slate-400 hover:text-blue-600 hover:bg-blue-50">
+                            class="w-7 h-7 rounded-md inline-flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50">
                       <i class="fas fa-pen-to-square"></i>
                     </button>
                   </td>
@@ -305,6 +307,27 @@ $fecha_actual = date('d/m/Y');
       <a href="../ventas/web/control_pagos_clientes.php" class="text-blue-600 hover:underline font-medium">Ir a la versión anterior</a>.
     </p>
   </main>
+
+  <!-- ── Popover de estados (fixed: no lo recorta el scroll de la tabla) ────── -->
+  <div x-show="popState.open" x-cloak x-transition.opacity.duration.100ms
+       @click.outside="popState.open = false"
+       @keydown.escape.window="popState.open = false"
+       class="fixed z-50 w-60 bg-white rounded-xl shadow-2xl border border-gray-200 py-1.5"
+       :style="`left:${popState.x}px; top:${popState.y}px`">
+    <p class="px-3 pb-1.5 mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400 border-b border-gray-100">Estados de la operación</p>
+    <template x-for="b in popState.badges" :key="b.key">
+      <a :href="b.href || null" :target="b.href ? '_blank' : null" @click="b.href && (popState.open = false)"
+         class="flex items-center gap-2.5 px-3 py-1.5 hover:bg-slate-50"
+         :class="b.href ? 'cursor-pointer' : 'cursor-default pointer-events-none'">
+        <span class="w-6 h-6 rounded-md flex items-center justify-center text-xs flex-shrink-0"
+              :style="`background:${b.bg};color:${b.fg};border:1px solid ${b.fg}40`">
+          <i :class="b.icon"></i>
+        </span>
+        <span class="text-xs text-slate-700 leading-tight" x-text="b.title"></span>
+        <i x-show="b.href" class="fas fa-arrow-up-right-from-square text-[9px] text-slate-300 ml-auto"></i>
+      </a>
+    </template>
+  </div>
 
   <!-- ── Modal de edición ──────────────────────────────────────────────────── -->
   <div x-show="modal.open" x-cloak
@@ -377,20 +400,20 @@ $fecha_actual = date('d/m/Y');
   <script>
     function controlPagos(puedeEditar) {
       const columnas = [
-        { key: 'idreserva', label: 'N.R.',     sortable: true  },
-        { key: 'nrounidad', label: 'N.U.',     sortable: true  },
-        { key: 'interno',   label: 'Interno',  sortable: true  },
-        { key: 'nroorden',  label: 'Nro Orden',sortable: true  },
-        { key: 'asesor',    label: 'Asesor',   sortable: true  },
-        { key: 'cliente',   label: 'Cliente',  sortable: true  },
-        { key: 'modelo',    label: 'Modelo',   sortable: false },
-        { key: 'saldo',     label: 'Saldo',    sortable: false, align: 'right' },
-        { key: 'fecres',    label: 'Fec.Res.', sortable: true  },
-        { key: 'llego',     label: 'Llegó',    sortable: true  },
-        { key: 'fechacanc', label: 'Cancela',  sortable: true  },
-        { key: 'estados',   label: 'Estados',  sortable: false },
+        { key: 'idreserva', label: 'N.R.',     sortable: true,  width: '64px'  },
+        { key: 'nrounidad', label: 'N.U.',     sortable: true,  width: '70px'  },
+        { key: 'interno',   label: 'Interno',  sortable: true,  width: '76px'  },
+        { key: 'nroorden',  label: 'Nro Orden',sortable: true,  width: '104px' },
+        { key: 'asesor',    label: 'Asesor',   sortable: true,  width: '96px'  },
+        { key: 'cliente',   label: 'Cliente',  sortable: true,  width: '200px' },
+        { key: 'modelo',    label: 'Modelo',   sortable: false, width: '190px' },
+        { key: 'saldo',     label: 'Saldo',    sortable: false, align: 'right', width: '120px' },
+        { key: 'fecres',    label: 'Fec.Res.', sortable: true,  width: '96px'  },
+        { key: 'llego',     label: 'Llegó',    sortable: true,  width: '100px' },
+        { key: 'fechacanc', label: 'Cancela',  sortable: true,  width: '100px' },
+        { key: 'estados',   label: 'Estados',  sortable: false, width: '64px',  icon: 'fa-list-check', align: 'center' },
       ];
-      if (puedeEditar) columnas.push({ key: 'adm', label: '', sortable: false });
+      if (puedeEditar) columnas.push({ key: 'adm', label: '', sortable: false, width: '44px', align: 'center' });
       return {
         columnas: columnas,
         puedeEditar: puedeEditar,
@@ -402,6 +425,7 @@ $fecha_actual = date('d/m/Y');
         saldoTotal: 0,
         filtros: { suc: 0, est: '11', venta: '', q: '', campo: 'todo', per: 50, sort: '', dir: 'asc' },
         modal: { open: false, saving: false, form: {} },
+        popState: { open: false, idreserva: null, x: 0, y: 0, badges: [] },
 
         campos: [
           { id: 'todo',    nombre: 'Todo' },
@@ -548,9 +572,26 @@ $fecha_actual = date('d/m/Y');
             make('reserva', resv,   base + 'reserva.php?IDrecord=' + r.idreserva),
             make('factura', fact,   base + 'facturacion.php?IDrecord=' + r.idreserva),
             make('credito', cred,   r.idcredito ? (base + 'credito.php?IDrecord=' + r.idcredito) : ''),
-            make('pago',    pago,   base + 'pago.php?IDrecord=' + r.idcliente),
+            make('pago',    pago,   '../estado_cuenta/?IDrecord=' + r.idcliente),
             make('arribo',  arribo, ''),
           ];
+        },
+
+        // ── Menú de estados ───────────────────────────────────────────────
+        toggleEstados(r, ev) {
+          if (this.popState.open && this.popState.idreserva == r.idreserva) {
+            this.popState.open = false;
+            return;
+          }
+          const rect = ev.currentTarget.getBoundingClientRect();
+          const W = 240, badges = this.badges(r);
+          let x = rect.right - W;
+          if (x < 8) x = 8;
+          // Abre hacia abajo; si no entra, abre hacia arriba.
+          const h = badges.length * 36 + 48;
+          let y = rect.bottom + 4;
+          if (y + h > window.innerHeight - 8) y = Math.max(8, rect.top - h - 4);
+          this.popState = { open: true, idreserva: r.idreserva, x, y, badges };
         },
 
         // ── Edición ───────────────────────────────────────────────────────
