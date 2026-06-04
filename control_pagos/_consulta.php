@@ -26,21 +26,28 @@ function cp_where($con) {
     $qe = mysqli_real_escape_string($con, $q);
     $ve = mysqli_real_escape_string($con, $venta);
 
-    $W = "r.anulada <> 1 AND r.entregada < 3 AND r.enviada >= '1'";
+    // Nota: r.entregada está siempre en 0 (campo muerto); la entrega real se marca con fechaentrega.
+    $W = "r.enviada >= '1'";
 
     // Con búsqueda se ignoran sucursal/estado/venta y se busca en TODO.
+    // Las ANULADAS sí aparecen al buscar (para poder ubicarlas), salvo en la búsqueda por asesor.
     if ($q !== '') {
         switch ($campo) {
             case 'nr':       $W .= " AND r.idreserva = '".$qe."'"; break;
             case 'nu':       $W .= " AND r.nrounidad = '".$qe."'"; break;
             case 'orden':    $W .= " AND r.nroorden LIKE '%$qe%'"; break;
             case 'interno':  $W .= " AND r.interno LIKE '%$qe%'"; break;
+            case 'asesor':   // por asesor: solo NO entregadas (fechaentrega vacía) y NO anuladas
+                $W .= " AND u.nombre LIKE '%$qe%' AND r.anulada <> 1".
+                      " AND (r.fechaentrega IS NULL OR r.fechaentrega = '' OR r.fechaentrega = '0000-00-00')";
+                break;
             case 'cliente':  $W .= " AND (c.nombre LIKE '%$qe%' OR c.nrodoc LIKE '%$qe%' OR c.tfijo LIKE '%$qe%' OR c.tcelu LIKE '%$qe%')"; break;
             default:         $W .= " AND (c.nombre LIKE '%$qe%' OR c.nrodoc LIKE '%$qe%' OR c.tfijo LIKE '%$qe%' OR c.tcelu LIKE '%$qe%'".
                                    " OR r.idreserva LIKE '%$qe%' OR r.nroorden LIKE '%$qe%' OR r.nrounidad LIKE '%$qe%'".
                                    " OR r.interno LIKE '%$qe%' OR f.nombre LIKE '%$qe%')";
         }
     } else {
+        $W .= " AND r.anulada <> 1";   // vistas por estado: nunca anuladas
         if ($suc > 0) $W .= " AND u.idsucursal = ".$suc;
         switch ($est) {
             case '1':  $W .= " AND r.llego IS NOT NULL AND r.llego <> 0"; break;

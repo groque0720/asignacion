@@ -46,6 +46,12 @@ $fecha_actual = date('d/m/Y');
         </div>
       </div>
       <div class="flex items-center gap-5">
+        <a href="../ventas/web/control_pagos_clientes.php"
+           class="flex items-center gap-1.5 bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors"
+           title="Abrir la planilla clásica">
+          <i class="fas fa-table-list"></i> Versión anterior
+        </a>
+        <div class="w-px h-7 bg-slate-700"></div>
         <div class="flex items-center gap-2">
           <a :href="exportUrl('excel')" target="_blank"
              class="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">
@@ -69,23 +75,47 @@ $fecha_actual = date('d/m/Y');
 
     <!-- ── KPIs ──────────────────────────────────────────────────────────── -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-        <p class="text-xs text-slate-500 font-medium">Saldo total (filtro)</p>
-        <p class="text-2xl font-bold text-slate-900 num mt-1" :class="saldoTotal < 0 ? 'text-red-600' : ''">
-          $ <span x-text="money(saldoTotal)"></span>
-        </p>
+      <!-- Sucursal -->
+      <div class="rounded-xl shadow-sm border border-blue-100 p-4 flex items-center gap-3 bg-gradient-to-br from-blue-50 to-white">
+        <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-store"></i>
+        </div>
+        <div class="min-w-0">
+          <p class="text-xs text-slate-500 font-medium">Sucursal</p>
+          <p class="text-lg font-bold text-slate-900 truncate" x-text="sucNombre()"></p>
+        </div>
       </div>
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-        <p class="text-xs text-slate-500 font-medium">Operaciones</p>
-        <p class="text-2xl font-bold text-slate-900 num mt-1" x-text="total"></p>
+      <!-- Estado -->
+      <div class="rounded-xl shadow-sm border border-violet-100 p-4 flex items-center gap-3 bg-gradient-to-br from-violet-50 to-white">
+        <div class="w-11 h-11 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-filter"></i>
+        </div>
+        <div class="min-w-0">
+          <p class="text-xs text-slate-500 font-medium">Estado</p>
+          <p class="text-lg font-bold text-slate-900 truncate" x-text="estNombre()"></p>
+        </div>
       </div>
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-        <p class="text-xs text-slate-500 font-medium">Sucursal</p>
-        <p class="text-lg font-semibold text-slate-900 mt-1.5" x-text="sucNombre()"></p>
+      <!-- Operaciones -->
+      <div class="rounded-xl shadow-sm border border-amber-100 p-4 flex items-center gap-3 bg-gradient-to-br from-amber-50 to-white">
+        <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-list-check"></i>
+        </div>
+        <div class="min-w-0">
+          <p class="text-xs text-slate-500 font-medium">Operaciones</p>
+          <p class="text-2xl font-bold text-slate-900 num" x-text="total"></p>
+        </div>
       </div>
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-        <p class="text-xs text-slate-500 font-medium">Estado</p>
-        <p class="text-lg font-semibold text-slate-900 mt-1.5" x-text="estNombre()"></p>
+      <!-- Saldo total -->
+      <div class="rounded-xl shadow-sm border border-emerald-100 p-4 flex items-center gap-3 bg-gradient-to-br from-emerald-50 to-white">
+        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-sack-dollar"></i>
+        </div>
+        <div class="min-w-0">
+          <p class="text-xs text-slate-500 font-medium">Saldo total (filtro)</p>
+          <p class="text-2xl font-bold num truncate" :class="saldoTotal < 0 ? 'text-red-600' : 'text-emerald-700'">
+            $ <span x-text="money(saldoTotal)"></span>
+          </p>
+        </div>
       </div>
     </div>
 
@@ -120,16 +150,18 @@ $fecha_actual = date('d/m/Y');
           </select>
         </div>
         <div class="flex-1 min-w-[220px]">
-          <label class="block text-xs font-medium text-slate-500 mb-1">Buscar</label>
+          <div class="flex items-center gap-4 mb-1 h-4">
+            <label class="text-xs font-medium text-slate-500">Buscar</label>
+            <span x-show="filtros.q.length > 0" class="text-xs text-amber-600 whitespace-nowrap">
+              <i class="fas fa-circle-info"></i> Buscando en todas las sucursales y estados.
+            </span>
+          </div>
           <div class="relative">
             <i class="fas fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
             <input type="text" x-model="filtros.q" @input.debounce.400ms="resetLoad()"
                    :placeholder="placeholderBusqueda()"
                    class="w-full text-sm border border-gray-300 rounded-lg pl-9 pr-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
           </div>
-          <p x-show="filtros.q.length > 0" class="text-xs text-amber-600 mt-1">
-            <i class="fas fa-circle-info"></i> Buscando en todas las sucursales y estados.
-          </p>
         </div>
         <button @click="resetFiltros()"
                 class="text-sm text-slate-600 hover:text-slate-900 border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-50">
@@ -156,16 +188,34 @@ $fecha_actual = date('d/m/Y');
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
-            <template x-for="r in rows" :key="r.idreserva">
-              <tr class="hover:bg-blue-50/40 transition-colors">
+            <!-- Skeleton mientras carga -->
+            <template x-for="i in (loading ? 12 : 0)" :key="'sk'+i">
+              <tr>
+                <template x-for="c in columnas" :key="'skc'+i+'-'+c.key">
+                  <td class="px-3 py-3">
+                    <div class="h-3 rounded bg-slate-200 animate-pulse"
+                         :class="c.align === 'right' ? 'ml-auto w-16' : 'w-4/5'"></div>
+                  </td>
+                </template>
+              </tr>
+            </template>
+
+            <!-- Filas reales (ocultas mientras carga) -->
+            <template x-for="r in (loading ? [] : rows)" :key="r.idreserva">
+              <tr class="transition-colors"
+                  :class="r.anulada == 1 ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-blue-50/40'">
                 <td class="px-3 py-2 text-slate-500" x-text="r.idreserva"></td>
                 <td class="px-3 py-2 font-medium text-slate-900" x-text="r.nrounidad"></td>
                 <td class="px-3 py-2 text-slate-500" x-text="r.interno"></td>
                 <td class="px-3 py-2 text-slate-500" x-text="r.nroorden"></td>
                 <td class="px-3 py-2" x-text="r.asesor"></td>
                 <td class="px-3 py-2">
-                  <div class="font-medium text-slate-900" x-text="r.cliente"></div>
-                  <div class="text-xs text-blue-600" x-text="'(' + r.tipo_venta + ')'"></div>
+                  <div class="font-medium" :class="r.anulada == 1 ? 'text-red-700 line-through' : 'text-slate-900'" x-text="r.cliente"></div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-xs text-blue-600" x-text="'(' + r.tipo_venta + ')'"></span>
+                    <span x-show="r.anulada == 1"
+                          class="text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded bg-red-600 text-white">Anulada</span>
+                  </div>
                 </td>
                 <td class="px-3 py-2 text-slate-600" x-text="r.modelo"></td>
                 <td class="px-3 py-2 text-right num font-semibold"
@@ -217,12 +267,6 @@ $fecha_actual = date('d/m/Y');
         </table>
       </div>
 
-      <!-- Loading -->
-      <div x-show="loading" class="py-10 text-center text-slate-400">
-        <i class="fas fa-circle-notch fa-spin text-2xl"></i>
-        <p class="text-sm mt-2">Cargando…</p>
-      </div>
-
       <!-- ── Paginación ──────────────────────────────────────────────────── -->
       <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-slate-50 text-sm">
         <div class="text-slate-500">
@@ -257,7 +301,8 @@ $fecha_actual = date('d/m/Y');
     </div>
 
     <p class="text-xs text-slate-400 text-center">
-      Módulo nuevo (en construcción). El módulo original sigue intacto en <code>ventas/web/control_pagos_clientes.php</code>.
+      Módulo nuevo. ¿Preferís la planilla clásica?
+      <a href="../ventas/web/control_pagos_clientes.php" class="text-blue-600 hover:underline font-medium">Ir a la versión anterior</a>.
     </p>
   </main>
 
@@ -364,6 +409,7 @@ $fecha_actual = date('d/m/Y');
           { id: 'nu',      nombre: 'Nro Unidad' },
           { id: 'orden',   nombre: 'Nro Orden' },
           { id: 'interno', nombre: 'Interno' },
+          { id: 'asesor',  nombre: 'Asesor' },
           { id: 'cliente', nombre: 'Cliente' },
         ],
 
@@ -432,7 +478,7 @@ $fecha_actual = date('d/m/Y');
         placeholderBusqueda() {
           return {
             nr: 'Número de reserva exacto…', nu: 'Número de unidad exacto…',
-            orden: 'Número de orden…', interno: 'Interno…', cliente: 'Nombre o documento…',
+            orden: 'Número de orden…', interno: 'Interno…', asesor: 'Nombre del asesor…', cliente: 'Nombre o documento…',
           }[this.filtros.campo] || 'N.R., cliente, documento, unidad, orden, interno…';
         },
 
@@ -453,14 +499,16 @@ $fecha_actual = date('d/m/Y');
           const make = (key, s, href) =>
             ({ key, bg: C[s[0]][0], fg: C[s[0]][1], icon: 'fas ' + s[1], title: s[2], href: href || '' });
 
-          const resv = {
-            0:  ['slate',  'fa-pen',                  'Reserva sin enviar'],
-            1:  ['blue',   'fa-paper-plane',          'Reserva enviada'],
-            2:  ['indigo', 'fa-rotate',               'Reserva actualizada'],
-            3:  ['amber',  'fa-triangle-exclamation', 'Reserva observada'],
-            4:  ['cyan',   'fa-eye',                  'Reserva vista'],
-            5:  ['green',  'fa-circle-check',         'Reserva aprobada'],
-          }[r.enviada] || ['slate', 'fa-file-lines', 'Reserva'];
+          const resv = (r.anulada == 1)
+            ? ['red', 'fa-ban', 'OPERACIÓN ANULADA']
+            : ({
+                0:  ['slate',  'fa-pen',                  'Reserva sin enviar'],
+                1:  ['blue',   'fa-paper-plane',          'Reserva enviada'],
+                2:  ['indigo', 'fa-rotate',               'Reserva actualizada'],
+                3:  ['amber',  'fa-triangle-exclamation', 'Reserva observada'],
+                4:  ['cyan',   'fa-eye',                  'Reserva vista'],
+                5:  ['green',  'fa-circle-check',         'Reserva aprobada'],
+              }[r.enviada] || ['slate', 'fa-file-lines', 'Reserva']);
 
           const fact = {
             0:  ['slate',  'fa-receipt',              'Sin facturar'],

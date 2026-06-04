@@ -61,7 +61,7 @@ $saldo_total = (float)$tot['saldo_total'];
 // ─── Página (1 query) ───────────────────────────────────────────────────────
 $sqlPage = "SELECT
         r.idreserva, r.nrounidad, r.interno, r.nroorden, r.fecres, r.llego, r.fechacanc,
-        r.cancelada, r.enviada, r.estadopago, r.idfactura, r.idcredito, r.idcliente,
+        r.cancelada, r.anulada, r.enviada, r.estadopago, r.idfactura, r.idcredito, r.idcliente,
         r.venta AS tipo_venta, r.compra, r.detalleu, r.obscanc AS obs, r.fechaentrega,
         c.nombre AS cliente, u.nombre AS asesor, u.idsucursal,
         g.grupo AS grupo, m.modelo AS modelo,
@@ -144,6 +144,7 @@ foreach ($rows as $id => $r) {
         'fechaentrega'   => ($r['fechaentrega'] && $r['fechaentrega'] !== '0000-00-00') ? $r['fechaentrega'] : null,
         'obs'            => $r['obs'],
         'cancelada'      => (int)$r['cancelada'],
+        'anulada'        => (int)$r['anulada'],
         'enviada'        => (int)$r['enviada'],
         'estadopago'     => is_null($r['estadopago']) ? 0 : (int)$r['estadopago'],
         'factura_estado' => is_null($r['factura_estado']) ? 0 : (int)$r['factura_estado'],
