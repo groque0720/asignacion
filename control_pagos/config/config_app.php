@@ -27,4 +27,7 @@ if (!isset($_SESSION["autentificado"]) || $_SESSION["autentificado"] !== "SI") {
 $userId      = $_SESSION["id"]      ?? null;
 $userName    = $_SESSION["usuario"] ?? null;
 // Perfiles con permiso de edición (mismos que usaba el modal de index.php).
-$puedeEditar = in_array((int)($_SESSION['idperfil'] ?? 0), [1, 2, 9, 14], true);
+// Además, usuarios puntuales habilitados por id (excepciones fuera de perfil).
+$usuariosEdita = [119];
+$puedeEditar = in_array((int)($_SESSION['idperfil'] ?? 0), [1, 2, 9, 14], true)
+            || in_array((int)($userId ?? 0), $usuariosEdita, true);
