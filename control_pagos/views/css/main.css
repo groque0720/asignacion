@@ -1,0 +1,10 @@
+body { font-family: 'Inter', system-ui, sans-serif; }
+[x-cloak] { display: none !important; }
+.num { font-variant-numeric: tabular-nums; }
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f1f5f9;            /* slate-100: el fondo va en el TH, no en el THEAD */
+  box-shadow: inset 0 -1px 0 #e5e7eb;  /* borde inferior que no se pierde al scrollear */
+}

@@ -248,7 +248,12 @@ $puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28,
         </div>
         <div>
           <label class="block text-xs font-medium text-slate-500 mb-1">Monto *</label>
-          <input type="number" step="0.01" x-model="modal.form.monto" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 text-right focus:ring-2 focus:ring-blue-500 outline-none">
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+            <input type="text" inputmode="decimal" :value="modal.montoDisplay" @input="formatearMonto($event)"
+                   placeholder="0,00"
+                   class="w-full text-sm border border-gray-300 rounded-lg pl-7 pr-3 py-2 text-right focus:ring-2 focus:ring-blue-500 outline-none">
+          </div>
         </div>
         <div>
           <label class="block text-xs font-medium text-slate-500 mb-1">Tipo de pago *</label>
@@ -302,7 +307,7 @@ $puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28,
         puedeEditar: puedeEditar,
         loading: true,
         error: '',
-        modal: { open: false, saving: false, form: {} },
+        modal: { open: false, saving: false, form: {}, montoDisplay: '' },
         d: { cliente:'', asesor:'', credito:'', financiera_cred:'', monto_cred:0,
              monto_operacion:0, pagado:0, a_cancelar:0, pagos:[],
              lookups:{ tipos:[], modos:[], financieras:[] } },
@@ -324,6 +329,7 @@ $puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28,
 
         abrirAlta() {
           this.modal.form = { idpago: 0, fecha: '', monto: '', tipo: 0, modo: 0, finan: 0, nrorecibo: '', obs: '' };
+          this.modal.montoDisplay = '';
           this.modal.open = true;
         },
         abrirEdicion(p) {
@@ -332,7 +338,26 @@ $puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28,
             tipo: p.tipo_id, modo: p.modo_id, finan: p.fin_id || 0,
             nrorecibo: p.nrorecibo || '', obs: p.obs || '',
           };
+          this.modal.montoDisplay = this.montoADisplay(p.monto);
           this.modal.open = true;
+        },
+
+        // Formatea el monto en vivo a moneda AR (1.234.567,89) y guarda el valor numérico.
+        formatearMonto(e) {
+          let v = (e.target.value || '').replace(/[^\d,]/g, '');   // solo dígitos y coma
+          const partes = v.split(',');
+          let ent = partes[0].replace(/^0+(?=\d)/, '');             // sin ceros a la izquierda
+          let dec = partes.length > 1 ? partes.slice(1).join('').slice(0, 2) : null;
+          const entFmt = ent.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // puntos de miles
+          let display = entFmt;
+          if (dec !== null) display = (entFmt || '0') + ',' + dec;
+          this.modal.montoDisplay = display;
+          const num = parseFloat((ent || '0') + '.' + (dec || '0'));
+          this.modal.form.monto = isNaN(num) ? 0 : num;
+        },
+        montoADisplay(n) {
+          if (n === '' || n === null || isNaN(n)) return '';
+          return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(n);
         },
         async guardar() {
           const f = this.modal.form;

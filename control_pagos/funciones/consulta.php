@@ -1,8 +1,9 @@
 <?php
 /*
  * Lógica compartida del módulo Control de Pagos.
- * La usan data.php (JSON paginado) y las exportaciones excel.php / pdf.php,
- * para que el FILTRO y el CÁLCULO financiero estén definidos en un solo lugar.
+ * La usan actions/listar.php (JSON paginado) y las exportaciones
+ * actions/exportar_excel.php / actions/exportar_pdf.php, para que el FILTRO y
+ * el CÁLCULO financiero estén definidos en un solo lugar.
  */
 
 // Construye [$W, $orderBy] a partir de $_GET (mismos filtros que el módulo viejo).
