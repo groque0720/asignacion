@@ -29,8 +29,14 @@ function ec_datos($con, $idcliente) {
 
     $monto_operacion = (float)mysqli_fetch_assoc(mysqli_query($con,
         "SELECT COALESCE(SUM(monto),0) total FROM lineas_detalle WHERE movimiento = 1 AND idreserva = ".$idreserva))['total'];
+    // Pagado NETO (entra en el saldo: a_cancelar = operación - pagado).
     $pagado = (float)mysqli_fetch_assoc(mysqli_query($con,
         "SELECT COALESCE(SUM(monto),0) total FROM pagos_lineas WHERE idreserva = ".$idreserva))['total'];
+    // Desglose para mostrar la composición: pagos reales (+) y devoluciones (-).
+    $pagado_bruto = (float)mysqli_fetch_assoc(mysqli_query($con,
+        "SELECT COALESCE(SUM(monto),0) total FROM pagos_lineas WHERE monto > 0 AND idreserva = ".$idreserva))['total'];
+    $devoluciones = (float)mysqli_fetch_assoc(mysqli_query($con,
+        "SELECT COALESCE(-SUM(monto),0) total FROM pagos_lineas WHERE monto < 0 AND idreserva = ".$idreserva))['total'];
 
     $rPagos = mysqli_query($con,
         "SELECT pl.idpago, pl.fecha, pl.nrorecibo, pl.monto, pl.obs,
@@ -70,6 +76,8 @@ function ec_datos($con, $idcliente) {
         'monto_cred'      => $cred ? (float)$cred['monto'] : 0,
         'monto_operacion' => $monto_operacion,
         'pagado'          => $pagado,
+        'pagado_bruto'    => $pagado_bruto,
+        'devoluciones'    => $devoluciones,
         'a_cancelar'      => $monto_operacion - $pagado,
         'pagos'           => $pagos,
     ];

@@ -192,7 +192,7 @@ $puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28,
                     <td class="px-3 py-2" x-text="p.modo"></td>
                     <td class="px-3 py-2 text-slate-600" x-text="p.financiera"></td>
                     <td class="px-3 py-2 text-slate-600" x-text="p.nrorecibo"></td>
-                    <td class="px-3 py-2 text-right num font-semibold text-slate-900" x-text="money(p.monto)"></td>
+                    <td class="px-3 py-2 text-right num font-semibold" :class="p.monto < 0 ? 'text-red-600' : 'text-slate-900'" x-text="money(p.monto)"></td>
                     <td class="px-3 py-2 text-slate-600" x-text="p.obs"></td>
                     <td x-show="puedeEditar" class="px-3 py-2 whitespace-nowrap text-center">
                       <button @click="abrirEdicion(p)" title="Editar"
@@ -309,7 +309,7 @@ $puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28,
         error: '',
         modal: { open: false, saving: false, form: {}, montoDisplay: '' },
         d: { cliente:'', asesor:'', credito:'', financiera_cred:'', monto_cred:0,
-             monto_operacion:0, pagado:0, a_cancelar:0, pagos:[],
+             monto_operacion:0, pagado:0, pagado_bruto:0, devoluciones:0, a_cancelar:0, pagos:[],
              lookups:{ tipos:[], modos:[], financieras:[] } },
 
         async load() {
@@ -343,16 +343,21 @@ $puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28,
         },
 
         // Formatea el monto en vivo a moneda AR (1.234.567,89) y guarda el valor numérico.
+        // Un signo "-" (en cualquier posición) marca el monto como NEGATIVO = devolución.
         formatearMonto(e) {
-          let v = (e.target.value || '').replace(/[^\d,]/g, '');   // solo dígitos y coma
+          const raw = e.target.value || '';
+          const neg = raw.indexOf('-') !== -1;                      // hay signo menos
+          let v = raw.replace(/[^\d,]/g, '');                        // solo dígitos y coma
           const partes = v.split(',');
           let ent = partes[0].replace(/^0+(?=\d)/, '');             // sin ceros a la izquierda
           let dec = partes.length > 1 ? partes.slice(1).join('').slice(0, 2) : null;
           const entFmt = ent.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // puntos de miles
           let display = entFmt;
           if (dec !== null) display = (entFmt || '0') + ',' + dec;
+          if (neg && display !== '') display = '-' + display;       // preserva el signo
           this.modal.montoDisplay = display;
-          const num = parseFloat((ent || '0') + '.' + (dec || '0'));
+          let num = parseFloat((ent || '0') + '.' + (dec || '0'));
+          if (neg) num = -num;
           this.modal.form.monto = isNaN(num) ? 0 : num;
         },
         montoADisplay(n) {
