@@ -19,6 +19,6 @@ define('ENCUESTA_FECHA_DESDE', '2023/01/01');
 define('ENCUESTA_PERFILES', [1, 2, 5, 14]);
 
 // Usuarios (idusuario) con permiso para configurar encuestas (crear, editar, preguntas, áreas, niveles)
-define('ENCUESTA_USUARIOS_CONFIG', [11]);
+define('ENCUESTA_USUARIOS_CONFIG', [11, 56,71,72, 79, 96, 117, 139, 144]);
 
 ?>
