@@ -11,7 +11,7 @@ $fecha_actual = date('d/m/Y');
 // Permiso para registrar pagos: Tesorería (8) + admins (1,2) + usuarios habilitados.
 $perfil = (int)($_SESSION['idperfil'] ?? 0);
 $uid    = (int)($_SESSION['id'] ?? 0);
-$puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28, 11, 94, 96]);
+$puedeEditar = in_array($perfil, [1, 2, 8]) || in_array($uid, [119, 120, 87, 28, 11, 94, 96, 14]);
 ?>
 <!doctype html>
 <html lang="es">
