@@ -23,7 +23,7 @@ if (!isset($_SESSION["autentificado"]) || $_SESSION["autentificado"] !== "SI") {
 // Permisos: Tesorería (8) + admins (1,2) + usuarios habilitados del módulo viejo.
 $perfil = (int)($_SESSION["idperfil"] ?? 0);
 $uid    = (int)($_SESSION["id"] ?? 0);
-$usuarios_ok = [119, 120, 87, 28, 11, 94, 96];
+$usuarios_ok = [119, 120, 87, 28, 11, 94, 96, 14];
 if (!in_array($perfil, [1, 2, 8]) && !in_array($uid, $usuarios_ok)) {
     http_response_code(403);
     echo json_encode(["ok" => false, "error" => "No tenés permiso para registrar pagos"]);
