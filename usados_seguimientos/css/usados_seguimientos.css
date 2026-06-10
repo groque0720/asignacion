@@ -30,7 +30,7 @@
   --w-interno: 56px;
   --w-veh: 246px;
   --w-dom: 90px;
-  --w-ase: 100px;
+  --w-ase: 90px;
 }
 /* Separadores verticales (propios de la matriz) + nowrap + padding de celda */
 .us-table th, .us-table td {
@@ -77,6 +77,7 @@
 
 /* ── Columnas de info y de ítems ────────────────────────────────────────── */
 .us-col-info  { width: 92px; }
+.us-col-reserva { width: 78px; }   /* badge de reserva (Reservada/Cancelada) */
 .us-col-suc   { width: 56px; }   /* máx. 4 caracteres (Rcia, SP, VA…) */
 .us-center    { text-align: center; }
 .us-col-item  { width: 64px; text-align: center; }

@@ -30,7 +30,7 @@
               <th class="us-sticky us-col-dominio">Dominio</th>
               <th class="us-sticky us-col-asesor">Asesor toma</th>
               <th class="us-col-info">Recep. / Ant.</th>
-              <th class="us-col-info">Reserva</th>
+              <th class="us-col-reserva">Reserva</th>
               <th class="us-col-suc">Suc.</th>
               <template x-for="it in items" :key="it.id_item">
                 <th class="us-col-item" :title="it.descripcion || it.nombre" x-text="it.nombre"></th>
@@ -57,7 +57,7 @@
                   <span x-text="u.recepcion"></span>
                   <span x-show="u.ant >= 50" class="us-badge-ant" x-text="'(' + u.ant + 'd)'"></span>
                 </td>
-                <td class="us-col-info us-center">
+                <td class="us-col-reserva us-center">
                   <span class="us-badge-res" :class="u.reserva.class" x-text="u.reserva.label"></span>
                 </td>
                 <td class="us-col-suc us-center" x-text="u.sucursal"></td>
