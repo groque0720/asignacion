@@ -74,7 +74,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // ── Cargar seguimiento ──────────────────────────────────────────────────────
-$seguimiento = [];
+$seguimiento  = [];
+$con_adjuntos = [];
 if (!empty($ids_unidad)) {
     $ids_str = implode(',', $ids_unidad);
     $r = mysqli_query($con, "SELECT s.*, u.nombre AS nombre_usuario
@@ -83,6 +84,14 @@ if (!empty($ids_unidad)) {
         WHERE s.id_unidad IN ($ids_str)");
     while ($row = mysqli_fetch_assoc($r)) {
         $seguimiento[(int)$row['id_unidad']][(int)$row['id_item']] = $row;
+    }
+
+    // Celdas con adjuntos en la tabla nueva (para mostrar el clip 📎)
+    $con_adjuntos = [];
+    $ra = mysqli_query($con, "SELECT DISTINCT id_unidad, id_item
+        FROM usados_docs_archivos WHERE id_unidad IN ($ids_str)");
+    while ($row = mysqli_fetch_assoc($ra)) {
+        $con_adjuntos[(int)$row['id_unidad']][(int)$row['id_item']] = true;
     }
 }
 
@@ -325,8 +334,8 @@ function row_style($ant, $reservada, $estado_reserva, $fec_reserva, $fecha_cance
                     data-interno="<?= htmlspecialchars($usado['interno']) ?>"
                     title="<?= htmlspecialchars($titulo) ?>">
                     <span class="celda-icon"><?= $edata['icon'] ?></span>
-                    <?php if ($seg && $seg['archivo']): ?>
-                        <span class="celda-clip" title="Tiene archivo adjunto">&#128206;</span>
+                    <?php if (($seg && $seg['archivo']) || !empty($con_adjuntos[$id_unidad][$id_item])): ?>
+                        <span class="celda-clip" title="Tiene archivos adjuntos">&#128206;</span>
                     <?php endif; ?>
                 </td>
                 <?php endforeach; ?>

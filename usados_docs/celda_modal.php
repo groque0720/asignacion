@@ -31,18 +31,27 @@ $seg = mysqli_fetch_assoc($r);
 $estado_actual  = $seg ? (int)$seg['estado'] : 0;
 $archivo_actual = $seg ? $seg['archivo'] : null;
 
-// Archivos anteriores del historial (distintos al actual)
-$archivos_hist = [];
-$arch_excluir  = $archivo_actual ? "AND h.archivo != '" . mysqli_real_escape_string($con, $archivo_actual) . "'" : '';
-$r2 = mysqli_query($con, "SELECT h.id, h.archivo, h.fecha, u.nombre
-    FROM usados_docs_historial h
-    LEFT JOIN usuarios u ON h.id_usuario = u.idusuario
-    WHERE h.id_unidad = $id_unidad AND h.id_item = $id_item
-      AND h.archivo IS NOT NULL
-      $arch_excluir
-    ORDER BY h.fecha DESC
-    LIMIT 10");
-while ($row = mysqli_fetch_assoc($r2)) $archivos_hist[] = $row;
+// ── Lista unificada de adjuntos de la celda ─────────────────────────────────
+// Fuentes: tabla nueva usados_docs_archivos + archivo legacy en seguimiento.
+//   tipo 'adjunto'  → fila de usados_docs_archivos (id real)
+//   tipo 'actual'   → archivo legacy guardado en usados_docs_seguimiento.archivo
+$adjuntos = [];
+
+$ra = mysqli_query($con, "SELECT a.id, a.archivo, a.fecha, u.nombre
+    FROM usados_docs_archivos a
+    LEFT JOIN usuarios u ON a.id_usuario = u.idusuario
+    WHERE a.id_unidad = $id_unidad AND a.id_item = $id_item
+    ORDER BY a.fecha DESC");
+while ($row = mysqli_fetch_assoc($ra)) {
+    $adjuntos[] = ['tipo' => 'adjunto', 'id' => (int)$row['id'],
+                   'archivo' => $row['archivo'], 'nombre' => $row['nombre'], 'fecha' => $row['fecha']];
+}
+
+if ($archivo_actual) {
+    $adjuntos[] = ['tipo' => 'actual', 'id' => 0,
+                   'archivo' => $archivo_actual,
+                   'nombre' => $seg['nombre_usuario'] ?? null, 'fecha' => $seg['updated_at'] ?? null];
+}
 ?>
 
 <form id="form-celda" enctype="multipart/form-data">
@@ -83,36 +92,23 @@ while ($row = mysqli_fetch_assoc($r2)) $archivos_hist[] = $row;
                   placeholder="Opcional..."><?= htmlspecialchars($seg['observacion'] ?? '') ?></textarea>
     </div>
 
-    <!-- Archivo -->
+    <!-- Archivos -->
     <div class="form-section">
-        <div class="form-section-label">Archivo adjunto</div>
+        <div class="form-section-label">Archivos adjuntos</div>
 
-        <?php if ($archivo_actual): ?>
-        <div class="archivo-actual" id="archivo-actual-row">
-            <span class="archivo-icon">&#128206;</span>
-            <a href="uploads/<?= htmlspecialchars($archivo_actual) ?>" target="_blank">
-                Ver archivo actual
-            </a>
-            <button type="button" class="btn-del-archivo"
-                onclick="eliminarArchivo('actual', <?= $id_unidad ?>, <?= $id_item ?>, 0, this)"
-                title="Eliminar archivo">&#10005;</button>
-        </div>
-        <?php endif; ?>
-
-        <?php if (!empty($archivos_hist)): ?>
-        <div class="archivos-previos">
-            <div class="archivos-previos-titulo">Anteriores:</div>
-            <?php foreach ($archivos_hist as $ah): ?>
-            <div class="archivo-prev-item" id="archivo-hist-<?= $ah['id'] ?>">
-                <a href="uploads/<?= htmlspecialchars($ah['archivo']) ?>" target="_blank" class="hist-link">
-                    &#128206; Ver archivo
+        <?php if (!empty($adjuntos)): ?>
+        <div class="archivos-previos" id="archivos-lista">
+            <?php foreach ($adjuntos as $a): ?>
+            <div class="archivo-prev-item archivo-row" id="archivo-row-<?= $a['tipo'] ?>-<?= $a['id'] ?>">
+                <a href="uploads/<?= htmlspecialchars($a['archivo']) ?>" target="_blank" class="hist-link">
+                    &#128206; <?= htmlspecialchars($a['archivo']) ?>
                 </a>
                 <span class="archivo-prev-meta">
-                    <?= htmlspecialchars($ah['nombre'] ?? 'Desconocido') ?>,
-                    <?= date('d/m/y H:i', strtotime($ah['fecha'])) ?>
+                    <?= htmlspecialchars($a['nombre'] ?? 'Desconocido') ?><?php if (!empty($a['fecha'])): ?>,
+                    <?= date('d/m/y H:i', strtotime($a['fecha'])) ?><?php endif; ?>
                 </span>
                 <button type="button" class="btn-del-archivo"
-                    onclick="eliminarArchivo('historial', <?= $id_unidad ?>, <?= $id_item ?>, <?= $ah['id'] ?>, this)"
+                    onclick="eliminarArchivo('<?= $a['tipo'] ?>', <?= $id_unidad ?>, <?= $id_item ?>, <?= $a['id'] ?>, this)"
                     title="Eliminar archivo">&#10005;</button>
             </div>
             <?php endforeach; ?>
@@ -121,9 +117,9 @@ while ($row = mysqli_fetch_assoc($r2)) $archivos_hist[] = $row;
 
         <div class="archivo-upload-area">
             <label class="archivo-upload-label">
-                <span>&#8679; Subir <?= $archivo_actual ? 'nuevo' : '' ?> archivo</span>
-                <small>PDF, JPG, PNG &mdash; máx. 2 MB</small>
-                <input type="file" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp">
+                <span>&#8679; Subir archivo(s)</span>
+                <small>PDF, JPG, PNG &mdash; podés seleccionar varios &mdash; máx. 5 MB c/u</small>
+                <input type="file" name="archivo[]" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.webp">
             </label>
         </div>
     </div>

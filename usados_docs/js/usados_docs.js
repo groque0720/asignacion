@@ -75,17 +75,23 @@ $(document).ready(function () {
                         $cell.removeClass('est-pendiente est-hecho est-no-corresponde est-en-proceso');
                         $cell.addClass(res.class);
                         $cell.find('.celda-icon').text(res.icon);
-                        // Icono de clip si tiene archivo
+                        // Icono de clip si tiene al menos un archivo
                         if (res.archivo) {
                             if ($cell.find('.celda-clip').length === 0) {
-                                $cell.append('<span class="celda-clip" title="Tiene archivo adjunto">&#128206;</span>');
+                                $cell.append('<span class="celda-clip" title="Tiene archivos adjuntos">&#128206;</span>');
                             }
+                        } else {
+                            $cell.find('.celda-clip').remove();
                         }
                         // Actualizar estado general de la fila
                         actualizarEstadoGeneralFila($cell.data('id-unidad'));
                     }
                     cerrarModal();
-                    toast('Guardado correctamente', 'success');
+                    if (res.errores && res.errores.length) {
+                        toast('Guardado. No se subieron: ' + res.errores.join(', '), 'error');
+                    } else {
+                        toast('Guardado correctamente', 'success');
+                    }
                 } else {
                     toast('Error: ' + res.error, 'error');
                     $btn.prop('disabled', false).text('Guardar');
@@ -256,13 +262,12 @@ function eliminarArchivo(tipo, idUnidad, idItem, idHist, btn) {
         id_hist:   idHist
     }, function (res) {
         if (res.ok) {
-            if (tipo === 'actual') {
-                $('#archivo-actual-row').remove();
-                // Quitar clip de la celda si ya no hay archivo actual
+            // Quitar la fila del archivo (id unificado: archivo-row-<tipo>-<id>)
+            $('#archivo-row-' + tipo + '-' + idHist).remove();
+            // Si la celda ya no tiene ningún adjunto visible, quitar el clip
+            if ($('#ud-modal-body .archivo-row').length === 0) {
                 var $cell = $('#ud-modal-overlay').data('cell');
                 if ($cell) $cell.find('.celda-clip').remove();
-            } else {
-                $('#archivo-hist-' + idHist).remove();
             }
             toast('Archivo eliminado', 'success');
         } else {

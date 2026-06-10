@@ -17,12 +17,49 @@ $id_unidad = (int)($_POST['id_unidad'] ?? 0);
 $id_item   = (int)($_POST['id_item']   ?? 0);
 $id_hist   = (int)($_POST['id_hist']   ?? 0);
 
-if (!$id_unidad || !$id_item || !in_array($tipo, ['actual', 'historial'])) {
+if (!$id_unidad || !$id_item || !in_array($tipo, ['actual', 'historial', 'adjunto'])) {
     echo json_encode(['ok' => false, 'error' => 'Datos inválidos']);
     exit;
 }
 
 $uploads_dir = __DIR__ . '/uploads/';
+
+// ── Adjunto (tabla usados_docs_archivos) ────────────────────────────────────
+if ($tipo === 'adjunto') {
+    if (!$id_hist) { // se reutiliza el parámetro id_hist como id del adjunto
+        echo json_encode(['ok' => false, 'error' => 'ID de adjunto requerido']);
+        exit;
+    }
+
+    $r   = mysqli_query($con, "SELECT archivo FROM usados_docs_archivos
+        WHERE id = $id_hist AND id_unidad = $id_unidad AND id_item = $id_item");
+    $row = mysqli_fetch_assoc($r);
+
+    if (!$row || !$row['archivo']) {
+        echo json_encode(['ok' => false, 'error' => 'Adjunto no encontrado']);
+        exit;
+    }
+
+    $archivo  = $row['archivo'];
+    $arch_esc = mysqli_real_escape_string($con, $archivo);
+
+    $rs            = mysqli_query($con, "SELECT estado FROM usados_docs_seguimiento
+        WHERE id_unidad = $id_unidad AND id_item = $id_item");
+    $segrow        = mysqli_fetch_assoc($rs);
+    $estado_actual = (int)($segrow['estado'] ?? 0);
+
+    mysqli_query($con, "DELETE FROM usados_docs_archivos WHERE id = $id_hist");
+
+    mysqli_query($con, "INSERT INTO usados_docs_historial
+        (id_unidad, id_item, estado_anterior, estado_nuevo, id_usuario, fecha, observacion)
+        VALUES ($id_unidad, $id_item, $estado_actual, $estado_actual, $id_usuario, NOW(),
+                '[Archivo eliminado: $arch_esc]')");
+
+    @unlink($uploads_dir . $archivo);
+
+    echo json_encode(['ok' => true]);
+    exit;
+}
 
 if ($tipo === 'actual') {
     $r   = mysqli_query($con, "SELECT archivo, estado FROM usados_docs_seguimiento

@@ -63,6 +63,18 @@ mysqli_query($con, "CREATE TABLE IF NOT EXISTS `usados_docs_historial` (
   KEY `idx_unidad_item` (`id_unidad`, `id_item`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
+// Adjuntos: N archivos por celda (id_unidad + id_item)
+mysqli_query($con, "CREATE TABLE IF NOT EXISTS `usados_docs_archivos` (
+  `id`          int(11)      NOT NULL AUTO_INCREMENT,
+  `id_unidad`   int(11)      NOT NULL,
+  `id_item`     int(11)      NOT NULL,
+  `archivo`     varchar(255) NOT NULL,
+  `id_usuario`  int(11)      DEFAULT NULL,
+  `fecha`       datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_unidad_item` (`id_unidad`, `id_item`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
 // ── Ítems iniciales (solo si la tabla está vacía) ───────────────────────────
 
 $rc = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(*) AS c FROM usados_docs_items"));
