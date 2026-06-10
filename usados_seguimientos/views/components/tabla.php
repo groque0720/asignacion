@@ -22,7 +22,7 @@
         </div>
 
         <table x-show="!loading && items.length > 0 && usadosFiltrados().length > 0"
-               class="us-table" x-cloak>
+               class="us-table dv-table" x-cloak>
           <thead>
             <tr>
               <th class="us-sticky us-col-interno">Interno</th>

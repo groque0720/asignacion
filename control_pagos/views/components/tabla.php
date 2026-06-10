@@ -1,8 +1,12 @@
     <!-- ── Tabla ─────────────────────────────────────────────────────────── -->
+    <!-- Body un punto más grande que la base .dv-table (12px). Gana a text-[11px]/text-xs por especificidad. -->
+    <style>
+      .dv-table tbody td { font-size: 13px; }
+    </style>
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       <div class="overflow-x-auto" style="max-height: calc(100vh - 360px);" @scroll="popState.open = false">
-        <table class="w-full text-xs table-fixed table-sticky">
-          <thead class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wide border-b border-gray-200">
+        <table class="w-full text-xs table-fixed dv-table">
+          <thead>
             <tr>
               <template x-for="c in columnas" :key="c.key">
                 <th class="px-3 py-2.5 font-semibold whitespace-nowrap select-none"
@@ -20,7 +24,7 @@
               </template>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
+          <tbody>
             <!-- Skeleton mientras carga -->
             <template x-for="i in (loading ? 12 : 0)" :key="'sk'+i">
               <tr>

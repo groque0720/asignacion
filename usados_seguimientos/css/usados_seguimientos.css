@@ -15,19 +15,16 @@
 .us-table-wrapper::-webkit-scrollbar-thumb { background: #bbb; border-radius: 4px; }
 
 /* ── Tabla matriz ────────────────────────────────────────────────────────── */
+/* La base, el encabezado claro y el separador de filas vienen de .dv-table
+   (comun/base.css). Acá sólo lo propio de la matriz. La <table> lleva
+   class="us-table dv-table".
+   table-layout:fixed → anchos exactos y truncado fiable.
+   width:100% → llena el ancho; el sobrante se reparte proporcionalmente entre
+   columnas (Vehículo crece más). Con muchos ítems supera el ancho → scroll
+   horizontal y cada columna queda en su mínimo (los offsets sticky calzan ahí). */
 .us-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  /* table-layout:fixed → anchos declarados exactos y truncado fiable.
-     width:100% → la tabla llena el ancho disponible; cuando sobra espacio, el navegador
-     lo reparte PROPORCIONALMENTE entre las columnas (Vehículo, la más ancha, crece más).
-     Si faltan columnas (muchos ítems), la tabla supera el ancho → scroll horizontal y
-     cada columna queda en su ancho mínimo declarado (los offsets sticky de abajo son
-     correctos porque sólo aplican al scrollear, es decir cuando rige el ancho mínimo). */
   table-layout: fixed;
   width: 100%;
-  font-size: 12px;
-  color: #333;
 
   /* Anchos mínimos de la zona sticky izquierda (los offsets se calculan con calc()). */
   --w-interno: 70px;
@@ -35,24 +32,14 @@
   --w-dom: 90px;
   --w-ase: 100px;
 }
+/* Separadores verticales (propios de la matriz) + nowrap + padding de celda */
 .us-table th, .us-table td {
-  border-bottom: 1px solid #eceff1;
-  border-right: 1px solid #f1f1f1;
-  padding: 6px 8px;
+  border-right: 1px solid #f3f4f6;
+  padding: 8px 12px;
   white-space: nowrap;
 }
-
-/* Encabezado fijo al scrollear vertical */
-.us-table thead th {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: #37474f;
-  color: #fff;
-  font-weight: 600;
-  text-align: center;
-  font-size: 11px;
-}
+/* Encabezados de la matriz centrados (.dv-table los pone a la izquierda) */
+.us-table thead th { text-align: center; }
 
 /* ── Columnas sticky a la IZQUIERDA ─────────────────────────────────────── */
 .us-sticky { position: sticky; z-index: 3; background: #fff; }
@@ -84,9 +71,9 @@
   pointer-events: none;
 }
 
-/* Esquinas (sticky vertical + horizontal) por encima del resto */
+/* Esquinas (sticky vertical + horizontal) por encima del header .dv-table (z-10) */
 .us-table thead .us-sticky,
-.us-table thead .us-sticky-right { z-index: 7; }
+.us-table thead .us-sticky-right { z-index: 11; }
 
 /* ── Columnas de info y de ítems ────────────────────────────────────────── */
 .us-col-info  { width: 92px; }
@@ -96,9 +83,11 @@
 
 /* ── Filas: hover y resaltados ──────────────────────────────────────────── */
 .us-row td { background: #fff; }
-.us-row-gris td { background: #eae8e4; }
-.us-row-lila td { background: #ede8f5; }
-.us-table tbody tr:hover > td { background: #f5f9ff !important; }
+.us-row-gris td { background: #f1f1ee; }   /* antigüedad ≥ 50d (gris muy suave) */
+.us-row-lila td { background: #f1edf9; }   /* reservada +10d (lila muy suave) */
+/* Hover azul (blue-50) sólo en columnas de identidad: las celdas de estado
+   conservan su color semántico al pasar el mouse. */
+.us-table tbody tr:hover > td:not(.us-celda) { background: #eff6ff !important; }
 
 /* ── Celda de estado (clickeable) ───────────────────────────────────────── */
 .us-celda { cursor: pointer; position: relative; user-select: none; }
@@ -123,39 +112,39 @@
 }
 .us-celda:hover .us-celda-clip { background: #1d4ed8; }
 
-/* Colores de estado en la celda (claros) */
-.us-celda.est-pendiente      { background: #f5f5f5; color: #9e9e9e; }
-.us-celda.est-hecho          { background: #e8f5e9; color: #2e7d32; }
-.us-celda.est-no-corresponde { background: #eceff1; color: #546e7a; }
-.us-celda.est-en-proceso     { background: #fff8e1; color: #e65100; }
+/* Colores de estado en la celda (paleta Tailwind: slate / emerald / amber) */
+.us-celda.est-pendiente      { background: #f8fafc; color: #94a3b8; }   /* slate */
+.us-celda.est-hecho          { background: #ecfdf5; color: #047857; }   /* emerald */
+.us-celda.est-no-corresponde { background: #f1f5f9; color: #64748b; }   /* slate */
+.us-celda.est-en-proceso     { background: #fffbeb; color: #b45309; }   /* amber */
 
-/* ── Badges ─────────────────────────────────────────────────────────────── */
+/* ── Badges (pill, paleta Tailwind) ─────────────────────────────────────── */
 .us-badge-res, .us-badge-uct, .us-badge-estado, .us-badge-ant {
   display: inline-block;
-  border-radius: 10px;
+  border-radius: 9999px;
   font-size: 10px;
   font-weight: 600;
   padding: 1px 8px;
   line-height: 16px;
   white-space: nowrap;
 }
-.res-libre     { background: #e8f5e9; color: #2e7d32; }
-.res-nc        { background: #fff8e1; color: #f57f17; }
-.res-ok        { background: #e3f2fd; color: #1565c0; }
-.res-vencida   { background: #ede7f6; color: #6a1b9a; font-style: italic; }
-.res-cancelada { background: #f5f5f5; color: #9e9e9e; }
+.res-libre     { background: #ecfdf5; color: #047857; }   /* emerald */
+.res-nc        { background: #fffbeb; color: #b45309; }   /* amber */
+.res-ok        { background: #eff6ff; color: #1d4ed8; }   /* blue */
+.res-vencida   { background: #f5f3ff; color: #6d28d9; font-style: italic; }   /* violet */
+.res-cancelada { background: #f1f5f9; color: #64748b; }   /* slate */
 
 .us-badge-uct { margin-left: 4px; flex-shrink: 0; }
 .uct-oro   { background: #efb810; color: #fff; }
-.uct-plata { background: #E3E4E5; color: #62748E; }
+.uct-plata { background: #e2e8f0; color: #475569; }
 
-.us-badge-ant { background: transparent; color: #c62828; font-weight: 700; padding: 0 2px; }
+.us-badge-ant { background: transparent; color: #dc2626; font-weight: 700; padding: 0 2px; }
 
 /* Badge de estado general (variantes más saturadas) */
-.us-badge-estado.est-pendiente      { background: #eeeeee; color: #757575; }
-.us-badge-estado.est-hecho          { background: #c8e6c9; color: #1b5e20; }
-.us-badge-estado.est-no-corresponde { background: #cfd8dc; color: #37474f; }
-.us-badge-estado.est-en-proceso     { background: #ffe0b2; color: #bf360c; }
+.us-badge-estado.est-pendiente      { background: #f1f5f9; color: #475569; }   /* slate */
+.us-badge-estado.est-hecho          { background: #d1fae5; color: #065f46; }   /* emerald */
+.us-badge-estado.est-no-corresponde { background: #e2e8f0; color: #475569; }   /* slate */
+.us-badge-estado.est-en-proceso     { background: #fef3c7; color: #92400e; }   /* amber */
 
 /* ── Opciones de estado en el modal ─────────────────────────────────────── */
 .us-estado-opcion {
@@ -167,10 +156,10 @@
   transition: opacity .15s, border-color .15s;
 }
 .us-estado-opcion:disabled { cursor: default; }
-.us-estado-opcion.est-pendiente      { background: #f5f5f5; color: #757575; }
-.us-estado-opcion.est-hecho          { background: #e8f5e9; color: #2e7d32; }
-.us-estado-opcion.est-no-corresponde { background: #eceff1; color: #546e7a; }
-.us-estado-opcion.est-en-proceso     { background: #fff8e1; color: #e65100; }
+.us-estado-opcion.est-pendiente      { background: #f1f5f9; color: #64748b; }   /* slate */
+.us-estado-opcion.est-hecho          { background: #ecfdf5; color: #047857; }   /* emerald */
+.us-estado-opcion.est-no-corresponde { background: #e2e8f0; color: #475569; }   /* slate */
+.us-estado-opcion.est-en-proceso     { background: #fffbeb; color: #b45309; }   /* amber */
 .us-estado-opcion:not(:disabled):hover { opacity: .85; border-color: currentColor; }
 .us-estado-opcion.activo { border-color: currentColor; }
 .us-estado-icon  { font-size: 18px; line-height: 1; }
@@ -194,6 +183,6 @@
   pointer-events: none;
 }
 .us-toast.visible { opacity: 1; transform: translateY(0); }
-.us-toast-success { background: #2e7d32; }
-.us-toast-error   { background: #c62828; }
-.us-toast-info    { background: #1565c0; }
+.us-toast-success { background: #059669; }   /* emerald-600 */
+.us-toast-error   { background: #dc2626; }   /* red-600 */
+.us-toast-info    { background: #2563eb; }   /* blue-600 */
