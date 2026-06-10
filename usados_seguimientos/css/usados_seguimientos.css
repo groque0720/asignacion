@@ -18,10 +18,26 @@
 .us-table {
   border-collapse: separate;
   border-spacing: 0;
-  width: 100%;
+  /* table-layout:fixed → los anchos declarados se respetan exactos (truncado fiable,
+     sin que el contenido estire columnas). width:max-content → la tabla mide la suma
+     de sus columnas (no estira), así Vehículo queda acotado en monitores chicos. */
+  table-layout: fixed;
+  width: max-content;
   font-size: 12px;
   color: #333;
+
+  /* Anchos de la zona sticky izquierda (vars: los offsets se calculan con calc()).
+     --w-veh se agranda por breakpoint más abajo, para monitores grandes. */
+  --w-interno: 70px;
+  --w-veh: 246px;
+  --w-dom: 90px;
+  --w-ase: 100px;
 }
+
+/* Monitores grandes: Vehículo se estira por tramos (más texto visible). */
+@media (min-width: 1700px) { .us-table { --w-veh: 330px; } }
+@media (min-width: 1920px) { .us-table { --w-veh: 440px; } }
+@media (min-width: 2300px) { .us-table { --w-veh: 600px; } }
 .us-table th, .us-table td {
   border-bottom: 1px solid #eceff1;
   border-right: 1px solid #f1f1f1;
@@ -43,17 +59,16 @@
 
 /* ── Columnas sticky a la IZQUIERDA ─────────────────────────────────────── */
 .us-sticky { position: sticky; z-index: 3; background: #fff; }
-.us-col-interno  { left: 0;     width: 70px;  text-align: center; font-weight: 600; }
-.us-col-vehiculo { left: 70px;  width: 246px; font-weight: 500; }
-.us-col-dominio  { left: 316px; width: 90px;  text-align: center; }
-.us-col-asesor   { left: 406px; width: 100px; }
+.us-col-interno  { left: 0; width: var(--w-interno); text-align: center; font-weight: 600; }
+.us-col-vehiculo { left: var(--w-interno); width: var(--w-veh); font-weight: 500; }
+.us-col-dominio  { left: calc(var(--w-interno) + var(--w-veh)); width: var(--w-dom); text-align: center; }
+.us-col-asesor   { left: calc(var(--w-interno) + var(--w-veh) + var(--w-dom)); width: var(--w-ase); }
 
-/* Truncado: evita que el texto largo expanda la columna y descuadre los offsets sticky.
-   El ancho fijo del contenido fuerza que la celda mantenga su ancho declarado. */
-.us-trunc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.us-col-dominio .us-trunc { width: 73px; margin: 0 auto; }
-.us-col-asesor  .us-trunc { width: 83px; }
-.us-col-vehiculo .us-veh  { display: flex; align-items: center; width: 229px; }
+/* Truncado: con table-layout:fixed la columna ya tiene su ancho exacto; el contenedor
+   interno lo llena (width:100%) y corta con … sin dejar espacio sobrante. */
+.us-trunc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; }
+.us-col-dominio .us-trunc { text-align: center; }
+.us-col-vehiculo .us-veh  { display: flex; align-items: center; width: 100%; }
 .us-veh-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1 1 auto; min-width: 0; }
 /* sombra suave en el borde de la zona sticky izquierda */
 .us-col-asesor::after {
