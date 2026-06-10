@@ -1,7 +1,7 @@
     <!-- ── Tabla ─────────────────────────────────────────────────────────── -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       <div class="overflow-x-auto" style="max-height: calc(100vh - 360px);" @scroll="popState.open = false">
-        <table class="w-full text-xs table-fixed">
+        <table class="w-full text-xs table-fixed table-sticky">
           <thead class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wide border-b border-gray-200">
             <tr>
               <template x-for="c in columnas" :key="c.key">

@@ -9,6 +9,22 @@ Sistema interno de **Derka y Vargas S.A.** (concesionaria) corriendo sobre Larag
 - Locale: `America/Argentina/Buenos_Aires`, formato monetario AR (`$ 1.234.567`).
 - Las queries se construyen concatenando strings (no hay PDO/prepared statements en el código existente).
 
+## Módulos modernos: base compartida `/comun/` + plantilla `/_plantilla/`
+Los módulos nuevos/refactorizados (`control_pagos`, `estado_cuenta`, …) siguen un patrón común. **Al crear un módulo nuevo, copiar `/_plantilla/` y seguir su `README.md`** — no inventar estructura ni duplicar estilos.
+
+- **`/comun/`** = única fuente de verdad del look & bootstrap (cambiás acá → aplica a todos):
+  - `bootstrap.php`  conexión + sesión + auth. Expone `$con`, `$userId`, `$userName`, `$perfil`. Para endpoints JSON: setear `$AUTH_FAIL = 'json';` antes del require.
+  - `layout.php`     shell `<html>/<body>` parametrizado: `$title`, `$content`, `$bodyData` (x-data), `$bodyInit` (x-init, default `load()`), `$jsFile`, `$extraHead` (opcional, ej. Chart.js).
+  - `head.php`       `<head>` con Tailwind/Alpine/FontAwesome/Inter + `base.css`.
+  - `base.css`       estilos base: fuente Inter, `[x-cloak]`, `.num` (tabular-nums), `.table-sticky thead th` (header fijo al scrollear — agregar clase `table-sticky` a la `<table>`).
+  - `func_mysql.php` `conectar()` global.
+- **Estructura por módulo** (un nivel bajo `asignacion/`, de eso dependen `../comun/...` y `../login`):
+  - Entrypoints finos en la raíz (`index.php`, `data.php`, `guardar.php`, `excel.php`, `pdf.php`): sólo orquestan (bootstrap + include de acción/componentes).
+  - `config/config_app.php` → `require ../../comun/bootstrap.php` + calcula `$puedeEditar` (permisos propios del módulo).
+  - `funciones/consulta.php` lógica de datos (queries). `actions/*.php` dejan el resultado en `$salida` (el endpoint hace el `json_encode`).
+  - `views/components/*.php` (HTML + Alpine), `views/js/<modulo>.js` (componente Alpine). **No** crear CSS/layout propio: si falta algo global, agregarlo a `/comun/`.
+- `$puedeEditar` se calcula en cada `config_app.php` (perfiles/usuarios habilitados varían por módulo); `bootstrap.php` sólo hace el auth genérico.
+
 ## Auditoría de cambios en `asignaciones`
 - Trigger MySQL `trg_asignaciones_audit_update` graba en tabla `auditoria_unidades` un row por campo modificado.
 - `conectar()` en `asignacion/funciones/func_mysql.php` y `encuesta/funciones/func_mysql.php` setea `@id_usuario`, `@usuario_nombre`, `@origen` (variables de sesión MySQL que el trigger lee).

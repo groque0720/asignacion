@@ -1,6 +1,6 @@
 /*
  * Componente Alpine del módulo Control de Pagos.
- * Se carga al final del <body> (views/layouts/main.php), antes de que Alpine
+ * Se carga al final del <body> (comun/layout.php), antes de que Alpine
  * (cargado con defer) inicialice el x-data="controlPagos(...)" del body.
  */
 function controlPagos(puedeEditar) {

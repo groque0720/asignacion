@@ -10,6 +10,10 @@ require __DIR__ . '/config/config_app.php';   // sesión + auth (redirect) + $co
 $title        = 'Control de Pagos · Derka y Vargas';
 $fecha_actual = date('d/m/Y');
 
+$bodyData = "controlPagos(".($puedeEditar ? 'true' : 'false').")";
+$bodyInit = 'init()';
+$jsFile   = 'control_pagos.js';
+
 ob_start();
 include __DIR__ . '/views/components/header.php';
 ?>
@@ -23,4 +27,4 @@ include __DIR__ . '/views/components/popover_estados.php';
 include __DIR__ . '/views/components/modal_edicion.php';
 $content = ob_get_clean();
 
-include __DIR__ . '/views/layouts/main.php';
+include __DIR__ . '/../comun/layout.php';

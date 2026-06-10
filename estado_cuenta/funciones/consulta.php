@@ -1,6 +1,13 @@
 <?php
 /*
- * Lógica compartida del Estado de Cuenta (la usan data.php, pdf.php, excel.php).
+ * Lógica de datos del Estado de Cuenta (la usan las actions: cuenta_datos,
+ * lista, exportar_excel, exportar_pdf).
+ *   - ec_datos()    estado de cuenta de un cliente (resumen + pagos)
+ *   - ec_lookups()  catálogos para el formulario de pagos (tipos / modos / financieras)
+ *   - ec_lista()    listado paginado de clientes activos
+ *   - ec_fecha()    YYYY-MM-DD -> d/m/Y
+ *
+ * Requiere: $con (config/config_app.php).
  */
 
 // Devuelve el estado de cuenta de un cliente, o null si no tiene reserva.
@@ -81,6 +88,79 @@ function ec_datos($con, $idcliente) {
         'a_cancelar'      => $monto_operacion - $pagado,
         'pagos'           => $pagos,
     ];
+}
+
+// Catálogos para el formulario de pagos (tipos / modos / financieras seleccionables).
+function ec_lookups($con) {
+    $lookup = function($sql) use ($con) {
+        $out = [];
+        $r = mysqli_query($con, $sql);
+        if ($r) while ($x = mysqli_fetch_assoc($r)) $out[] = $x;
+        return $out;
+    };
+    return [
+        'tipos'       => $lookup("SELECT idtipopago AS id, tipopago AS nombre FROM pagos_tipos ORDER BY tipopago"),
+        'modos'       => $lookup("SELECT idpagomodo AS id, modo AS nombre FROM pagos_modos ORDER BY modo"),
+        'financieras' => $lookup("SELECT idfinanciera AS id, financiera AS nombre FROM financieras WHERE seleccionable = 1 ORDER BY financiera"),
+    ];
+}
+
+// Listado paginado de clientes activos. Devuelve ['total'=>int, 'rows'=>array].
+function ec_lista($con, $suc, $q, $per, $offset) {
+    $suc = (int)$suc;
+    $qe  = mysqli_real_escape_string($con, $q);
+
+    $W = "r.anulada <> 1 AND r.enviada >= '1'";
+    if ($suc > 0) $W .= " AND u.idsucursal = ".$suc;
+    if ($q !== '') {
+        $W .= " AND (c.nombre LIKE '%$qe%' OR c.nrodoc LIKE '%$qe%' OR u.nombre LIKE '%$qe%'".
+              " OR r.idreserva LIKE '%$qe%' OR r.nrounidad LIKE '%$qe%' OR r.interno LIKE '%$qe%')";
+    }
+
+    $FROM = "FROM reservas r
+        INNER JOIN usuarios u ON u.idusuario = r.idusuario
+        INNER JOIN clientes c ON c.idcliente = r.idcliente";
+
+    $total = (int)mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(*) n $FROM WHERE $W"))['n'];
+
+    $sql = "SELECT r.idreserva, r.idcliente, r.idcredito, r.compra, r.detalleu,
+                   r.estadopago, r.cancelada,
+                   c.nombre AS cliente, u.nombre AS asesor,
+                   g.grupo AS grupo, m.modelo AS modelo,
+                   cr.estado AS credito_estado
+            $FROM
+            LEFT JOIN grupos   g  ON g.idgrupo   = r.idgrupo
+            LEFT JOIN modelos  m  ON m.idmodelo  = r.idmodelo
+            LEFT JOIN creditos cr ON cr.idcredito = r.idcredito
+            WHERE $W
+            ORDER BY c.nombre ASC, u.nombre ASC
+            LIMIT ".(int)$per." OFFSET ".(int)$offset;
+    $res = mysqli_query($con, $sql);
+    if (!$res) return ['error' => mysqli_error($con)];
+
+    $rows = [];
+    while ($r = mysqli_fetch_assoc($res)) {
+        if ($r['compra'] === 'Nuevo') {
+            $g = ($r['grupo']  && $r['grupo']  !== '--') ? $r['grupo']  : '';
+            $m = ($r['modelo'] && $r['modelo'] !== '--') ? $r['modelo'] : '';
+            $modelo = trim($g.' '.$m);
+        } else {
+            $modelo = (string)$r['detalleu'];
+        }
+        $rows[] = [
+            'idreserva'      => (int)$r['idreserva'],
+            'idcliente'      => (int)$r['idcliente'],
+            'idcredito'      => (int)$r['idcredito'],
+            'compra'         => $r['compra'],
+            'asesor'         => $r['asesor'],
+            'cliente'        => $r['cliente'],
+            'modelo'         => $modelo,
+            'estadopago'     => is_null($r['estadopago']) ? 0 : (int)$r['estadopago'],
+            'cancelada'      => (int)$r['cancelada'],
+            'credito_estado' => is_null($r['credito_estado']) ? 0 : (int)$r['credito_estado'],
+        ];
+    }
+    return ['total' => $total, 'rows' => $rows];
 }
 
 function ec_fecha($d) {
