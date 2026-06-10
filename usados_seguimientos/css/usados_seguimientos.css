@@ -18,26 +18,23 @@
 .us-table {
   border-collapse: separate;
   border-spacing: 0;
-  /* table-layout:fixed → los anchos declarados se respetan exactos (truncado fiable,
-     sin que el contenido estire columnas). width:max-content → la tabla mide la suma
-     de sus columnas (no estira), así Vehículo queda acotado en monitores chicos. */
+  /* table-layout:fixed → anchos declarados exactos y truncado fiable.
+     width:100% → la tabla llena el ancho disponible; cuando sobra espacio, el navegador
+     lo reparte PROPORCIONALMENTE entre las columnas (Vehículo, la más ancha, crece más).
+     Si faltan columnas (muchos ítems), la tabla supera el ancho → scroll horizontal y
+     cada columna queda en su ancho mínimo declarado (los offsets sticky de abajo son
+     correctos porque sólo aplican al scrollear, es decir cuando rige el ancho mínimo). */
   table-layout: fixed;
-  width: max-content;
+  width: 100%;
   font-size: 12px;
   color: #333;
 
-  /* Anchos de la zona sticky izquierda (vars: los offsets se calculan con calc()).
-     --w-veh se agranda por breakpoint más abajo, para monitores grandes. */
+  /* Anchos mínimos de la zona sticky izquierda (los offsets se calculan con calc()). */
   --w-interno: 70px;
   --w-veh: 246px;
   --w-dom: 90px;
   --w-ase: 100px;
 }
-
-/* Monitores grandes: Vehículo se estira por tramos (más texto visible). */
-@media (min-width: 1700px) { .us-table { --w-veh: 330px; } }
-@media (min-width: 1920px) { .us-table { --w-veh: 440px; } }
-@media (min-width: 2300px) { .us-table { --w-veh: 600px; } }
 .us-table th, .us-table td {
   border-bottom: 1px solid #eceff1;
   border-right: 1px solid #f1f1f1;
