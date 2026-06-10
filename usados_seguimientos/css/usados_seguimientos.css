@@ -63,7 +63,7 @@
 }
 
 /* ── Columna sticky a la DERECHA ────────────────────────────────────────── */
-.us-sticky-right { position: sticky; right: 0; z-index: 3; background: #fff; width: 98px; text-align: center; }
+.us-sticky-right { position: sticky; right: 0; z-index: 3; background: #fff; width: 84px; text-align: center; }
 .us-sticky-right::before {
   content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 8px;
   transform: translateX(-100%);

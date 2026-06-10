@@ -1,6 +1,6 @@
   <!-- ── Header ──────────────────────────────────────────────────────────── -->
   <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-30">
-    <div class="max-w-[1900px] mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="max-w-[1800px] mx-auto px-6 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center">
           <i class="fas fa-clipboard-check text-sm"></i>

@@ -32,7 +32,7 @@ $extraHead = '<link rel="stylesheet" href="css/usados_seguimientos.css">';
 ob_start();
 include __DIR__ . '/views/components/header.php';
 ?>
-  <main class="max-w-[1900px] mx-auto px-6 py-5 space-y-5">
+  <main class="max-w-[1800px] mx-auto px-6 py-5 space-y-5">
     <?php include __DIR__ . '/views/components/toolbar.php'; ?>
     <?php include __DIR__ . '/views/components/tabla.php'; ?>
   </main>
