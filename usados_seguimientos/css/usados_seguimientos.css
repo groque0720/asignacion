@@ -1,0 +1,187 @@
+/*
+ * CSS específico del módulo Seguimiento Documentación Usados (moderno).
+ * Sólo lo que Tailwind no resuelve limpio: la matriz con columnas sticky a
+ * ambos lados, los colores de estado, los badges y el toast. El resto del
+ * layout va con utilidades Tailwind en los componentes.
+ */
+
+/* ── Contenedor scrolleable de la matriz ─────────────────────────────────── */
+.us-table-wrapper {
+  max-height: calc(100vh - 230px);
+  overflow: auto;
+}
+.us-table-wrapper::-webkit-scrollbar { height: 9px; width: 9px; }
+.us-table-wrapper::-webkit-scrollbar-track { background: #ebebeb; }
+.us-table-wrapper::-webkit-scrollbar-thumb { background: #bbb; border-radius: 4px; }
+
+/* ── Tabla matriz ────────────────────────────────────────────────────────── */
+.us-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  font-size: 12px;
+  color: #333;
+}
+.us-table th, .us-table td {
+  border-bottom: 1px solid #eceff1;
+  border-right: 1px solid #f1f1f1;
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+
+/* Encabezado fijo al scrollear vertical */
+.us-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #37474f;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  font-size: 11px;
+}
+
+/* ── Columnas sticky a la IZQUIERDA ─────────────────────────────────────── */
+.us-sticky { position: sticky; z-index: 3; background: #fff; }
+.us-col-interno  { left: 0;     width: 70px;  text-align: center; font-weight: 600; }
+.us-col-vehiculo { left: 70px;  width: 246px; font-weight: 500; }
+.us-col-dominio  { left: 316px; width: 90px;  text-align: center; }
+.us-col-asesor   { left: 406px; width: 100px; }
+
+/* Truncado: evita que el texto largo expanda la columna y descuadre los offsets sticky.
+   El ancho fijo del contenido fuerza que la celda mantenga su ancho declarado. */
+.us-trunc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.us-col-dominio .us-trunc { width: 73px; margin: 0 auto; }
+.us-col-asesor  .us-trunc { width: 83px; }
+.us-col-vehiculo .us-veh  { display: flex; align-items: center; width: 229px; }
+.us-veh-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1 1 auto; min-width: 0; }
+/* sombra suave en el borde de la zona sticky izquierda */
+.us-col-asesor::after {
+  content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 8px;
+  transform: translateX(100%);
+  background: linear-gradient(to right, rgba(0,0,0,.07), transparent);
+  pointer-events: none;
+}
+
+/* ── Columna sticky a la DERECHA ────────────────────────────────────────── */
+.us-sticky-right { position: sticky; right: 0; z-index: 3; background: #fff; width: 120px; text-align: center; }
+.us-sticky-right::before {
+  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 8px;
+  transform: translateX(-100%);
+  background: linear-gradient(to left, rgba(0,0,0,.07), transparent);
+  pointer-events: none;
+}
+
+/* Esquinas (sticky vertical + horizontal) por encima del resto */
+.us-table thead .us-sticky,
+.us-table thead .us-sticky-right { z-index: 7; }
+
+/* ── Columnas de info y de ítems ────────────────────────────────────────── */
+.us-col-info  { width: 92px; }
+.us-col-suc   { width: 56px; }   /* máx. 4 caracteres (Rcia, SP, VA…) */
+.us-center    { text-align: center; }
+.us-col-item  { width: 64px; text-align: center; }
+
+/* ── Filas: hover y resaltados ──────────────────────────────────────────── */
+.us-row td { background: #fff; }
+.us-row-gris td { background: #eae8e4; }
+.us-row-lila td { background: #ede8f5; }
+.us-table tbody tr:hover > td { background: #f5f9ff !important; }
+
+/* ── Celda de estado (clickeable) ───────────────────────────────────────── */
+.us-celda { cursor: pointer; position: relative; user-select: none; }
+.us-celda-icon { font-size: 16px; line-height: 1; }
+
+/* Indicador "tiene archivos": badge circular en la esquina */
+.us-celda-clip {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-size: 9px;
+  line-height: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+}
+.us-celda:hover .us-celda-clip { background: #1d4ed8; }
+
+/* Colores de estado en la celda (claros) */
+.us-celda.est-pendiente      { background: #f5f5f5; color: #9e9e9e; }
+.us-celda.est-hecho          { background: #e8f5e9; color: #2e7d32; }
+.us-celda.est-no-corresponde { background: #eceff1; color: #546e7a; }
+.us-celda.est-en-proceso     { background: #fff8e1; color: #e65100; }
+
+/* ── Badges ─────────────────────────────────────────────────────────────── */
+.us-badge-res, .us-badge-uct, .us-badge-estado, .us-badge-ant {
+  display: inline-block;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 8px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+.res-libre     { background: #e8f5e9; color: #2e7d32; }
+.res-nc        { background: #fff8e1; color: #f57f17; }
+.res-ok        { background: #e3f2fd; color: #1565c0; }
+.res-vencida   { background: #ede7f6; color: #6a1b9a; font-style: italic; }
+.res-cancelada { background: #f5f5f5; color: #9e9e9e; }
+
+.us-badge-uct { margin-left: 4px; flex-shrink: 0; }
+.uct-oro   { background: #efb810; color: #fff; }
+.uct-plata { background: #E3E4E5; color: #62748E; }
+
+.us-badge-ant { background: transparent; color: #c62828; font-weight: 700; padding: 0 2px; }
+
+/* Badge de estado general (variantes más saturadas) */
+.us-badge-estado.est-pendiente      { background: #eeeeee; color: #757575; }
+.us-badge-estado.est-hecho          { background: #c8e6c9; color: #1b5e20; }
+.us-badge-estado.est-no-corresponde { background: #cfd8dc; color: #37474f; }
+.us-badge-estado.est-en-proceso     { background: #ffe0b2; color: #bf360c; }
+
+/* ── Opciones de estado en el modal ─────────────────────────────────────── */
+.us-estado-opcion {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: opacity .15s, border-color .15s;
+}
+.us-estado-opcion:disabled { cursor: default; }
+.us-estado-opcion.est-pendiente      { background: #f5f5f5; color: #757575; }
+.us-estado-opcion.est-hecho          { background: #e8f5e9; color: #2e7d32; }
+.us-estado-opcion.est-no-corresponde { background: #eceff1; color: #546e7a; }
+.us-estado-opcion.est-en-proceso     { background: #fff8e1; color: #e65100; }
+.us-estado-opcion:not(:disabled):hover { opacity: .85; border-color: currentColor; }
+.us-estado-opcion.activo { border-color: currentColor; }
+.us-estado-icon  { font-size: 18px; line-height: 1; }
+.us-estado-texto { font-size: 11px; font-weight: 600; }
+
+/* ── Toast ──────────────────────────────────────────────────────────────── */
+.us-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 60;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 6px 24px rgba(0,0,0,.2);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .2s, transform .2s;
+  pointer-events: none;
+}
+.us-toast.visible { opacity: 1; transform: translateY(0); }
+.us-toast-success { background: #2e7d32; }
+.us-toast-error   { background: #c62828; }
+.us-toast-info    { background: #1565c0; }
