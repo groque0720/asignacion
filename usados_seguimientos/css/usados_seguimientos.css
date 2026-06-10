@@ -95,8 +95,8 @@
 /* Indicador "tiene archivos": badge circular en la esquina */
 .us-celda-clip {
   position: absolute;
-  top: 3px;
-  right: 3px;
+  top: 5px;
+  right: 7px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
