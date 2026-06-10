@@ -25,6 +25,71 @@ function us_estados_lista() {
     return $out;
 }
 
+// ── Adjuntos: procesa $_FILES['archivo'] (input name="archivo[]") ───────────
+// Valida, mueve a $UPLOADS_DIR y registra en usados_docs_archivos + historial.
+// Devuelve ['guardados'=>int, 'errores'=>[nombre (motivo)], 'nuevos'=>[adjuntos]].
+// Los 'nuevos' vienen en la MISMA forma que arma celda.php (tipo/id/nombre/url/meta),
+// listos para que el front los agregue a la galería sin recargar la celda.
+function us_guardar_adjuntos($con, $UPLOADS_DIR, $UPLOADS_URL, $id_unidad, $id_item, $estado, $userId, $userName = ''): array {
+    $max_size = 5 * 1024 * 1024; // 5 MB por archivo
+    $tipos_permitidos = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    $ext_map = [
+        'application/pdf' => 'pdf', 'image/jpeg' => 'jpg', 'image/png' => 'png',
+        'image/gif' => 'gif', 'image/webp' => 'webp',
+    ];
+
+    $nuevos  = [];
+    $errores = [];
+
+    if (empty($_FILES['archivo']) || !is_array($_FILES['archivo']['name'])) {
+        return ['guardados' => 0, 'errores' => $errores, 'nuevos' => $nuevos];
+    }
+    if (!is_dir($UPLOADS_DIR)) mkdir($UPLOADS_DIR, 0755, true);
+
+    $n     = count($_FILES['archivo']['name']);
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+
+    for ($i = 0; $i < $n; $i++) {
+        $err = $_FILES['archivo']['error'][$i];
+        if ($err === UPLOAD_ERR_NO_FILE) continue;
+
+        $nombre_orig = $_FILES['archivo']['name'][$i];
+        if ($err !== UPLOAD_ERR_OK)                     { $errores[] = $nombre_orig . ' (error de subida)';   continue; }
+        if ($_FILES['archivo']['size'][$i] > $max_size) { $errores[] = $nombre_orig . ' (supera 5 MB)';       continue; }
+
+        $mime = finfo_file($finfo, $_FILES['archivo']['tmp_name'][$i]);
+        if (!in_array($mime, $tipos_permitidos, true))  { $errores[] = $nombre_orig . ' (tipo no permitido)'; continue; }
+
+        $ext     = $ext_map[$mime];
+        $archivo = $id_unidad . '_' . $id_item . '_' . time() . '_' . $i . '.' . $ext;
+
+        if (!move_uploaded_file($_FILES['archivo']['tmp_name'][$i], $UPLOADS_DIR . $archivo)) {
+            $errores[] = $nombre_orig . ' (no se pudo guardar)';
+            continue;
+        }
+
+        $arch_esc = mysqli_real_escape_string($con, $archivo);
+        mysqli_query($con, "INSERT INTO usados_docs_archivos
+            (id_unidad, id_item, archivo, id_usuario, fecha)
+            VALUES ($id_unidad, $id_item, '$arch_esc', $userId, NOW())");
+        $new_id = mysqli_insert_id($con);
+        mysqli_query($con, "INSERT INTO usados_docs_historial
+            (id_unidad, id_item, estado_anterior, estado_nuevo, id_usuario, fecha, observacion, archivo)
+            VALUES ($id_unidad, $id_item, $estado, $estado, $userId, NOW(), '[Archivo adjuntado]', '$arch_esc')");
+
+        $nuevos[] = [
+            'tipo'   => 'adjunto',
+            'id'     => (int)$new_id,
+            'nombre' => $archivo,
+            'url'    => $UPLOADS_URL . rawurlencode($archivo),
+            'meta'   => trim(($userName !== '' ? $userName : 'Desconocido') . ', ' . date('d/m/y H:i')),
+        ];
+    }
+    finfo_close($finfo);
+
+    return ['guardados' => count($nuevos), 'errores' => $errores, 'nuevos' => $nuevos];
+}
+
 // Estado general de un usado a partir de los estados de sus celdas (ints).
 // No corresponde (2) no afecta. 0=Pendiente | 1=Completo | 3=En proceso.
 function us_estado_general(array $estados): array {

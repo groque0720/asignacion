@@ -36,6 +36,9 @@ function usadosSeguimientos(cfg) {
     // ── Lightbox / carrusel de imágenes ───────────────────────────────
     lightbox: { open: false, index: 0, imagenes: [] },
 
+    // ── Sub-modal de carga de archivos ────────────────────────────────
+    subida: { open: false, dragover: false, subiendo: false, cola: [], _seq: 0 },
+
     init() { this.load(); },
 
     // ── Carga del grid ────────────────────────────────────────────────
@@ -198,6 +201,100 @@ function usadosSeguimientos(cfg) {
       } catch (e) {
         this.toast('No se pudo eliminar: ' + e, 'error');
       }
+    },
+
+    // ── Sub-modal de carga de archivos (drag & drop + progreso) ───────
+    abrirSubida() {
+      this.subida.cola = [];
+      this.subida.dragover = false;
+      this.subida.subiendo = false;
+      this.subida.open = true;
+    },
+    cerrarSubida() {
+      if (this.subida.subiendo) return;   // no cerrar a mitad de subida
+      this.subida.open = false;
+      this.subida.cola = [];
+    },
+    formatBytes(n) {
+      if (n < 1024) return n + ' B';
+      if (n < 1024 * 1024) return (n / 1024).toFixed(0) + ' KB';
+      return (n / 1024 / 1024).toFixed(1) + ' MB';
+    },
+    // Suma archivos a la cola validando tipo y tamaño en el cliente.
+    agregarArchivos(fileList) {
+      const MAX = 5 * 1024 * 1024;
+      const OK  = /\.(pdf|jpe?g|png|gif|webp)$/i;
+      for (const file of Array.from(fileList || [])) {
+        const item = {
+          id: ++this.subida._seq, file, name: file.name, size: file.size,
+          progreso: 0, estado: 'pendiente', error: '',
+        };
+        if (!OK.test(file.name))   { item.estado = 'error'; item.error = 'Tipo no permitido'; }
+        else if (file.size > MAX)  { item.estado = 'error'; item.error = 'Supera 5 MB'; }
+        this.subida.cola.push(item);
+      }
+    },
+    quitarDeCola(id) {
+      this.subida.cola = this.subida.cola.filter(f => f.id !== id);
+    },
+    // Sube los pendientes uno por uno (barra de progreso por archivo).
+    async subirArchivos() {
+      if (!this.puedeEditar) return;
+      const pendientes = this.subida.cola.filter(f => f.estado === 'pendiente');
+      if (!pendientes.length) return;
+
+      this.subida.subiendo = true;
+      let okCount = 0;
+      for (const f of pendientes) {
+        try {
+          const nuevos = await this._subirUno(f);
+          f.estado = 'ok'; f.progreso = 100;
+          this.modal.adjuntos = [...nuevos, ...this.modal.adjuntos];   // fecha DESC: al frente
+          okCount += nuevos.length;
+        } catch (e) {
+          f.estado = 'error';
+          f.error  = (e && e.message) ? e.message : 'No se pudo subir';
+        }
+      }
+      this.subida.subiendo = false;
+
+      if (okCount > 0) {
+        const u = this.modal._u;
+        if (u && u.celdas[this.modal.id_item]) u.celdas[this.modal.id_item].tiene_arch = true;
+        this.toast(okCount + ' archivo(s) subido(s)', 'success');
+      }
+      if (this.subida.cola.some(f => f.estado === 'error')) {
+        this.toast('Algunos archivos no se subieron', 'error');
+      }
+    },
+    // Sube un archivo con XHR para reportar progreso real de carga.
+    _subirUno(f) {
+      return new Promise((resolve, reject) => {
+        const fd = new FormData();
+        fd.append('id_unidad', this.modal.id_unidad);
+        fd.append('id_item',   this.modal.id_item);
+        fd.append('archivo[]', f.file);
+
+        f.estado = 'subiendo'; f.progreso = 0;
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'subir_archivos.php');
+        xhr.upload.onprogress = (ev) => {
+          if (ev.lengthComputable) f.progreso = Math.round((ev.loaded / ev.total) * 100);
+        };
+        xhr.onload = () => {
+          let d;
+          try { d = JSON.parse(xhr.responseText); }
+          catch (e) { reject(new Error('Respuesta inválida')); return; }
+          if (xhr.status !== 200 || !d.ok) { reject(new Error(d && d.error ? d.error : 'Error del servidor')); return; }
+          if (d.errores && d.errores.length) {
+            const m = String(d.errores[0]).match(/\(([^)]+)\)/);
+            reject(new Error(m ? m[1] : 'Rechazado')); return;
+          }
+          resolve(d.nuevos || []);
+        };
+        xhr.onerror = () => reject(new Error('Error de red'));
+        xhr.send(fd);
+      });
     },
 
     // ── Adjuntos: imagen / ícono / lightbox ───────────────────────────

@@ -25,7 +25,7 @@
                class="us-table dv-table" x-cloak>
           <thead>
             <tr>
-              <th class="us-sticky us-col-interno">Interno</th>
+              <th class="us-sticky us-col-interno">Int.</th>
               <th class="us-sticky us-col-vehiculo">Vehículo</th>
               <th class="us-sticky us-col-dominio">Dominio</th>
               <th class="us-sticky us-col-asesor">Asesor toma</th>
@@ -35,7 +35,7 @@
               <template x-for="it in items" :key="it.id_item">
                 <th class="us-col-item" :title="it.descripcion || it.nombre" x-text="it.nombre"></th>
               </template>
-              <th class="us-col-estado us-sticky-right">Estado doc.</th>
+              <th class="us-col-estado us-sticky-right">Estado</th>
             </tr>
           </thead>
           <tbody>

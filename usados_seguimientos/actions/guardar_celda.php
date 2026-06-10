@@ -4,7 +4,7 @@
  * (input name="archivo[]"). Registra el cambio y cada archivo en el historial.
  * Deja el resultado en $salida; guardar_celda.php lo emite como JSON.
  *
- * Requiere: $con, $puedeEditar, $UPLOADS_DIR, $userId, $US_ESTADOS.
+ * Requiere: $con, $puedeEditar, $UPLOADS_DIR, $UPLOADS_URL, $userId, $userName, $US_ESTADOS.
  */
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -50,54 +50,10 @@ mysqli_query($con, "INSERT INTO usados_docs_historial
     (id_unidad, id_item, estado_anterior, estado_nuevo, id_usuario, fecha, observacion, archivo)
     VALUES ($id_unidad, $id_item, $estado_ant_sql, $estado, $userId, NOW(), '$obs_esc', NULL)");
 
-// ── Adjuntos múltiples ──────────────────────────────────────────────────────
-$max_size = 5 * 1024 * 1024; // 5 MB por archivo
-$tipos_permitidos = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-$ext_map = [
-    'application/pdf' => 'pdf', 'image/jpeg' => 'jpg', 'image/png' => 'png',
-    'image/gif' => 'gif', 'image/webp' => 'webp',
-];
-
-if (!is_dir($UPLOADS_DIR)) mkdir($UPLOADS_DIR, 0755, true);
-
-$guardados = 0;
-$errores   = [];
-
-if (!empty($_FILES['archivo']) && is_array($_FILES['archivo']['name'])) {
-    $n     = count($_FILES['archivo']['name']);
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-
-    for ($i = 0; $i < $n; $i++) {
-        $err = $_FILES['archivo']['error'][$i];
-        if ($err === UPLOAD_ERR_NO_FILE) continue;
-
-        $nombre_orig = $_FILES['archivo']['name'][$i];
-        if ($err !== UPLOAD_ERR_OK)                         { $errores[] = $nombre_orig . ' (error de subida)'; continue; }
-        if ($_FILES['archivo']['size'][$i] > $max_size)     { $errores[] = $nombre_orig . ' (supera 5 MB)';    continue; }
-
-        $mime = finfo_file($finfo, $_FILES['archivo']['tmp_name'][$i]);
-        if (!in_array($mime, $tipos_permitidos, true))      { $errores[] = $nombre_orig . ' (tipo no permitido)'; continue; }
-
-        $ext     = $ext_map[$mime];
-        $archivo = $id_unidad . '_' . $id_item . '_' . time() . '_' . $i . '.' . $ext;
-
-        if (!move_uploaded_file($_FILES['archivo']['tmp_name'][$i], $UPLOADS_DIR . $archivo)) {
-            $errores[] = $nombre_orig . ' (no se pudo guardar)';
-            continue;
-        }
-
-        $arch_esc = mysqli_real_escape_string($con, $archivo);
-        mysqli_query($con, "INSERT INTO usados_docs_archivos
-            (id_unidad, id_item, archivo, id_usuario, fecha)
-            VALUES ($id_unidad, $id_item, '$arch_esc', $userId, NOW())");
-        mysqli_query($con, "INSERT INTO usados_docs_historial
-            (id_unidad, id_item, estado_anterior, estado_nuevo, id_usuario, fecha, observacion, archivo)
-            VALUES ($id_unidad, $id_item, $estado, $estado, $userId, NOW(), '[Archivo adjuntado]', '$arch_esc')");
-
-        $guardados++;
-    }
-    finfo_close($finfo);
-}
+// ── Adjuntos múltiples (lógica compartida con subir_archivos) ───────────────
+$adj       = us_guardar_adjuntos($con, $UPLOADS_DIR, $UPLOADS_URL, $id_unidad, $id_item, $estado, $userId, $userName ?? '');
+$guardados = $adj['guardados'];
+$errores   = $adj['errores'];
 
 // ¿La celda tiene al menos un archivo ahora? (nuevos + legacy)
 $tiene_arch = $guardados > 0;

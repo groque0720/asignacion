@@ -1,9 +1,9 @@
   <!-- ── Modal de celda ────────────────────────────────────────────────────── -->
   <div x-show="modal.open" x-cloak
        class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
-       @keydown.escape.window="lightbox.open ? (lightbox.open = false) : cerrarCelda()">
+       @keydown.escape.window="(lightbox.open || subida.open) ? null : cerrarCelda()">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh]"
-         @click.outside="cerrarCelda()">
+         @click.outside="(subida.open || lightbox.open) ? null : cerrarCelda()">
 
       <!-- Encabezado -->
       <div class="flex items-start justify-between px-5 py-4 border-b border-gray-200 bg-slate-50">
@@ -53,24 +53,18 @@
                       class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none disabled:bg-gray-100"></textarea>
           </div>
 
-          <!-- Subir -->
-          <template x-if="puedeEditar">
-            <label class="block border-2 border-dashed border-gray-300 rounded-lg px-3 py-3 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 transition">
-              <i class="fas fa-upload text-slate-400"></i>
-              <span class="text-sm text-slate-600 ml-1">Subir archivo(s)</span>
-              <span class="block text-xs text-slate-400 mt-0.5">PDF, JPG, PNG — varios — máx. 5 MB c/u</span>
-              <span x-show="modal.files.length > 0" class="block text-xs text-blue-600 mt-1"
-                    x-text="modal.files.length + ' archivo(s) seleccionado(s)'"></span>
-              <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.webp" class="hidden"
-                     @change="modal.files = Array.from($event.target.files)">
-            </label>
-          </template>
         </div>
 
         <!-- Columna derecha: galería de adjuntos -->
         <div class="sm:col-span-2 flex flex-col min-h-0">
-          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-            Archivos <span x-show="modal.adjuntos.length > 0" x-text="'(' + modal.adjuntos.length + ')'"></span>
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+              Archivos <span x-show="modal.adjuntos.length > 0" x-text="'(' + modal.adjuntos.length + ')'"></span>
+            </div>
+            <button x-show="puedeEditar" type="button" @click="abrirSubida()"
+                    class="inline-flex items-center gap-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg px-2.5 py-1.5 transition">
+              <i class="fas fa-cloud-arrow-up"></i> Cargar archivos
+            </button>
           </div>
 
           <div x-show="modal.adjuntos.length === 0" class="text-sm text-slate-400 flex-1 flex items-center justify-center border border-dashed border-gray-200 rounded-lg py-8">
@@ -156,6 +150,91 @@
                 class="text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg px-4 py-2 disabled:opacity-50 flex items-center gap-2">
           <i class="fas" :class="modal.saving ? 'fa-circle-notch fa-spin' : 'fa-floppy-disk'"></i>
           <span x-text="modal.saving ? 'Guardando…' : 'Guardar'"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Sub-modal: carga de archivos (drag & drop + progreso) ───────────── -->
+  <div x-show="subida.open" x-cloak
+       class="fixed inset-0 z-[55] flex items-center justify-center bg-slate-900/50 p-4"
+       @click="$event.stopPropagation(); ($event.target === $el && !subida.subiendo) && cerrarSubida()"
+       @keydown.escape.window="subida.open && !subida.subiendo && cerrarSubida()">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+
+      <!-- Encabezado -->
+      <div class="flex items-start justify-between px-5 py-4 border-b border-gray-200 bg-slate-50">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900">Cargar archivos</h3>
+          <p class="text-xs text-slate-500" x-text="modal.titulo"></p>
+        </div>
+        <button @click="cerrarSubida()" :disabled="subida.subiendo"
+                class="text-slate-400 hover:text-slate-700 disabled:opacity-40">
+          <i class="fas fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 overflow-y-auto">
+        <!-- Zona drag & drop -->
+        <label @dragover.prevent="subida.dragover = true"
+               @dragleave.prevent="subida.dragover = false"
+               @drop.prevent="subida.dragover = false; agregarArchivos($event.dataTransfer.files)"
+               class="block border-2 border-dashed rounded-xl px-4 py-8 text-center cursor-pointer transition"
+               :class="subida.dragover ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50/40'">
+          <i class="fas fa-cloud-arrow-up text-3xl" :class="subida.dragover ? 'text-blue-500' : 'text-slate-300'"></i>
+          <div class="text-sm text-slate-600 mt-2">
+            Arrastrá los archivos acá o <span class="text-blue-600 font-medium">elegilos</span>
+          </div>
+          <div class="text-xs text-slate-400 mt-0.5">PDF, JPG, PNG, GIF, WEBP — máx. 5 MB c/u</div>
+          <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.webp" class="hidden"
+                 @change="agregarArchivos($event.target.files); $event.target.value = ''">
+        </label>
+
+        <!-- Cola de archivos -->
+        <div x-show="subida.cola.length > 0" class="space-y-2">
+          <template x-for="f in subida.cola" :key="f.id">
+            <div class="flex items-center gap-3 border border-gray-200 rounded-lg px-3 py-2">
+              <i class="fas text-lg"
+                 :class="{
+                   'fa-file-image text-blue-400': /\.(jpe?g|png|gif|webp)$/i.test(f.name),
+                   'fa-file-pdf text-red-400':    /\.pdf$/i.test(f.name),
+                   'fa-file text-slate-300':      !/\.(jpe?g|png|gif|webp|pdf)$/i.test(f.name)
+                 }"></i>
+              <div class="min-w-0 flex-1">
+                <div class="text-xs text-slate-700 truncate" :title="f.name" x-text="f.name"></div>
+                <!-- Barra de progreso -->
+                <div x-show="f.estado === 'subiendo' || f.estado === 'ok'" class="h-1.5 rounded bg-gray-100 mt-1 overflow-hidden">
+                  <div class="h-full bg-blue-500 transition-all duration-150"
+                       :class="f.estado === 'ok' ? 'bg-emerald-500' : ''"
+                       :style="'width:' + f.progreso + '%'"></div>
+                </div>
+                <div x-show="f.estado === 'pendiente'" class="text-[11px] text-slate-400" x-text="formatBytes(f.size)"></div>
+                <div x-show="f.estado === 'error'" class="text-[11px] text-red-500" x-text="f.error"></div>
+              </div>
+              <!-- Estado / acción -->
+              <span x-show="f.estado === 'ok'" class="text-emerald-500"><i class="fas fa-circle-check"></i></span>
+              <span x-show="f.estado === 'error'" class="text-red-500"><i class="fas fa-circle-exclamation"></i></span>
+              <span x-show="f.estado === 'subiendo'" class="text-blue-500"><i class="fas fa-circle-notch fa-spin"></i></span>
+              <button x-show="f.estado === 'pendiente'" @click="quitarDeCola(f.id)"
+                      class="text-slate-300 hover:text-red-500" title="Quitar">
+                <i class="fas fa-xmark"></i>
+              </button>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="flex items-center justify-end gap-2 px-5 py-4 border-t border-gray-200 bg-slate-50">
+        <button @click="cerrarSubida()" :disabled="subida.subiendo"
+                class="text-sm text-slate-600 border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 disabled:opacity-40">
+          <span x-text="subida.cola.some(f =&gt; f.estado === 'ok') ? 'Listo' : 'Cancelar'"></span>
+        </button>
+        <button @click="subirArchivos()"
+                :disabled="subida.subiendo || !subida.cola.some(f =&gt; f.estado === 'pendiente')"
+                class="text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg px-4 py-2 disabled:opacity-50 flex items-center gap-2">
+          <i class="fas" :class="subida.subiendo ? 'fa-circle-notch fa-spin' : 'fa-cloud-arrow-up'"></i>
+          <span x-text="subida.subiendo ? 'Subiendo…' : 'Subir'"></span>
         </button>
       </div>
     </div>

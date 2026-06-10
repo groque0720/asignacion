@@ -27,7 +27,7 @@
   width: 100%;
 
   /* Anchos mínimos de la zona sticky izquierda (los offsets se calculan con calc()). */
-  --w-interno: 70px;
+  --w-interno: 56px;
   --w-veh: 246px;
   --w-dom: 90px;
   --w-ase: 100px;
@@ -63,7 +63,7 @@
 }
 
 /* ── Columna sticky a la DERECHA ────────────────────────────────────────── */
-.us-sticky-right { position: sticky; right: 0; z-index: 3; background: #fff; width: 120px; text-align: center; }
+.us-sticky-right { position: sticky; right: 0; z-index: 3; background: #fff; width: 98px; text-align: center; }
 .us-sticky-right::before {
   content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 8px;
   transform: translateX(-100%);
