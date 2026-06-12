@@ -131,7 +131,7 @@ function score_color($v) {
 			<tr><td class="rd-lbl">Asesor</td>       <td class="rd-val"><?php echo htmlspecialchars($cab['asesor']); ?></td></tr>
 			<tr><td class="rd-lbl">Sucursal</td>     <td class="rd-val"><?php echo htmlspecialchars($cab['sucursal']); ?></td></tr>
 			<tr><td class="rd-lbl">Encuesta</td>     <td class="rd-val"><?php echo htmlspecialchars($cab['enc_nombre']); ?></td></tr>
-			<tr><td class="rd-lbl">Respondida</td>   <td class="rd-val"><?php echo cambiarFormatoFecha(substr($cab['fecha_completada'], 0, 10)); ?></td></tr>
+			<tr><td class="rd-lbl">Respondida</td>   <td class="rd-val"><?php echo cambiarFormatoFecha(substr($cab['fecha_completada'], 0, 10)); ?><?php if (strlen($cab['fecha_completada']) >= 16) echo ' - ' . substr($cab['fecha_completada'], 11, 5) . ' hs'; ?></td></tr>
 		</table>
 	</div>
 
