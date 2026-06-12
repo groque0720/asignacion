@@ -69,6 +69,22 @@ primario:    bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-
 secundario:  border border-gray-300 text-slate-600 hover:bg-gray-100 rounded-lg px-3 py-2 text-sm
 ```
 
+### Inputs de moneda (REGLA) ⭐
+Todo input de **monto** en un formulario va **formateado en moneda AR en vivo** (mientras se
+tipea: miles con punto, decimales con coma) y **alineado a la derecha**.
+```
+clase:  ... num text-right ...                 ← .num (tabular-nums) + alineación derecha
+evento: @input="fmtMoney(form, 'campo')"       ← reformatea form.campo in-place al tipear
+```
+- El componente Alpine expone `fmtMoney(form, key)` (reformatea `1234567,8` → `1.234.567,8`).
+  Acepta **coma Y punto** como separador decimal (el punto del teclado numérico funciona):
+  como los puntos de miles los inserta el propio formateador, cualquier separador tipeado por
+  el usuario es decimal. Ver `tpa_planes_avanzados/views/js/*.js`.
+- El backend parsea con un helper tipo `tpa_num()` (saca `$`/espacios/puntos, coma→punto),
+  así que el string formateado se postea tal cual.
+- Para prefill (editar), cargá el valor con `money(valor)` para que ya entre formateado.
+- Campos calculados (ej. total): formatear igual en su `@input` y al recalcular usar `money()`.
+
 ### Badges / pills
 ```
 inline-flex items-center rounded-full text-[10px] font-semibold px-2 py-0.5

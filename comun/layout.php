@@ -23,6 +23,11 @@
 
   <?= $content ?? '' ?>
 
-  <script src="views/js/<?= $jsFile ?>"></script>
+  <?php
+    // Cache-busting: ?v=<mtime> fuerza al navegador a recargar el JS cuando cambia.
+    $jsPath = dirname($_SERVER['SCRIPT_FILENAME']) . '/views/js/' . $jsFile;
+    $jsVer  = @filemtime($jsPath) ?: 0;
+  ?>
+  <script src="views/js/<?= $jsFile ?>?v=<?= $jsVer ?>"></script>
 </body>
 </html>

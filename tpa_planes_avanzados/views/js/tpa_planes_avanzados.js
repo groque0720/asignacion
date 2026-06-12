@@ -18,8 +18,8 @@ function tpaPlanes(puedeEditar, esEFV, userId) {
     modalPlan: { open: false, saving: false, form: {} },
 
     get colCount() {
-      // Plan, Modalidad, Grupo-Orden, Cuotas, CuotaProm, ValorUnidad, Venta, Integr, DerAdjud, Total, Situación = 11
-      return this.puedeEditar ? 15 : 11;
+      // Plan(+Modalidad), Grupo-Orden, Cuotas, CuotaProm, ValorUnidad, Venta, Integr, DerAdjud, Total, Situación = 10
+      return this.puedeEditar ? 14 : 10;
     },
 
     init() {
@@ -71,6 +71,7 @@ function tpaPlanes(puedeEditar, esEFV, userId) {
     },
 
     estadoColor(id) { return { 1: '#4CAF50', 2: '#FFEB3B', 3: '#F44336' }[id] || '#9ca3af'; },
+    estadoLabel(id) { return { 1: 'Libre', 2: 'Reservado', 3: 'Vendido' }[id] || '—'; },
 
     // ── Reservar / editar reserva ──────────────────────────────────────
     reservar(p) {
@@ -124,6 +125,10 @@ function tpaPlanes(puedeEditar, esEFV, userId) {
         cuota_promedio: '', valor_unidad: '', monto_reserva: '',
         venta: '', integracion: '', derecho_adjudicacion: '', precio_final: '',
         observaciones: '',
+        // datos de la reserva / cliente
+        modelo_version_retirar: '', fecha_reserva: '', hora_reserva: '',
+        cliente: '', sexo: '', fecha_nacimiento: '', edad: '', dni: '', cuil: '',
+        direccion: '', localidad: '', provincia: '', email: '', celular: '',
       };
     },
 
@@ -156,6 +161,21 @@ function tpaPlanes(puedeEditar, esEFV, userId) {
         derecho_adjudicacion: this.money(p.derecho_adjudicacion),
         precio_final: this.money(p.precio_final),
         observaciones: p.observaciones || '',
+        // datos de la reserva / cliente
+        modelo_version_retirar: p.modelo_version_retirar || '',
+        fecha_reserva: p.fecha_reserva || '',
+        hora_reserva: p.hora_reserva || '',
+        cliente: p.cliente || '',
+        sexo: p.sexo || '',
+        fecha_nacimiento: p.fecha_nacimiento || '',
+        edad: p.edad || '',
+        dni: p.dni || '',
+        cuil: p.cuil || '',
+        direccion: p.direccion || '',
+        localidad: p.localidad || '',
+        provincia: p.provincia || '',
+        email: p.email || '',
+        celular: p.celular || '',
       };
       this.modalPlan.open = true;
     },
@@ -193,6 +213,43 @@ function tpaPlanes(puedeEditar, esEFV, userId) {
     },
     exportTodoUrl(tipo) {
       return tipo + '.php?' + new URLSearchParams({ situacionId: this.filtros.situacion }).toString();
+    },
+
+    // ── Formato de moneda AR en vivo (mientras se tipea) ───────────────
+    // Reformatea form[key] in-place: miles con punto y decimales con coma (máx 2).
+    // Los puntos de miles los inserta ESTE formateador (el usuario nunca los tipea),
+    // así que cualquier separador que tipea el usuario es decimal: acepta tanto la
+    // COMA como el PUNTO del teclado numérico como separador decimal.
+    //   - con coma: la coma es decimal, los puntos son miles.
+    //   - sin coma: el último punto es decimal si lo siguen 0-2 dígitos
+    //     (si lo siguen 3, es separador de miles).
+    // El backend lo parsea con tpa_num(), así que el string formateado va directo.
+    fmtMoney(form, key) {
+      let v = String(form[key] ?? '');
+      const neg = v.trim().charAt(0) === '-';
+      v = v.replace(/[^\d.,]/g, '');
+      let dec = null, intRaw;
+      const ci = v.lastIndexOf(',');
+      if (ci !== -1) {
+        intRaw = v.slice(0, ci).replace(/[.,]/g, '');
+        dec = v.slice(ci + 1).replace(/\D/g, '').slice(0, 2);
+      } else {
+        const pi = v.lastIndexOf('.');
+        const after = pi === -1 ? '' : v.slice(pi + 1);
+        if (pi !== -1 && after.length <= 2) {
+          intRaw = v.slice(0, pi).replace(/\./g, '');
+          dec = after.slice(0, 2);
+        } else {
+          intRaw = v.replace(/\./g, '');
+        }
+      }
+      let ent = intRaw.replace(/^0+(?=\d)/, '');             // saca ceros a la izquierda
+      ent = ent.replace(/\B(?=(\d{3})+(?!\d))/g, '.');       // separador de miles
+      if (ent === '' && dec !== null) ent = '0';
+      let out = ent;
+      if (dec !== null) out += ',' + dec;
+      if (neg && out !== '') out = '-' + out;
+      form[key] = out;
     },
 
     // ── Helpers ────────────────────────────────────────────────────────

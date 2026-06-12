@@ -75,7 +75,7 @@
           </div>
           <div>
             <label class="block text-xs font-medium text-slate-500 mb-1">Monto reserva</label>
-            <input type="text" x-model="modalRes.form.monto_reserva" inputmode="decimal" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none num">
+            <input type="text" x-model="modalRes.form.monto_reserva" @input="fmtMoney(modalRes.form, 'monto_reserva')" inputmode="decimal" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none num text-right">
           </div>
         </div>
       </div>

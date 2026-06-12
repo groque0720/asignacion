@@ -42,9 +42,23 @@ $monto_reserva = tpa_num($_POST['monto_reserva'] ?? 0);
 $observaciones = tpa_txt($con, $_POST['observaciones'] ?? '');
 
 // Asesor: puede venir vacío -> NULL.
-$usuario_venta_id = (isset($_POST['usuario_venta_id']) && $_POST['usuario_venta_id'] !== '')
+$usuario_venta_id = (isset($_POST['usuario_venta_id']) && $_POST['usuario_venta_id'] !== '' && $_POST['usuario_venta_id'] !== 'null')
     ? (int)$_POST['usuario_venta_id'] : null;
 $usuarioSQL = $usuario_venta_id === null ? 'NULL' : (string)$usuario_venta_id;
+
+// Datos de la reserva / cliente.
+$modelo_version_retirar = tpa_txt($con, $_POST['modelo_version_retirar'] ?? '');
+$cliente   = tpa_txt($con, $_POST['cliente'] ?? '');
+$sexo      = tpa_txt($con, $_POST['sexo'] ?? '');
+$edad      = tpa_txt($con, $_POST['edad'] ?? '');
+$dni       = tpa_txt($con, $_POST['dni'] ?? '');
+$cuil      = tpa_txt($con, $_POST['cuil'] ?? '');
+$direccion = tpa_txt($con, $_POST['direccion'] ?? '');
+$localidad = tpa_txt($con, $_POST['localidad'] ?? '');
+$provincia = tpa_txt($con, $_POST['provincia'] ?? '');
+$email     = tpa_txt($con, $_POST['email'] ?? '');
+$celular   = tpa_txt($con, $_POST['celular'] ?? '');
+$hora_reserva = tpa_txt($con, $_POST['hora_reserva'] ?? '');
 
 if ($version_id <= 0 || $modalidad_id <= 0) {
     $salida = ["ok" => false, "error" => "Versión y modalidad son obligatorias."];
@@ -72,7 +86,22 @@ $sets =
     . "usuario_venta_id = $usuarioSQL, "
     . "monto_reserva = $monto_reserva, "
     . "observaciones = '$observaciones', "
-    . "estado_id = $estado_id";
+    . "estado_id = $estado_id, "
+    // datos de la reserva / cliente
+    . "modelo_version_retirar = '$modelo_version_retirar', "
+    . "hora_reserva = '$hora_reserva', "
+    . "fecha_reserva = "    . tpa_fechaSQL($con, $_POST['fecha_reserva'] ?? '') . ", "
+    . "cliente = '$cliente', "
+    . "sexo = '$sexo', "
+    . "fecha_nacimiento = " . tpa_fechaSQL($con, $_POST['fecha_nacimiento'] ?? '') . ", "
+    . "edad = '$edad', "
+    . "dni = '$dni', "
+    . "cuil = '$cuil', "
+    . "direccion = '$direccion', "
+    . "localidad = '$localidad', "
+    . "provincia = '$provincia', "
+    . "email = '$email', "
+    . "celular = '$celular'";
 
 if ($uuid !== '') {
     $uuidEsc = mysqli_real_escape_string($con, $uuid);

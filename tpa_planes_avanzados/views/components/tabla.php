@@ -5,7 +5,6 @@
           <thead>
             <tr>
               <th class="text-left">Plan</th>
-              <th class="text-center">Modalidad</th>
               <th class="text-center">Grupo-Orden</th>
               <th class="text-center">Cuotas</th>
               <?php if ($puedeEditar) { ?>
@@ -38,8 +37,10 @@
             <!-- Filas -->
             <template x-for="p in (loading ? [] : filasFiltradas())" :key="p.uuid">
               <tr class="transition-colors hover:bg-blue-50/40" :class="p.estado_id === 1 ? 'bg-green-50/60' : ''">
-                <td class="px-3 py-2 font-semibold text-slate-900 whitespace-nowrap" x-text="p.modelo + ' ' + p.version"></td>
-                <td class="px-3 py-2 text-center font-medium" x-text="p.modalidad"></td>
+                <td class="px-3 py-2 whitespace-nowrap leading-tight">
+                  <div class="font-semibold text-slate-900" x-text="p.modelo + ' ' + p.version"></div>
+                  <div class="text-slate-500" x-text="p.modalidad"></div>
+                </td>
                 <td class="px-3 py-2 text-center text-blue-600 font-medium">
                   <template x-if="puedeEditar">
                     <button @click="editarPlan(p)" class="underline hover:text-blue-800" x-text="p.grupo_orden"></button>
@@ -76,19 +77,17 @@
                       <button @click="reservar(p)" class="text-green-600 font-medium hover:underline">reservar</button>
                     </template>
                     <template x-if="p.estado_id !== 1">
-                      <div class="flex items-center gap-1.5 min-w-0">
+                      <div class="min-w-0 leading-tight">
                         <template x-if="p.usuario_venta_id === userId">
-                          <button @click="reservar(p)" class="text-left truncate hover:underline">
-                            <span x-text="(p.cliente || '—')"></span>
-                            <span class="text-blue-600"> / </span>
-                            <span class="text-blue-600" x-text="p.usuario_venta"></span>
+                          <button @click="reservar(p)" class="text-left truncate hover:underline block">
+                            <span class="block truncate" x-text="(p.cliente || '—')"></span>
+                            <span class="block text-blue-600 truncate" x-text="p.usuario_venta"></span>
                           </button>
                         </template>
                         <template x-if="p.usuario_venta_id !== userId">
                           <div class="truncate">
-                            <span x-text="(p.cliente || '—')"></span>
-                            <span class="text-blue-600"> / </span>
-                            <span class="text-blue-600" x-text="p.usuario_venta"></span>
+                            <span class="block truncate" x-text="(p.cliente || '—')"></span>
+                            <span class="block text-blue-600 truncate" x-text="p.usuario_venta"></span>
                           </div>
                         </template>
                       </div>
