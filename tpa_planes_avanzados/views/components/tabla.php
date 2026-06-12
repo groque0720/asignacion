@@ -1,6 +1,6 @@
     <!-- ── Tabla ─────────────────────────────────────────────────────────── -->
     <div x-show="vista === 'tabla'" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="overflow-x-auto" style="max-height: calc(100vh - 330px);">
+      <div class="overflow-x-auto">
         <table class="w-full dv-table">
           <thead>
             <tr>
