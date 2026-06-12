@@ -45,13 +45,31 @@ function estadoCuenta(idcliente, puedeEditar) {
 
     // Formatea el monto en vivo a moneda AR (1.234.567,89) y guarda el valor numérico.
     // Un signo "-" (en cualquier posición) marca el monto como NEGATIVO = devolución.
+    // Los puntos de miles los inserta ESTE formateador (el usuario nunca los tipea),
+    // así que se acepta tanto la COMA como el PUNTO del teclado numérico como decimal:
+    //   - con coma: la coma es decimal, los puntos son miles.
+    //   - sin coma: el último punto es decimal si lo siguen 0-2 dígitos
+    //     (si lo siguen 3, es separador de miles).
     formatearMonto(e) {
       const raw = e.target.value || '';
       const neg = raw.indexOf('-') !== -1;                      // hay signo menos
-      let v = raw.replace(/[^\d,]/g, '');                        // solo dígitos y coma
-      const partes = v.split(',');
-      let ent = partes[0].replace(/^0+(?=\d)/, '');             // sin ceros a la izquierda
-      let dec = partes.length > 1 ? partes.slice(1).join('').slice(0, 2) : null;
+      let v = raw.replace(/[^\d.,]/g, '');                       // dígitos, punto y coma
+      let dec = null, intRaw;
+      const ci = v.lastIndexOf(',');
+      if (ci !== -1) {                                           // coma = separador decimal
+        intRaw = v.slice(0, ci).replace(/[.,]/g, '');
+        dec = v.slice(ci + 1).replace(/\D/g, '').slice(0, 2);
+      } else {                                                  // sin coma: el punto puede ser decimal o miles
+        const pi = v.lastIndexOf('.');
+        const after = pi === -1 ? '' : v.slice(pi + 1);
+        if (pi !== -1 && after.length <= 2) {                   // punto decimal (0-2 dígitos detrás)
+          intRaw = v.slice(0, pi).replace(/\./g, '');
+          dec = after.slice(0, 2);
+        } else {                                                // punto(s) de miles
+          intRaw = v.replace(/\./g, '');
+        }
+      }
+      let ent = intRaw.replace(/^0+(?=\d)/, '');                // sin ceros a la izquierda
       const entFmt = ent.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // puntos de miles
       let display = entFmt;
       if (dec !== null) display = (entFmt || '0') + ',' + dec;
