@@ -27,7 +27,7 @@ $completada = (isset($_GET['tipo']) && $_GET['tipo'] === 'completada');
             ? 'Gracias, ya registramos tus respuestas. No es necesario completarla otra vez.'
             : 'El enlace no es válido o ya no está disponible. Verificá el link o contactá al concesionario.' ?>
     </p>
-    <p class="text-slate-400 text-sm mt-6"><i class="fas fa-car mr-1"></i> Derka y Vargas S.A.</p>
+    <p class="text-slate-400 text-sm mt-6"><i class="fas fa-car-side mr-1"></i> Derka y Vargas S.A.</p>
   </div>
 </body>
 </html>

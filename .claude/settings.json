@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout *)",
+      "Bash(powershell -Command \"Get-ChildItem 'c:\\\\laragon\\\\www\\\\asignacion\\\\asignacion'\")"
+    ]
+  }
+}

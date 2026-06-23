@@ -1,4 +1,4 @@
-<?php /* Pantalla final tras completar la encuesta 0km. */ ?>
+<?php /* Pantalla final tras completar la encuesta de usados. */ ?>
 <!doctype html>
 <html lang="es">
 <head>
@@ -17,9 +17,9 @@
     </div>
     <h1 class="text-2xl font-bold text-slate-900 mb-2">¡Gracias por tu respuesta!</h1>
     <p class="text-slate-600 leading-relaxed">
-      Tu opinión nos ayuda a mejorar. Que disfrutes tu vehículo 0km.
+      Tu opinión nos ayuda a mejorar. Que disfrutes tu vehículo.
     </p>
-    <p class="text-slate-400 text-sm mt-6"><i class="fas fa-car mr-1"></i> Derka y Vargas S.A.</p>
+    <p class="text-slate-400 text-sm mt-6"><i class="fas fa-car-side mr-1"></i> Derka y Vargas S.A.</p>
   </div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 /*
- * Encuesta pública 0km (mobile-first). Acceso por token único (?t=...).
+ * Encuesta pública de usados (mobile-first). Acceso por token único (?t=...).
  * Sin login. Renderiza la encuesta activa y postea a responder_guardar.php.
  */
 require __DIR__ . '/bootstrap_publico.php';
@@ -10,7 +10,7 @@ if ($token === '') { header('Location: expirada.php'); exit(); }
 
 $te = mysqli_real_escape_string($con, $token);
 $tk = mysqli_fetch_assoc(mysqli_query($con,
-    "SELECT id_token, id_encuesta, completada FROM enc_tokens WHERE token = '$te' LIMIT 1"));
+    "SELECT id_token, id_encuesta, completada FROM encu_tokens WHERE token = '$te' LIMIT 1"));
 if (!$tk) { header('Location: expirada.php'); exit(); }
 if ((int)$tk['completada'] === 1) { header('Location: expirada.php?tipo=completada'); exit(); }
 
@@ -18,7 +18,7 @@ $id_token    = (int)$tk['id_token'];
 $id_encuesta = (int)$tk['id_encuesta'];
 
 $enc = mysqli_fetch_assoc(mysqli_query($con,
-    "SELECT id_encuesta, nombre, mensaje_bienvenida FROM enc_encuestas
+    "SELECT id_encuesta, nombre, mensaje_bienvenida FROM encu_encuestas
      WHERE id_encuesta = $id_encuesta AND baja = 0 LIMIT 1"));
 if (!$enc) { header('Location: expirada.php'); exit(); }
 
@@ -26,7 +26,7 @@ if (!$enc) { header('Location: expirada.php'); exit(); }
 $resP = mysqli_query($con,
     "SELECT id_pregunta, nro_orden, texto_pregunta, tipo_pregunta, pondera, es_observacion,
             cond_id_preg_ref, cond_operador, cond_valor
-     FROM enc_preguntas WHERE id_encuesta = $id_encuesta AND baja = 0
+     FROM encu_preguntas WHERE id_encuesta = $id_encuesta AND baja = 0
      ORDER BY nro_orden ASC, id_pregunta ASC");
 $preguntas = [];
 while ($p = mysqli_fetch_assoc($resP)) {
@@ -34,7 +34,7 @@ while ($p = mysqli_fetch_assoc($resP)) {
     $op = [];
     if (in_array((int)$p['tipo_pregunta'], [3, 4], true)) {
         $resO = mysqli_query($con,
-            "SELECT id_opcion, texto_opcion FROM enc_opciones
+            "SELECT id_opcion, texto_opcion FROM encu_opciones
              WHERE id_pregunta = $idp AND baja = 0 ORDER BY nro_orden ASC, id_opcion ASC");
         while ($o = mysqli_fetch_assoc($resO)) {
             $op[] = ['id' => (int)$o['id_opcion'], 'texto' => $o['texto_opcion']];
@@ -89,7 +89,7 @@ $datos = [
 
     <!-- Encabezado -->
     <div class="flex items-center gap-2 text-slate-400 text-xs mb-6">
-      <i class="fas fa-car"></i>
+      <i class="fas fa-car-side"></i>
       <span class="font-medium uppercase tracking-wider">Derka y Vargas S.A.</span>
       <span class="ml-auto" x-show="paso >= 0" x-text="(posVisible()+1) + ' / ' + totalVisible()"></span>
     </div>
