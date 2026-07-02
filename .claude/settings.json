@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(git checkout *)",
-      "Bash(powershell -Command \"Get-ChildItem 'c:\\\\laragon\\\\www\\\\asignacion\\\\asignacion'\")"
+      "Bash(powershell -Command \"Get-ChildItem 'c:\\\\laragon\\\\www\\\\asignacion\\\\asignacion'\")",
+      "Bash(rm -f \"funciones/func_mysql.php\" \"actions/reservas_descuento.php\" \"actions/reservas_descuento copy.php\" \"views/components/card_numero.php\" \"views/components/footer.php\" \"views/components/navbar.php\" \"views/layouts/main.php\")",
+      "Bash(rmdir \"views/layouts\")",
+      "PowerShell($php = Get-ChildItem -Path C:\\\\laragon\\\\bin\\\\php -Recurse -Filter php.exe -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName; if \\(-not $php\\) { $php = \\(Get-Command php -ErrorAction SilentlyContinue\\).Source }; Write-Output $php)",
+      "Bash(git clean *)",
+      "Read(//c/laragon/bin/mysql/**)",
+      "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'SHOW TABLES LIKE '\\\\''%reserva%'\\\\''; SHOW TABLES LIKE '\\\\''%linea%'\\\\''; SHOW TABLES LIKE '\\\\''%codigo%'\\\\''; SHOW TABLES LIKE '\\\\''%descuento%'\\\\'';')",
+      "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'DESCRIBE lineas_detalle;')",
+      "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'DESCRIBE codigos;')",
+      "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'SHOW COLUMNS FROM reservas;')"
     ]
   }
 }
