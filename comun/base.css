@@ -45,6 +45,10 @@ body { font-family: 'Inter', system-ui, sans-serif; }
   border-bottom: 1px solid #e5e7eb;     /* gray-200 */
   box-shadow: inset 0 -1px 0 #e5e7eb;
 }
+/* Permitir que un th alinee a la derecha/centro (Tailwind text-right/text-center)
+   pese al text-align:left de arriba — si no, el header no alinea con su columna. */
+.dv-table thead th.text-right  { text-align: right;  }
+.dv-table thead th.text-center { text-align: center; }
 .dv-table tbody td {
   border-bottom: 1px solid #f3f4f6;     /* gray-100 (separador de filas) */
 }
