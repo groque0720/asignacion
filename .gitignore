@@ -1,5 +1,6 @@
 # config/
 encuesta/config.local.php
+encuesta_usados/config.local.php
 planes_avanzados/_session_ping.php
 planes_avanzados/_session_heartbeat.php
 planes_avanzados/_ping.php
