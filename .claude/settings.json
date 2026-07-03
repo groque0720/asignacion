@@ -11,7 +11,8 @@
       "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'SHOW TABLES LIKE '\\\\''%reserva%'\\\\''; SHOW TABLES LIKE '\\\\''%linea%'\\\\''; SHOW TABLES LIKE '\\\\''%codigo%'\\\\''; SHOW TABLES LIKE '\\\\''%descuento%'\\\\'';')",
       "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'DESCRIBE lineas_detalle;')",
       "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'DESCRIBE codigos;')",
-      "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'SHOW COLUMNS FROM reservas;')"
+      "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'SHOW COLUMNS FROM reservas;')",
+      "Bash(git check-ignore *)"
     ]
   }
 }
