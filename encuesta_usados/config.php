@@ -18,4 +18,4 @@ if (!defined('EU_FECHA_DESDE')) define('EU_FECHA_DESDE', '2023-01-01');
 if (!defined('EU_PERFILES')) define('EU_PERFILES', [1, 2, 5, 7, 14]);
 
 // Usuarios (idusuario) con permiso para configurar la encuesta (preguntas, áreas, niveles)
-if (!defined('EU_USUARIOS_CONFIG')) define('EU_USUARIOS_CONFIG', [11]);
+if (!defined('EU_USUARIOS_CONFIG')) define('EU_USUARIOS_CONFIG', [11, 14]);
