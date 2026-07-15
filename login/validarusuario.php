@@ -1,21 +1,49 @@
-﻿<?php
+<?php
 include("funciones/func_mysql.php");
 conectar();
 mysqli_query($con, "SET NAMES 'utf8'");
-extract($_POST);
 
-$usuario = mysqli_real_escape_string($con, $usuario);
-$contrasena = mysqli_real_escape_string($con, $contraseña);
+// Campos leídos explícitamente (sin extract($_POST): evita que el cliente cree variables arbitrarias).
+$usuario    = isset($_POST['usuario'])    ? $_POST['usuario']    : '';
+$contrasena = isset($_POST['contraseña']) ? $_POST['contraseña'] : '';
+$ip_user    = isset($_POST['ip_user'])    ? $_POST['ip_user']    : '';
 
-$SQL="SELECT * FROM usuarios WHERE activo = 1 AND usuario = '".$usuario."' AND clave = '".$contrasena."'";
-$result=mysqli_query($con, $SQL);
+$usuarioEsc = mysqli_real_escape_string($con, $usuario);
+$ipEsc      = mysqli_real_escape_string($con, $ip_user);
 
-//echo $contrasena;
+// La clave YA NO va en el WHERE: traemos al usuario por su nombre y validamos la
+// contraseña en PHP. Soporta hash bcrypt y texto plano durante la transición.
+$SQL    = "SELECT * FROM usuarios WHERE activo = 1 AND usuario = '".$usuarioEsc."' LIMIT 1";
+$result = mysqli_query($con, $SQL);
+$campo  = mysqli_fetch_array($result);
 
-	$campo=mysqli_fetch_array($result);
+$ok = false;
 
 if (!empty($campo['usuario'])) {
+
+	$guardada = $campo['clave'];
+
+	if (substr($guardada, 0, 4) === '$2y$') {
+		// Ya está hasheada (bcrypt): verificación normal, sensible a mayúsculas.
+		$ok = password_verify($contrasena, $guardada);
+	} else {
+		// Todavía en texto plano. Comparamos igual que lo hacía MySQL hasta hoy
+		// (sin distinguir mayúsculas, sin espacios finales) para no dejar afuera
+		// a nadie que hoy sí puede entrar.
+		if (strcasecmp(rtrim($guardada), rtrim($contrasena)) === 0) {
+			$ok = true;
+			// Re-hasheo al vuelo: desde el próximo login esta cuenta ya viaja hasheada.
+			$nuevoHashEsc = mysqli_real_escape_string($con, password_hash($contrasena, PASSWORD_DEFAULT));
+			$idEsc        = (int)$campo['idusuario'];
+			mysqli_query($con, "UPDATE usuarios SET clave = '".$nuevoHashEsc."' WHERE idusuario = ".$idEsc);
+		}
+	}
+}
+
+if ($ok) {
 	@session_start();
+	session_regenerate_id(true);   // evita fijación de sesión
+
 	$_SESSION["autentificado"]= "SI";
 	$_SESSION["id"]=$campo['idusuario'];
 	$_SESSION["usuario"]=$campo['nombre'];
@@ -24,7 +52,9 @@ if (!empty($campo['usuario'])) {
 	$_SESSION["es_gerente"]=$campo['es_gerente'];
 	$_SESSION["id_negocio"]=$campo['id_negocio'];
 
-$SQL="INSERT INTO sesiones (id_usuario, nombre, fecha, hora, latitud, longitud, ip) VALUES (".$_SESSION["id"].",'".$_SESSION["usuario"]."','".date("Y-m-d")."','".date( 'H:i:s')."','','','".$ip_user."')";
+// Log de acceso EXITOSO: no se guarda ninguna contraseña.
+$nombreEsc = mysqli_real_escape_string($con, $_SESSION["usuario"]);
+$SQL="INSERT INTO sesiones (id_usuario, nombre, fecha, hora, latitud, longitud, ip) VALUES (".(int)$_SESSION["id"].",'".$nombreEsc."','".date("Y-m-d")."','".date( 'H:i:s')."','','','".$ipEsc."')";
 mysqli_query($con, $SQL);
 
 // Usuarios que, al loguearse, son redirigidos al dashboard contable.
@@ -103,16 +133,12 @@ if (in_array((int)$campo['idusuario'], $usuariosDashboard, true) or $campo['id_n
 	 mysqli_close($con);
 	}else{
 
-		$SQL="INSERT INTO sesiones (id_usuario, nombre, fecha, hora, latitud, longitud, ip) VALUES (999,'NO EXITO - ".$usuario." - ".$contrasena."','".date("Y-m-d")."','".date( 'H:i:s')."','','','".$ip_user."')";
+		// Log de intento FALLIDO: SOLO el usuario tecleado, NUNCA la clave.
+		$SQL="INSERT INTO sesiones (id_usuario, nombre, fecha, hora, latitud, longitud, ip) VALUES (999,'NO EXITO - ".$usuarioEsc."','".date("Y-m-d")."','".date( 'H:i:s')."','','','".$ipEsc."')";
 		mysqli_query($con, $SQL);
 
 		echo '<script>	swal("ERROR AL VALIDAR ACCESO", "Por favor verifique que sus datos sean correctos", "error");
-				$("#usuario").facus();
 			</script>';
 
 	}
-
-
-
-
- ?>
+?>
