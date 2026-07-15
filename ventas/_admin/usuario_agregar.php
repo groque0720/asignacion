@@ -26,6 +26,12 @@ include ("../includes/security.php");?>
 			<p>Alta Usuario</p>
 			<hr>
 
+			<?php if (!empty($_GET["error"])) { ?>
+				<p style="background:#fee2e2;color:#991b1b;padding:8px 10px;border-radius:4px;">
+					<?php echo htmlspecialchars($_GET["error"], ENT_QUOTES, 'UTF-8'); ?>
+				</p>
+			<?php } ?>
+
 			<?php
 			include("../funciones/func_mysql.php");
 			conectar();
@@ -44,7 +50,8 @@ include ("../includes/security.php");?>
 				<label>Usuario:</label><br>
 				<input type"text" name="usuario" id="usuario" size="50" required><br>
 				<label>Clave:</label><br>
-				<input type"text" name="clave" id="clave" required><br>
+				<input type="password" name="clave" id="clave" autocomplete="new-password" required><br>
+				<small>Sólo para el primer ingreso: el usuario deberá elegir la suya. Mínimo 8 caracteres, con mayúscula, minúscula y un símbolo.</small><br>
 				<label>Perfil:</label><br>
 				<select name="idperfil" required>
 					<option value="" seleted></option>

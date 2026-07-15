@@ -1,6 +1,7 @@
 <?php
 include("funciones/func_mysql.php");
 include("funciones/destino_login.php");
+require_once(__DIR__ . "/../comun/clave.php");
 conectar();
 mysqli_query($con, "SET NAMES 'utf8'");
 @session_start();
@@ -12,15 +13,6 @@ if (empty($_SESSION['cambio_pendiente_id'])) {
 	exit;
 }
 $uid = (int) $_SESSION['cambio_pendiente_id'];
-
-// Política de complejidad (validada en el servidor, nunca sólo en JS).
-function clave_valida($c, &$err) {
-	if (strlen($c) < 8)                    { $err = 'Debe tener al menos 8 caracteres.';        return false; }
-	if (!preg_match('/[A-Z]/', $c))        { $err = 'Debe incluir al menos una MAYÚSCULA.';    return false; }
-	if (!preg_match('/[a-z]/', $c))        { $err = 'Debe incluir al menos una minúscula.';    return false; }
-	if (!preg_match('/[^A-Za-z0-9]/', $c)) { $err = 'Debe incluir al menos un símbolo (! @ # $ % ...).'; return false; }
-	return true;
-}
 
 $error = '';
 
@@ -41,7 +33,7 @@ if (isset($_POST['clave1'])) {
 		// $error ya quedó cargado por clave_valida()
 	} else {
 		// OK: guardo la clave hasheada y bajo la marca.
-		$hashEsc = mysqli_real_escape_string($con, password_hash($c1, PASSWORD_DEFAULT));
+		$hashEsc = mysqli_real_escape_string($con, clave_hash($c1));
 		mysqli_query($con, "UPDATE usuarios SET clave = '".$hashEsc."', debe_cambiar_clave = 0 WHERE idusuario = ".$uid);
 
 		// Recién ahora completo la sesión y lo dejo entrar.

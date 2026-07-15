@@ -1,5 +1,6 @@
 <?php
 include("funciones/func_mysql.php");
+require_once(__DIR__ . "/../comun/clave.php");
 conectar();
 mysqli_query($con, "SET NAMES 'utf8'");
 
@@ -19,24 +20,14 @@ $campo  = mysqli_fetch_array($result);
 
 $ok = false;
 
-if (!empty($campo['usuario'])) {
+if (!empty($campo['usuario']) && clave_verificar($contrasena, $campo['clave'])) {
+	$ok = true;
 
-	$guardada = $campo['clave'];
-
-	if (substr($guardada, 0, 4) === '$2y$') {
-		// Ya está hasheada (bcrypt): verificación normal, sensible a mayúsculas.
-		$ok = password_verify($contrasena, $guardada);
-	} else {
-		// Todavía en texto plano. Comparamos igual que lo hacía MySQL hasta hoy
-		// (sin distinguir mayúsculas, sin espacios finales) para no dejar afuera
-		// a nadie que hoy sí puede entrar.
-		if (strcasecmp(rtrim($guardada), rtrim($contrasena)) === 0) {
-			$ok = true;
-			// Re-hasheo al vuelo: desde el próximo login esta cuenta ya viaja hasheada.
-			$nuevoHashEsc = mysqli_real_escape_string($con, password_hash($contrasena, PASSWORD_DEFAULT));
-			$idEsc        = (int)$campo['idusuario'];
-			mysqli_query($con, "UPDATE usuarios SET clave = '".$nuevoHashEsc."' WHERE idusuario = ".$idEsc);
-		}
+	// Entró con la clave todavía en texto plano: la re-hasheamos al vuelo, así
+	// desde el próximo login esta cuenta ya viaja hasheada.
+	if (!clave_es_hash($campo['clave'])) {
+		$nuevoHashEsc = mysqli_real_escape_string($con, clave_hash($contrasena));
+		mysqli_query($con, "UPDATE usuarios SET clave = '".$nuevoHashEsc."' WHERE idusuario = ".(int)$campo['idusuario']);
 	}
 }
 

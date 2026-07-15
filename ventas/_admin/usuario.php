@@ -26,10 +26,16 @@ include ("../includes/security.php");?>
 			<p>Editar Datos del usuario</p>
 			<hr>
 
+			<?php if (!empty($_GET["error"])) { ?>
+				<p style="background:#fee2e2;color:#991b1b;padding:8px 10px;border-radius:4px;">
+					<?php echo htmlspecialchars($_GET["error"], ENT_QUOTES, 'UTF-8'); ?>
+				</p>
+			<?php } ?>
+
 			<?php
 			include("../funciones/func_mysql.php");
 			conectar();
-			$SQL="SELECT * FROM usuarios WHERE idusuario=".$_GET["IDrecord"];
+			$SQL="SELECT * FROM usuarios WHERE idusuario=".(int)$_GET["IDrecord"];
 			$usuario=mysqli_query($con, $SQL);
 			$usu=mysqli_fetch_array($usuario);
 			$SQL="SELECT * FROM sucursales";
@@ -47,7 +53,10 @@ include ("../includes/security.php");?>
 				<label>Usuario:</label><br>
 				<input type"text" name="usuario" id="usuario" value="<?php echo $usu['usuario'];?>" size="50"><br>
 				<label>Clave:</label><br>
-				<input type"text" name="clave" id="clave" value="<?php echo $usu['clave'];?>"><br>
+				<!-- Nunca se muestra la clave guardada: está hasheada y no se puede leer.
+				     Vacío = no se cambia. -->
+				<input type="password" name="clave" id="clave" autocomplete="new-password" placeholder="Dejar vacío para no cambiarla"><br>
+				<small>Si escribís una, el usuario deberá elegir la suya al ingresar. Mínimo 8 caracteres, con mayúscula, minúscula y un símbolo.</small><br>
 				<label>Perfil:</label><br>
 				<select name="idperfil">
 				<?php
