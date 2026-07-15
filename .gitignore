@@ -14,3 +14,6 @@ usados_docs/uploads/*
 sql/
 # Excepción: módulo de auditoría de unidades (parte de la feature, debe deployarse)
 !asignacion/sql/
+
+# Informe de auditoría de seguridad — NO debe subirse (detalla vulnerabilidades explotables)
+INFORME_SEGURIDAD_*.md
