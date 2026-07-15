@@ -1,5 +1,5 @@
 <?php
-include ("../includes/security.php");
+include ("includes/security_usuarios.php");
 
 include("../funciones/func_mysql.php");
 require_once(__DIR__ . "/../../comun/clave.php");

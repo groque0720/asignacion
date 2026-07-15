@@ -1,5 +1,5 @@
 <?php
-include ("../includes/security.php");?>
+include ("includes/security_usuarios.php");?>
 
 <!DOCTYPE html>
 <html lang="es">
