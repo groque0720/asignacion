@@ -44,6 +44,15 @@ if ($ok) {
 	@session_start();
 	session_regenerate_id(true);   // evita fijación de sesión
 
+	// ¿Debe cambiar la clave? Sesión PARCIAL (todavía NO autenticado): se lo
+	// manda a elegir una clave nueva y recién ahí se completa la sesión.
+	if ((int)$campo['debe_cambiar_clave'] === 1) {
+		$_SESSION['cambio_pendiente_id'] = (int)$campo['idusuario'];
+		echo '<script>	window.location.href = "cambiar_clave.php";</script>';
+		mysqli_close($con);
+		exit;
+	}
+
 	$_SESSION["autentificado"]= "SI";
 	$_SESSION["id"]=$campo['idusuario'];
 	$_SESSION["usuario"]=$campo['nombre'];
