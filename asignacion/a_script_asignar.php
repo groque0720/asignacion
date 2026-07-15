@@ -1,4 +1,7 @@
 ﻿<?php
+	require_once(__DIR__ . '/funciones/guard_clave.php');
+	guard_clave();
+
 	set_time_limit(300);
 	include("funciones/func_mysql.php");
 	conectar();

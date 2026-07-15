@@ -1,4 +1,7 @@
 <?php
+	require_once(__DIR__ . '/funciones/guard_clave.php');
+	guard_clave();
+
 	include("funciones/func_mysql.php");
 	conectar();
 	mysqli_query($con,"SET NAMES 'utf8'");

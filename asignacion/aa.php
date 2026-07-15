@@ -1,4 +1,7 @@
 <?php
+require_once(__DIR__ . '/funciones/guard_clave.php');
+guard_clave();
+
 require('fpdf/fpdf.php');
 
 class PDF extends FPDF

@@ -12,7 +12,24 @@
       "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'DESCRIBE lineas_detalle;')",
       "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'DESCRIBE codigos;')",
       "Bash(/c/laragon/bin/mysql/mariadb-10.2.3-win32/bin/mysql.exe -u root --default-character-set=utf8 asignacion -e 'SHOW COLUMNS FROM reservas;')",
-      "Bash(git check-ignore *)"
+      "Bash(git check-ignore *)",
+      "Bash(php -r \"echo password_hash\\('Chimango1275!#', PASSWORD_DEFAULT\\), \\\\\"\\\\n\\\\\";\")",
+      "Bash(ls -d /c/laragon/bin/php/*/ 2>/dev/null)",
+      "Read(//c/laragon/bin/php/**)",
+      "Bash(/c/laragon/bin/php/php-7.2.24-Win32-VC15-x64/php.exe -r 'echo password_hash\\(\"Chimango1275!#\", PASSWORD_DEFAULT\\), \"\\\\n\";')",
+      "Bash(curl -s -o /dev/null -D - \"http://asignacion.oo/asignacion/aa_asignacion_habilitar.php\")",
+      "Bash(curl -s -o /dev/null -w \"http_code=%{http_code}\\\\n\" \"http://asignacion.oo/asignacion/aa_asignacion_habilitar.php\")",
+      "Bash(curl -s \"http://asignacion.oo/asignacion/aa_asignacion_habilitar.php\")",
+      "Bash(curl -s -o /dev/null -w \"index=%{http_code}\\\\n\" \"http://asignacion.oo/\")",
+      "PowerShell(Get-Process httpd -ErrorAction SilentlyContinue | Select-Object -First 3 Id, ProcessName; if \\(-not \\(Get-Process httpd -ErrorAction SilentlyContinue\\)\\) { \"Apache NO esta corriendo\" })",
+      "Bash(curl -s -o /dev/null -w \" code=%{http_code} redirect=%{redirect_url}\\\\n\" \"http://asignacion.oo/asignacion/aa_asignacion_habilitar.php\")",
+      "Bash(curl -s -b PHPSESSID=guardtest123456789012345 http://asignacion.oo/asignacion/aa_asignacion_habilitar.php)",
+      "Bash(curl -s -o /dev/null -w ' code=%{http_code} redirect=%{redirect_url}\\\\n' -b PHPSESSID=guardok1234567890123456 -c C:/laragon/tmp/ck.txt -d 'guard_clave=Chimango1275!#' http://asignacion.oo/asignacion/aa.php)",
+      "Bash(curl -s -b PHPSESSID=guardok1234567890123456 http://asignacion.oo/asignacion/aa.php)",
+      "Bash(rm -f C:/laragon/tmp/sess_guardtest123456789012345 C:/laragon/tmp/sess_guardwrong12345678901234 C:/laragon/tmp/sess_guardok1234567890123456 C:/laragon/tmp/ck.txt)",
+      "Bash(curl -s -o /dev/null -w \"  code=%{http_code}\\\\n\" -d \"modelo_activo=1&nro_act=0\" \"http://asignacion.oo/asignacion/a_modificaciones.php\")",
+      "Bash(curl -s -o /dev/null -w \"  code=%{http_code}\\\\n\" \"http://asignacion.oo/asignacion/unidad.php\")",
+      "Bash(git -C /c/laragon/www/asignacion status --short)"
     ]
   }
 }
