@@ -118,7 +118,7 @@ if (in_array((int)$campo['idusuario'], $usuariosDashboard, true) or $campo['id_n
 		echo '<script>	window.location.href = "../ventas/web/recepcion.php";</script>';
 	}
 	if ($campo['idperfil']==22) {
-		echo '<script>	window.location.href = "../eventos/index.php";</script>';
+		echo '<script>	window.location.href = "../asignacion";</script>';
 	}
 	if ($campo['idperfil']==7) {
 		echo '<script>	window.location.href = "../gestoria/index.php";</script>';

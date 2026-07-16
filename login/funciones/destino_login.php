@@ -39,7 +39,7 @@ function destino_login($campo) {
 		18 => "../ventas/web/noticias.php",
 		19 => "../ventas/web/recursos_dyv_toyota.php",
 		20 => "../ventas/web/recepcion.php",
-		22 => "../eventos/index.php",
+		22 => "../asignacion",
 		24 => "../asignacion",
 		5  => "../asignacion",
 	];
