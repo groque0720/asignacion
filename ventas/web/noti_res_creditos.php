@@ -1,23 +1,29 @@
+<?php
+include("../includes/security.php");   // exige login + arranca sesion
+$usu    = (int) $_SESSION["id"];        // dueno del feed desde la sesion, no del GET
+$inicio = isset($_GET["inicio"]) ? (int) $_GET["inicio"] : 0; // cast a int: corta SQLi / XSS reflejado
+$pagina = isset($_GET["pagina"]) ? (int) $_GET["pagina"] : 1;
+?>
 <script src="../js/noti_res_nueva.js"></script>
 
 <div class="barra_btns">
 	<!-- Cominezo - Realización de Paginación -->
 
-	<input id="inicio" name="inicio" type="hidden" value="<?php echo $_GET["inicio"]; ?>">
-	<input id="pagina" name="pagina" type="hidden" value="<?php echo $_GET["pagina"]; ?>">
+	<input id="inicio" name="inicio" type="hidden" value="<?php echo $inicio; ?>">
+	<input id="pagina" name="pagina" type="hidden" value="<?php echo $pagina; ?>">
 	<?php
 
 		include("../funciones/func_mysql.php");
 		conectar();
-		$SQL="SELECT * FROM notificaciones WHERE tiponot = 5 AND idusuario =".$_GET["id"]." AND borrar = 0 ORDER BY idnotificaciones DESC";
+		$SQL="SELECT * FROM notificaciones WHERE tiponot = 5 AND idusuario =".$usu." AND borrar = 0 ORDER BY idnotificaciones DESC";
 		$res=mysqli_query($con, $SQL);
 		$parametro_reg=50;// si se cambia el valor $parametro_reg hay que cambiar en el jquery para que funcione correctamanet
 		$cantidad_reg = mysqli_num_rows($res);
 		$total_paginas=ceil($cantidad_reg/$parametro_reg);
-		echo "Pagina ".$_GET["pagina"]." de ".$total_paginas;
+		echo "Pagina ".$pagina." de ".$total_paginas;
 		echo '<a class="flecha fizq" href=""><img src="../imagenes/izq.gif" border="0"></a>';
 	 	for ($i=1; $i < $total_paginas+1; $i++) {
-			if ($_GET["pagina"]!=$i) {
+			if ($pagina!=$i) {
 				echo ' '.'<a class="indice" data-id="'.$i.'" href="">'.$i.'</a>'.' ';
 			}else{
 				echo '<span class="pag_sel">'.$i.'</span> ';
@@ -34,7 +40,9 @@
 	<table rules="all" border="1" id="tabla_res">
 
 		<?php
-			$SQL="SELECT * FROM notificaciones WHERE tiponot = 5 AND idusuario =".$_GET["id"]." AND borrar = 0 ORDER BY idnotificaciones DESC LIMIT ".$_GET["inicio"].", $parametro_reg";
+			// JOIN a reservas para resolver idcliente (el estado de cuenta se abre por idcliente).
+			// idusuario/tiponot/borrar se califican con notificaciones.* porque reservas tambien tiene idusuario.
+			$SQL="SELECT notificaciones.*, reservas.idcliente AS idcliente_ec FROM notificaciones LEFT JOIN reservas ON reservas.idreserva = notificaciones.idreserva WHERE notificaciones.tiponot = 5 AND notificaciones.idusuario = ".$usu." AND notificaciones.borrar = 0 ORDER BY notificaciones.idnotificaciones DESC LIMIT ".$inicio.", $parametro_reg";
 			$res=mysqli_query($con, $SQL);
 		?>
 
@@ -70,6 +78,9 @@
 				<td >
 					<a href="credito.php?IDrecord=<?php echo $noti_res['idcredito']; ?>" data-id="<?php echo $nrofila; ?>" class="ir_reserva" id="ir_credito" target="_blank"></a>
 					<a href="reserva.php?IDrecord=<?php echo $noti_res['idreserva']; ?>" data-id="<?php echo $nrofila; ?>" class="ir_reservas" id="ir" target="_blank"></a>
+					<?php if (!empty($noti_res['idcliente_ec'])) { ?>
+						<a href="pago.php?IDrecord=<?php echo $noti_res['idcliente_ec']; ?>" data-id="<?php echo $nrofila; ?>" class="ir_reserva" id="ir_pago" target="_blank" title="Estado de cuenta"></a>
+					<?php } ?>
 					<?php if ($noti_res["visto"]==0) { ?>
 						<a id="selvisto" class="novisto" data-id="<?php echo $nrofila; ?>" href=""></a>
 					<?php }else{  ?>
