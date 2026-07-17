@@ -19,7 +19,7 @@ $lectura='';
 $deshabilitado='';
 $asesor_class='';
 
-if (($id_perfil<>14 AND $id_perfil<>5) or $id_usuario==14) {
+if ($id_perfil<>14 AND $id_perfil<>5 AND $id_usuario<>14) {
 	$lectura="readonly='readonly'";
 	$deshabilitado="disabled";
 	$asesor_class='input-asesor';
@@ -488,7 +488,7 @@ if ($cant>=1) {
 						 //}
 
 						// Habilitar a Roxy cuando venga de Vacaciones
-						if ($id_usuario==136 OR $id_usuario==87 OR $id_usuario==94 OR $id_usuario==120 OR $id_usuario==119 OR $id_usuario==31 OR $id_usuario==50 OR $id_usuario==14 OR $id_usuario==96 ) {
+						if ($id_usuario==136 OR $id_usuario==87 OR $id_usuario==94 OR $id_usuario==120 OR $id_usuario==119 OR $id_usuario==31 OR $id_usuario==50 OR $id_usuario==14 OR $id_usuario==14 ) {
 						//if ($id_usuario==87) {
 							$leyenda = "";
 							$lectura = "";
@@ -634,7 +634,7 @@ if ($cant>=1) {
 				</div>
 						<?php if ($unidad['no_disponible'] != 1 or $id_usuario == 11 or $id_usuario == 56 OR $id_usuario == 16): ?>
 							<div class="ancho-20 derecha-texto">
-								<?php if ($id_usuario==136 OR $id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94 OR $id_usuario == 31 OR $id_usuario == 50) { ?>
+								<?php if ($id_usuario==136 OR $id_perfil==14 OR $id_perfil==5 OR $id_usuario == 94 OR $id_usuario == 31 OR $id_usuario == 50 OR $id_usuario == 14) { ?>
 									<input type="submit" class="botones btn-aceptar" value="Guardar">
 								<?php }else { ?>
 									<?php if ($id_perfil==3 AND $unidad['reservada']==0 AND $cant<=0) {?>
