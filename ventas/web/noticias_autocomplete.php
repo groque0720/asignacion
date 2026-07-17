@@ -1,19 +1,16 @@
 <?php
-//recibo el dato que deseo buscar sugerencias
-$datoBuscar = utf8_decode($_GET["term"]);
+include("../includes/security.php");   // exige login + arranca sesion
 
 //conecto con una base de datos
 include("../funciones/func_mysql.php");
 conectar();
-//mysql_query("SET NAMES 'utf8'");
+
+//recibo el dato a buscar, ESCAPADO (corta la SQLi en el LIKE)
+$datoBuscar = mysqli_real_escape_string($con, utf8_decode($_GET["term"] ?? ""));
 
 //busco un valor aproximado al dato escrito
-// $ssql = "SELECT * FROM codigos WHERE idcodigo <> 1 AND idcodigo <> 2 AND  idcodigo <> 3 AND detalle LIKE '%" . $datoBuscar . "%'";
-
-$ssql = "SELECT * FROM notificaciones WHERE  cliente LIKE '%" . $datoBuscar . "%' ORDER BY cliente ASC	LIMIT 15";
-//echo $ssql;
-$rs = mysql_query($ssql);
-
+$ssql = "SELECT * FROM notificaciones WHERE cliente LIKE '%" . $datoBuscar . "%' ORDER BY cliente ASC LIMIT 15";
+$rs = mysqli_query($con, $ssql);   // fix: era mysql_query (removida en PHP7)
 
 //creo el array de los elementos sugeridos
 $arrayElementos = array();

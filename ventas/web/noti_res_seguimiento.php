@@ -1,8 +1,9 @@
 <?php
+	include("../includes/security.php");   // exige login + arranca sesion
 	include("../funciones/func_mysql.php");
 	conectar();
-	$SQL="SELECT * FROM notificaciones WHERE idreserva = ".$_GET["id"]." AND idusuario = ".$_GET["idusu"]." ORDER BY idnotificaciones DESC";
-	$noti=mysqli_fetch_array(mysql_query($SQL));
+	$SQL="SELECT * FROM notificaciones WHERE idreserva = ".(int)$_GET["id"]." AND idusuario = ".(int)$_SESSION["id"]." ORDER BY idnotificaciones DESC";
+	$noti=mysqli_fetch_array(mysqli_query($con, $SQL));
 	$res=mysqli_query($con, $SQL);
 ?>
 
