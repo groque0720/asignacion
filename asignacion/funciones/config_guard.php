@@ -10,7 +10,11 @@
 	//   echo password_hash('LA-CLAVE-NUEVA', PASSWORD_DEFAULT);
 	// Pegar el resultado acá abajo y borrar el archivo temporal.
 
-	define('GUARD_CLAVE_HASH', '$2y$10$KM4J9ofStw40CCEBeXGwCO0joDcmsRDP5Bvu5NN58w9ZxlATQR0B6');
+	// El prefijo puede ser $2y$ (lo que genera password_hash) o $2a$ (lo que
+	// generan los generadores online). password_verify() acepta los dos; sólo
+	// password_get_info() no reconoce el $2a$, y acá no se usa.
+
+	define('GUARD_CLAVE_HASH', '$2a$12$3jrAAgqo5IpTfxpSMe2EpuT2UKC96TbYImaAn/pdoVkZj51pjoclq');
 
 	// Minutos que dura la clave validada dentro de la misma sesión.
 	define('GUARD_MINUTOS', 15);
