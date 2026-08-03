@@ -26,9 +26,18 @@
 		}
 
 		// 2) Sesión bloqueada por intentos fallidos.
-		if (isset($_SESSION['guard_bloqueo']) && time() < $_SESSION['guard_bloqueo']) {
-			guard_form('Demasiados intentos fallidos. Cerrá sesión y volvé a entrar.', true);
-			exit;
+		if (isset($_SESSION['guard_bloqueo'])) {
+
+			if (time() < $_SESSION['guard_bloqueo']) {
+				$faltan = (int)ceil(($_SESSION['guard_bloqueo'] - time()) / 60);
+				guard_form('Demasiados intentos fallidos. Probá de nuevo en ' . $faltan . ' minuto(s).', true);
+				exit;
+			}
+
+			// Venció el bloqueo: hay que limpiar TAMBIÉN el contador de intentos.
+			// Si sólo se deja vencer el tiempo, guard_intentos sigue en el máximo
+			// y el primer fallo siguiente vuelve a bloquear al instante.
+			unset($_SESSION['guard_bloqueo'], $_SESSION['guard_intentos']);
 		}
 
 		// 3) Clave ya validada hace poco.
@@ -52,8 +61,8 @@
 			$_SESSION['guard_intentos'] = isset($_SESSION['guard_intentos']) ? $_SESSION['guard_intentos'] + 1 : 1;
 
 			if ($_SESSION['guard_intentos'] >= GUARD_MAX_INTENTOS) {
-				$_SESSION['guard_bloqueo'] = time() + 900; // 15 minutos
-				guard_form('Demasiados intentos fallidos. Cerrá sesión y volvé a entrar.', true);
+				$_SESSION['guard_bloqueo'] = time() + (GUARD_BLOQUEO_MINUTOS * 60);
+				guard_form('Demasiados intentos fallidos. Probá de nuevo en ' . GUARD_BLOQUEO_MINUTOS . ' minutos.', true);
 				exit;
 			}
 
