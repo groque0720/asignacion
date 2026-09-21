@@ -17,7 +17,7 @@ require __DIR__ . '/../funciones/schema.php';     // crea las tablas usados_docs
 // ACCESO AL MÓDULO ── usuarios habilitados a INGRESAR (ordenados por id).
 // ⚠️ Sólo estos ids pueden entrar. Asegurate de incluir tu propio usuario.
 // ─────────────────────────────────────────────────────────────────────────────
-$USUARIOS_MODULO = [11, 14, 56, 66, 71, 79, 94, 96, 106, 135, 138, 139, 144];
+$USUARIOS_MODULO = [11, 14, 56, 66, 71, 79, 94, 96, 106, 135, 138, 139, 144, 167];
 
 if (!in_array($userId, $USUARIOS_MODULO, true)) {
     if (isset($AUTH_FAIL) && $AUTH_FAIL === 'json') {
