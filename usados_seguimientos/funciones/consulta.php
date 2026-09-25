@@ -61,7 +61,9 @@ function us_guardar_adjuntos($con, $UPLOADS_DIR, $UPLOADS_URL, $id_unidad, $id_i
         if (!in_array($mime, $tipos_permitidos, true))  { $errores[] = $nombre_orig . ' (tipo no permitido)'; continue; }
 
         $ext     = $ext_map[$mime];
-        $archivo = $id_unidad . '_' . $id_item . '_' . time() . '_' . $i . '.' . $ext;
+        // Sufijo aleatorio: el front sube de a un archivo por request ($i siempre 0),
+        // así que time() solo colisionaba dentro del mismo segundo y se pisaban en disco.
+        $archivo = $id_unidad . '_' . $id_item . '_' . time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
 
         if (!move_uploaded_file($_FILES['archivo']['tmp_name'][$i], $UPLOADS_DIR . $archivo)) {
             $errores[] = $nombre_orig . ' (no se pudo guardar)';
