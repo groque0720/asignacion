@@ -237,9 +237,13 @@ if ($('#id_perfil').val()==3) {
 
 	if ($('#reservada').val()==1) {
 		$('#cliente').attr('readonly', 'readonly');
-			$('#color_uno option:not(:selected)').attr('disabled',true);
-			$('#color_dos option:not(:selected)').attr('disabled',true);
-			$('#color_tres option:not(:selected)').attr('disabled',true);
+			//los habilitados en unidad.php ($puede_editar_colores) tienen que poder
+			//corregir los colores pedidos aunque la unidad ya este reservada.
+			if ($('#puede_editar_colores').val()!=1) {
+				$('#color_uno option:not(:selected)').attr('disabled',true);
+				$('#color_dos option:not(:selected)').attr('disabled',true);
+				$('#color_tres option:not(:selected)').attr('disabled',true);
+			}
 			$('#id_sucursal option:not(:selected)').attr('disabled',true);
 	}else{
 		asesor_a_reservar=$('#asesor_a_reservar').val();

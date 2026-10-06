@@ -25,6 +25,15 @@ if ($id_perfil<>14 AND $id_perfil<>5 AND $id_usuario<>14) {
 	$asesor_class='input-asesor';
 }
 
+// Usuarios habilitados a editar "COLORES PEDIDO POR EL CLIENTE" aunque color_uno
+// tenga un marcador de estado (15 = UNIDAD TASA, 16 = CON ACC., 23 = EN PRODUCCION).
+// Sin esto Color 2 y Color 3 quedan ocultos y en 0, la validacion de unidad.js los
+// exige distintos de 0, y el formulario no se puede guardar: por eso no llegaban a
+// dar cancelada la unidad.
+// 16 = Jergus Ariel | 106 = Acosta Lucas | 14 = Gutierrez A. | 94 = Gutierrez L.
+$usuarios_editan_colores = array(16, 106, 14, 94);
+$puede_editar_colores = in_array((int)$id_usuario, $usuarios_editan_colores);
+
 if (isset($nuevaUnidad)) { // alta de nueva unidad
 
 	$SQL="SELECT MAX(nro_unidad) as nro_unidad FROM asignaciones";
@@ -68,6 +77,7 @@ if ($cant>=1) {
 		<input type="hidden" name="reservada" id="reservada" value="<?php echo $unidad['reservada']; ?>">
 		<input type="hidden" name="asesor_a_reservar" id="asesor_a_reservar" value="<?php echo $id_usuario; ?>">
 		<input type="hidden" name='id_perfil' id="id_perfil" value="<?php echo $id_perfil; ?>">
+		<input type="hidden" name="puede_editar_colores" id="puede_editar_colores" value="<?php echo $puede_editar_colores ? 1 : 0; ?>">
 		<input type="hidden" name='suc_a_reservar' id="suc_a_reservar" value="<?php echo $id_sucursal; ?>">
 
 		<!-- <div class="titulo centrar-texto">
@@ -411,10 +421,9 @@ if ($cant>=1) {
 					<div class="ancho-30 ">
 						<label class="ancho-1-3" for="">Color 1</label>
 						<select class="form-inputs ancho-100 <?php echo $asesor_class; ?>" name="color_uno" id="color_uno" readonly >
-							<!-- $id_usuario == 16 = Jergus Ariel -->
-							<!-- $id_usuario == 106 = Acosta Lucas -->
+							<!-- la lista de habilitados se arma en $usuarios_editan_colores, arriba -->
 						<?php if (($unidad['color_uno']!=15 AND $unidad['color_uno']!=16 AND $unidad['color_uno']!=23)
-							 OR ($id_usuario == 16 OR $id_usuario == 106)  ) {	 ?>
+							 OR $puede_editar_colores  ) {	 ?>
 							<option value="0"></option>
 							<?php
 								for ($j=1; $j < $i ; $j++) { ?>
@@ -428,7 +437,9 @@ if ($cant>=1) {
 
 					<?php
 
-						if ($unidad['color_uno']==15 OR $unidad['color_uno']==16) {
+						// a los habilitados hay que mostrarles Color 2 y Color 3: la validacion de
+						// unidad.js los exige distintos de 0 y ocultos no se pueden completar.
+						if (($unidad['color_uno']==15 OR $unidad['color_uno']==16) AND !$puede_editar_colores) {
 							$mostrar = "style='display: none;'";
 						}else{
 							$mostrar='';
