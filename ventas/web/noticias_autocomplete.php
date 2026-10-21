@@ -5,8 +5,9 @@ include("../includes/security.php");   // exige login + arranca sesion
 include("../funciones/func_mysql.php");
 conectar();
 
-//recibo el dato a buscar, ESCAPADO (corta la SQLi en el LIKE)
-$datoBuscar = mysqli_real_escape_string($con, utf8_decode($_GET["term"] ?? ""));
+//recibo el dato a buscar, ESCAPADO (corta la SQLi en el LIKE).
+//Sin utf8_decode: la conexion es utf8 y con utf8_decode las busquedas con tilde/ñ dan error de collation.
+$datoBuscar = mysqli_real_escape_string($con, $_GET["term"] ?? "");
 
 //busco un valor aproximado al dato escrito
 $ssql = "SELECT * FROM notificaciones WHERE cliente LIKE '%" . $datoBuscar . "%' ORDER BY cliente ASC LIMIT 15";

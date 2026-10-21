@@ -1,4 +1,12 @@
 ﻿  <?php
+  @session_start();
+  //COMPRUEBA QUE EL USUARIO ESTA AUTENTIFICADO. Este fragmento se pide por AJAX y su
+  //resultado se mete en la página: en vez de redirigir al login, avisa que recargue.
+  if (!isset($_SESSION["autentificado"]) || $_SESSION["autentificado"] != "SI") {
+	echo '<div style="padding: 20px; text-align: center;">Tu sesión venció. Recargá la página (F5) para volver a ingresar.</div>';
+	exit();
+  }
+  session_write_close(); // sólo se lee la sesión: no la bloqueo mientras arma el listado
   set_time_limit(1800); // Aumentamos a 30 minutos
   ini_set('memory_limit', '1024M'); // Aumentamos a 1GB
   ini_set('max_execution_time', 1800); // 30 minutos también aquí
