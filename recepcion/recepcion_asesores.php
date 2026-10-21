@@ -31,7 +31,8 @@ mysqli_query($con,"SET NAMES 'utf8'");
 	<link rel="stylesheet" href="alertas_query/sweetalert.css">
 	<link rel="stylesheet" href="css/roquesystem.css">
 	<link rel="stylesheet" href="css/menu-secundario-dos.css">
-	<link href="https://file.myfontastic.com/6CRLECjnYdYKU5BvcK7cQA/icons.css" rel="stylesheet">
+	<!-- 	<link href="https://file.myfontastic.com/6CRLECjnYdYKU5BvcK7cQA/icons.css" rel="stylesheet"> -->
+	<link href="css/iconos.css" rel="stylesheet">
 
 	<link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico" />
 

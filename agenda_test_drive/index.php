@@ -19,7 +19,8 @@ if ($_SESSION["autentificado"] != "SI") {
 	<meta charset="UTF-8">
 	<title>Agenda Test Drive</title>
 	
-	<link href="https://file.myfontastic.com/6CRLECjnYdYKU5BvcK7cQA/icons.css" rel="stylesheet">
+	<!-- 	<link href="https://file.myfontastic.com/6CRLECjnYdYKU5BvcK7cQA/icons.css" rel="stylesheet"> -->
+	<link href="../asignacion/css/iconos.css" rel="stylesheet">
 	<script src="alertas_query/sweetalert-dev.js"></script>
 	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 	<link rel="stylesheet" href="en_proceso/en_proceso.css">

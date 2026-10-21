@@ -25,7 +25,8 @@ if ($_SESSION["autentificado"] != "SI") {
 	<link rel="stylesheet" href="alertas_query/sweetalert.css">
 	<link rel="stylesheet" href="css/roquesystem.css">
 	<link rel="stylesheet" href="css/menu-secundario-dos.css">
-	<link href="https://file.myfontastic.com/6CRLECjnYdYKU5BvcK7cQA/icons.css" rel="stylesheet">
+	<!-- 	<link href="https://file.myfontastic.com/6CRLECjnYdYKU5BvcK7cQA/icons.css" rel="stylesheet"> -->
+	<link href="css/iconos.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 	<link rel="stylesheet" href="en_proceso/en_proceso.css">
 	<link rel="stylesheet" href="css/estilo_app.css">
