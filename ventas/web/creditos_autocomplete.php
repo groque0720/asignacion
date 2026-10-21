@@ -1,14 +1,15 @@
 <?php
-//recibo el dato que deseo buscar sugerencias
-$datoBuscar = utf8_decode($_GET["term"]);
+include("../includes/security.php");   // exige login + arranca sesion
 
 //conecto con una base de datos
 include("../funciones/func_mysql.php");
 conectar();
-//mysql_query("SET NAMES 'utf8'");
+
+//recibo el dato a buscar, ESCAPADO (corta la SQLi en el LIKE).
+//Sin utf8_decode: la conexion es utf8 y con utf8_decode las busquedas con tilde/ñ dan error de collation.
+$datoBuscar = mysqli_real_escape_string($con, $_GET["term"] ?? "");
 
 //busco un valor aproximado al dato escrito
-// $ssql = "SELECT * FROM codigos WHERE idcodigo <> 1 AND idcodigo <> 2 AND  idcodigo <> 3 AND detalle LIKE '%" . $datoBuscar . "%'";
 $ssql="SELECT
 	nombre
 	FROM
@@ -16,10 +17,7 @@ $ssql="SELECT
 	WHERE
 	nombre LIKE '%" . $datoBuscar . "%'
 	LIMIT 10";
-//$ssql = "SELECT * FROM codigos WHERE  detalle LIKE '%" . $datoBuscar . "%'";
-//echo $ssql;
-$rs = mysql_query($ssql);
- mysqli_close($con);
+$rs = mysqli_query($con, $ssql);   // fix: era mysql_query (removida en PHP7)
 
 //creo el array de los elementos sugeridos
 $arrayElementos = array();
@@ -28,5 +26,6 @@ $arrayElementos = array();
 while ($fila = mysqli_fetch_array($rs)){
     array_push($arrayElementos, array("id"=>$fila['nombre'],"label"=>$fila['nombre'],"value"=>$fila['nombre'])) ;
 }
+ mysqli_close($con);
 echo json_encode($arrayElementos);
 ?>

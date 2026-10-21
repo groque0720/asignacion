@@ -114,8 +114,11 @@
 			</tr>
 		</thead>
 <?php
+		// Clases de estado de la fila: este listado no las calcula. Vacías = mismo HTML
+		// de siempre, pero sin generar 5 Notices por fila en el error.log.
+		$fila = $libre = $nc = $por_caer_fc = $atp = '';
 
-		while ($unidad=mysqli_fetch_array($unidades)) { 
+		while ($unidad=mysqli_fetch_array($unidades)) {
 			// Formatear la fecha de despacho
 			try {
 				// Formatear la fecha de despacho
