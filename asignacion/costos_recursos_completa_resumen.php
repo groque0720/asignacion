@@ -175,6 +175,59 @@ $pdf->Cell(30,8,number_format($totales['llegadas'],0,',','.'),1,0,'R',true);
 $pdf->Cell(30,8,number_format($totales['general'],0,',','.'),1,1,'R',true);
 
 /* ===========================
+   UNIDADES F02 (las vistas no las cuentan; se listan sin sumar)
+=========================== */
+
+$resF02 = mysqli_query($con, "SELECT * FROM view_asignaciones_saldo_pendiente_corregida_f02 ORDER BY Sucursal, NroOrden");
+
+if ($resF02 && mysqli_num_rows($resF02) > 0) {
+
+    $pdf->Ln(6);
+    $pdf->SetFont('Arial','B',9);
+    $pdf->Cell(190,7,'UNIDADES F02 - NO INCLUIDAS EN LOS TOTALES',0,1,'L');
+
+    $pdf->SetFont('Arial','',8);
+    $pdf->SetFillColor(230,230,230);
+    $pdf->Cell(24,7,'Nro Orden',1,0,'C',true);
+    $pdf->Cell(46,7,'Modelo',1,0,'C',true);
+    $pdf->Cell(36,7,'Cliente',1,0,'C',true);
+    $pdf->Cell(22,7,'Sucursal',1,0,'C',true);
+    $pdf->Cell(18,7,'Estado',1,0,'C',true);
+    $pdf->Cell(22,7,'Costo',1,0,'C',true);
+    $pdf->Cell(22,7,'Saldo',1,1,'C',true);
+
+    $costoF02 = 0;
+    $saldoF02 = 0;
+
+    while ($u = mysqli_fetch_assoc($resF02)) {
+
+        if (!$u['pagado_tasa']) {
+            $estado = 'Pend. TASA';
+        } elseif (empty($u['Arribo'])) {
+            $estado = 'En viaje';
+        } else {
+            $estado = 'Con arribo';
+        }
+
+        $pdf->Cell(24,6,$u['NroOrden'],1,0,'C');
+        $pdf->Cell(46,6,utf8_decode(substr($u['Modelo'].' '.$u['Versión'],0,28)),1,0,'L');
+        $pdf->Cell(36,6,utf8_decode(substr($u['Cliente'],0,19)),1,0,'L');
+        $pdf->Cell(22,6,utf8_decode($u['Sucursal']),1,0,'C');
+        $pdf->Cell(18,6,$estado,1,0,'C');
+        $pdf->Cell(22,6,number_format($u['Costo TASA'],0,',','.'),1,0,'R');
+        $pdf->Cell(22,6,number_format($u['Saldo'],0,',','.'),1,1,'R');
+
+        $costoF02 += $u['Costo TASA'];
+        $saldoF02 += $u['Saldo'];
+    }
+
+    $pdf->SetFillColor(200,200,200);
+    $pdf->Cell(146,7,'SUBTOTAL F02 (NO COMPUTA)',1,0,'R',true);
+    $pdf->Cell(22,7,number_format($costoF02,0,',','.'),1,0,'R',true);
+    $pdf->Cell(22,7,number_format($saldoF02,0,',','.'),1,1,'R',true);
+}
+
+/* ===========================
    OUTPUT
 =========================== */
 

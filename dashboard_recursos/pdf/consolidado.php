@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 include('../funciones/func_mysql.php');
-require('../../fpdf/fpdf.php');
+require('../../asignacion/fpdf/fpdf.php');
 
 conectar();
 @session_start();
@@ -346,6 +346,59 @@ $pdf->SetFont('Arial', 'B', 7.2);
 $pdf->SetFillColor(226, 232, 240);
 $pdf->Cell(213, 6, 'TOTAL DETALLE', 0, 0, 'R', true);
 $pdf->Cell(21, 6, f_ars($totalDetalle), 0, 1, 'R', true);
+
+// Unidades F02: las vistas no las cuentan; se listan aparte, sin sumar a los totales.
+$resF02 = mysqli_query($con, 'SELECT * FROM view_asignaciones_saldo_pendiente_corregida_f02' . $whereSucursal . ' ORDER BY Sucursal, Reserva');
+if ($resF02 && mysqli_num_rows($resF02) > 0) {
+	$pdf->Ln(4);
+	if ($pdf->GetY() > 176) {
+		$pdf->AddPage();
+	}
+	$tituloF02 = 'UNIDADES F02 - NO INCLUIDAS EN LOS TOTALES';
+	$pdf->SetFont('Arial', 'B', 8);
+	$pdf->SetFillColor(254, 243, 199);
+	$pdf->SetTextColor(146, 64, 14);
+	$pdf->Cell(234, 6, $tituloF02, 0, 1, 'L', true);
+	$pdf->SetTextColor(15, 23, 42);
+	$pdf->SetFont('Arial', '', 6.6);
+
+	$totalF02 = 0;
+	$line = false;
+	while ($u = mysqli_fetch_assoc($resF02)) {
+		if ($pdf->GetY() > 186) {
+			$pdf->AddPage();
+			$pdf->SetFont('Arial', 'B', 8);
+			$pdf->SetFillColor(254, 243, 199);
+			$pdf->SetTextColor(146, 64, 14);
+			$pdf->Cell(234, 6, $tituloF02 . ' (cont.)', 0, 1, 'L', true);
+			$pdf->SetTextColor(15, 23, 42);
+			$pdf->SetFont('Arial', '', 6.6);
+		}
+		$line = !$line;
+		$pdf->SetFillColor(255, $line ? 251 : 255, $line ? 235 : 255);
+
+		$saldo = (float)$u['Saldo'];
+		$totalF02 += $saldo;
+
+		$pdf->Cell(12, 5, $u['Mes'], 0, 0, 'C', true);
+		$pdf->Cell(10, 5, $u['Año'], 0, 0, 'C', true);
+		$pdf->Cell(42, 5, utf8_decode(f_txt_cut(trim($u['Modelo'] . ' ' . $u['Versión']), 30)), 0, 0, 'L', true);
+		$pdf->Cell(16, 5, $u['NroOrden'], 0, 0, 'C', true);
+		$pdf->Cell(11, 5, $u['Interno'], 0, 0, 'C', true);
+		$pdf->Cell(30, 5, utf8_decode(f_txt_cut($u['Cliente'], 22)), 0, 0, 'L', true);
+		$pdf->Cell(24, 5, utf8_decode(f_txt_cut($u['Asesor'], 17)), 0, 0, 'L', true);
+		$pdf->Cell(20, 5, utf8_decode($u['Sucursal']), 0, 0, 'L', true);
+		$pdf->Cell(16, 5, f_date($u['Reserva']), 0, 0, 'C', true);
+		$pdf->Cell(16, 5, f_date($u['Arribo']), 0, 0, 'C', true);
+		$pdf->Cell(16, 5, f_date($u['Despacho']), 0, 0, 'C', true);
+		$pdf->Cell(21, 5, f_ars($saldo), 0, 1, 'R', true);
+	}
+
+	$pdf->SetFont('Arial', 'B', 7.2);
+	$pdf->SetFillColor(254, 243, 199);
+	$pdf->Cell(213, 6, 'SUBTOTAL F02 (NO COMPUTA)', 0, 0, 'R', true);
+	$pdf->Cell(21, 6, f_ars($totalF02), 0, 1, 'R', true);
+}
 
 ob_end_clean();
 $pdf->Output('I', 'dashboard_recursos_consolidado.pdf');

@@ -84,6 +84,19 @@ if ($res) {
   }
 }
 
+// Unidades F02: las vistas no las cuentan; se muestran aparte al final, sin sumar.
+$data_f02  = [];
+$f02_costo = 0.0;
+$f02_saldo = 0.0;
+$res = mysqli_query($con, "SELECT * FROM view_asignaciones_saldo_pendiente_corregida_f02 ORDER BY Sucursal, NroOrden");
+if ($res) {
+  while ($r = mysqli_fetch_assoc($res)) {
+    $data_f02[] = $r;
+    $f02_costo += (float)$r['Costo TASA'];
+    $f02_saldo += (float)$r['Saldo'];
+  }
+}
+
 $total_general    = $total_pendiente + $total_en_viaje + $total_con_arribo;
 $total_financiado = $total_en_viaje + $total_con_arribo;
 
@@ -874,6 +887,57 @@ $hora_actual  = date('H:i:s');
       </table>
     </div>
   </div>
+
+  <?php if (count($data_f02) > 0): ?>
+  <!-- ── Unidades F02 (no computan) ─────────────────────────────────────────── -->
+  <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-5">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <h2 class="text-sm font-semibold text-slate-800">Unidades F02 — no incluidas en los totales</h2>
+        <p class="text-xs text-slate-500 mt-0.5">Órdenes que empiezan con F02. Se muestran como referencia: no suman en ningún KPI, gráfico ni tabla de arriba.</p>
+      </div>
+      <span class="text-xs bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200 px-2 py-1 rounded-md font-medium"><?php echo count($data_f02); ?> unid.</span>
+    </div>
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-xs text-slate-400 uppercase tracking-wide border-b border-gray-100">
+          <th class="text-left py-2.5 font-medium pl-1">Nro Orden</th>
+          <th class="text-left py-2.5 font-medium">Modelo</th>
+          <th class="text-left py-2.5 font-medium">Cliente</th>
+          <th class="text-left py-2.5 font-medium">Asesor</th>
+          <th class="text-left py-2.5 font-medium">Sucursal</th>
+          <th class="text-center py-2.5 font-medium">Estado</th>
+          <th class="text-right py-2.5 font-medium">Costo</th>
+          <th class="text-right py-2.5 font-medium pr-1">Saldo</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-50">
+        <?php foreach ($data_f02 as $r):
+          if (!$r['pagado_tasa'])     { $estado = 'Pendiente TASA'; }
+          elseif (empty($r['Arribo'])) { $estado = 'En viaje'; }
+          else                         { $estado = 'Con arribo'; } ?>
+        <tr class="hover:bg-gray-50 transition-colors">
+          <td class="py-2.5 pl-1 font-mono text-slate-700"><?php echo htmlspecialchars($r['NroOrden']); ?></td>
+          <td class="py-2.5 text-slate-800"><?php echo htmlspecialchars(trim($r['Modelo'] . ' ' . $r['Versión'])); ?></td>
+          <td class="py-2.5 text-slate-600"><?php echo htmlspecialchars($r['Cliente']); ?></td>
+          <td class="py-2.5 text-slate-600"><?php echo htmlspecialchars($r['Asesor']); ?></td>
+          <td class="py-2.5 text-slate-600"><?php echo htmlspecialchars($r['Sucursal']); ?></td>
+          <td class="py-2.5 text-center text-xs text-slate-500"><?php echo $estado; ?></td>
+          <td class="py-2.5 text-right font-mono text-slate-700"><?php echo fmt((float)$r['Costo TASA']); ?></td>
+          <td class="py-2.5 text-right font-mono font-semibold text-slate-900 pr-1"><?php echo fmt((float)$r['Saldo']); ?></td>
+        </tr>
+        <?php endforeach; ?>
+      </tbody>
+      <tfoot>
+        <tr class="border-t-2 border-amber-200 bg-amber-50">
+          <td colspan="6" class="py-3 font-bold text-amber-800 pl-1">Subtotal F02 (no computa)</td>
+          <td class="py-3 text-right font-mono font-bold text-amber-800"><?php echo fmt($f02_costo); ?></td>
+          <td class="py-3 text-right font-mono font-bold text-amber-800 pr-1"><?php echo fmt($f02_saldo); ?></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <?php endif; ?>
 
   <!-- Footer -->
   <div class="text-center text-xs text-slate-400 py-2 no-print">

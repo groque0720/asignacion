@@ -1,5 +1,6 @@
 <?php
 include("funciones/func_mysql.php");
+include("funciones/recursos_f02.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
 require('fpdf/fpdf.php');
@@ -11,7 +12,7 @@ if ($_SESSION["autentificado"] != "SI") {
 	exit();
 }
 
-$sucursalId = isset($_GET['sucursalId']) ? $_GET['sucursalId'] : null;
+$sucursalId = isset($_GET['sucursalId']) ? intval($_GET['sucursalId']) : null;
 $sucursal = 'Derka y Vargas S. A.';
 
 if ($sucursalId) {
@@ -85,9 +86,14 @@ $pdf->SetFont('');
 
 
 
+// La vista ya excluye las órdenes F02 (se listan al final, sin sumar)
+$where = '';
+if ($sucursalId) {
+	$where = "idsucursal = $sucursalId";
+}
 $SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida";
-if (isset($_GET['sucursalId'])) {
-	$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE idsucursal = $sucursalId";
+if ($where != '') {
+	$SQL.=" WHERE $where";
 }
 $unidades = mysqli_query($con, $SQL);
 
@@ -174,6 +180,8 @@ $pdf->Cell(20,6,'$ '.number_format($total_pagos, 0, ',', '.'),1,0,'R');
 $pdf->Cell(20,6,'$ '.number_format($saldo, 0, ',', '.'),1,0,'R');
 
 $pdf->Ln();
+
+pdf_unidades_f02($pdf, $con, $where);
 
 $pdf->Output('Costos_Recursos_Completa.pdf','I');
 $pdf->close();

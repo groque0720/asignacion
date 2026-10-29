@@ -398,6 +398,87 @@ $pdf->Cell(225, 6, 'TOTAL GENERAL', 0, 0, 'R', true);
 $pdf->Cell(26, 6, f_ars($grandCosto), 0, 0, 'R', true);
 $pdf->Cell(26, 6, f_ars($grandSaldo), 0, 1, 'R', true);
 
+// ─── Unidades F02 con arribo: las vistas no las cuentan; se listan sin sumar ──
+$qF02 = "SELECT
+  v.`NroUn.`     AS NroUn,
+  v.Modelo,
+  v.`Versión`    AS Version,
+  v.NroOrden,
+  v.Chasis,
+  v.Cliente,
+  v.Asesor,
+  v.Reserva,
+  v.Arribo,
+  v.`Costo TASA` AS Costo,
+  v.Saldo,
+  COALESCE(v.EstadoReserva, 0) AS EstadoReserva
+FROM view_asignaciones_saldo_pendiente_corregida_f02 v
+WHERE v.Arribo IS NOT NULL AND v.Arribo <> ''" . $andSuc . "
+ORDER BY v.Sucursal, v.Modelo, v.`Versión`, v.Arribo";
+$resF02 = mysqli_query($con, $qF02);
+
+if ($resF02 && mysqli_num_rows($resF02) > 0) {
+    $pdf->Ln(4);
+    if ($pdf->GetY() > $pageBreakLimit - 18) {
+        $pdf->AddPage();
+    }
+    $pdf->SetFont('Arial', 'B', 8);
+    $pdf->SetFillColor(254, 243, 199);
+    $pdf->SetTextColor(146, 64, 14);
+    $pdf->Cell(277, 5.5, 'UNIDADES F02 - NO INCLUIDAS EN LOS TOTALES', 0, 1, 'L', true);
+    detail_header($pdf);
+    $pdf->SetFont('Arial', '', 6.6);
+
+    $f02Costo = 0;
+    $f02Saldo = 0;
+    $line     = false;
+    while ($u = mysqli_fetch_assoc($resF02)) {
+        if ($pdf->GetY() > $pageBreakLimit) {
+            $pdf->AddPage();
+            detail_header($pdf);
+            $pdf->SetFont('Arial', '', 6.6);
+        }
+
+        $line = !$line;
+        $pdf->SetFillColor(255, $line ? 251 : 255, $line ? 235 : 255);
+        $pdf->SetTextColor(15, 23, 42);
+
+        $confirmada = ((int)$u['EstadoReserva'] === 1);
+        $costo      = (float)$u['Costo'];
+        $saldo      = (float)$u['Saldo'];
+        $f02Costo  += $costo;
+        $f02Saldo  += $saldo;
+
+        $pdf->Cell(11, 5, $u['NroUn'], 0, 0, 'C', true);
+        $pdf->Cell(48, 5, utf8_decode(f_txt_cut(trim($u['Modelo'] . ' ' . $u['Version']), 35)), 0, 0, 'L', true);
+        $pdf->Cell(17, 5, $u['NroOrden'], 0, 0, 'C', true);
+        $pdf->Cell(33, 5, utf8_decode(f_txt_cut($u['Chasis'], 22)), 0, 0, 'L', true);
+        $pdf->Cell(38, 5, utf8_decode(f_txt_cut($u['Cliente'], 26)), 0, 0, 'L', true);
+        $pdf->Cell(28, 5, utf8_decode(f_txt_cut($u['Asesor'], 19)), 0, 0, 'L', true);
+        $pdf->Cell(16, 5, f_date($u['Reserva']), 0, 0, 'C', true);
+        $pdf->Cell(16, 5, f_date($u['Arribo']), 0, 0, 'C', true);
+
+        if ($confirmada) {
+            $pdf->SetTextColor(5, 122, 85);
+        } else {
+            $pdf->SetTextColor(180, 83, 9);
+        }
+        $pdf->SetFont('Arial', 'B', 6.4);
+        $pdf->Cell(18, 5, $confirmada ? 'CONFIRMADA' : 'SIN RESERVA', 0, 0, 'C', true);
+        $pdf->SetFont('Arial', '', 6.6);
+        $pdf->SetTextColor(15, 23, 42);
+
+        $pdf->Cell(26, 5, f_ars($costo), 0, 0, 'R', true);
+        $pdf->Cell(26, 5, f_ars($saldo), 0, 1, 'R', true);
+    }
+
+    $pdf->SetFont('Arial', 'B', 7);
+    $pdf->SetFillColor(254, 243, 199);
+    $pdf->Cell(225, 5.5, 'SUBTOTAL F02 (NO COMPUTA)', 0, 0, 'R', true);
+    $pdf->Cell(26, 5.5, f_ars($f02Costo), 0, 0, 'R', true);
+    $pdf->Cell(26, 5.5, f_ars($f02Saldo), 0, 1, 'R', true);
+}
+
 ob_end_clean();
 $nombreArchivo = $sucursalId > 0
     ? 'Costo_Arribo_Suc' . $sucursalId . '.pdf'

@@ -1,5 +1,6 @@
 <?php
 include("funciones/func_mysql.php");
+include("funciones/recursos_f02.php");
 conectar();
 mysqli_query($con,"SET NAMES 'utf8'");
 require('fpdf/fpdf.php');
@@ -101,12 +102,12 @@ $pdf->SetFont('');
 
 
 
-// $SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE Arribo IS NULL AND pagado_tasa IS true";
-$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE Arribo IS NULL AND pagado_tasa IS true AND Chasis <> ''";
+// La vista ya excluye las órdenes F02 (se listan al final, sin sumar)
+$where = "Arribo IS NULL AND pagado_tasa IS true AND Chasis <> ''";
 if (isset($_GET['sucursalId'])) {
-	// $SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE idsucursal = $sucursalId AND Arribo IS NULL AND pagado_tasa IS true";
-	$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE idsucursal = $sucursalId AND Arribo IS NULL AND pagado_tasa IS true AND  Chasis <> ''";
+	$where = "idsucursal = $sucursalId AND $where";
 }
+$SQL="SELECT * FROM view_asignaciones_saldo_pendiente_corregida WHERE $where";
 $unidades = mysqli_query($con, $SQL);
 
 if (!$unidades) {
@@ -195,6 +196,8 @@ $pdf->Cell(20,5,'$ '.number_format($total_pagos, 0, ',','.'),1,0,'R');
 $pdf->Cell(20,5,'$ '.number_format($saldo, 0, ',','.'),1,0,'R');	
 
 $pdf->Ln();
+
+pdf_unidades_f02($pdf, $con, $where);
 
 $pdf->Output('En_viaje.pdf','I');
 $pdf->close();

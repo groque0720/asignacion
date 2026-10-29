@@ -283,6 +283,67 @@ foreach ($topModelo as $m) {
     $pdf->Cell(30, 6, number_format($p, 1, ',', '.') . '%', 0, 1, 'R', true);
 }
 
+// Unidades F02: las vistas no las cuentan; se listan aparte, sin sumar a los totales.
+$resF02 = mysqli_query($con, 'SELECT * FROM view_asignaciones_saldo_pendiente_corregida_f02 ORDER BY Sucursal, NroOrden');
+if ($resF02 && mysqli_num_rows($resF02) > 0) {
+    $pdf->Ln(4);
+    if ($pdf->GetY() > 245) {
+        $pdf->AddPage();
+    }
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->SetFillColor(254, 243, 199);
+    $pdf->SetTextColor(146, 64, 14);
+    $pdf->Cell(0, 7, 'UNIDADES F02 - NO INCLUIDAS EN LOS TOTALES', 0, 1, 'L', true);
+
+    $pdf->SetFont('Arial', 'B', 8);
+    $pdf->SetFillColor(226, 232, 240);
+    $pdf->SetTextColor(30, 41, 59);
+    $pdf->Cell(22, 6, 'Orden', 0, 0, 'C', true);
+    $pdf->Cell(44, 6, 'Modelo', 0, 0, 'L', true);
+    $pdf->Cell(34, 6, 'Cliente', 0, 0, 'L', true);
+    $pdf->Cell(22, 6, 'Sucursal', 0, 0, 'L', true);
+    $pdf->Cell(18, 6, 'Estado', 0, 0, 'C', true);
+    $pdf->Cell(25, 6, 'Costo', 0, 0, 'R', true);
+    $pdf->Cell(25, 6, 'Saldo', 0, 1, 'R', true);
+
+    $pdf->SetTextColor(15, 23, 42);
+    $pdf->SetFont('Arial', '', 7.5);
+    $costoF02 = 0;
+    $saldoF02 = 0;
+    $fill = false;
+    while ($u = mysqli_fetch_assoc($resF02)) {
+        if ($pdf->GetY() > 275) {
+            $pdf->AddPage();
+        }
+        if (!$u['pagado_tasa']) {
+            $estado = 'Pend. TASA';
+        } elseif (empty($u['Arribo'])) {
+            $estado = 'En viaje';
+        } else {
+            $estado = 'Con arribo';
+        }
+
+        $fill = !$fill;
+        $pdf->SetFillColor(255, $fill ? 251 : 255, $fill ? 235 : 255);
+        $pdf->Cell(22, 6, $u['NroOrden'], 0, 0, 'C', true);
+        $pdf->Cell(44, 6, utf8_decode(txt_cut(trim($u['Modelo'] . ' ' . $u['Versión']), 28)), 0, 0, 'L', true);
+        $pdf->Cell(34, 6, utf8_decode(txt_cut($u['Cliente'], 20)), 0, 0, 'L', true);
+        $pdf->Cell(22, 6, utf8_decode(txt_cut($u['Sucursal'], 14)), 0, 0, 'L', true);
+        $pdf->Cell(18, 6, $estado, 0, 0, 'C', true);
+        $pdf->Cell(25, 6, ars($u['Costo TASA']), 0, 0, 'R', true);
+        $pdf->Cell(25, 6, ars($u['Saldo']), 0, 1, 'R', true);
+
+        $costoF02 += (float)$u['Costo TASA'];
+        $saldoF02 += (float)$u['Saldo'];
+    }
+
+    $pdf->SetFont('Arial', 'B', 8);
+    $pdf->SetFillColor(254, 243, 199);
+    $pdf->Cell(140, 7, 'SUBTOTAL F02 (NO COMPUTA)', 0, 0, 'R', true);
+    $pdf->Cell(25, 7, ars($costoF02), 0, 0, 'R', true);
+    $pdf->Cell(25, 7, ars($saldoF02), 0, 1, 'R', true);
+}
+
 ob_end_clean();
 $pdf->Output('I', 'dashboard_recursos_resumen_ejecutivo.pdf');
 exit();

@@ -43,7 +43,9 @@ Dashboard contable de exposición financiera por sucursal.
 
 ### Definición de `view_asignaciones_saldo_pendiente_corregida` (confirmada por el usuario)
 JOIN entre `asignaciones`, `grupos`, `modelos`, `usuarios`, `meses`, `sucursales` + LEFT JOIN `reservas_suma_montos`, `reservas_suma_pagos`.
-Filtros: `guardado=1`, `borrar=0`, `entregada=0`, `usuarios.id_negocio=1`, `estado_tasa=1`, `nro_orden NOT LIKE 'TPA%'`, año/mes ≤ hoy.
+Filtros: `guardado=1`, `borrar=0`, `entregada=0`, `asignaciones.id_negocio=1`, `estado_tasa=1`, `nro_orden NOT LIKE 'TPA%'`, `nro_orden NOT LIKE 'F02%'`, año/mes ≤ hoy.
+
+> **Órdenes F02 excluidas (2026-10-29):** las 4 vistas (maestra + 3 hijas) excluyen `nro_orden LIKE 'F02%'` igual que TPA. Para no perderlas de vista, `view_asignaciones_saldo_pendiente_corregida_f02` (mismas columnas/filtros que la maestra, sólo F02) alimenta una sección "UNIDADES F02 - NO INCLUIDAS EN LOS TOTALES" al final de cada PDF de costos/recursos y una card al pie del dashboard, **sin sumar a ningún total**. SQL + rollback: `asignacion/sql/recursos_excluir_f02*.sql`. Helper de los PDF clásicos: `asignacion/funciones/recursos_f02.php`.
 La sucursal de la vista **es la sucursal del ASESOR** (`usuarios.idsucursal`), no de la unidad.
 
 Aliases expuestos: `NroUn.` (= `asignaciones.nro_unidad`), `Mes`, `Año`, `Modelo` (= `grupos.grupo`), `Versión` (= `modelos.modelo`), `NroOrden`, `Interno`, `Chasis`, `Cliente`, `Asesor`, `Sucursal`, `Reserva`, `Arribo`, `Despacho`, `Confirmada TASA` (= `asignaciones.estado_tasa`), `Cancelada`, `pagado_tasa` (= `asignaciones.pagado`), `Costo TASA`, `Operacion`, `Pagos`, `Saldo`, `idsucursal`.
@@ -57,9 +59,9 @@ Aliases expuestos: `NroUn.` (= `asignaciones.nro_unidad`), `Mes`, `Año`, `Model
 
 - **`_no_llegadas`** (KPI "Pendiente Pago TASA"): filtros `pagado = 0`. **No** filtra por `fec_arribo`. Sin JOIN a `modelos`/`grupos`.
 - **`_en_viaje`** (KPI "En Viaje"): `pagado = 1` AND `fec_arribo IS NULL` AND `chasis` no vacío. Inicia desde `sucursales` con LEFT JOIN, así devuelve fila por sucursal aunque no tenga unidades. Sin JOIN a `modelos`.
-- **`_llegadas`** (KPI "Con Arribo"): `pagado = 1` AND `fec_arribo IS NOT NULL` AND `fec_arribo <> ''`. Sin JOIN a `modelos`.
+- **`_llegadas`** (KPI "Con Arribo"): `pagado = 1` AND `fec_arribo IS NOT NULL` AND `fec_arribo <> ''`. JOIN a `modelos`; expone además `Costo`, `CostoConReserva`, `CostoSinReserva`, `Unidades`, `UnidadesConReserva`.
 
-Para mostrar **costo** y **estado_reserva** por sucursal hay que agregarles JOIN con `modelos` y nuevas columnas agregadas.
+Las definiciones de dev y prod se verificaron idénticas (MD5) el 2026-10-29.
 
 ### Tabla `asignaciones` (subyacente)
 Columnas relevantes detectadas por uso: `id_unidad`, `id_modelo`, `chasis`, `reservada` (0/1), `estado_reserva` (0=No Confirmada, 1=Confirmada), `entregada`, `borrar`, `cancelada`, `fec_limite`, `fec_reserva`, `fec_arribo`, `fec_despacho`, `fec_playa`, `pagado`, `estado_tasa`, `cliente`, `id_asesor`, `id_color`.
