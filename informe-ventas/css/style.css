@@ -559,6 +559,28 @@ table.dataTable.table-striped tbody tr:nth-of-type(odd) { background-color: rgba
 }
 .mm-card .mm-tabs .nav-link i { margin-right: 6px; }
 
+/* Menú "Imprimir / Exportar" del comparativo mes a mes (vive dentro de .chart-title) */
+.mm-export-menu {
+    --bs-dropdown-bg: var(--bg-card);
+    --bs-dropdown-border-color: var(--border-color);
+    --bs-dropdown-link-color: var(--text-primary);
+    --bs-dropdown-link-hover-color: var(--text-primary);
+    --bs-dropdown-link-hover-bg: var(--bg-card-hover);
+    --bs-dropdown-link-active-bg: var(--bg-card-hover);
+    --bs-dropdown-link-active-color: var(--text-primary);
+    --bs-dropdown-header-color: var(--text-muted);
+    --bs-dropdown-divider-bg: var(--border-color);
+    --bs-dropdown-font-size: 12px;
+    box-shadow: var(--shadow);
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 500;
+}
+.mm-export-menu .dropdown-header { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.chart-card .chart-title .mm-export-menu i { font-size: 12px; width: 16px; margin-right: 4px; }
+.chart-card .chart-title .mm-export-menu .mm-ico-pdf   { color: var(--accent-red); }
+.chart-card .chart-title .mm-export-menu .mm-ico-excel { color: var(--accent-green); }
+
 /* ═══════════════════════════════════════════════════
    Tab "Día a Día"
    ═══════════════════════════════════════════════════ */

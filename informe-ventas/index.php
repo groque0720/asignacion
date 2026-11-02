@@ -321,6 +321,21 @@ $anio_actual = intval(date('Y'));
                                     style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
                                 <i class="fa fa-angles-up"></i> Colapsar todo
                             </button>
+                            <div class="dropdown">
+                                <button type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Imprimir o descargar esta tabla"
+                                        style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
+                                    <i class="fa fa-print"></i> Imprimir / Exportar <i class="fa fa-caret-down"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end mm-export-menu">
+                                    <li><h6 class="dropdown-header">PDF horizontal (para imprimir)</h6></li>
+                                    <li><button type="button" class="dropdown-item" onclick="exportModeloMes('pdf', 0)"><i class="fa fa-file-pdf mm-ico-pdf"></i> Solo modelos</button></li>
+                                    <li><button type="button" class="dropdown-item" onclick="exportModeloMes('pdf', 1)"><i class="fa fa-file-pdf mm-ico-pdf"></i> Modelos y versiones</button></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><h6 class="dropdown-header">Excel</h6></li>
+                                    <li><button type="button" class="dropdown-item" onclick="exportModeloMes('excel', 0)"><i class="fa fa-file-excel mm-ico-excel"></i> Solo modelos</button></li>
+                                    <li><button type="button" class="dropdown-item" onclick="exportModeloMes('excel', 1)"><i class="fa fa-file-excel mm-ico-excel"></i> Modelos y versiones</button></li>
+                                </ul>
+                            </div>
                             <button onclick="document.getElementById('modelo-mes-wrap').classList.toggle('d-none')"
                                     style="background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
                                 Mostrar / Ocultar

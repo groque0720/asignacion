@@ -918,6 +918,12 @@ function exportPDF() {
     window.open('export_pdf.php?' + buildParams(), '_blank');
 }
 
+// Comparativo mes a mes por modelo/versión — formato: 'pdf' | 'excel'; detalle 1 = con versiones
+function exportModeloMes(formato, detalle) {
+    const file = formato === 'excel' ? 'export_modelo_mes_excel.php' : 'export_modelo_mes_pdf.php';
+    window.open(file + '?' + buildParams() + '&detalle=' + (detalle ? 1 : 0), '_blank');
+}
+
 function openReport() {
     const form = document.createElement('form');
     form.method  = 'POST';

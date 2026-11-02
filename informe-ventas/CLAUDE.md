@@ -13,28 +13,31 @@ Dashboard BI de **ventas/reservas** de Derka y Vargas. SPA-light: shell PHP + JS
 - [api.php](api.php) — único endpoint JSON, dispatch por `?action=…` ([api.php:23](api.php#L23)).
 - [export_excel.php](export_excel.php), [export_pdf.php](export_pdf.php), [reporte.php](reporte.php) — salidas (reciben los mismos filtros + imágenes base64 de los charts vía POST en el caso de `reporte.php`).
 - [funciones/func_mysql.php](funciones/func_mysql.php) — wrapper que incluye `/asignacion/funciones/func_mysql.php` (no duplicar lógica acá).
+- [funciones/where_builder.php](funciones/where_builder.php) — `build_where_clause()`, `base_from_sql()`, `exec_prepared()` / `exec_prepared_one()`. Lo incluye `api.php` y los exports del comparativo mes a mes.
+- [funciones/modelo_mes.php](funciones/modelo_mes.php) — `get_comp_modelo_mes()` (handler de la API) + `modelo_mes_pivot()` / `modelo_mes_var()` / `modelo_mes_filtros()` para los exports.
+- [export_modelo_mes_pdf.php](export_modelo_mes_pdf.php) (FPDF, A4 horizontal) y [export_modelo_mes_excel.php](export_modelo_mes_excel.php) (PHPExcel .xlsx) — botón "Imprimir / Exportar" de la tabla "Comparativo Mes a Mes — Por Modelo/Versión". `?detalle=1` agrega las versiones. Salen de la MISMA query que la tabla en pantalla; el pivot PHP replica `renderCompModeloMes()` (meses activos, % contra el mes activo anterior).
 - [css/style.css](css/style.css) — estilos del dashboard, variables CSS por tema.
 
 ## Convención CRÍTICA: prepared statements
 A diferencia del resto del proyecto (que concatena strings con `mysqli_query`), **acá se usan `mysqli_prepare` + `bind_param`**. Ningún valor que venga del cliente debe ir concatenado en la query.
 
-Patrón establecido en [api.php:49](api.php#L49):
+Patrón establecido en [funciones/where_builder.php:13](funciones/where_builder.php#L13):
 ```php
 function build_where_clause(array &$params, string &$types, bool $exclude_anio = false, bool $exclude_mes_fechas = false): string
 ```
 - `$exclude_anio = true` → no aplica el filtro `YEAR(r.fecres) = ?` (usado por `chart_anio_comp` y `comp_grupo`).
 - `$exclude_mes_fechas = true` → además ignora `mes`, `fecha_desde`, `fecha_hasta` (usado por `comp_dia_mes`, que define su propia ventana temporal).
 
-Cada filtro agrega `" AND col = ?"` al WHERE y empuja a `$params` + `$types`. La query se ejecuta con `exec_prepared()` / `exec_prepared_one()` ([api.php:200](api.php#L200)).
+Cada filtro agrega `" AND col = ?"` al WHERE y empuja a `$params` + `$types`. La query se ejecuta con `exec_prepared()` / `exec_prepared_one()` ([funciones/where_builder.php:166](funciones/where_builder.php#L166)).
 
-> Si agregás un nuevo filtro: extender `build_where_clause()` Y replicar el mismo bloque en `build_where_rep()` de [reporte.php:16](reporte.php#L16) y `build_where_clause_ex()` de [export_excel.php:15](export_excel.php#L15) y la versión equivalente en [export_pdf.php](export_pdf.php). Los cuatro builders deben mantenerse sincronizados — no hay helper compartido todavía.
+> Si agregás un nuevo filtro: extender `build_where_clause()` (en `funciones/where_builder.php`, cubre api + exports del mes a mes) Y replicar el mismo bloque en `build_where_rep()` de [reporte.php:16](reporte.php#L16), `build_where_clause_ex()` de [export_excel.php:15](export_excel.php#L15) y `build_where_pdf()` de [export_pdf.php](export_pdf.php), que todavía tienen copia propia. Si el filtro debe aparecer en el encabezado de los exports del mes a mes, sumarlo también a `modelo_mes_filtros()`.
 
-`ORDER BY` y `LIMIT/OFFSET` en [api.php:738-739](api.php#L738) sí se concatenan, pero solo después de validar contra whitelist (col_map) y de castear a int.
+`ORDER BY` y `LIMIT/OFFSET` en [api.php:621-622](api.php#L621) sí se concatenan, pero solo después de validar contra whitelist (col_map) y de castear a int.
 
 ## Modelo de datos
 Este módulo opera sobre **`reservas`**, no `asignaciones`. No mezclar las dos.
 
-### Base SQL ([api.php:181](api.php#L181))
+### Base SQL ([funciones/where_builder.php:147](funciones/where_builder.php#L147))
 ```sql
 FROM reservas r
 LEFT JOIN grupos g    ON r.idgrupo  = g.idgrupo
@@ -95,6 +98,6 @@ Convención de naming: `get_*()` para los handlers, `chart_*` para los que alime
 - **Costo / margen**: el costo de unidad vive en `modelos.costo` (ver CLAUDE.md general). `reservas` no lo trae — hay que JOIN con `modelos` y agregar.
 
 ## Decisiones / hallazgos
-- `build_where_*()` está duplicado en 4 archivos a propósito (api, reporte, export_excel, export_pdf). Si el costo de mantenerlos se vuelve molesto, considerar mover a un `funciones/where_builder.php`.
+- `build_where_clause()` se movió a `funciones/where_builder.php` (2026-11-02) para que los exports del mes a mes no sumaran otra copia. `reporte.php`, `export_excel.php` y `export_pdf.php` siguen con su copia propia; migrarlos es pendiente (ojo: `build_where_pdf()` no soporta los flags `exclude_*`).
 - `r.enviada != 0` filtra borradores — confirmar antes de quitarlo si alguna métrica pide "todo".
 - El "Reporte Gerencia" ([reporte.php](reporte.php)) recibe los PNG de los charts en POST como `chart_img_*` (data URI base64). El sanitizador `safe_img()` solo acepta `data:image/...`.
