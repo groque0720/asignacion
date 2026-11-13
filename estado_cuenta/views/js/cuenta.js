@@ -124,9 +124,21 @@ function estadoCuenta(idcliente, puedeEditar) {
       }
     },
 
+    // Saldada = no queda nada a cancelar (tolerancia de medio centavo por floats).
+    saldado() {
+      return (Number(this.d.a_cancelar) || 0) < 0.005;
+    },
+    // % de avance con 1 decimal, TRUNCADO (no redondeado): con saldo pendiente
+    // nunca debe mostrar 100% (antes 99,85% se redondeaba a 100).
     pct() {
-      if (!this.d.monto_operacion) return 0;
-      return Math.round((this.d.pagado / this.d.monto_operacion) * 100);
+      const op = Number(this.d.monto_operacion) || 0;
+      if (op <= 0) return 0;
+      if (this.saldado()) return 100;
+      const p = Math.floor((Number(this.d.pagado) || 0) / op * 1000 + 1e-6) / 10;
+      return Math.max(0, Math.min(p, 99.9));
+    },
+    pctTxt() {
+      return new Intl.NumberFormat('es-AR', { maximumFractionDigits: 1 }).format(this.pct()) + '%';
     },
     money(n) {
       return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n || 0);

@@ -63,11 +63,11 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
           <div class="flex justify-between text-xs text-slate-500 mb-1.5">
             <span>Avance de pago</span>
-            <span class="font-semibold text-slate-700" x-text="pct() + '%'"></span>
+            <span class="font-semibold text-slate-700 num" x-text="pctTxt()"></span>
           </div>
           <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
             <div class="h-full rounded-full transition-all"
-                 :class="pct() >= 100 ? 'bg-emerald-500' : 'bg-blue-500'"
-                 :style="`width:${Math.min(pct(),100)}%`"></div>
+                 :class="saldado() ? 'bg-emerald-500' : 'bg-blue-500'"
+                 :style="`width:${pct()}%`"></div>
           </div>
         </div>
